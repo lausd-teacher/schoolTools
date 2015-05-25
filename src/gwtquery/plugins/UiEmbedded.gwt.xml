@@ -1,0 +1,6 @@
+<module>
+    <inherits name='gwtquery.plugins.Ui'/>
+    <public path="embedded"/>
+    <script src="jquery/jquery.min.js" />-->
+    <script src="jquery-ui/jquery-ui.min.js"/>
+</module>
