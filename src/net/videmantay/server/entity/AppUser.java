@@ -3,6 +3,7 @@ package net.videmantay.server.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,6 +11,7 @@ import com.google.appengine.api.datastore.Key;
 import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Load;
 import com.googlecode.objectify.annotation.Serialize;
@@ -47,15 +49,17 @@ public  class AppUser implements Serializable{
 	private String defaultPicUrl;
 	private String authToken;
 	private boolean isLoggedin;
-	private transient UserStatus userStatus;
-	private transient Integer loginTimes;
-	private transient Boolean isFirstLogin;
+	private  UserStatus userStatus;
+	private  Integer loginTimes;
+	private  Boolean isFirstLogin;
+	private  Long loginAttempts = 0L;
 	
-	@Load()
-	private Ref<Roster> rosterRef;
+	@Ignore
+	private transient Set<Long> rosterIds = new HashSet<Long>();
+	//List of google apps id
+	//main drive folder
+	private transient String mainDriveFolderId;
 	
-	private Roster roster;
-
 	public AppUser(){}
 	
 	public AppUser(String email){
@@ -177,14 +181,7 @@ public  class AppUser implements Serializable{
 		this.defaultPicUrl = defaultPicUrl;
 	}
 
-	public Roster getRoster() {
-		return roster;
-	}
-
-	public void setRoster(Roster roster) {
-		this.roster = roster;
-	}
-
+	
 	public String getAuthToken() {
 		return authToken;
 	}
@@ -220,6 +217,28 @@ public  class AppUser implements Serializable{
 	public void setVersionNum(Long versionNum) {
 		this.versionNum = versionNum;
 	}
+
+	public Long getLoginAttempts() {
+		return loginAttempts;
+	}
+
+	public void setLoginAttempts(Long loginAttempts) {
+		this.loginAttempts = loginAttempts;
+	}
+
+	public String getMainDriveFolderId() {
+		return mainDriveFolderId;
+	}
+
+	public void setMainDriveFolderId(String mainDriveFolderId) {
+		this.mainDriveFolderId = mainDriveFolderId;
+	}
+	
+	public boolean isAuthRoster(Long rosterId){
+		return this.rosterIds.contains(rosterId);
+	}
+
+	
 	
 	
 }

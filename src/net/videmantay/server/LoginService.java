@@ -13,7 +13,7 @@ import com.google.appengine.api.users.*;
 
 import net.videmantay.server.entity.AppUser;
 import net.videmantay.server.entity.DB;
-import net.videmantay.server.entity.UserAccount;
+
 
 
 @SuppressWarnings("serial")
@@ -34,7 +34,7 @@ public class LoginService extends HttpServlet {
 	
 	private void  login(HttpServletRequest req , HttpServletResponse res){
 		 User user = null;
-		 DB<UserAccount> userAcctDB = new DB<UserAccount>(UserAccount.class);
+		 DB<AppUser> userAcctDB = new DB<AppUser>(AppUser.class);
 	
 		
 	
@@ -57,7 +57,7 @@ public class LoginService extends HttpServlet {
 		//error page
 		
 			try{
-				UserAccount userAcct = userAcctDB.query("email", user.getEmail()).iterator().next();
+				AppUser userAcct = userAcctDB.query("email", user.getEmail()).iterator().next();
 				
 				if(userAcct.getAcctId().equalsIgnoreCase("lee@videmantay.net")){
 					res.sendRedirect("/admin");

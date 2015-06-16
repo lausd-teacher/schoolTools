@@ -62,29 +62,34 @@ public class Roster implements Serializable{
 	@Index
 	private Date endDate;
 	
+	@Index
+	private String title;
+	
 	@Serialize
 	private Map<String , SeatingChartDetail> seatingCharts = new HashMap<String , SeatingChartDetail>();
 
 	@Serialize
-	private Map<String, String> googleCalendars = new HashMap<String, String>();
+	private Map<String, String> calendars = new HashMap<String, String>();
 	
 	@Serialize 
-	private Map<String, String> googleTasks = new HashMap<String, String>();
+	private Map<String, String> tasks = new HashMap<String, String>();
+	
+	private String rosterContacts;
 
 	
 	//maybe a sorted set by last name???
 	private Set<Key<RosterStudent>>students = new HashSet<Key<RosterStudent>>();
 		
-	//Set<AppContact> contacts;
+
 	private List<Key<StudentJob>> studentJobs = new ArrayList<Key<StudentJob>>();
 	
-	private Set<Key<AppContact>> contacts = new HashSet<Key<AppContact>>();
+	
 	
 	private List<Key<StudentGroup>> studentGroups = new ArrayList<Key<StudentGroup>>();
 	
 	private  String rosterFolderId;
 	
-	private  Map<String , String > studentFolders = new HashMap<String, String>();
+	private  Map<String , String > folders = new HashMap<String, String>();
 	
 	///Constructors
 	
@@ -92,7 +97,7 @@ public class Roster implements Serializable{
 		this.id = UUID.randomUUID().getLeastSignificantBits();
 	}
 	
-	public Roster(UserAccount acct){
+	public Roster(AppUser acct){
 		this.id = UUID.randomUUID().getLeastSignificantBits();
 		
 		if(acct.getUserStatus() == UserStatus.TEACHER){
@@ -141,12 +146,12 @@ public class Roster implements Serializable{
 		this.studentJobs = studentJobs;
 	}
 
-	public Set<Key<AppContact>> getContacts() {
-		return contacts;
+	public String getContacts() {
+		return rosterContacts;
 	}
 
-	public void setContacts(Set<Key<AppContact>> contacts) {
-		this.contacts = contacts;
+	public void setContacts(String contactGroupId) {
+		this.rosterContacts = contactGroupId;
 	}
 
 	public Long getId() {
@@ -189,16 +194,16 @@ public class Roster implements Serializable{
 		this.gradeLevel = grdLvl;
 	}
 	
-	public Map<String, String> getGoogleCalendars(){
-		return this.googleCalendars;
+	public Map<String, String> getCalendars(){
+		return this.calendars;
 	}
 	
-	public void setGoogleCalendars(Map<String, String> googleCals){
-		this.googleCalendars = googleCals;
+	public void setCalendars(Map<String, String> googleCals){
+		this.calendars = googleCals;
 	}
 	
-	public Map<String, String> getGoogleTasks(){
-		return this.googleTasks;
+	public Map<String, String> getTasks(){
+		return this.tasks;
 	}
 	
 	public String getRosterFolderId() {
@@ -209,16 +214,24 @@ public class Roster implements Serializable{
 		this.rosterFolderId = rosterFolderId;
 	}
 
-	public Map<String, String> getStudentFolders() {
-		return studentFolders;
+	public Map<String, String> getFolders() {
+		return folders;
 	}
 
-	public void setStudentFolders(Map<String, String> studentFolders) {
-		this.studentFolders = studentFolders;
+	public void setFolders(Map<String, String> folders) {
+		this.folders = folders;
 	}
 
-	public void setGoogleTasks(Map<String, String> googleTasks){
-		this.googleTasks = googleTasks;
+	public void setTasks(Map<String, String> googleTasks){
+		this.tasks = googleTasks;
+	}
+	
+	public void setTitle(String title){
+		this.title = title;
+	}
+	
+	public String getTitle(){
+		return title;
 	}
 	
 	

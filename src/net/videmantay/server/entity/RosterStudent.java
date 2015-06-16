@@ -32,6 +32,7 @@ public class RosterStudent implements Comparator<RosterStudent> {
 	private String extName;
 	private String picUrl;
 	private Date DOB;
+	private String contactsId;
 	
 	@Serialize
 	private transient Map<String, String> taskList = new HashMap<String, String>();
@@ -53,7 +54,7 @@ public class RosterStudent implements Comparator<RosterStudent> {
 	private transient Map<String, String> subjectFolders = new HashMap<String, String>();
 	
 	public RosterStudent(){
-		this.id = UUID.randomUUID().getLeastSignificantBits();
+	
 	}
 	public Date getCreateOn() {
 		return createOn;
@@ -157,9 +158,12 @@ public class RosterStudent implements Comparator<RosterStudent> {
 	public void setTaskList(Map<String, String> taskList){
 		this.taskList = taskList;
 	}
-	
-	
-
+	public String getContactsId(){
+		return contactsId;
+	}
+	public void setContactsId(String id){
+		this.contactsId = id;
+	}
 	public Map<String, String> getSubjectFolders() {
 		return subjectFolders;
 	}

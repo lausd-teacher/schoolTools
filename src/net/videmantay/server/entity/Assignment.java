@@ -19,8 +19,8 @@ public class Assignment {
 	private String title;
 	
 	@Index
-	private Set<CCStandard>standards;
-	
+	private Set<Standard>standards;
+
 	private Set<GradeLevel> gradeLevels;
 	
 	private String mediaUrl;
@@ -49,11 +49,11 @@ public class Assignment {
 		this.title = title;
 	}
 
-	public Set<CCStandard> getStandards() {
+	public Set<Standard> getStandards() {
 		return standards;
 	}
 
-	public void setStandards(Set<CCStandard> standards) {
+	public void setStandards(Set<Standard> standards) {
 		this.standards = standards;
 	}
 

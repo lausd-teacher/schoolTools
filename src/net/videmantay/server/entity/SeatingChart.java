@@ -3,8 +3,10 @@ package net.videmantay.server.entity;
 import java.io.Serializable;
 import java.util.Set;
 
+import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Serialize;
 
 
@@ -18,10 +20,12 @@ public class SeatingChart implements Serializable {
 	private Long id;
 	private String title;
 	private String descript;
-	
+	@Parent
+	Key<Roster> rsoterKey;
 	
 	@Serialize
 	private Set<StudentSeat> seats;
+	@Serialize
 	private TeacherDesk teacherDesk;
 	public String getTitle() {
 		return title;

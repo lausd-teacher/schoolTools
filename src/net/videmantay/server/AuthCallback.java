@@ -16,6 +16,7 @@ import com.google.api.client.extensions.appengine.auth.oauth2.AbstractAppEngineA
 import com.google.api.client.http.GenericUrl;
 import com.google.appengine.api.users.UserServiceFactory;
 
+@SuppressWarnings("serial")
 public class AuthCallback extends
 		AbstractAppEngineAuthorizationCodeCallbackServlet {
 
@@ -30,7 +31,7 @@ public class AuthCallback extends
 	@Override
 	protected AuthorizationCodeFlow initializeFlow() throws ServletException,
 			IOException {
-		// TODO Auto-generated method stub
+		
 		return MyUtils.newFlow();
 	}
 	

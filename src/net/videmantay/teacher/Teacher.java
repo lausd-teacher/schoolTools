@@ -13,9 +13,7 @@ import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -82,7 +80,7 @@ public class Teacher extends Composite implements EntryPoint {
 		@UiField
 		PanelFooter footerPanel;
 		
-		private TestingThis testThis = new TestingThis();
+	
 		
 		
 //Constructor
@@ -108,7 +106,7 @@ public class Teacher extends Composite implements EntryPoint {
 			@Override
 			public void f()
 			{RootPanel.get().clear();
-			RootPanel.get().add(testThis);}
+			}
 		});
 	}
 	

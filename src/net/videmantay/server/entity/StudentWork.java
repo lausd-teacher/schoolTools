@@ -17,14 +17,14 @@ import com.googlecode.objectify.annotation.Parent;
 
 
 @Entity
-public class StudentWork {
+public class StudentWork  {
 
 	@Id
 	private Long id;
 	// query by gradedwork Key;
 	
 	@Parent
-	private transient Key<GradedWork> gradedWorkKey;
+	private transient Key<RosterAssignment> gradedWorkKey;
 	// query by studentId;
 	
 	@Ignore
@@ -59,13 +59,18 @@ public class StudentWork {
 	public StudentWork(){
 		
 	}
+	
+	public StudentWork(Long studentId, RosterAssignment gradedWork){
+		this.setRosterStudentId(studentId);
+		this.setGradedWork(gradedWork.getId());
+	}
 
-	public Key<GradedWork> getGradedWorkKey() {
+	public Key<RosterAssignment> getGradedWorkKey() {
 		return gradedWorkKey;
 	}
 
-	public void setGradedWorkKey(Key<GradedWork> gradedWork) {
-		this.gradedWorkKey = gradedWork;
+	public void setGradedWorkKey(Key<RosterAssignment> rosterAssignment) {
+		this.gradedWorkKey = rosterAssignment;
 	}
 
 	public Long getGradedWork() {
@@ -136,7 +141,7 @@ public class StudentWork {
 	public Long getId() {
 		return id;
 	}
-
+	
 	public Double getPointsEarned() {
 		return pointsEarned;
 	}
@@ -172,6 +177,7 @@ public class StudentWork {
 	public void setStudentRef(Key<RosterStudent> student){
 		this.studentRef = Ref.create(student);
 	}
+
 	
 	
 }

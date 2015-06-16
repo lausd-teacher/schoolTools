@@ -8,6 +8,7 @@ import net.videmantay.shared.StuffType;
 public class Stuff<T> {
 
 	private List<T> stuff;
+	private String message;
 	private StuffType type = StuffType.MESSAGE;
 	
 	
@@ -51,6 +52,14 @@ public class Stuff<T> {
 			this.stuff = new ArrayList<T>();
 		}
 		this.stuff.add(t);
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 	
 }

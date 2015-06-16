@@ -4,13 +4,15 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import net.videmantay.shared.StandardType;
+
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
 
 @Entity
-public class CCStandard implements Serializable {
+public class Standard implements Serializable {
 	
 	/**
 	 * 
@@ -24,6 +26,7 @@ public class CCStandard implements Serializable {
 	private String createdBy;
 	private Date lastUpdate;
 	private Long versionNum;
+	private StandardType type;
 	
 	@Index
 	private String standardCode;

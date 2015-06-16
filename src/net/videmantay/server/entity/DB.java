@@ -19,13 +19,12 @@ public class DB<T> {
 		
 		//Users
 		factory().register(AppUser.class);
-		factory().register(UserAccount.class);
 		factory().register(AppResources.class);
 		
 		//Roster and Deps
 		factory().register(Roster.class);
 		factory().register(RosterStudent.class);
-		factory().register(GradedWork.class);
+		factory().register(RosterAssignment.class);
 		factory().register(StudentWork.class);
 		factory().register(BehaviorReport.class);
 		factory().register(StudentJob.class);
@@ -37,7 +36,7 @@ public class DB<T> {
 		factory().register(Lesson.class);
 		factory().register(Vocab.class);
 		factory().register(VocabList.class);
-		factory().register(CCStandard.class);
+		factory().register(Standard.class);
 		factory().register(StandardReview.class);
 		factory().register(EducationalLink.class);
 		
@@ -55,7 +54,7 @@ public class DB<T> {
 	}
 	
 	public static Objectify db(){
-		return ofy();
+		return ofy().cache(true);
 	}
 	//Revist using Generics at a later time for now just use objectify	
 	private Class<T> clazz;
