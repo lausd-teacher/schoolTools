@@ -8,78 +8,59 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.security.GeneralSecurityException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.videmantay.server.entity.AppUser;
+import net.videmantay.server.entity.CalendarInfo;
 import net.videmantay.server.entity.DB;
 import net.videmantay.server.entity.RosterAssignment;
 import net.videmantay.server.entity.StudentWork;
 import static net.videmantay.server.entity.DB.*;
 import net.videmantay.server.entity.*;
-import net.videmantay.shared.GradeLevel;
-import net.videmantay.shared.RosterAssignmentType;
+import net.videmantay.shared.GoogleServiceType;
 import net.videmantay.shared.StuffType;
 
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.extensions.appengine.auth.oauth2.AbstractAppEngineAuthorizationCodeServlet;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.googleapis.batch.BatchRequest;
-import com.google.api.client.googleapis.batch.json.JsonBatchCallback;
-import com.google.api.client.googleapis.json.GoogleJsonError;
 import com.google.api.client.http.GenericUrl;
-import com.google.api.client.http.HttpHeaders;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.*;
-import com.google.api.services.calendar.model.Event.Creator;
 import com.google.api.services.calendar.model.Event.Gadget;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
-import com.google.api.services.drive.model.ChildList;
-import com.google.api.services.drive.model.ChildReference;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.ParentReference;
 import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.TasksScopes;
 import com.google.api.services.tasks.model.TaskList;
-import com.google.api.services.tasks.model.TaskLists;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.common.base.Preconditions;
 import com.google.gdata.client.contacts.ContactsService;
-import com.google.gdata.client.photos.PicasawebService;
-import com.google.gdata.client.sites.SitesService;
-import com.google.gdata.client.spreadsheet.SpreadsheetService;
 import com.google.gdata.data.TextConstruct;
-import com.google.gdata.data.contacts.ContactEntry;
 import com.google.gdata.data.contacts.ContactGroupEntry;
 import com.google.gdata.util.ServiceException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.JsonSyntaxException;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.TranslateException;
-import com.googlecode.objectify.Work;
 import com.googlecode.objectify.VoidWork;
 
 
@@ -98,16 +79,26 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 	//private final String SPREADSHEET = "https://spreadsheets.google.com/feeds";
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
-		init(req, res);
+		try {
+			init(req, res);
+		} catch (GeneralSecurityException | ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
-		init(req, res);
+		try {
+			init(req, res);
+		} catch (GeneralSecurityException | ServiceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	
-	private void init(HttpServletRequest req, HttpServletResponse res)throws IOException , ServletException{
+	private void init(HttpServletRequest req, HttpServletResponse res)throws IOException , ServletException, GeneralSecurityException, ServiceException{
 		
 		//1. First check to see if user is legit
 		User user = UserServiceFactory.getUserService().getCurrentUser();
@@ -123,7 +114,10 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 		
 		switch(path){
 		
-	
+		case "/teacher/createroster":saveRoster(req,res);break;
+		case "/teacher/listroster":listRoster(req,res);break;
+		case "/teacher/deleteroster":deleteRoster(req,res);break;
+		
 		
 		case "/teacher/creategradedwork": createGradedWork(req,res); break;
 		case "/teacher/deletegradedwork": deleteGradedWork(req,res) ; break;
@@ -156,7 +150,7 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 	@Override
 	protected AuthorizationCodeFlow initializeFlow() throws ServletException,
 			IOException {
-		// TODO Auto-generated method stub
+	
 		return MyUtils.newFlow();
 	}
 	////////////////end oauth ///////////////////////////////////////////////////////
@@ -221,36 +215,55 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 				File mainFolder = drive.files().get(appUser.getMainDriveFolderId()).execute();
 				
 				File rosterFolder = MyUtils.createFolder(roster.getTitle());
+				rosterFolder = drive.files().insert(rosterFolder).execute();
 				
 				drive.parents().insert(rosterFolder.getId(), new ParentReference().setId(mainFolder.getId()).setSelfLink(mainFolder.getSelfLink()));
-				roster.setRosterFolderId(rosterFolder.getId());
 				
+	
 				//set parent reference to all child folders
 				ParentReference parent = new ParentReference();
 				parent.setId(rosterFolder.getId());
 				parent.setSelfLink(rosterFolder.getSelfLink());
 				
-				//insert a folder called students , work forms and assignments
-				File rosterStudents = MyUtils.createFolder("students");
-				rosterStudents = drive.files().insert(rosterStudents).execute();
-				drive.parents().insert(rosterStudents.getId(), parent).execute();
 				
-				File rosterWorkForms = MyUtils.createFolder("work forms");
-				rosterWorkForms = drive .files().insert(rosterWorkForms).execute();
-				drive.parents().insert(rosterWorkForms.getId(), parent).execute();
+			//hava a very opinionated idea of file structure
+				//folderNames
+				//folder names affect the names of api in client side so it may be folders.getStudents() folders.getAssignemts()
+				// in deserialization with gwtquery jsonbuilder
 				
-				File rosterAssignments = MyUtils.createFolder("assignments");
-				rosterAssignments = drive.files().insert(rosterAssignments).execute();
-				drive.parents().insert(rosterAssignments.getId(), parent).execute();
+				final String studentFolder = "students";
+				final String assignmentFolder  = "assignments";
+				final String formFolder = "forms";
+				final String lessonFolder = "lessons";
 				
-				File rosterImages = MyUtils.createFolder("images");
-				rosterImages = drive.files().insert(rosterImages).execute();
-				drive.parents().insert(rosterImages.getId(), parent).execute();
+				String[] folderNames = {studentFolder, assignmentFolder, formFolder, lessonFolder};
 				
-				roster.getFolders().put("student", rosterStudents.getId());
-				roster.getFolders().put("work forms", rosterWorkForms.getId());
-				roster.getFolders().put("assignments", rosterAssignments.getId());
-				roster.getFolders().put("images", rosterImages.getId());
+				//assignment folder can be expaned to core subject
+				/* ELA
+				 * 	-reading
+				 * 	-writing
+				 * 	-speaking
+				 * 	-listening
+				 *  or by units??? up to the teacher
+				 * math
+				 * science
+				 * history
+				 * 
+				 */
+				
+				for(String s : folderNames){
+				File file = MyUtils.createFolder(s);
+				file = drive.files().insert(file).execute();
+				drive.parents().insert(file.getId(), parent);
+				FileInfo fileInfo = new FileInfo();
+				fileInfo.setCreateOn(new Date());
+				fileInfo.setTitle(file.getTitle());
+				fileInfo.setServiceId(file.getId());
+				fileInfo.setKind(GoogleServiceType.FOLDER.toString());
+				roster.getFiles().put(s, fileInfo);
+				}
+				
+				
 				
 			
 				
@@ -260,17 +273,30 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 				calendar = new Calendar.Builder(MyUtils.transport(), MyUtils.jsonFactory(), cred).build();
 				
 			com.google.api.services.calendar.model.Calendar assignedWorkCal = new com.google.api.services.calendar.model.Calendar();
-			assignedWorkCal.setDescription(roster.getTitle())
-			.setSummary("Assigned work form " + roster.getTitle());
+			assignedWorkCal.setDescription("Assignments for " + roster.getTitle())
+			.setSummary(roster.getTitle()+ " Assignments");
 			assignedWorkCal = calendar.calendars().insert(assignedWorkCal).execute();
-			roster.getCalendars().put("assigned work", assignedWorkCal.getId());
+			CalendarInfo assignmentCal = new CalendarInfo();
+			assignmentCal.setCreateOn(new Date());
+			assignmentCal.setDescript(assignedWorkCal.getDescription());
+			assignmentCal.setKind(GoogleServiceType.CALENDAR.toString());
+			assignmentCal.setServiceId(assignedWorkCal.getId());
+			assignmentCal.setTitle("Assignments");
+	
+			
+			roster.getCalendars().put("assignments", assignmentCal);
 			
 			//Create a roster task list
 			tasks = new Tasks.Builder(MyUtils.transport(), MyUtils.jsonFactory(), cred).build();
 			TaskList todo = new TaskList();
 			todo.setTitle("Todo");
 			todo = tasks.tasklists().insert(todo).execute();
-			roster.getTasks().put("Todo", todo.getId());
+			TaskInfo taskInfo = new TaskInfo();
+			taskInfo.setCreateOn(new Date());
+			taskInfo.setDescript("General todo list for roster");
+			taskInfo.setServiceId(todo.getId());
+			
+			roster.getTasks().add(taskInfo);
 			
 			//set up a contacts groud for the roster
 			ContactsService conService = new ContactsService("ZoomClassroom");
@@ -295,9 +321,7 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 	
 		AppUser appUser = (AppUser) req.getSession().getAttribute("appUser");
 		GoogleCredential cred = MyUtils.createCredentialForUser(appUser.getAcctId(), DriveScopes.DRIVE, CalendarScopes.CALENDAR, TasksScopes.TASKS, CONTACTS);
-		Drive drive = new Drive.Builder(MyUtils.transport(), MyUtils.jsonFactory(), cred).build();
-		Calendar calendar = new Calendar.Builder(MyUtils.transport(), MyUtils.jsonFactory(), cred).build();
-		Tasks tasks = new Tasks.Builder(MyUtils.transport(), MyUtils.jsonFactory(), cred).build();
+		
 		
 		Roster roster = gson.fromJson(req.getParameter("roster"), Roster.class);
 		//Params check/////////////
@@ -315,8 +339,10 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 		//search for all rosterAssignments and studentwork then delete them
 	  List<RosterAssignment> rosterAssignments =  DB.db().load().type(RosterAssignment.class).filter("rosterId", roster.getId()).list();
 	  cleanUpRosterAssignments(rosterAssignments);
-		//search for all studentjobs and studentgroups and seatingcharts
+		//search for all studentjobs and studentgroups and seatingcharts the ancestor 
+	  //function includes the roster itself too.
 		DB.db().delete().keys(DB.db().load().ancestor(roster).keys());
+		
 		
 	}
 	

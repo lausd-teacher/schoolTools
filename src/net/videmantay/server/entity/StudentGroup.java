@@ -25,9 +25,5 @@ public class StudentGroup {
 	private String textColor;
 	
 	private String borderColor;
-	
-	@Parent
-	private transient Key<Roster> rosterKey;
-	
-	
+		
 }

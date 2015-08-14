@@ -1,41 +1,19 @@
 package net.videmantay.server.entity;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import com.google.appengine.api.datastore.Key;
-import com.googlecode.objectify.Ref;
-import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Ignore;
-import com.googlecode.objectify.annotation.Index;
-import com.googlecode.objectify.annotation.Load;
-import com.googlecode.objectify.annotation.Serialize;
+import java.sql.Timestamp;
 
 
-@Entity
+
+
+
 public  class AppUser implements Serializable{
 
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6653229961000100210L;
-	
-	@Id
-	private Long id;
-	
-	private Date createOn;
-	private String createdBy;
-	private Date lastUpdate;
-	private Long versionNum;
-	//user key
-	
-	@Index
+
+
+	private Long idappUser;
+
 	private String acctId;//Google Id may be different than email 
 							// in cases where teacher want to use their email
 							//and not a videmantay.net acct
@@ -45,38 +23,25 @@ public  class AppUser implements Serializable{
 	private String lastName;
 	private String middleName;
 	private String extendedName;
+	private String title;
 	private String picUrl;
 	private String defaultPicUrl;
 	private String authToken;
 	private boolean isLoggedin;
-	private  UserStatus userStatus;
-	private  Integer loginTimes;
+	private  String role;
 	private  Boolean isFirstLogin;
 	private  Long loginAttempts = 0L;
-	
-	@Ignore
-	private transient Set<Long> rosterIds = new HashSet<Long>();
-	//List of google apps id
-	//main drive folder
-	private transient String mainDriveFolderId;
+	private  String mainDriveFolderId;
+	private Timestamp lastLogin;
 	
 	public AppUser(){}
-	
-	public AppUser(String email){
-		this.setEmail(email);
-	}
-	
-	public AppUser(Long id, String email){
-		this.setId(id);
-		this.setEmail(email);
-	}
-	
-	public Long getId() {
-		return id;
+		
+	public Long getIdAppUser() {
+		return idappUser;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setIdAppUser(Long id) {
+		this.idappUser = id;
 	}
 
 	public String getAcctId() {
@@ -86,36 +51,6 @@ public  class AppUser implements Serializable{
 	public void setAcctId(String googleId) {
 		this.acctId = googleId;
 	}
-
-	public Date getCreateOn() {
-		return createOn;
-	}
-
-	public void setCreateOn(Date createOn) {
-		this.createOn = createOn;
-	}
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public Date getLastUpdate() {
-		return lastUpdate;
-	}
-
-	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
-	}
-
-	public Long getVersionNum() {
-		return versionNum;
-	}
-
-
 
 	public String getEmail() {
 		return email;
@@ -157,12 +92,20 @@ public  class AppUser implements Serializable{
 		this.extendedName = extendedName;
 	}
 
-	public UserStatus getUserStatus() {
-		return userStatus;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setUserStatus(UserStatus userStatus) {
-		this.userStatus = userStatus;
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role){
+		this.role = role;
 	}
 
 	public String getPicUrl() {
@@ -190,13 +133,6 @@ public  class AppUser implements Serializable{
 		this.authToken = authToken;
 	}
 
-	public Integer getLoginTimes() {
-		return loginTimes;
-	}
-
-	public void setLoginTimes(Integer loginTimes) {
-		this.loginTimes = loginTimes;
-	}
 
 	public boolean isLoggedin() {
 		return isLoggedin;
@@ -213,11 +149,7 @@ public  class AppUser implements Serializable{
 	public void setIsFirstLogin(Boolean isFirstLogin) {
 		this.isFirstLogin = isFirstLogin;
 	}
-
-	public void setVersionNum(Long versionNum) {
-		this.versionNum = versionNum;
-	}
-
+	
 	public Long getLoginAttempts() {
 		return loginAttempts;
 	}
@@ -233,10 +165,16 @@ public  class AppUser implements Serializable{
 	public void setMainDriveFolderId(String mainDriveFolderId) {
 		this.mainDriveFolderId = mainDriveFolderId;
 	}
-	
-	public boolean isAuthRoster(Long rosterId){
-		return this.rosterIds.contains(rosterId);
+
+	public Timestamp getLastLogin() {
+		return lastLogin;
 	}
+
+	public void setLastLogin(Timestamp lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+	
+
 
 	
 	
