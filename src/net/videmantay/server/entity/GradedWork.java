@@ -1,15 +1,12 @@
 package net.videmantay.server.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.videmantay.shared.RosterAssignmentType;
+import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.Language;
 import net.videmantay.shared.SubjectType;
 
@@ -18,7 +15,7 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Index;
 
 @Entity
-public class RosterAssignment extends Assignment implements Serializable{
+public class GradedWork extends Assignment implements Serializable{
 	
 	/**
 	 * 
@@ -42,7 +39,7 @@ public class RosterAssignment extends Assignment implements Serializable{
 	 
 	 private String recurringEventId="";
 				
-	private RosterAssignmentType rosterAssignmentType = RosterAssignmentType.HOMEWORK;
+	private GradedWorkType gradedWorkType = GradedWorkType.HOMEWORK;
 	
 	private Language lang = Language.ENGLISH;
 	
@@ -52,8 +49,10 @@ public class RosterAssignment extends Assignment implements Serializable{
 	
 	private Date assignedDate = new Date();
 	
-	private HashMap<Long, Long> studentWorks = new HashMap<Long,Long>();
-		
+	private Set<StudentWork> studentWorks = new HashSet<StudentWork>();
+	
+	private Set<Ref<StudentWork>> studentWorkRefs;
+	
 	public Long getRosterId() {
 		return rosterId;
 	}
@@ -84,13 +83,13 @@ public class RosterAssignment extends Assignment implements Serializable{
 	}
 
 
-	public RosterAssignmentType getRosterAssignmentType() {
-		return rosterAssignmentType;
+	public GradedWorkType getGradedWorkType() {
+		return gradedWorkType;
 	}
 
 
-	public void setRosterAssignmentType(RosterAssignmentType rosterAssignmentType) {
-		this.rosterAssignmentType = rosterAssignmentType;
+	public void setGradedWorkType(GradedWorkType gradedWorkType) {
+		this.gradedWorkType = gradedWorkType;
 	}
 	
 	public Double getPointsPossible(){
@@ -132,15 +131,13 @@ public class RosterAssignment extends Assignment implements Serializable{
 	}
 
 
-	public HashMap<Long,Long> getStudentWorks() {
+	public Set<StudentWork> getStudentWorks() {
 		return studentWorks;
 	}
 
 
-	public void setStudentWorks(HashMap<Long,Long> studentWorks) {
+	public void setStudentWorks(Set<StudentWork> studentWorks) {
 		this.studentWorks = studentWorks;
 	}
-	
-
 
 }

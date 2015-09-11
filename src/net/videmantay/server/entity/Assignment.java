@@ -20,7 +20,7 @@ public class Assignment {
 	
 	@Index
 	private Set<Standard>standards;
-
+	
 	private Set<GradeLevel> gradeLevels;
 	
 	private String mediaUrl;

@@ -31,7 +31,6 @@ public class Auth extends AbstractAppEngineAuthorizationCodeServlet {
 		}
 		
 		AuthorizationCodeFlow auth =  initializeFlow();
-		//credential is loaded with user id
 		Credential cred = 	auth.loadCredential(UserServiceFactory.getUserService().getCurrentUser().getUserId());
 		if(cred == null || !cred.refreshToken()){
 			res.sendRedirect(auth.newAuthorizationUrl().build());
@@ -69,7 +68,6 @@ public class Auth extends AbstractAppEngineAuthorizationCodeServlet {
 	@Override
 	protected AuthorizationCodeFlow initializeFlow() throws ServletException,
 			IOException {
-		// TODO Auto-generated method stub
 		return MyUtils.newFlow();
 	}
 

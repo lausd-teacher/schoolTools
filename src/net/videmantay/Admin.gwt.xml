@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.7.0//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.7.0/distro-source/core/src/gwt-module.dtd">
+<module rename-to="administration">
+	<inherits name="com.google.gwt.query.Query" />
+	<inherits name="gwtquery.plugins.Ui" />
+	<inherits name="com.google.gwt.editor.Editor" />
+	<inherits name="org.gwtbootstrap3.GwtBootstrap3CDN"/>
+	<inherits name="com.google.common.base.Base" />
+	<inherits name="com.google.common.collect.Collect"/>
+	<inherits name="com.google.gwt.json.JSON"/>
+	<source path="admin" />
+	<source path="json" />
+	<source path="shared" />
+	<entry-point class="net.videmantay.admin.Admin"></entry-point>
+</module>

@@ -43,7 +43,8 @@ public class StudentService extends HttpServlet {
 	private final String DASHBOARD = "/student/getdashboard";
 	private final String GRADES = "/student/grades";
 	private final String FLUENCY = "/student/fluency";
-	
+	private final String SPREADSHEET_URL = SPREADSHEET_SCOPE +"/spreadsheets/private/full";
+	private final String GRADEBOOK_KEY = "1icNExFsBYYV0aNsefDOCbgvmhmG_WdqFqw4w4SH-v2s";
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
 		init(req, res);

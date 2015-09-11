@@ -4,6 +4,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.Promise;
 
 /**
  * An abstract base class for all JQuery UI widgets.
@@ -85,7 +86,7 @@ public abstract class UiWidget<T extends UiWidget<?, ?>, O extends WidgetOptions
   public T on(String name, Function f){
 	  return bind(name, f);
   }
-
+  
   protected JavaScriptObject invoke(String method) {
     return invoke(ui, widgetType, method);
   }

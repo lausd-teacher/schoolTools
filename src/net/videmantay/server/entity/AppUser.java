@@ -1,47 +1,80 @@
 package net.videmantay.server.entity;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Serialize;
 
 
-
-
-
+@Entity
 public  class AppUser implements Serializable{
 
 
-
-
-	private Long idappUser;
-
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6653229961000100210L;
+	
+	@Id
+	private Long id;
+	
+	private Date createOn;
+	private String createdBy;
+	private Date lastUpdate;
+	private Long versionNum;
+	//user key
+	
+	@Index
 	private String acctId;//Google Id may be different than email 
 							// in cases where teacher want to use their email
 							//and not a videmantay.net acct
 							//acct id will reflect videmantay.net
+	
 	private String email;
+	
 	private String firstName;
+	
 	private String lastName;
 	private String middleName;
 	private String extendedName;
-	private String title;
+	private UserTitle title;
+
 	private String picUrl;
-	private String defaultPicUrl;
 	private String authToken;
-	private boolean isLoggedin;
-	private  String role;
+	private boolean loggedIn;
+
+	private  UserStatus userStatus;
+	private  Integer loginTimes;
 	private  Boolean isFirstLogin;
-	private  Long loginAttempts = 0L;
-	private  String mainDriveFolderId;
-	private Timestamp lastLogin;
+	private String mainDriveFolder;
+	
+	private  Set<String> roles = new  HashSet<String>();
+	
+	@Serialize
+	private Set<RosterDetail> rosterDetails;
 	
 	public AppUser(){}
-		
-	public Long getIdAppUser() {
-		return idappUser;
+	
+	public AppUser(String email){
+		this.setEmail(email);
+	}
+	
+	public AppUser(Long id, String email){
+		this.setId(id);
+		this.setEmail(email);
+	}
+	
+	public Long getId() {
+		return id;
 	}
 
-	public void setIdAppUser(Long id) {
-		this.idappUser = id;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getAcctId() {
@@ -50,6 +83,34 @@ public  class AppUser implements Serializable{
 
 	public void setAcctId(String googleId) {
 		this.acctId = googleId;
+	}
+
+	public Date getCreateOn() {
+		return createOn;
+	}
+
+	public void setCreateOn(Date createOn) {
+		this.createOn = createOn;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getLastUpdate() {
+		return lastUpdate;
+	}
+
+	public void setLastUpdate(Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
+
+	public Long getVersionNum() {
+		return versionNum;
 	}
 
 	public String getEmail() {
@@ -92,20 +153,20 @@ public  class AppUser implements Serializable{
 		this.extendedName = extendedName;
 	}
 
-	public String getTitle() {
+	public UserTitle getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle(UserTitle title) {
 		this.title = title;
 	}
 
-	public String getRole() {
-		return role;
+	public UserStatus getUserStatus() {
+		return userStatus;
 	}
 
-	public void setRole(String role){
-		this.role = role;
+	public void setUserStatus(UserStatus userStatus) {
+		this.userStatus = userStatus;
 	}
 
 	public String getPicUrl() {
@@ -116,12 +177,12 @@ public  class AppUser implements Serializable{
 		this.picUrl = picUrl;
 	}
 
-	public String getDefaultPicUrl() {
-		return defaultPicUrl;
+	public Set<RosterDetail> getRosterDetails() {
+		return rosterDetails;
 	}
 
-	public void setDefaultPicUrl(String defaultPicUrl) {
-		this.defaultPicUrl = defaultPicUrl;
+	public void setRosterDetails(Set<RosterDetail> rosterDetails) {
+		this.rosterDetails = rosterDetails;
 	}
 
 	
@@ -133,13 +194,28 @@ public  class AppUser implements Serializable{
 		this.authToken = authToken;
 	}
 
-
-	public boolean isLoggedin() {
-		return isLoggedin;
+	public Set<String> getRoles() {
+		return roles;
 	}
 
-	public void setLoggedin(boolean isLoggedin) {
-		this.isLoggedin = isLoggedin;
+	public void setRoles(Set<String> roles) {
+		this.roles = roles;
+	}
+
+	public Integer getLoginTimes() {
+		return loginTimes;
+	}
+
+	public void setLoginTimes(Integer loginTimes) {
+		this.loginTimes = loginTimes;
+	}
+
+	public boolean isLoggedIn() {
+		return loggedIn;
+	}
+
+	public void setLoggedIn(boolean isLoggedin) {
+		this.loggedIn = isLoggedin;
 	}
 
 	public Boolean getIsFirstLogin() {
@@ -149,34 +225,20 @@ public  class AppUser implements Serializable{
 	public void setIsFirstLogin(Boolean isFirstLogin) {
 		this.isFirstLogin = isFirstLogin;
 	}
-	
-	public Long getLoginAttempts() {
-		return loginAttempts;
-	}
 
-	public void setLoginAttempts(Long loginAttempts) {
-		this.loginAttempts = loginAttempts;
-	}
-
-	public String getMainDriveFolderId() {
-		return mainDriveFolderId;
-	}
-
-	public void setMainDriveFolderId(String mainDriveFolderId) {
-		this.mainDriveFolderId = mainDriveFolderId;
-	}
-
-	public Timestamp getLastLogin() {
-		return lastLogin;
-	}
-
-	public void setLastLogin(Timestamp lastLogin) {
-		this.lastLogin = lastLogin;
+	public void setVersionNum(Long versionNum) {
+		this.versionNum = versionNum;
 	}
 	
 
+	public String getMainDriveFolder() {
+		return mainDriveFolder;
+	}
 
-	
+	public void setMainDriveFolder(String mainDriveFolder) {
+		this.mainDriveFolder = mainDriveFolder;
+	}
+	public enum UserTitle{MR, MS, MRS}
 	
 	
 }

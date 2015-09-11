@@ -34,8 +34,6 @@ public class LoginService extends HttpServlet {
 	
 	private void  login(HttpServletRequest req , HttpServletResponse res){
 		 User user = null;
-		 DB<AppUser> userAcctDB = new DB<AppUser>(AppUser.class);
-	
 		
 	
 			user = UserServiceFactory.getUserService().getCurrentUser();
@@ -51,45 +49,28 @@ public class LoginService extends HttpServlet {
 			}
 		}//end if
 		
-		
 		//next load user acct if null
 		//account not exist catch error sent to 
 		//error page
+		AppUser appUser = DB.db().load().type(AppUser.class).filter("acctId", user.getEmail()).first().now();
+		if(appUser == null){
+			//redirect to error page no account with that user is set
+			
+			return;
+		}
 		
-			try{
-				AppUser userAcct = userAcctDB.query("email", user.getEmail()).iterator().next();
+		req.getSession().setAttribute("appUser", appUser);
+		if(appUser.getRoles().contains(AppRole.ADMIN)){
+			
+		}else if(appUser.getRoles().contains(AppRole.TEACHER)){
+		
+		}else if(appUser.getRoles().contains(AppRole.FACULTY)){
+			
+		}else if(appUser.getRoles().contains(AppRole.STUDENT)){
+			
+		}
+			
 				
-				if(userAcct.getAcctId().equalsIgnoreCase("lee@videmantay.net")){
-					res.sendRedirect("/admin");
-					return;
-				}
-				
-				req.getSession().setAttribute("userAcct", userAcct);
-				String path = "";
-				switch(userAcct.getUserStatus()){
-				case TEACHER: path = "/teacher";break;
-				case STUDENT: path ="/student"; break;
-				case ADMIN: path = "/admin" ; break;
-				case AIDE: path = "/aide" ; break;
-				
-				}
-				
-				 res.sendRedirect(path);
-				
-			}catch(NullPointerException  | NoSuchElementException e){
-				///Error likely cause be account not existing so 
-				//send to error page
-				try {
-					res.sendRedirect("/error.html");
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			} catch (IOException e) {
-				//Page not there send to 404 error 
-				//or something  or error page
-				e.printStackTrace();
-			} 
 	}
 
 }

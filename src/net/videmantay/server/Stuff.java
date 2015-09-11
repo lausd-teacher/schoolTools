@@ -8,8 +8,8 @@ import net.videmantay.shared.StuffType;
 public class Stuff<T> {
 
 	private List<T> stuff;
-	private String message;
 	private StuffType type = StuffType.MESSAGE;
+	
 	
 	
 	private Stuff(){
@@ -18,6 +18,7 @@ public class Stuff<T> {
 	
 	public Stuff(List<T> stuff){
 		setStuff(stuff);
+		this.type = StuffType.LIST;
 	}
 	
 	public Stuff(List<T> list, StuffType type){
@@ -27,12 +28,19 @@ public class Stuff<T> {
 	
 	public void setStuff(List<T> stuff){
 		this.stuff = stuff;
+		this.type = StuffType.LIST;
 	}
 	
 	public Stuff(T thing, StuffType type){
 		this.stuff = new ArrayList<T>();
 		this.stuff.add(thing);
 		this.setType(type);
+	}
+	
+	public Stuff(T thing){
+		this.type = StuffType.LIST;
+		this.stuff = new ArrayList<T>();
+		this.stuff.add(thing);
 	}
 	
 	public List<T> getStuff(){
@@ -52,14 +60,6 @@ public class Stuff<T> {
 			this.stuff = new ArrayList<T>();
 		}
 		this.stuff.add(t);
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
 	}
 	
 }

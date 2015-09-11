@@ -15,9 +15,11 @@ import gwtquery.plugins.ui.interactions.Selectable;
 import gwtquery.plugins.ui.interactions.Sortable;
 import gwtquery.plugins.ui.utilities.Position;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
+import com.google.gwt.query.client.Promise;
 import com.google.gwt.query.client.js.JsMap;
 import com.google.gwt.query.client.plugins.Plugin;
 
@@ -129,9 +131,7 @@ public class Ui extends GQuery {
   public final Rotatable rotatable(){
 	  return asWidget(Rotatable);
   }
-  
-
-  
+    
   public <T extends Ui> T asWidget(Class<T> plugin) {
     return asWidget(plugin, (WidgetOptions<?>) null);
   }

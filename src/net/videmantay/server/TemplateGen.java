@@ -49,7 +49,7 @@ public class TemplateGen{
 	
 	public static String getAdminPage(){
 		try {
-			Template adminPage = cfg.getTemplate("/WEB-INF/html/admin.html");
+			Template adminPage = cfg.getTemplate("/WEB-INF/html/adminView.html");
 			HashMap<String, Object> root = new HashMap<String, Object>();
 			
 			return adminPage.toString();
