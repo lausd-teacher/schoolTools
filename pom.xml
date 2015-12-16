@@ -1,0 +1,128 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>schoolTools</groupId>
+  <artifactId>schoolTools</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>School Tools</name>
+  <description>Tools for LAUSD on Google's Platform</description>
+ 
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+         <groupId>com.google.appengine</groupId>
+         <artifactId>appengine-maven-plugin</artifactId>
+         <version>1.9.30</version>
+         <configuration>
+             <enableJarClasses>false</enableJarClasses>
+             <port>8181</port>
+             <address>0.0.0.0</address>
+         </configuration>
+    </plugin>
+    </plugins>
+  </build>
+  <organization>
+  	<url>www.videmantay.net/schooltools</url>
+  	<name>Lee ViDemantay</name>
+  </organization>
+  <dependencies>
+  <dependency>
+	<groupId>com.google.appengine</groupId>
+	<artifactId>appengine-api-1.0-sdk</artifactId>
+	<version>1.9.30</version>
+</dependency>
+   <dependency>
+	<groupId>com.googlecode.objectify</groupId>
+	<artifactId>objectify</artifactId>
+	<version>5.1.9</version>
+</dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.5</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+  <groupId>com.google.api-client</groupId>
+  <artifactId>google-api-client-appengine</artifactId>
+  <version>1.20.0</version>
+</dependency>
+<dependency>
+  <groupId>com.google.api-client</groupId>
+  <artifactId>google-api-client-gson</artifactId>
+  <version>1.20.0</version>
+</dependency>
+    <dependency>
+	<groupId>com.google.apis</groupId>
+	<artifactId>google-api-services-oauth2</artifactId>
+	<version>v2-rev98-1.21.0</version>
+</dependency>
+  	<dependency>
+  		<groupId>com.google.apis</groupId>
+  		<artifactId>google-api-services-calendar</artifactId>
+  		<version>v3-rev157-1.21.0</version>
+  	</dependency>
+  	<dependency>
+	<groupId>com.google.apis</groupId>
+	<artifactId>google-api-services-drive</artifactId>
+	<version>v2-rev196-1.21.0</version>
+	</dependency>
+  	 <dependency>
+      <groupId>com.google.apis</groupId>
+      <artifactId>google-api-services-tasks</artifactId>
+      <version>v1-rev41-1.21.0</version>
+    </dependency>
+    <dependency>
+	<groupId>org.freemarker</groupId>
+	<artifactId>freemarker-gae</artifactId>
+	<version>2.3.23</version>
+</dependency>
+    <!-- Server side end -->
+    <dependency>
+	<groupId>com.googlecode.gwtquery</groupId>
+	<artifactId>gwtquery</artifactId>
+	<version>1.4.3</version>
+</dependency>
+    <dependency>
+	<groupId>org.gwtbootstrap3</groupId>
+	<artifactId>gwtbootstrap3</artifactId>
+	<version>0.9.2</version>
+</dependency>
+<dependency>
+	<groupId>org.gwtbootstrap3</groupId>
+	<artifactId>gwtbootstrap3-extras</artifactId>
+	<version>0.9.2</version>
+</dependency>
+<dependency>
+	<groupId>com.googlecode.gwt-charts</groupId>
+	<artifactId>gwt-charts</artifactId>
+	<version>0.9.10</version>
+</dependency>
+<dependency>
+	<groupId>com.google.guava</groupId>
+	<artifactId>guava-gwt</artifactId>
+	<version>19.0</version>
+</dependency>
+<dependency>
+	<groupId>com.google.gwt.google-apis</groupId>
+	<artifactId>gwt-ajaxloader</artifactId>
+	<version>1.0.0</version>
+</dependency>
+  </dependencies>
+</project>

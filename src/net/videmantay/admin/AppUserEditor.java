@@ -30,7 +30,6 @@ import org.gwtbootstrap3.client.ui.Modal;
 import org.gwtbootstrap3.client.ui.SubmitButton;
 
 import net.videmantay.json.AppUser;
-import net.videmantay.shared.JQuery;
 
 public class AppUserEditor extends Composite implements Editor<AppUser> {
 

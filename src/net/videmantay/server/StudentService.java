@@ -6,7 +6,7 @@ import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
-import static net.videmantay.server.MyUtils.*;
+
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -43,7 +43,7 @@ public class StudentService extends HttpServlet {
 	private final String DASHBOARD = "/student/getdashboard";
 	private final String GRADES = "/student/grades";
 	private final String FLUENCY = "/student/fluency";
-	private final String SPREADSHEET_URL = SPREADSHEET_SCOPE +"/spreadsheets/private/full";
+	//private final String SPREADSHEET_URL = SPREADSHEET_SCOPE +"/spreadsheets/private/full";
 	private final String GRADEBOOK_KEY = "1icNExFsBYYV0aNsefDOCbgvmhmG_WdqFqw4w4SH-v2s";
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{

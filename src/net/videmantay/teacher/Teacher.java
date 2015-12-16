@@ -82,8 +82,6 @@ public class Teacher extends Composite implements EntryPoint {
 		@UiField
 		PanelFooter footerPanel;
 		
-		private TestingThis testThis = new TestingThis();
-		
 		
 //Constructor
 	public Teacher() {
@@ -107,8 +105,7 @@ public class Teacher extends Composite implements EntryPoint {
 		$(dashboardBtn).click(new Function(){
 			@Override
 			public void f()
-			{RootPanel.get().clear();
-			RootPanel.get().add(testThis);}
+			{RootPanel.get().clear();}
 		});
 	}
 	

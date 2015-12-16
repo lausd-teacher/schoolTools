@@ -68,7 +68,7 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 	Logger log = Logger.getLogger(TeacherService.class.getCanonicalName());
 	private final String CONTACTS = "https://www.google.com/m8/feeds";
 	private final String SITES = "https://sites.google.com/feeds";
-	private final String SPREADSHEET = "https://spreadsheets.google.com/feeds";
+	private final String SHEETS = "https://spreadsheets.google.com/feeds";
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
 		init(req, res);
@@ -98,20 +98,7 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 		
 	
 		
-		case "/teacher/creategradedwork": createGradedWork(req,res); break;
-		case "/teacher/deletegradedwork": deleteGradedWork(req,res) ; break;
-		case "/teacher/savegradedwork": saveGradedWork(req,res); break;
-		case "/teacher/querygradedwork": queryGradedWork(req,res) ; break;
-		case "/teacher/searchgradedwork": searchGradedWork(req,res) ; break;
-		case "/teacher/listgradedworks": listGradedWorks(req,res) ; break;
-		case "/teacher/getgradedwork": getGradedWork(req,res) ; break;
-		case "/teacher/assigngradedwork": ;break;
-	
-		
-		case "/teacher/createseatingchart": createSeatingChart(req, res);break; 
-		case "/teacher/deleteseatingchart": deleteSeatingChart(req, res); break;
-		case "/teacher/getseatingchart": getSeatingChart(req, res);  break;
-		case "/teacher/listseatingcharts": listSeatingChart(req, res); break;
+		case TeacherUrl.
 		
 		}
 		
