@@ -7,10 +7,7 @@
 	<inherits name="org.gwtbootstrap3.extras.datetimepicker.DateTimePicker" />
 	<inherits name="com.google.api.gwt.oauth2.OAuth2" />
 	<inherits name="picker.Picker" />
-	<inherits name="com.google.api.gwt.services.Calendar" />
-	<inherits name="com.google.api.gwt.services.Tasks" />
 	<inherits name="com.google.gwt.editor.Editor" />
-	<inherits name="com.googlecode.objectify.Objectify" />
 	<source path="teacher" />
 	<source path="shared" />
 	<source path="json" />

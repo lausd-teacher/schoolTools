@@ -5,40 +5,7 @@ xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 <!-- SERVLETS -->
-<servlet>
-	<servlet-class>net.videmantay.server.Auth</servlet-class>
-	<servlet-name>Auth</servlet-name>
-</servlet>
-<servlet-mapping>
-	<servlet-name>Auth</servlet-name>
-	<url-pattern>/test</url-pattern>
-</servlet-mapping>
-
-<servlet>
-	<servlet-class>net.videmantay.server.AuthCallback</servlet-class>
-	<servlet-name>AuthCallback</servlet-name>
-</servlet>
-<servlet-mapping>
-	<servlet-name>AuthCallback</servlet-name>
-	<url-pattern>/oauth2callback/*</url-pattern>
-</servlet-mapping>
-<servlet>
-	<servlet-name>adminview</servlet-name>
-	<servlet-class>net.videmantay.server.AdminService</servlet-class>
-</servlet>
-<servlet-mapping>
-	<servlet-name>adminview</servlet-name>
-	<url-pattern>/adminview/*</url-pattern>
-</servlet-mapping>
 
 <!-- security Constraints -->
- <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>test</web-resource-name>
-            <url-pattern>/test/*</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>*</role-name>
-        </auth-constraint>
-    </security-constraint>
+ 
 </web-app>

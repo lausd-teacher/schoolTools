@@ -14,6 +14,7 @@ import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.StoredCredential;
 import com.google.api.client.extensions.appengine.auth.oauth2.AbstractAppEngineAuthorizationCodeCallbackServlet;
 import com.google.api.client.http.GenericUrl;
+import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
 
 public class AuthCallback extends
@@ -30,8 +31,9 @@ public class AuthCallback extends
 	@Override
 	protected AuthorizationCodeFlow initializeFlow() throws ServletException,
 			IOException {
+		User user = UserServiceFactory.getUserService().getCurrentUser();
 		// TODO Auto-generated method stub
-		return MyUtils.newFlow();
+		return GoogleUtils.authFlow(user.getUserId());
 	}
 	
 	  @Override

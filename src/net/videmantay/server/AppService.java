@@ -105,16 +105,7 @@ public class AppService extends HttpServlet {
 		AppUser appUser = appUserDB.getById(key.getId());
 		log.log(Level.INFO, appUser.getAcctId());
 		//check if user is authorized 
-		if(MyUtils.isAuthorized(appUser)){
-			try {
-				//send data
-				res.getWriter().write(gson.toJson(appUser));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-		}
+		
 		}
 		
 	}

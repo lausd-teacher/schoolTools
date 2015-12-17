@@ -68,7 +68,7 @@ public class Auth extends AbstractAppEngineAuthorizationCodeServlet {
 	@Override
 	protected AuthorizationCodeFlow initializeFlow() throws ServletException,
 			IOException {
-		return MyUtils.newFlow();
-	}
+		User user = UserServiceFactory.getUserService().getCurrentUser();
+		return GoogleUtils.authFlow(user.getUserId());	}
 
 }

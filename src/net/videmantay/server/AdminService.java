@@ -2,7 +2,6 @@ package net.videmantay.server;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,8 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.commons.validator.routines.UrlValidator;
-import org.apache.http.HttpStatus;
-
 import net.videmantay.server.entity.AppUser;
 import net.videmantay.server.entity.DB;
 import net.videmantay.server.entity.RosterDetail;
@@ -22,7 +19,6 @@ import net.videmantay.server.entity.RosterStudent;
 import static net.videmantay.server.entity.DB.*;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
@@ -32,8 +28,6 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableList;
-import com.google.common.net.MediaType;
 
 
 /*

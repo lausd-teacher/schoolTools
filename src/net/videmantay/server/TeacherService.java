@@ -1,7 +1,3 @@
-
-
-
-
 package net.videmantay.server;
 
 import java.io.IOException;
@@ -30,7 +26,9 @@ import net.videmantay.server.entity.*;
 import net.videmantay.shared.GradeLevel;
 import net.videmantay.shared.StuffType;
 
+
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
+import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.TokenResponseException;
 import com.google.api.client.extensions.appengine.auth.oauth2.AbstractAppEngineAuthorizationCodeServlet;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -60,15 +58,16 @@ import com.google.gson.JsonSyntaxException;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Work;
 import com.googlecode.objectify.VoidWork;
+import static net.videmantay.server.GoogleUtils.*;
 
 
 @SuppressWarnings("serial")
 public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 	
-	Logger log = Logger.getLogger(TeacherService.class.getCanonicalName());
-	private final String CONTACTS = "https://www.google.com/m8/feeds";
-	private final String SITES = "https://sites.google.com/feeds";
-	private final String SHEETS = "https://spreadsheets.google.com/feeds";
+	private final Logger log = Logger.getLogger(TeacherService.class.getCanonicalName());
+	private final Gson gson = new Gson();
+	
+	
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
 		init(req, res);
@@ -82,11 +81,7 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 	
 	private void init(HttpServletRequest req, HttpServletResponse res)throws IOException , ServletException{
 		
-		//1. First check to see if user is legit
-		User user = UserServiceFactory.getUserService().getCurrentUser();
-		if(user.getEmail() != "lee@videmantay.net"){
-			res.sendRedirect("/error");
-		}
+		//1. First check to see if user and check authorization
 		
 		//2. Set res content type to JSON
 		res.setContentType("application/json");
@@ -98,7 +93,7 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 		
 	
 		
-		case TeacherUrl.
+		case "" :break;
 		
 		}
 		
@@ -118,17 +113,15 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 	@Override
 	protected AuthorizationCodeFlow initializeFlow() throws ServletException,
 			IOException {
-		// TODO Auto-generated method stub
-		return MyUtils.newFlow();
+		User user = UserServiceFactory.getUserService().getCurrentUser();
+		return GoogleUtils.authFlow(user.getUserId());
 	}
 	////////////////end oauth ///////////////////////////////////////////////////////
 	
 	//ROSTER CRUD
 	private void saveRoster(HttpServletRequest req, HttpServletResponse res)throws IOException,ServletException, GeneralSecurityException{
-		final Gson gson = new Gson();
 		final DB<Roster> rosterDB = new DB<Roster>(Roster.class);
-		final AppUser appUser = (AppUser)req.getSession().getAttribute("appUser");
-		final GoogleCredential cred;
+		final Credential cred;
 		
 		Drive drive;
 		Calendar calendar;
@@ -175,9 +168,7 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 		}else{
 			//this is a first save set up docs,calendar,etc
 			
-		 cred = MyUtils.createCredentialForUser(appUser.getAcctId(), DriveScopes.DRIVE_FILE, CalendarScopes.CALENDAR, TasksScopes.TASKS,SITES);
-			drive = new Drive.Builder(MyUtils.transport(), MyUtils.jsonFactory(), cred).build();
-			//Drive mandatory folders
+		 cred =this.getCredential();
 				
 			
 					//optional folders use settings
@@ -205,7 +196,7 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 		final Gson gson = new Gson();
 		final DB<GradedWork> gradedWorkDB = new DB<GradedWork>(GradedWork.class);
 		final AppUser appUser = (AppUser)req.getSession().getAttribute("appUser");
-		GoogleCredential cred;
+		Credential cred;
 		Calendar calendar;
 		
 		GradedWork gradedWork = gson.fromJson(req.getParameter("gradedWork"), GradedWork.class);
@@ -215,19 +206,18 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 		 
 		 String calId = "";
 		 
-		try {
-			cred = MyUtils.createCredentialForUser(appUser.getAcctId(), CalendarScopes.CALENDAR);
-			calendar = new Calendar.Builder(MyUtils.transport(), MyUtils.jsonFactory(), cred).build();
+		
+			cred = this.getCredential();
+			
+			calendar = GoogleUtils.calendar(cred);
+			
 			 event = calendar.events().insert(calId, event).execute();
 			 gradedWork.setGoogleCalEventId(event.getId());
 			 event.set("gradedWork", gradedWork.getId());
 			 gradedWorkDB.save(gradedWork);
 			 calendar.events().update(calId, event.getId(), event);
 		
-		} catch (GeneralSecurityException e) {
 		
-			e.printStackTrace();
-		}
 		
 		
 	}
@@ -375,92 +365,5 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 	private void searchSeatingChart(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
 	private void getSeatingChart(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
 	
-	public void teacherSetup(AppUser appUser) throws TokenResponseException{
-		//check that there is root folder called Kim_LAUSD
-		// if one exists there is nothing else to do 
-		//but if not create one with minimum requirements
-		
-		// this can only be done with accounts that you personally manage
-		// what about teacher with there own google accounts how do they give you 
-		// permission??? while they sign up // in the mean time use your own accounts.
-		//What kind of scopes Docs obviously what about tasks??? calendar??? 
-		//sync calendars // send tasks
-		
-		
-			//get cred for teacher to set up docs, calendar, tasks
-		GoogleCredential cred = null;
-		try {
-			cred = MyUtils.createCredentialForUser(userAcct.getAcctId(), DriveScopes.DRIVE, CalendarScopes.CALENDAR, TasksScopes.TASKS);
-		} catch (GeneralSecurityException | IOException e1) {
-			// TODO Auto-generated catch block
-			log.log(Level.WARNING, "Unable to get creds");
-			e1.printStackTrace();
-		}
-		
-		
-		try{
-		Drive drive = new Drive.Builder(MyUtils.transport(), MyUtils.jsonFactory(), cred).setApplicationName("Kimchi").build();
-		File kimchiFolder = MyUtils.createFolder("Kimchi");
-		//kimchiFolder.setThumbnailLink("https://lh5.googleusercontent.com/-f06vW5PUAik/U-kMFfPJuLI/AAAAAAAAJWY/pNrzF3yklxQ/s16-no/chkLogo16.png");
-		kimchiFolder.setIconLink("https://lh5.googleusercontent.com/-Ncp95NXgbHM/U-kMcnbOrKI/AAAAAAAAJvw/Sy9AOXjlqrs/s128-no/chkLogo128.png");
-		kimchiFolder =  drive.files().insert(kimchiFolder).execute();
-		appRes.setKimchiFolder(kimchiFolder.getId());
-		//set kimchi as parent folder of the rest
-		ParentReference parentRef = new ParentReference();
-		parentRef.setId(kimchiFolder.getId());
-		parentRef.setParentLink(kimchiFolder.getSelfLink());
-		
-
-		File sharedStuff = MyUtils.createFolder("Shared");
-		sharedStuff.setParents(Arrays.asList(parentRef));
-		sharedStuff = drive.files().insert(sharedStuff).execute();
-		appRes.setRootSharedFolder(sharedStuff.getId());
-		
-		File worksheets = MyUtils.createFolder("Worksheets");
-		worksheets.setParents(Arrays.asList(parentRef));
-		worksheets = drive.files().insert(worksheets).execute();
-		appRes.setRootWorksheetFolder(worksheets.getId());
-		
-		File showcase = MyUtils.createFolder("Showcase");
-		showcase.setParents(Arrays.asList(parentRef));
-		showcase = drive.files().insert(showcase).execute();
-		appRes.setRootShowcaseFolder(showcase.getId());
-		
-		File schoolStuff = MyUtils.createFolder("School");
-		schoolStuff.setParents(Arrays.asList(parentRef));
-		schoolStuff = drive.files().insert(schoolStuff).execute();
-		appRes.setRootSchoolFolder(schoolStuff.getId());
-		
-		
-		}catch(TokenResponseException e){
-			throw e;
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			log.log(Level.WARNING, "Google Drive Error");
-			e.printStackTrace();
-		}
-		
 	
-			//set up shared calendar
-			//this means the calendar exists and user 
-		//are being given permission status
-			appRes.setSharedCalendar(MyUtils.getCalendar());
-			
-			com.google.api.services.tasks.Tasks task = new com.google.api.services.tasks.Tasks.Builder(MyUtils.transport(), MyUtils.jsonFactory(), cred).setApplicationName("Kimchi").build();
-			
-			TaskList kimchiTasks = new TaskList();
-			kimchiTasks.setTitle("Kimchi Tasks");
-			try {
-				kimchiTasks = task.tasklists().insert(kimchiTasks).execute();
-				Task createRoster = new Task();
-				createRoster.setTitle("Create Roster").setNotes("Create an inital Roster to get started");
-				task.tasks().insert(kimchiTasks.getId(), createRoster).execute();
-				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			DB.db().save().entity(appRes);
-	}//end teacherSetup
 }
