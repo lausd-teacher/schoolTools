@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
@@ -17,7 +18,7 @@ import com.googlecode.objectify.annotation.Serialize;
 
 
 @Entity
-public class RosterStudent implements Comparator<RosterStudent> {
+public class RosterStudent extends DBObj implements  Comparator<RosterStudent> {
 	
 	@Id
 	private Long id;
@@ -32,6 +33,10 @@ public class RosterStudent implements Comparator<RosterStudent> {
 	private String extName;
 	private String picUrl;
 	private Date DOB;
+	private Boolean glasses;
+	private String eldLevel;
+	private Set<StudentJob> jobs;
+	
 	
 	@Serialize
 	private transient Map<String, String> taskList = new HashMap<String, String>();
@@ -42,7 +47,7 @@ public class RosterStudent implements Comparator<RosterStudent> {
 	private Integer positviePoints;
 	private Integer NegativePoints;
 	private Set<String> badges;
-	private List<StudentGroup> studentGroups ;
+	private Set<StudentGroup> studentGroups ;
 	@Parent
 	private transient Key<Roster> rosterKey;
 	
@@ -53,7 +58,8 @@ public class RosterStudent implements Comparator<RosterStudent> {
 	private transient Map<String, String> subjectFolders = new HashMap<String, String>();
 	
 	public RosterStudent(){
-		this.id = UUID.randomUUID().getLeastSignificantBits();
+		AtomicLong al = new AtomicLong();
+		this.id = al.incrementAndGet();
 	}
 	public Date getCreateOn() {
 		return createOn;
@@ -136,11 +142,11 @@ public class RosterStudent implements Comparator<RosterStudent> {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public void setStudentGroups(List<StudentGroup> studentGroups){
+	public void setStudentGroups(Set<StudentGroup> studentGroups){
 		this.studentGroups = studentGroups;
 	}
 	
-	public List<StudentGroup> getStudentGroups(){
+	public Set<StudentGroup> getStudentGroups(){
 		return this.studentGroups;
 	}
 	

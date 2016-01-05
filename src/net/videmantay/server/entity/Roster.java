@@ -26,7 +26,7 @@ import com.googlecode.objectify.annotation.Serialize;
 
 @Cache
 @Entity
-public class Roster implements Serializable{
+public class Roster extends DBObj implements Serializable{
 	
 	/**
 	 * 
@@ -44,6 +44,9 @@ public class Roster implements Serializable{
 	@Id
 	private Long id;
 	
+	@Index
+	private String ownerId;
+	
 	private String title;
 	
 	private String description;
@@ -55,20 +58,16 @@ public class Roster implements Serializable{
 	
 	private GradeLevel gradeLevel;
 	
-	@Index
 	private Date startDate;
 	
-	@Index
+	
 	private Date endDate;
 	
 	@Serialize
-	private Map<String , SeatingChartDetail> seatingCharts = new HashMap<String , SeatingChartDetail>();
-
-	@Serialize
-	private Map<String, String> googleCalendars = new HashMap<String, String>();
+	private List<GoogleService> googleCalendars = new ArrayList<GoogleService>();
 	
 	@Serialize 
-	private Map<String, String> googleTasks = new HashMap<String, String>();
+	private List<GoogleService> googleTasks = new ArrayList<GoogleService>();
 
 	
 	//maybe a sorted set by last name???
@@ -83,22 +82,12 @@ public class Roster implements Serializable{
 	
 	private  String rosterFolderId;
 	
-	private  Map<String , String > studentFolders = new HashMap<String, String>();
-	
 	///Constructors
 	
 	public Roster(){
 	
 	}
 	
-	public Map<String, SeatingChartDetail> getSeatingCharts() {
-		return seatingCharts;
-	}
-
-	public void setSeatingCharts( Map<String, SeatingChartDetail> seatingCharts) {
-		this.seatingCharts = seatingCharts;
-	}
-
 	public Set<Key<RosterStudent>> getStudents() {
 		return students;
 	}
@@ -125,6 +114,14 @@ public class Roster implements Serializable{
 
 	public Long getId() {
 		return id;
+	}
+
+	public String getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(String ownerId) {
+		this.ownerId = ownerId;
 	}
 
 	public Date getStartDate() {
@@ -195,16 +192,20 @@ public class Roster implements Serializable{
 		this.gradeLevel = grdLvl;
 	}
 	
-	public Map<String, String> getGoogleCalendars(){
+	public List<GoogleService> getGoogleCalendars(){
 		return this.googleCalendars;
 	}
 	
-	public void setGoogleCalendars(Map<String, String> googleCals){
+	public void setGoogleCalendars(List<GoogleService> googleCals){
 		this.googleCalendars = googleCals;
 	}
 	
-	public Map<String, String> getGoogleTasks(){
+	public List<GoogleService> getGoogleTasks(){
 		return this.googleTasks;
+	}
+	
+	public void setGoogleTasks(List<GoogleService> googleTasks){
+		this.googleTasks = googleTasks;
 	}
 	
 	public String getRosterFolderId() {
@@ -214,18 +215,19 @@ public class Roster implements Serializable{
 	public void setRosterFolderId(String rosterFolderId) {
 		this.rosterFolderId = rosterFolderId;
 	}
-
-	public Map<String, String> getStudentFolders() {
-		return studentFolders;
-	}
-
-	public void setStudentFolders(Map<String, String> studentFolders) {
-		this.studentFolders = studentFolders;
-	}
-
-	public void setGoogleTasks(Map<String, String> googleTasks){
-		this.googleTasks = googleTasks;
-	}
 	
+	public RosterDetail createDetail(){
+		RosterDetail detail = new RosterDetail();
+		detail.setId(this.id);
+		detail.setDescription(this.description);
+		detail.setTitle(this.title);
+		detail.setGradeLevel(this.gradeLevel);
+		detail.setTeacherInfo(this.teacherInfo);
+		detail.setParent(Key.create(Roster.class, this.id));
+		return detail;
+	}
+
+
+
 	
 }

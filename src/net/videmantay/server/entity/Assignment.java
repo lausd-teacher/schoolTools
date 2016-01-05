@@ -11,7 +11,7 @@ import com.googlecode.objectify.annotation.Index;
 
 
 @Entity
-public class Assignment {
+public class Assignment extends DBObj {
 	
 	@Id
 	private Long id;

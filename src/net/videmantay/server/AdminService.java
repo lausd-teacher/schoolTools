@@ -220,7 +220,7 @@ public class AdminService  extends HttpServlet {
 				if(acct.getRoles().contains(AppRole.STUDENT) && acct.getRosterDetails().size() > 0){
 					
 					for(RosterDetail rosD: acct.getRosterDetails()){
-						Key<RosterStudent> ancestor = Key.create(RosterStudent.class, rosD.getRosterId());
+						Key<RosterStudent> ancestor = Key.create(RosterStudent.class, rosD.getId());
 						QueryKeys<Object> keys = db().load().ancestor(ancestor).keys();
 						db().delete().keys(keys);
 					}

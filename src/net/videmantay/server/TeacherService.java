@@ -3,62 +3,47 @@ package net.videmantay.server;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.security.GeneralSecurityException;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import static net.videmantay.server.entity.DB.*;
 import net.videmantay.server.entity.*;
-import net.videmantay.shared.GradeLevel;
 import net.videmantay.shared.StuffType;
-
+import net.videmantay.shared.UserRoles;
 
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.auth.oauth2.TokenResponseException;
 import com.google.api.client.extensions.appengine.auth.oauth2.AbstractAppEngineAuthorizationCodeServlet;
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.googleapis.batch.BatchRequest;
 import com.google.api.client.http.GenericUrl;
-import com.google.api.client.util.DateTime;
+import com.google.api.client.util.Preconditions;
 import com.google.api.services.calendar.model.*;
-import com.google.api.services.calendar.model.Event.Creator;
 import com.google.api.services.calendar.Calendar;
-import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.drive.Drive;
-import com.google.api.services.drive.DriveScopes;
-import com.google.api.services.drive.model.ChildReference;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.ParentReference;
 import com.google.api.services.tasks.Tasks;
-import com.google.api.services.tasks.TasksScopes;
-import com.google.api.services.tasks.model.Task;
 import com.google.api.services.tasks.model.TaskList;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.primitives.Longs;
 import com.google.gdata.client.contacts.ContactsService;
 import com.google.gdata.client.sites.SitesService;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
+import com.google.gdata.util.ServiceException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.JsonSyntaxException;
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.Work;
 import com.googlecode.objectify.VoidWork;
-import static net.videmantay.server.GoogleUtils.*;
 
 
 @SuppressWarnings("serial")
@@ -119,7 +104,7 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 	////////////////end oauth ///////////////////////////////////////////////////////
 	
 	//ROSTER CRUD
-	private void saveRoster(HttpServletRequest req, HttpServletResponse res)throws IOException,ServletException, GeneralSecurityException{
+	private void saveRoster(HttpServletRequest req, HttpServletResponse res)throws IOException,ServletException, GeneralSecurityException, ServiceException{
 		final DB<Roster> rosterDB = new DB<Roster>(Roster.class);
 		final Credential cred;
 		
@@ -129,12 +114,24 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 		ContactsService contactService;
 		SitesService sitesService;
 		SpreadsheetService spreadsheetService;
+	
 		
 		
 		RosterSetting settings;
-		Roster roster = null;
+		final Roster roster;
 		
-		String rosterCheck = req.getParameter("roster");
+		//make sure the user making the request is the user that is logged in
+		String userCheck = req.getParameter("user");
+		AppUser user = null;
+		if(userCheck != null && !userCheck.isEmpty()){
+			user = gson.fromJson(userCheck, AppUser.class);
+		}
+		if(!AppValid.userCheck(user)){
+			//throw an error
+		}
+		 String rosterCheck = req.getParameter("roster");
+		 
+		 
 		if(rosterCheck != null && !rosterCheck.isEmpty()){
 			//if the roster is good then assign it
 		roster = gson.fromJson(rosterCheck, Roster.class);
@@ -152,10 +149,30 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 		}
 		
 		//if roster has an id then it's an update else look
-		//for roster settings 
+		//so update it 
 		if(roster.getId() != null && roster.getId() != 0){
 			//This is an update just save the roster
-			rosterDB.save(roster);
+			//get roster by id then do transfer
+			Roster rosDB = rosterDB.getById(roster.getId());
+			
+			//check that user is indeed the owner or an admin
+			if(rosDB != null){
+				if(user.getRoles().contains(UserRoles.ADMIN) || 
+						user.getAcctId().equals(rosDB.getOwnerId())){
+					final RosterDetail rosDetail = roster.createDetail();
+					
+					db().transact(new VoidWork(){
+
+						@Override
+						public void vrun() {
+							rosterDB.save(roster);
+							db().save().entity(rosDetail);
+						}});
+				
+
+					}else{
+				//throw an error here.
+			
 			//send a confirmation message
 			ArrayList<String> message= new ArrayList<String>();
 			message.add("Roster update successful");
@@ -165,19 +182,120 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 			res.getWriter().write(returnThis);
 			return;
 			
-		}else{
-			//this is a first save set up docs,calendar,etc
+		}
+			}// end if roster id Null ///////////END UPDATE ROSTER /////////////////////
+			
+		/////////FIRST SAVE HERE ///////////////////////////////////////////////////////////////////////////		
+		}else{//this is a first save set up docs,calendar,etc
+			
 			
 		 cred =this.getCredential();
+		 //check for roster setting in the db 
+		 settings = db().load().type(RosterSetting.class).filter("acctId",user.getAcctId()).first().now();
+		 if(settings == null){
+			 settings = new RosterSetting();
+		 }
+		 drive = GoogleUtils.drive(cred);
+		 
+		 			//first check if main drive folder has been set
+		 		if(user.getMainDriveFolder()==null || user.getMainDriveFolder().isEmpty()){
+		 			//assign a main folder
+		 			File kimchiFile = new File();
+		 			kimchiFile.setTitle("Kimchi");
+		 			kimchiFile = drive.files().insert(kimchiFile).execute();
+		 			user.setMainDriveFolder(kimchiFile.getId());
+		 			
+		 		}
+				File rosterFolder = new File();
+				rosterFolder.setTitle(roster.getTitle());
+				rosterFolder.setDescription(roster.getDescription());
+				ParentReference parentFolder = new ParentReference();
+				parentFolder.setId(user.getMainDriveFolder());
 				
+				rosterFolder.getParents().add(parentFolder);
+				rosterFolder = drive.files().insert(rosterFolder).execute();
+				//set roster folder id
+				roster.setRosterFolderId(rosterFolder.getId());
+				
+				//optional folders use settings
+				List<File> childFolders = new ArrayList<File>();
+				for(String name : settings.getFolderNames()){
+					File f = new File();
+					f.setTitle(name);
+					
+					List<ParentReference> parentList = new ArrayList<ParentReference>();
+					ParentReference p = new ParentReference();
+					p.setId(rosterFolder.getId());
+					f.setParents(parentList);
+					childFolders.add(f);
+				}
+				
+				BatchRequest driveBatch = drive.batch();
+				for(File f: childFolders){
+					drive.files().insert(f).queue(driveBatch, null);
+				}
+				
+				driveBatch.execute();
 			
-					//optional folders use settings
-			
-			
+					
 			//Set up Gradedwork Calendar and class events
+			calendar = GoogleUtils.calendar(cred);
+			com.google.api.services.calendar.model.Calendar cal = new com.google.api.services.calendar.model.Calendar();
+			cal.setSummary(roster.getTitle());
+			cal.setDescription(roster.getDescription());
+			cal = calendar.calendars().insert(cal).execute();
+			GoogleService rosterCal = new GoogleService();
+			rosterCal.setTitle(cal.getSummary());
+			rosterCal.setDescription(cal.getDescription());
+			rosterCal.setType("calendar");
+			rosterCal.setId(cal.getId());
 			
+			//adding more calendars happens client side///
+			roster.getGoogleCalendars().add(rosterCal);
 			
 			//Create a roster task list
+			tasks = GoogleUtils.task(cred);
+			TaskList taskList = new TaskList();
+			taskList.setTitle(roster.getTitle());
+			taskList = tasks.tasklists().insert(taskList).execute();
+			
+			GoogleService rosterTask = new GoogleService();
+			rosterTask.setId(taskList.getId());
+			rosterTask.setTitle(taskList.getTitle());
+			rosterTask.setDescription("");
+			
+			roster.getGoogleTasks().add(rosterTask);
+			
+			//save the owner on the server side
+			roster.setOwnerId(user.getAcctId());
+			roster.getAccess().add(user.getAcctId());
+			
+			//at this point there is no id so we wait for one
+			//to assign to rd
+			RosterDetail rd = roster.createDetail();
+			
+			rd.setId(rosterDB.save(roster).getId());
+			db().save().entity(rd);
+//			SpreadsheetService sheets = sheets(cred);
+//			File rollBook = spreadsheet("RollBook");
+//			rollBook = drive.files().insert(rollBook).execute();
+//			SpreadsheetQuery query = new SpreadsheetQuery(new URL(SheetsScope + "/spreadsheets/" + rollBook.getId()));
+//			SpreadsheetFeed feed = sheets.query(query, SpreadsheetFeed.class);
+//			SpreadsheetEntry rbSS = feed.getEntries().get(0);
+//			WorksheetEntry rbWS = rbSS.getDefaultWorksheet();
+//			//add first row to the worksheet
+//			rbWS.setColCount(15);
+//			rbWS.setRowCount(1);
+//			rbWS.update();
+//			CellFeed rbCellFeed = sheets.getFeed(rbWS.getCellFeedUrl(), CellFeed.class);
+//			List<CellEntry> cells = rbCellFeed.getEntries();
+//			for(int i = 0; i< cells.size(); i++){
+//				switch(i){
+//				case 0:cells.get(i).changeInputValueLocal("id");break;
+//				case 1:cells.get(i).changeInputValueLocal("firstName");break;
+//				case 2:cells.get(i).changeInputValueLocal("id");break;
+//				}
+//			}
 			
 			// Set up a google sites for Class info
 		}//end first save else////////
@@ -187,57 +305,130 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 	
 	
 	
-	private void deleteRoster(){}
-	private void listRoster(){}
+	private void deleteRoster(HttpServletRequest req, HttpServletResponse res){
+		
+		String rosterCheck = Preconditions.checkNotNull(req.getParameter("roster"));
+		Roster roster = gson.fromJson(rosterCheck, Roster.class);
+		String userCheck = Preconditions.checkNotNull(req.getParameter("user"));
+		AppUser user = gson.fromJson(userCheck, AppUser.class);
+		AppValid.userCheck(user);
+		
+		//delete roster and immediate descendents- students etc
+		List<Key<Object>> keys = db().load().ancestor(roster).keys().list();
+		db().delete().keys(keys);
+		//delete all gradedwork and descendents
+		List<Key<GradedWork>> gwKeys = db().load().type(GradedWork.class).filter("rosterId",roster.getId()).keys().list();
+		for(Key<GradedWork> key: gwKeys){
+		List<Key<Object>> stuff =	db().load().ancestor(key).keys().list();
+		db().delete().keys(stuff);
+		}
+	}
+	private void listRoster(HttpServletRequest req, HttpServletResponse res){
+		//this method will only list the roster 
+		User user = UserServiceFactory.getUserService().getCurrentUser();
+		List<Roster> rosters = db().load().type(Roster.class).filter("acctId", user.getEmail() ).list();
+		
+		
+	}
 	
 	
 	//GRADEDWORK CRUD
-	private void createGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
-		final Gson gson = new Gson();
-		final DB<GradedWork> gradedWorkDB = new DB<GradedWork>(GradedWork.class);
-		final AppUser appUser = (AppUser)req.getSession().getAttribute("appUser");
-		Credential cred;
-		Calendar calendar;
+	
+	private void deleteGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
+	
+	private void saveGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+		Credential cred = this.getCredential();
 		
-		GradedWork gradedWork = gson.fromJson(req.getParameter("gradedWork"), GradedWork.class);
-		//save it to retrieve id 
-		 gradedWork = gradedWorkDB.getById(gradedWorkDB.save(gradedWork).getId());
-		 Event event = gson.fromJson(req.getParameter("event"), Event.class);
-		 
-		 String calId = "";
-		 
+		Calendar calendar = GoogleUtils.calendar(cred);
 		
-			cred = this.getCredential();
-			
-			calendar = GoogleUtils.calendar(cred);
-			
-			 event = calendar.events().insert(calId, event).execute();
-			 gradedWork.setGoogleCalEventId(event.getId());
-			 event.set("gradedWork", gradedWork.getId());
-			 gradedWorkDB.save(gradedWork);
-			 calendar.events().update(calId, event.getId(), event);
+		String gwCheck = Preconditions.checkNotNull(req.getParameter("assignment"));
+		String eventCheck = Preconditions.checkNotNull(req.getParameter("event"));
+		String rosterIdCheck = Preconditions.checkNotNull(req.getParameter("roster"));
+		Long rosId = Longs.tryParse(rosterIdCheck);
+		Preconditions.checkNotNull(rosId, "Must have a ligitimate roster");
+		Preconditions.checkArgument(AppValid.rosterCheck(rosId), "Must have ligitimate Roster");
+		String userCheck = Preconditions.checkNotNull(req.getParameter("user"));
+		AppUser user = gson.fromJson(userCheck, AppUser.class);
+		
+		GradedWork gradedWork = gson.fromJson(gwCheck, GradedWork.class);
+		Event event = gson.fromJson(eventCheck, Event.class);
+		//if the id is null or zero then this is a first save/////
+		if(gradedWork.getId() == null || gradedWork.getId() ==  0){
+			//assign id from uuid
+			Long id = new AtomicLong().getAndIncrement();
+			gradedWork.setId(id);
+		
+		//lets stuff json obj in description
+		//this way we get list from google and have access to our object
+		//essentially using google as the db  ... obviously bad practice
+		String descript = event.getDescription();
+		descript += "-* Kimchi-Assignment *-";
+	
+		Event.ExtendedProperties exProps = new Event.ExtendedProperties();
+		Map<String, String> arg = ImmutableMap.of("gradedWork", gradedWork.getId().toString());
+		exProps.setPrivate(arg);
+		event.setExtendedProperties(exProps);
+		
+		event = calendar.events().insert(gradedWork.getCalendarId(), event).execute();
+		gradedWork.setGoogleCalEventId(event.getId());
+		gradedWork.getAccess().add(user.getAcctId());
+		db().save().entity(gradedWork);
+		
+		}else{  ////////////UPDATE the GW /////////////////////
+			//check that everything is kosher/////
+			GradedWork gw = db().load().type(GradedWork.class).filter("id", gradedWork.getId()).filter("rosterId", rosId).first().now();
+			if(gw == null){
+				//throw an exception
+			}else{
+				event.getExtendedProperties().getPrivate().replace("gradedWork", gson.toJson(gradedWork));
+				event = calendar.events().update(gradedWork.getCalendarId(), event.getId(), event).execute();
+				db().save().entity(gradedWork);
+			}
+		}
 		
 		
 		
 		
 	}
 	
-	private void deleteGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
+	private void listGradedWorks(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+		//return google cal events
+		String rosterCheck = Preconditions.checkNotNull(req.getParameter("roster"));
+		String calId = Preconditions.checkNotNull(req.getParameter("calendar"));
+		Long rosId  = Preconditions.checkNotNull(Longs.tryParse(rosterCheck), "Must have ligitimate roster");
+		Preconditions.checkArgument(AppValid.rosterCheck(rosId), "Must have a ligitimate roster");
+		
+		Credential cred = this.getCredential();
+		Calendar cal = GoogleUtils.calendar(cred);
+		cal.events().list(calId).setQ("-* Kimchi-Assignment *-").setFields("").execute();
+		
+		
+		
+		
+	}
 	
-	private void saveGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
+	private void getGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+		
+		//event should include gw id and return this gw and all related student works
+		//param id of gradedwork roster Id and current user
+		String userCheck = Preconditions.checkNotNull(req.getParameter("user"));
+		String rosterCheck = Preconditions.checkNotNull(req.getParameter("roster"));
+		String gradedWork = Preconditions.checkNotNull(req.getParameter("assignment"));
+		
+		
+		
+		
+	}
 	
-	private void queryGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	
-	private void searchGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	
-	private void listGradedWorks(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	
-	private void getGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	
-	private void unassignGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
+	private void manageAssignment(HttpServletRequest req, HttpServletResponse res){
+		
+	}
+	private void unassignGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+			//list of student ids to unassign
+	}
 	
 	private void assignGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
-		final Gson gson = new Gson();
+		
 		//Gradedwork must be explicitly assigned so that takes the guess work out of creating calendar events
 		//is single calendar or multiple????
 		//first step must be created then assigned or wait in limbo so index on isAssigned

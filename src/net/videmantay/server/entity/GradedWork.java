@@ -27,6 +27,9 @@ public class GradedWork extends Assignment implements Serializable{
 	private Long rosterId;
 	
 
+	//to set events we need to have calendar id
+	//this should be set by the roster on client side
+	private String calendarId;
 	
 	 //link to google calendar event
 	 //must index so that we can retrieve 
@@ -34,18 +37,14 @@ public class GradedWork extends Assignment implements Serializable{
 	private String googleCalEventId = "";
 	 
 	 @Index
-	 
 	 private String googleCalRepeatEventId ="";
 	 
-	 private String recurringEventId="";
 				
 	private GradedWorkType gradedWorkType = GradedWorkType.HOMEWORK;
 	
 	private Language lang = Language.ENGLISH;
 	
 	private Double pointsPossible = 0.0;
-	
-	private Date dueDate = new Date();
 	
 	private Date assignedDate = new Date();
 	
@@ -63,6 +62,16 @@ public class GradedWork extends Assignment implements Serializable{
 	}
 
 	
+	public String getCalendarId() {
+		return calendarId;
+	}
+
+
+	public void setCalendarId(String calendarId) {
+		this.calendarId = calendarId;
+	}
+
+
 	public String getGoogleCalEventId() {
 		return googleCalEventId;
 	}
@@ -70,16 +79,6 @@ public class GradedWork extends Assignment implements Serializable{
 
 	public void setGoogleCalEventId(String googleCalEventId) {
 		this.googleCalEventId = googleCalEventId;
-	}
-
-
-	public String getRecurringEventId() {
-		return recurringEventId;
-	}
-
-
-	public void setRecurringEventId(String recurringEventId) {
-		this.recurringEventId = recurringEventId;
 	}
 
 
@@ -108,16 +107,6 @@ public class GradedWork extends Assignment implements Serializable{
 
 	public void setLang(Language lang) {
 		this.lang = lang;
-	}
-
-
-	public Date getDueDate() {
-		return dueDate;
-	}
-
-
-	public void setDueDate(Date dueDate) {
-		this.dueDate = dueDate;
 	}
 
 

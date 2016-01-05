@@ -15,7 +15,7 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
 @Entity
-public class Lesson implements Serializable{
+public class Lesson extends DBObj implements Serializable{
 	
 	/**
 	 * 
@@ -24,12 +24,7 @@ public class Lesson implements Serializable{
 	
 	@Id
 	private Long id;
-	private Date createOn;
-	private String createdBy;
-	private Date lastUpdate;
-	private Long versionNum;
 	
-
 	@Index
 	private String title;
 	private List<Long> standards;

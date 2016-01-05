@@ -8,7 +8,7 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
 @Entity
-public class BehaviorReport implements Serializable {
+public class BehaviorReport extends DBObj implements Serializable {
 
 	/**
 	 * 
@@ -20,11 +20,13 @@ public class BehaviorReport implements Serializable {
 
 	private Date createOn;
 	private String createdBy;
+	@Index
 	private Long rosterId;
+	@Index
 	private Long studentId;
 	
-	@Index
-	private Date incidentDate;
+	
+	private String eventId;
 	private String mediaUrl;
 	private String summary;
 	private Boolean parentsContacted;
@@ -82,13 +84,13 @@ public class BehaviorReport implements Serializable {
 	}
 
 
-	public Date getIncidentDate() {
-		return incidentDate;
+	public String getEventId() {
+		return eventId;
 	}
 
 
-	public void setIncidentDate(Date incidentDate) {
-		this.incidentDate = incidentDate;
+	public void setIncidentDate(String event) {
+		this.eventId = event;
 	}
 
 

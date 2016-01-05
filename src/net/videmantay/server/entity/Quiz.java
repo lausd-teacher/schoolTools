@@ -7,11 +7,12 @@ import java.util.Set;
 
 import net.videmantay.shared.SubjectType;
 
-import com.google.appengine.api.datastore.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Cache;
 
+@Cache
 @Entity
 public class Quiz implements Serializable{
 
@@ -22,7 +23,8 @@ public class Quiz implements Serializable{
 	
 	
 	private Date createOn;
-	private String createdBy;
+	@Index
+	private String ownedBy;
 	private Date lastUpdate;
 	private Long versionNum;
 	
@@ -51,15 +53,6 @@ public class Quiz implements Serializable{
 		this.createOn = createOn;
 	}
 
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
 
 
 	public Date getLastUpdate() {

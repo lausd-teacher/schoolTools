@@ -5,14 +5,18 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Serialize;
 
+import net.videmantay.shared.UserStatus;
+
 
 @Entity
-public  class AppUser implements Serializable{
+@Cache
+public  class AppUser extends DBObj implements Serializable{
 
 
 	/**
@@ -22,12 +26,6 @@ public  class AppUser implements Serializable{
 	
 	@Id
 	private Long id;
-	
-	private Date createOn;
-	private String createdBy;
-	private Date lastUpdate;
-	private Long versionNum;
-	//user key
 	
 	@Index
 	private String acctId;//Google Id may be different than email 
