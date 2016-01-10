@@ -1,4 +1,4 @@
-package net.videmantay.server.entity;
+package net.videmantay.server.user;
 
 import java.util.Comparator;
 import java.util.Date;
@@ -16,6 +16,9 @@ import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Serialize;
 
+import net.videmantay.server.entity.Badge;
+import net.videmantay.server.entity.StudentJob;
+
 
 @Entity
 public class RosterStudent extends DBObj implements  Comparator<RosterStudent> {
@@ -23,7 +26,6 @@ public class RosterStudent extends DBObj implements  Comparator<RosterStudent> {
 	@Id
 	private Long id;
 	private Date createOn;
-	public String key;
 	
 	///Key to roster detail not parent roster
 	//why not set actual key???
@@ -36,26 +38,24 @@ public class RosterStudent extends DBObj implements  Comparator<RosterStudent> {
 	private Boolean glasses;
 	private String eldLevel;
 	private Set<StudentJob> jobs;
+	private Boolean inactive;
 	
-	
-	@Serialize
-	private transient Map<String, String> taskList = new HashMap<String, String>();
 	
 	@Index
 	private String studentGoogleId;
 	
-	private Integer positviePoints;
-	private Integer NegativePoints;
-	private Set<String> badges;
-	private Set<StudentGroup> studentGroups ;
+	private Integer[] positviePoints;
+	private Integer[] NegativePoints;
+	@Serialize
+	private Set<Badge> badges;
+
 	@Parent
-	private transient Key<Roster> rosterKey;
+	private Key<Roster> rosterKey;
 	
 	
 	private String studentFolderId;
-	
-	//this map uses subject as Key value to drive folders
-	private transient Map<String, String> subjectFolders = new HashMap<String, String>();
+	private String studentCalId;
+	private String studentTasksId;
 	
 	public RosterStudent(){
 		AtomicLong al = new AtomicLong();
@@ -79,6 +79,25 @@ public class RosterStudent extends DBObj implements  Comparator<RosterStudent> {
 	}
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
+	}
+	
+	public Boolean getGlasses() {
+		return glasses;
+	}
+	public void setGlasses(Boolean glasses) {
+		this.glasses = glasses;
+	}
+	public String getEldLevel() {
+		return eldLevel;
+	}
+	public void setEldLevel(String eldLevel) {
+		this.eldLevel = eldLevel;
+	}
+	public Set<StudentJob> getJobs() {
+		return jobs;
+	}
+	public void setJobs(Set<StudentJob> jobs) {
+		this.jobs = jobs;
 	}
 	public String getLastName() {
 		return lastName;
@@ -111,22 +130,22 @@ public class RosterStudent extends DBObj implements  Comparator<RosterStudent> {
 		this.studentGoogleId = studentGoogleId;
 	}
 
-	public Integer getPositviePoints() {
+	public Integer[] getPositviePoints() {
 		return positviePoints;
 	}
-	public void setPositviePoints(Integer positviePoints) {
+	public void setPositviePoints(Integer[] positviePoints) {
 		this.positviePoints = positviePoints;
 	}
-	public Integer getNegativePoints() {
+	public Integer[] getNegativePoints() {
 		return NegativePoints;
 	}
-	public void setNegativePoints(Integer negativePoints) {
+	public void setNegativePoints(Integer[] negativePoints) {
 		NegativePoints = negativePoints;
 	}
-	public Set<String> getBadges() {
+	public Set<Badge> getBadges() {
 		return badges;
 	}
-	public void setBadges(Set<String> badges) {
+	public void setBadges(Set<Badge> badges) {
 		this.badges = badges;
 	}
 	public Long getId() {
@@ -142,13 +161,6 @@ public class RosterStudent extends DBObj implements  Comparator<RosterStudent> {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public void setStudentGroups(Set<StudentGroup> studentGroups){
-		this.studentGroups = studentGroups;
-	}
-	
-	public Set<StudentGroup> getStudentGroups(){
-		return this.studentGroups;
-	}
 	
 	public String getStudentFolderId() {
 		return studentFolderId;
@@ -156,21 +168,23 @@ public class RosterStudent extends DBObj implements  Comparator<RosterStudent> {
 	public void setStudentFolderId(String studentFolderId) {
 		this.studentFolderId = studentFolderId;
 	}
-	public Map<String, String> getTaskList(){
-		return taskList;
+	public String getStudentCalId() {
+		return studentCalId;
 	}
-	
-	public void setTaskList(Map<String, String> taskList){
-		this.taskList = taskList;
+	public void setStudentCalId(String studentCalId) {
+		this.studentCalId = studentCalId;
 	}
-	
-	
-
-	public Map<String, String> getSubjectFolders() {
-		return subjectFolders;
+	public String getStudentTasksId() {
+		return studentTasksId;
 	}
-	public void setSubjectFolders(Map<String, String> subjectFolders) {
-		this.subjectFolders = subjectFolders;
+	public void setStudentTasksId(String studentTasksId) {
+		this.studentTasksId = studentTasksId;
+	}
+	public Boolean getInactive() {
+		return inactive;
+	}
+	public void setInactive(Boolean inactive) {
+		this.inactive = inactive;
 	}
 	@Override
 	public int hashCode() {
@@ -270,6 +284,11 @@ public class RosterStudent extends DBObj implements  Comparator<RosterStudent> {
 		default: return 0;
 		
 		}
+	}
+	@Override
+	public boolean valid() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 	

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import net.videmantay.server.user.DBObj;
 import net.videmantay.shared.GradeLevel;
 import net.videmantay.shared.SubjectType;
 
@@ -116,6 +117,11 @@ public class Lesson extends DBObj implements Serializable{
 	}
 	public void setVocabList(Set<Long> vocabList) {
 		this.vocabList = vocabList;
+	}
+	@Override
+	public boolean valid() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

@@ -6,6 +6,7 @@ import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -16,11 +17,18 @@ import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import static net.videmantay.server.entity.DB.*;
+
 import net.videmantay.server.entity.*;
+import net.videmantay.server.user.AppUser;
+import net.videmantay.server.user.DB;
+import net.videmantay.server.user.Roster;
+import net.videmantay.server.user.RosterDetail;
+import net.videmantay.server.user.RosterSetting;
+import net.videmantay.server.user.RosterStudent;
 import net.videmantay.shared.StuffType;
 import net.videmantay.shared.UserRoles;
 import static net.videmantay.server.GoogleUtils.*;
+import static net.videmantay.server.user.DB.*;
 
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.Credential;
@@ -30,6 +38,7 @@ import com.google.api.client.http.GenericUrl;
 import com.google.api.client.util.Preconditions;
 import com.google.api.services.calendar.model.*;
 import com.google.api.services.calendar.model.AclRule.Scope;
+import com.google.api.services.calendar.model.Event.ExtendedProperties;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
@@ -37,21 +46,30 @@ import com.google.api.services.drive.model.ParentReference;
 import com.google.api.services.drive.model.Permission;
 import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.model.TaskList;
+import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.labs.repackaged.com.google.common.base.CharMatcher;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Iterators;
 import com.google.common.primitives.Longs;
 import com.google.gdata.client.contacts.ContactsService;
 import com.google.gdata.client.sites.SitesService;
 import com.google.gdata.client.spreadsheet.SpreadsheetQuery;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
+import com.google.gdata.client.spreadsheet.WorksheetQuery;
+import com.google.gdata.data.PlainTextConstruct;
 import com.google.gdata.data.spreadsheet.CellEntry;
 import com.google.gdata.data.spreadsheet.CellFeed;
+import com.google.gdata.data.spreadsheet.CustomElementCollection;
+import com.google.gdata.data.spreadsheet.ListEntry;
+import com.google.gdata.data.spreadsheet.ListFeed;
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
 import com.google.gdata.data.spreadsheet.SpreadsheetFeed;
 import com.google.gdata.data.spreadsheet.WorksheetEntry;
+import com.google.gdata.data.spreadsheet.WorksheetFeed;
 import com.google.gdata.util.ServiceException;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -60,9 +78,9 @@ import com.googlecode.objectify.VoidWork;
 
 
 @SuppressWarnings("serial")
-public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
+public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	
-	private final Logger log = Logger.getLogger(TeacherService.class.getCanonicalName());
+	private final Logger log = Logger.getLogger(RosterService.class.getCanonicalName());
 	private final Gson gson = new Gson();
 	
 	
@@ -447,17 +465,14 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 	
 	private void saveGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
 		Credential cred = this.getCredential();
+		SpreadsheetService sheets = sheets(cred);
 		
 		Calendar calendar = GoogleUtils.calendar(cred);
 		
 		String gwCheck = Preconditions.checkNotNull(req.getParameter("assignment"));
 		String eventCheck = Preconditions.checkNotNull(req.getParameter("event"));
-		String rosterIdCheck = Preconditions.checkNotNull(req.getParameter("roster"));
-		Long rosId = Longs.tryParse(rosterIdCheck);
-		Preconditions.checkNotNull(rosId, "Must have a ligitimate roster");
-		Preconditions.checkArgument(AppValid.rosterCheck(rosId), "Must have ligitimate Roster");
-		String userCheck = Preconditions.checkNotNull(req.getParameter("user"));
-		AppUser user = gson.fromJson(userCheck, AppUser.class);
+		String calId = Preconditions.checkNotNull("calendarId");
+		String gradebook = Preconditions.checkNotNull(req.getParameter("gradebook"));
 		
 		GradedWork gradedWork = gson.fromJson(gwCheck, GradedWork.class);
 		Event event = gson.fromJson(eventCheck, Event.class);
@@ -478,11 +493,33 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 		exProps.setPrivate(arg);
 		event.setExtendedProperties(exProps);
 		
-		event = calendar.events().insert(gradedWork.getCalendarId(), event).execute();
-		gradedWork.setGoogleCalEventId(event.getId());
-		gradedWork.getAccess().add(user.getAcctId());
-		db().save().entity(gradedWork);
+		event = calendar.events().insert(calId, event).execute();
+		gradedWork.setEventId(event.getId());
+		SpreadsheetFeed ssf = sheets.getFeed(new URL(GoogleUtils.SheetsScope +"/spreadsheets/" + gradebook +"/private/basic"), SpreadsheetFeed.class);
+		SpreadsheetEntry spreadsheet = ssf.getEntries().get(0);
+	
+		WorksheetQuery wQ = new WorksheetQuery(spreadsheet.getWorksheetFeedUrl());
+		wQ.setTitleExact(true);
+		wQ.setTitleQuery("GradedWork");
+		WorksheetFeed wsf = sheets.getFeed(wQ,WorksheetFeed.class);
+		WorksheetEntry worksheet = wsf.getEntries().get(0);
 		
+		ListFeed lf = sheets.getFeed(worksheet.getListFeedUrl(), ListFeed.class);
+		ListEntry entry = new ListEntry();
+		entry.setTitle(new PlainTextConstruct(gradedWork.getId().toString()));
+		CustomElementCollection cols  = entry.getCustomElements();
+		cols.setValueLocal("id", gradedWork.getId().toString());
+		cols.setValueLocal("title", gradedWork.getTitle());
+		cols.setValueLocal("description", gradedWork.getDescription());
+		cols.setValueLocal("pointsPossible", gradedWork.getPointsPossible().toString());
+		cols.setValueLocal("eventId", gradedWork.getEventId());
+		cols.setValueLocal("type", gradedWork.getGradedWorkType().name());
+		cols.setValueLocal("finishedGrading", gradedWork.isFinishedGrading().toString());
+		cols.setValueLocal("subject", gradedWork.getSubject().name());
+		cols.setValueLocal("dateAssigned", gradedWork.getAssignedDate().);
+		cols.setValueLocal("standards", 
+		CharMatcher.anyOf("[]").removeFrom(Iterators.toString(gradedWork.getStandards().iterator())));
+	
 		}else{  ////////////UPDATE the GW /////////////////////
 			//check that everything is kosher/////
 			GradedWork gw = db().load().type(GradedWork.class).filter("id", gradedWork.getId()).filter("rosterId", rosId).first().now();
@@ -545,8 +582,8 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 		String unassignCheck = Preconditions.checkNotNull(req.getParameter("unassign"));
 		String gwCheck = Preconditions.checkNotNull(req.getParameter("assignment"));
 		
-		Long[] assign = gson.fromJson(assignCheck, Long[].class);
-		Long[] unassign = gson.fromJson(unassignCheck, Long[].class);
+		RosterStudent[] assign = gson.fromJson(assignCheck, RosterStudent[].class);
+		RosterStudent[] unassign = gson.fromJson(unassignCheck, RosterStudent[].class);
 		GradedWork gw = gson.fromJson(gwCheck, GradedWork.class);
 		req.setAttribute("assign", assign);
 		req.setAttribute("assignment", gw);
@@ -566,27 +603,9 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 		
 	}
 	private void unassignGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
-			//list of student ids to unassign
-			//this basically deletes the student work in bult
-			//need to get the gradedWork to modify it's keys
-		String gwId = Preconditions.checkNotNull(req.getParameter("gradedWork"));
-		Long id = Longs.tryParse(gwId);
-		GradedWork gradedWork = db().load().type(GradedWork.class).id(id).now();
-		//iterate through the sw id's
-		String swCheck = Preconditions.checkNotNull(req.getParameter("students"));
-		Long[] swIds = gson.fromJson(swCheck, Long[].class);
-		List<Key<StudentWork>> holder = new ArrayList<Key<StudentWork>>();
-		for(Key<StudentWork> swk: gradedWork.getStudentWorkKeys()){
-			//now iterate through swIds to find
-			for(Long L: swIds){
-				if(L.equals(swk.getId())){
-					holder.add(swk);
-					gradedWork.getStudentWorkKeys().remove(swk);
-				}//end if
-			}// end inner for
-		}//end outer for
-		db().delete().keys(holder);
-		db().save().entity(gradedWork);
+			RosterStudent[] students = (RosterStudent[]) req.getAttribute("unassign");
+			GradedWork gradedWork = (GradedWork)req.getAttribute("assignment");
+			
 	}
 	
 	private void assignGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
@@ -620,6 +639,79 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 			db().save().entities(studentWork);
 			
 		}
+		
+	///STUDENT INCIDENT CRUD
+	private void updateStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+		String incidentCheck = Preconditions.checkNotNull(req.getParameter("incident"));
+		StudentIncident incident = gson.fromJson(incidentCheck, StudentIncident.class);
+		StudentIncident dbCheck;
+		try{
+			dbCheck = db().load().type(StudentIncident.class).id(incident.getId()).now();
+			Preconditions.checkNotNull(dbCheck);
+			if(!dbCheck.getSummary().equals(incident.getSummary())){
+				//update the event
+			}
+		}catch(NullPointerException e){
+			e.printStackTrace();
+		}
+		
+		
+	}
+	private void deleteStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+		Calendar cal;
+		Credential cred = this.getCredential();
+		cal = calendar(cred);
+		
+		String calId = Preconditions.checkNotNull(req.getParameter("calId"));
+		String incidentCheck = Preconditions.checkNotNull(req.getParameter("incident"));
+		StudentIncident incident = gson.fromJson(incidentCheck, StudentIncident.class);
+		cal.events().delete(calId, incident.getEventId()).execute();
+		StudentIncident dbCheck = null;
+	try{
+		dbCheck = db().load().type(StudentIncident.class).id(incident.getId()).now();
+		Preconditions.checkNotNull(dbCheck);	
+	}catch(NullPointerException e){
+		
+	}
+	
+		db().delete().entity(dbCheck);
+		
+	}
+	private void saveStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+		String incidentCheck = Preconditions.checkNotNull(req.getParameter("incident"));
+		String studentCheck = Preconditions.checkNotNull("student");
+		String eventCheck = Preconditions.checkNotNull("event");
+		StudentIncident incident = gson.fromJson(incidentCheck, StudentIncident.class);
+		RosterStudent student = gson.fromJson(studentCheck, RosterStudent.class);
+		Event event = gson.fromJson(eventCheck , Event.class);
+		
+		incident.setId(new AtomicLong().incrementAndGet());
+		Credential cred = this.getCredential();
+		Calendar calendar = calendar(cred);
+		ExtendedProperties ext = new ExtendedProperties();
+		Map<String, String> incidentMap = new HashMap<String, String>();
+		incidentMap.put("incident", incident.getId().toString());
+		ext.setPrivate(incidentMap);
+		event.setExtendedProperties(ext);
+		incident.setEventId(calendar.events().insert(student.getStudentCalId(), event).execute().getId());
+		db().save().entity(incident);
+		
+		//give the incident back;
+	}
+	private void searchStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
+	private void listStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+		//list by fifty in date order
+		String cursor = Preconditions.checkNotNull(req.getParameter("cursor"));
+		String filter = Preconditions.checkNotNull(req.getParameter("filter"));
+		String value = Preconditions.checkNotNull("value");
+		String rosterId = Preconditions.checkNotNull("roster");
+		
+		List<StudentIncident> incidents = db().load().type(StudentIncident.class)
+				.filter("rosterId", rosterId).order("date")
+				.limit(50).startAt(Cursor.fromWebSafeString(cursor)).list();
+	}
+	private void getStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
+		
 	
 	///LESSON CRUD
 	private void createLesson(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
@@ -629,13 +721,6 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 	private void listLesson(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
 	private void getLesson(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
 	
-	///STUDENT INCIDENT CRUD
-	private void createStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void deleteStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void saveStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void searchStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void listStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void getStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
 	
 	//QUIZ CRUD
 	private void createQuiz(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
@@ -673,25 +758,6 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 	private void listEducationalLink(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
 	private void getEducationalLink(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
 	
-	
-	//SHOWCASE CRUD
-	private void createShowcase(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void deleteShowcase(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void saveShowcase(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void queryShowcase(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void searchShowcase(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void listShowcase(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void getShowcase(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	
-	//STUDENT JOB CRUD
-	private void createStudentJob(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void deleteStudentJob(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void saveStudentJob(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void queryStudentJob(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void searchStudentJob(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void listStudentJob(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void getStudentJob(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	
 	//VOCAB CRUD
 	private void createVocab(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
 	private void deleteVocab(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
@@ -709,15 +775,4 @@ public class TeacherService extends AbstractAppEngineAuthorizationCodeServlet  {
 	private void searchVocabList(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
 	private void listVocabList(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
 	private void getVocabList(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	
-	//SEATING CHART ACTION
-	private void createSeatingChart(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void deleteSeatingChart(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void saveSeatingChart(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void listSeatingChart(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void querySeatingChart(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void searchSeatingChart(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void getSeatingChart(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	
-	
 }

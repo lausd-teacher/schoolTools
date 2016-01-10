@@ -2,6 +2,7 @@ package net.videmantay.server.entity;
 
 import java.util.Set;
 
+import net.videmantay.server.user.DBObj;
 import net.videmantay.shared.GradeLevel;
 import net.videmantay.shared.SubjectType;
 
@@ -10,15 +11,15 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
 
-@Entity
-public class Assignment extends DBObj {
+
+public class Assignment {
 	
-	@Id
+	
 	private Long id;
 	
 	private String title;
 	
-	@Index
+
 	private Set<Standard>standards;
 	
 	private Set<GradeLevel> gradeLevels;
@@ -27,7 +28,6 @@ public class Assignment extends DBObj {
 	
 	private String description;
 	
-	@Index
 	private SubjectType subject;
 	
 	private Set<EducationalLink> links;
@@ -96,6 +96,5 @@ public class Assignment extends DBObj {
 	public void setLinks(Set<EducationalLink> links) {
 		this.links = links;
 	}
-	
 	
 }

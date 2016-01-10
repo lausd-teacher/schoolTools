@@ -12,11 +12,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.commons.validator.routines.UrlValidator;
-import net.videmantay.server.entity.AppUser;
-import net.videmantay.server.entity.DB;
-import net.videmantay.server.entity.RosterDetail;
-import net.videmantay.server.entity.RosterStudent;
-import static net.videmantay.server.entity.DB.*;
+
+import net.videmantay.server.user.AppUser;
+import net.videmantay.server.user.DB;
+import net.videmantay.server.user.RosterDetail;
+import net.videmantay.server.user.RosterStudent;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -25,6 +25,7 @@ import com.googlecode.objectify.VoidWork;
 import com.googlecode.objectify.cmd.QueryKeys;
 
 import static com.googlecode.objectify.ObjectifyService.ofy;
+import static net.videmantay.server.user.DB.*;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Strings;
@@ -217,13 +218,8 @@ public class AdminService  extends HttpServlet {
 				//grabe the entire graph that pertains to that user.
 				//if it is a teacher then delete all of his rosters
 				//if it is a student delete all rosterStudent references
-				if(acct.getRoles().contains(AppRole.STUDENT) && acct.getRosterDetails().size() > 0){
+				if(acct.getRoles().contains(AppRole.STUDENT)){
 					
-					for(RosterDetail rosD: acct.getRosterDetails()){
-						Key<RosterStudent> ancestor = Key.create(RosterStudent.class, rosD.getId());
-						QueryKeys<Object> keys = db().load().ancestor(ancestor).keys();
-						db().delete().keys(keys);
-					}
 				}//end roster check
 				Key<AppUser> createdKey = Key.create(AppUser.class, acct.getId());
 				db().delete().key(createdKey);

@@ -1,37 +1,19 @@
 package net.videmantay.server.entity;
 
-import java.util.Date;
 import java.util.List;
 
+import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.StudentWorkStatus;
 import net.videmantay.shared.SubjectType;
 
-import com.googlecode.objectify.Key;
-import com.googlecode.objectify.Ref;
-import com.googlecode.objectify.annotation.Entity;
-import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
-import com.googlecode.objectify.annotation.Load;
-import com.googlecode.objectify.annotation.Parent;
 
 
-@Entity
+
 public class StudentWork {
 
-	@Id
 	private Long id;
 	// query by gradedwork Key;
-	
-	@Parent
-	private transient Key<GradedWork> gradedWorkKey;
-	// query by studentId;
-	
-	@Ignore
-	private RosterStudent student;
-	
-	@Load(RosterStudent.class)
-	private Ref<RosterStudent> studentRef;
 	
 	
 	@Index
@@ -40,18 +22,12 @@ public class StudentWork {
 	private Double pointsEarned;
 	private String letterGrade;
 	private String message;
-	private Long gradedWork;
+	private GradedWorkType type;
 	private StudentWorkStatus studentWorkStatus = StudentWorkStatus.NOT_TURNED_IN;
-	@Index
-	private Date dateTaken;
-	
-	@Index
-	private SubjectType subject;
-	// url of accompanying video or audio
+	private String dateTaken;
 	private String mediaUrl;
 	
-	//url of student actual work
-	private String studentDocUrl;
+	private SubjectType subject;
 	
 	//List of standard to review with accomany links;
 	private List<StandardReview> standardReviews;
@@ -59,29 +35,33 @@ public class StudentWork {
 	public StudentWork(){
 		
 	}
-
-	public Key<GradedWork> getGradedWorkKey() {
-		return gradedWorkKey;
-	}
-
-	public void setGradedWorkKey(Key<GradedWork> gradedWork) {
-		this.gradedWorkKey = gradedWork;
-	}
-
-	public Long getGradedWork() {
-		return gradedWork;
-	}
-
-	public void setGradedWork(Long gradedWork) {
-		this.gradedWork = gradedWork;
-	}
-
+	
 	public Long getRosterStudentId() {
 		return rosterStudentId;
 	}
 
 	public void setRosterStudentId(Long rosterStudent) {
 		this.rosterStudentId = rosterStudent;
+	}
+
+	public String getDateTaken() {
+		return dateTaken;
+	}
+
+	public void setDateTaken(String dateTaken) {
+		this.dateTaken = dateTaken;
+	}
+
+	public SubjectType getSubject() {
+		return subject;
+	}
+
+	public void setSubject(SubjectType subject) {
+		this.subject = subject;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public Double getPercentage() {
@@ -101,6 +81,14 @@ public class StudentWork {
 	}
 	
 
+	public GradedWorkType getType() {
+		return type;
+	}
+
+	public void setType(GradedWorkType type) {
+		this.type = type;
+	}
+
 	public String getMessage() {
 		return message;
 	}
@@ -117,13 +105,6 @@ public class StudentWork {
 		this.mediaUrl = mediaUrl;
 	}
 
-	public String getStudentDocUrl() {
-		return studentDocUrl;
-	}
-
-	public void setStudentDocUrl(String studentDocUrl) {
-		this.studentDocUrl = studentDocUrl;
-	}
 
 	public List<StandardReview> getStandardReviews() {
 		return standardReviews;
@@ -153,25 +134,5 @@ public class StudentWork {
 		this.studentWorkStatus = studentWorkStatus;
 	}
 
-	
-	public RosterStudent getStudent(){
-		return this.student;
-	}
-	
-	public void setStudent(RosterStudent student){
-		this.student = student;
-	}
-	public Ref<RosterStudent> getStudentRef(){
-		return studentRef;
-	}
-	
-	public void setStudentRef(RosterStudent student){
-		this.studentRef = Ref.create(student);
-	}
-	
-	public void setStudentRef(Key<RosterStudent> student){
-		this.studentRef = Ref.create(student);
-	}
-	
 	
 }

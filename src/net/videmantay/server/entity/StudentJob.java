@@ -9,25 +9,21 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Parent;
 
-
-@Entity
 public class StudentJob implements Serializable{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8098272788361413932L;
-	@Id
 	private Long id;
 	private String iconUrl;
 	private String title;
 	private String jobDescription;
-	private Date startDate;
-	private Date endDate;
-	private List<Long> assignedStudent;
+	private String startDate;
+	private String endDate;
+	private List<String> assignedStudents;
 	private String category;
-	@Parent
-	private transient Key<Roster> rosterKey;
+	
 	
 	public String getIconUrl() {
 		return iconUrl;
@@ -47,24 +43,7 @@ public class StudentJob implements Serializable{
 	public void setJobDescription(String jobDescription) {
 		this.jobDescription = jobDescription;
 	}
-	public Date getStartDate() {
-		return startDate;
-	}
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-	public Date getEndDate() {
-		return endDate;
-	}
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-	public List<Long> getAssignedStudent() {
-		return assignedStudent;
-	}
-	public void setAssignedStudent(List<Long> assignedStudent) {
-		this.assignedStudent = assignedStudent;
-	}
+	
 	public String getCategory() {
 		return category;
 	}
@@ -78,11 +57,11 @@ public class StudentJob implements Serializable{
 	public void setId(Long id){
 		this.id = id;
 	}
-	public Key<Roster> getRosterKey() {
-		return rosterKey;
+	public List<String> getAssignedStudents() {
+		return assignedStudents;
 	}
-	public void setRosterKey(Key<Roster> rosterKey) {
-		this.rosterKey = rosterKey;
+	public void setAssignedStudents(List<String> assignedStudents) {
+		this.assignedStudents = assignedStudents;
 	}
 
 	

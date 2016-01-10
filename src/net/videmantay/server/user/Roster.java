@@ -1,4 +1,4 @@
-package net.videmantay.server.entity;
+package net.videmantay.server.user;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,6 +14,13 @@ import java.util.Set;
 
 import java.util.UUID;
 
+import net.videmantay.server.entity.AppContact;
+import net.videmantay.server.entity.Badge;
+import net.videmantay.server.entity.GoogleService;
+import net.videmantay.server.entity.SeatingChart;
+import net.videmantay.server.entity.StudentGroup;
+import net.videmantay.server.entity.StudentJob;
+import net.videmantay.server.entity.TeacherInfo;
 import net.videmantay.shared.GradeLevel;
 
 import com.googlecode.objectify.Key;
@@ -21,7 +28,9 @@ import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.OnLoad;
 import com.googlecode.objectify.annotation.Serialize;
 
 @Cache
@@ -63,6 +72,11 @@ public class Roster extends DBObj implements Serializable{
 	
 	private Date endDate;
 	
+	//all map to a spreadsheet
+	private String rollBook;
+	private String gradeBook;
+	private String behaviorReport;
+	
 	@Serialize
 	private List<GoogleService> googleCalendars = new ArrayList<GoogleService>();
 	
@@ -71,10 +85,19 @@ public class Roster extends DBObj implements Serializable{
 
 	
 	//maybe a sorted set by last name???
-	private Set<Key<RosterStudent>>students = new HashSet<Key<RosterStudent>>();
+	private Set<Key<RosterStudent>>studentKeys = new HashSet<Key<RosterStudent>>();
+	
+	@Ignore
+	private Set<RosterStudent> rosterStudents = new HashSet<RosterStudent>();
 		
-	//Set<AppContact> contacts;
-	private List<Key<StudentJob>> studentJobs = new ArrayList<Key<StudentJob>>();
+	@Serialize
+	private StudentJob[] studentJobs;
+	
+	@Serialize
+	private SeatingChart[] seatingCharts;
+	
+	@Serialize
+	private Badge[] badges;
 	
 	private Set<Key<AppContact>> contacts = new HashSet<Key<AppContact>>();
 	
@@ -88,19 +111,19 @@ public class Roster extends DBObj implements Serializable{
 	
 	}
 	
-	public Set<Key<RosterStudent>> getStudents() {
-		return students;
+	public Set<Key<RosterStudent>> getStudentKeys() {
+		return studentKeys;
 	}
 
-	public void setStudents(Set<Key<RosterStudent>> students) {
-		this.students = students;
+	public void setStudentKeys(Set<Key<RosterStudent>> students) {
+		this.studentKeys = students;
 	}
 
-	public List<Key<StudentJob>> getStudentJobs() {
+	public StudentJob[] getStudentJobs() {
 		return studentJobs;
 	}
 
-	public void setStudentJobs(List<Key<StudentJob>> studentJobs) {
+	public void setStudentJobs(StudentJob[] studentJobs) {
 		this.studentJobs = studentJobs;
 	}
 
@@ -216,6 +239,38 @@ public class Roster extends DBObj implements Serializable{
 		this.rosterFolderId = rosterFolderId;
 	}
 	
+	public Set<RosterStudent> getRosterStudents() {
+		return rosterStudents;
+	}
+
+	public void setRosterStudents(Set<RosterStudent> rosterStudents) {
+		this.rosterStudents = rosterStudents;
+	}
+
+	public String getRollBook() {
+		return rollBook;
+	}
+
+	public void setRollBook(String rollBook) {
+		this.rollBook = rollBook;
+	}
+
+	public String getGradeBook() {
+		return gradeBook;
+	}
+
+	public void setGradeBook(String gradeBook) {
+		this.gradeBook = gradeBook;
+	}
+
+	public String getBehaviorReport() {
+		return behaviorReport;
+	}
+
+	public void setBehaviorReport(String behaviorReport) {
+		this.behaviorReport = behaviorReport;
+	}
+
 	public RosterDetail createDetail(){
 		RosterDetail detail = new RosterDetail();
 		detail.setId(this.id);
@@ -224,10 +279,20 @@ public class Roster extends DBObj implements Serializable{
 		detail.setGradeLevel(this.gradeLevel);
 		detail.setTeacherInfo(this.teacherInfo);
 		detail.setParent(Key.create(Roster.class, this.id));
+		detail.setOwnerId(this.getOwnerId());
 		return detail;
 	}
 
+	@Override
+	public boolean valid() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
+	@OnLoad void onLoad(){
+		//load students from keys
+		this.getRosterStudents().addAll(DB.db().load().keys(this.getStudentKeys()).values());
+	}
 
 	
 }

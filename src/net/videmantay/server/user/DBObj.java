@@ -1,11 +1,11 @@
-package net.videmantay.server.entity;
+package net.videmantay.server.user;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class DBObj implements Serializable {
+public abstract class DBObj implements Serializable, Validate {
 	
 	protected Date createOn;
 	protected String createdBy;

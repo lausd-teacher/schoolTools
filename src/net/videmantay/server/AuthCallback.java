@@ -6,8 +6,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.videmantay.server.entity.DB;
-
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.AuthorizationCodeResponseUrl;
 import com.google.api.client.auth.oauth2.Credential;
@@ -16,6 +14,8 @@ import com.google.api.client.extensions.appengine.auth.oauth2.AbstractAppEngineA
 import com.google.api.client.http.GenericUrl;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
+
+import net.videmantay.server.user.DB;
 
 public class AuthCallback extends
 		AbstractAppEngineAuthorizationCodeCallbackServlet {

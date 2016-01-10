@@ -7,72 +7,39 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
-@Entity
-public class BehaviorReport extends DBObj implements Serializable {
+
+public class StudentIncident implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8576611663190914147L;
 	
-	@Id
 	private Long id;
-
-	private Date createOn;
-	private String createdBy;
-	@Index
-	private Long rosterId;
-	@Index
+	
 	private Long studentId;
-	
-	
+	private String date;
 	private String eventId;
 	private String mediaUrl;
 	private String summary;
 	private Boolean parentsContacted;
-	private Integer positivePoints;
-	private Integer negativepoints;
+	private Integer pointValue;
 	@Index
 	private BehaviorType type;
 	
 	
 	//LOOK INTO BETTER QUALIFICATIONS
+	@Index
 	enum BehaviorType{SEVER, MODERATE, INCIDENTAL, GOOD, BETTER , BEST}
 
 
 	public Long getId() {
 		return id;
 	}
-
-
-	public Date getCreateOn() {
-		return createOn;
+	
+	public void setId(Long id){
+		this.id = id;
 	}
-
-
-	public void setCreateOn(Date createOn) {
-		this.createOn = createOn;
-	}
-
-
-	public String getCreatedBy() {
-		return createdBy;
-	}
-
-
-	public void setCreatedBy(String createdBy) {
-		this.createdBy = createdBy;
-	}
-
-	public Long getRosterId() {
-		return rosterId;
-	}
-
-
-	public void setRosterId(Long rosterId) {
-		this.rosterId = rosterId;
-	}
-
 
 	public Long getStudentId() {
 		return studentId;
@@ -88,12 +55,11 @@ public class BehaviorReport extends DBObj implements Serializable {
 		return eventId;
 	}
 
+	public void setEventId(String id) {
+		this.eventId = id;
+	};
 
-	public void setIncidentDate(String event) {
-		this.eventId = event;
-	}
-
-
+	
 	public String getMediaUrl() {
 		return mediaUrl;
 	}
@@ -134,22 +100,22 @@ public class BehaviorReport extends DBObj implements Serializable {
 	}
 
 
-	public Integer getPositivePoints() {
-		return positivePoints;
+	public Integer getPointValue() {
+		return pointValue;
 	}
 
 
-	public void setPositivePoints(Integer positivePoints) {
-		this.positivePoints = positivePoints;
+	public void setPointValue(Integer points) {
+		this.pointValue = points;
+	}
+	
+	public String getDate(){
+		return this.date;
+	}
+	
+	public void setDate(String date){
+		this.date = date;
 	}
 
-
-	public Integer getNegativepoints() {
-		return negativepoints;
-	}
-
-
-	public void setNegativepoints(Integer negativepoints) {
-		this.negativepoints = negativepoints;
-	};
+	
 }

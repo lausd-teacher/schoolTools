@@ -11,8 +11,8 @@ import com.google.appengine.api.oauth.OAuthRequestException;
 import com.google.appengine.api.oauth.OAuthServiceFactory;
 import com.google.appengine.api.users.*;
 
-import net.videmantay.server.entity.AppUser;
-import net.videmantay.server.entity.DB;
+import net.videmantay.server.user.AppUser;
+import net.videmantay.server.user.DB;
 
 
 

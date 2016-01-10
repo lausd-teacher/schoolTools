@@ -1,5 +1,7 @@
 package net.videmantay.server;
 
+import static net.videmantay.server.user.DB.*;
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,9 +23,8 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.googlecode.objectify.Key;
 
-import net.videmantay.server.entity.AppUser;
-import net.videmantay.server.entity.DB;
-import static net.videmantay.server.entity.DB.*;
+import net.videmantay.server.user.AppUser;
+import net.videmantay.server.user.DB;
 
 public class AppService extends HttpServlet {
 	

@@ -1,4 +1,4 @@
-package net.videmantay.server.entity;
+package net.videmantay.server.user;
 
 import java.io.Serializable;
 
@@ -8,6 +8,7 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Parent;
 
+import net.videmantay.server.entity.TeacherInfo;
 import net.videmantay.shared.GradeLevel;
 
 
@@ -33,6 +34,7 @@ public class RosterDetail extends DBObj implements Serializable {
 	
 	private GradeLevel gradeLevel;
 	
+	private transient String ownerId;
 	
 
 	public Long getId() {
@@ -83,6 +85,14 @@ public class RosterDetail extends DBObj implements Serializable {
 		this.gradeLevel = gradeLevel;
 	}
 
+	public String getOwnerId() {
+		return ownerId;
+	}
+
+	public void setOwnerId(String ownerId) {
+		this.ownerId = ownerId;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -111,6 +121,12 @@ public class RosterDetail extends DBObj implements Serializable {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public boolean valid() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	

@@ -1,24 +1,27 @@
 package net.videmantay.server.entity;
 
+import java.util.Set;
+
 import com.google.api.services.tasks.model.Tasks;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Parent;
 
+import net.videmantay.shared.GroupingType;
+
 
 
 public class StudentGroup {
 	
-	@Id
+	
 	private Long id;
 	
 	private String title;
 	
-	private String descript;
+	private String objective;
 	
-	@Ignore
-	private Tasks tasks;
+	private GroupingType type;
 	
 	private String backGroundColor;
 	
@@ -26,8 +29,6 @@ public class StudentGroup {
 	
 	private String borderColor;
 	
-	@Parent
-	private transient Key<Roster> rosterKey;
-	
+	private Set<String> students;
 	
 }

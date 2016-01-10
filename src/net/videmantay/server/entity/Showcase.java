@@ -9,6 +9,8 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 
+import net.videmantay.server.user.Roster;
+
 @Entity
 public class Showcase implements Serializable{
 

@@ -1,4 +1,4 @@
-package net.videmantay.server.entity;
+package net.videmantay.server.user;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -35,6 +35,9 @@ public class RosterSetting extends DBObj implements Serializable{
 	private Set<String> taskNames = new HashSet<>();
 	
 	private Set<String> calendarNames = new HashSet<>();
+	
+	private Boolean includeContacts = false;
+	
 
 	public Long getId() {
 		return id;
@@ -82,6 +85,12 @@ public class RosterSetting extends DBObj implements Serializable{
 	
 	public void setOverrideDefault(Boolean override){
 		overrideDefault = override;
+	}
+
+	@Override
+	public boolean valid() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	
