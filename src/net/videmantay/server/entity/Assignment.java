@@ -1,5 +1,6 @@
 package net.videmantay.server.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import net.videmantay.server.user.DBObj;
@@ -20,7 +21,7 @@ public class Assignment {
 	private String title;
 	
 
-	private Set<Standard>standards;
+	private Set<String>standards = new HashSet<String>();
 	
 	private Set<GradeLevel> gradeLevels;
 	
@@ -49,11 +50,11 @@ public class Assignment {
 		this.title = title;
 	}
 
-	public Set<Standard> getStandards() {
+	public Set<String> getStandards() {
 		return standards;
 	}
 
-	public void setStandards(Set<Standard> standards) {
+	public void setStandards(Set<String> standards) {
 		this.standards = standards;
 	}
 

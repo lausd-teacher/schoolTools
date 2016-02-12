@@ -1,8 +1,13 @@
 package net.videmantay.server.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.Language;
+
+import com.google.api.services.calendar.model.Event;
 import com.google.gdata.data.DateTime;
 
 public class GradedWork extends Assignment implements Serializable{
@@ -22,8 +27,15 @@ public class GradedWork extends Assignment implements Serializable{
 	
 	private String assignedDate = DateTime.now().toString();
 	
-	private Boolean finishedGrading;
+	private Boolean finishedGrading = false;
 	
+	private Event event = null;
+	
+	/*list of students the assignemt is assigned to */
+	/* key word 'ALL' case insensitive for all */
+	/*otherwise csv of students remove [] */
+	/*consider moving to assignment */
+	private Set<String> assignedTo =new HashSet<String>();
 	public String getEventId() {
 		return eventId;
 	}
@@ -79,4 +91,30 @@ public class GradedWork extends Assignment implements Serializable{
 		this.finishedGrading = status;
 	}
 
+
+	public Event getEvent() {
+		return event;
+	}
+
+
+	public void setEvent(Event event) {
+		this.event = event;
+	}
+
+
+	public Set<String> getAssignedTo() {
+		return assignedTo;
+	}
+
+
+	public void setAssignedTo(Set<String> assignedTo) {
+		this.assignedTo = assignedTo;
+	}
+	
+	public String getGradedbookCol(){
+		StringBuilder sb = new StringBuilder();
+		sb.append(this.getTitle() + "\n" + this.getSubject() + "\n" + this.getId());
+		return sb.toString();
+	}
+	
 }

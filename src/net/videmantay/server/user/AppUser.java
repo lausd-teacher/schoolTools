@@ -8,8 +8,6 @@ import java.util.Set;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Email;
-
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -30,11 +28,9 @@ public  class AppUser extends DBObj implements Serializable{
 	private static final long serialVersionUID = -6653229961000100210L;
 	
 	@Id
-	@NotNull
 	private Long id;
 	
 	@Index
-	@Email
 	private String acctId;//Google Id may be different than email 
 							// in cases where teacher want to use their email
 							//and not a videmantay.net acct
@@ -42,9 +38,7 @@ public  class AppUser extends DBObj implements Serializable{
 	
 	private String email;
 	
-	@NotNull
 	private String firstName;
-	@NotNull
 	private String lastName;
 	private String middleName;
 	private String extendedName;
@@ -54,13 +48,11 @@ public  class AppUser extends DBObj implements Serializable{
 	private String authToken;
 	private boolean loggedIn;
 
-	@NotNull
 	private  UserStatus userStatus;
 	private  Integer loginTimes;
 	private  Boolean isFirstLogin;
 	private String mainDriveFolder;
 	
-	@NotNull
 	private  Set<String> roles = new  HashSet<String>();
 	
 	public AppUser(){}

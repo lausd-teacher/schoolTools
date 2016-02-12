@@ -6,17 +6,11 @@ import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.StudentWorkStatus;
 import net.videmantay.shared.SubjectType;
 
-import com.googlecode.objectify.annotation.Index;
-
-
 
 public class StudentWork {
 
 	private Long id;
-	// query by gradedwork Key;
-	
-	
-	@Index
+
 	private Long rosterStudentId;
 	private Double percentage;
 	private Double pointsEarned;
@@ -132,6 +126,10 @@ public class StudentWork {
 
 	public void setStudentWorkStatus(StudentWorkStatus studentWorkStatus) {
 		this.studentWorkStatus = studentWorkStatus;
+	}
+	public void setStudentWorkStatus(String value){
+		value.trim();
+		this.studentWorkStatus = StudentWorkStatus.valueOf(value.toUpperCase());
 	}
 
 	

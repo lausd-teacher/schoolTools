@@ -1,6 +1,8 @@
 package net.videmantay.server;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +25,12 @@ import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.TasksScopes;
 import com.google.gdata.client.contacts.ContactsService;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
+import com.google.gdata.client.spreadsheet.WorksheetQuery;
+import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
+import com.google.gdata.data.spreadsheet.SpreadsheetFeed;
+import com.google.gdata.data.spreadsheet.WorksheetEntry;
+import com.google.gdata.data.spreadsheet.WorksheetFeed;
+import com.google.gdata.util.ServiceException;
 
 public class GoogleUtils {
 	private GoogleUtils(){}
@@ -102,8 +110,34 @@ public class GoogleUtils {
 		return folder;
 	}
 	
+	public static WorksheetEntry gradedWorkSheet(Credential cred, String id) throws MalformedURLException, IOException, ServiceException{
+		return worksheetEntry(cred,id,"gradedWork");
+	}
 	
+	public static WorksheetEntry gradebookSheet(Credential cred, String id) throws MalformedURLException, IOException, ServiceException{
+		return worksheetEntry(cred, id, "gradeBook");
+	}
 	
+	public static SpreadsheetEntry spreadsheetEntry(Credential cred, String sheetId) throws MalformedURLException, IOException, ServiceException{
+		SpreadsheetService sheets = sheets(cred);
+		SpreadsheetEntry spreadsheet = sheets.getFeed(spreadsheetURL(sheetId), SpreadsheetFeed.class).getEntries().get(0);
+		return spreadsheet;
+	}
+	
+	public static WorksheetEntry worksheetEntry(Credential cred, String sheetId, String title) throws MalformedURLException, IOException, ServiceException{
+		SpreadsheetService sheets = sheets(cred);
+		SpreadsheetEntry spreadsheet = spreadsheetEntry(cred, sheetId);
+		WorksheetQuery wQuery = new WorksheetQuery(spreadsheet.getWorksheetFeedUrl());
+		wQuery.setTitleQuery(title);
+		WorksheetEntry worksheet = sheets.getFeed(wQuery, WorksheetFeed.class).getEntries().get(0);
+		
+		return worksheet;
+	}
+	
+	static URL spreadsheetURL(String id) throws MalformedURLException{
+		return new URL(SheetsScope +"/spreadsheets/" + id +"/private/basic");
+		
+	}
 	static String redirectUri(HttpServletRequest req) {
 	    GenericUrl url = new GenericUrl(req.getRequestURL().toString());
 	    url.setRawPath("/oauth2callback");

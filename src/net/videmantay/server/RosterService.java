@@ -1,16 +1,16 @@
 package net.videmantay.server;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
+import java.lang.reflect.Field;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,7 +25,9 @@ import net.videmantay.server.user.Roster;
 import net.videmantay.server.user.RosterDetail;
 import net.videmantay.server.user.RosterSetting;
 import net.videmantay.server.user.RosterStudent;
+import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.StuffType;
+import net.videmantay.shared.SubjectType;
 import net.videmantay.shared.UserRoles;
 import static net.videmantay.server.GoogleUtils.*;
 import static net.videmantay.server.user.DB.*;
@@ -50,17 +52,21 @@ import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.labs.repackaged.com.google.common.base.CharMatcher;
-import com.google.common.collect.ImmutableList;
+import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterators;
+import com.google.common.primitives.Doubles;
+import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
 import com.google.gdata.client.contacts.ContactsService;
 import com.google.gdata.client.sites.SitesService;
+import com.google.gdata.client.spreadsheet.CellQuery;
+import com.google.gdata.client.spreadsheet.ListQuery;
 import com.google.gdata.client.spreadsheet.SpreadsheetQuery;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
 import com.google.gdata.client.spreadsheet.WorksheetQuery;
 import com.google.gdata.data.PlainTextConstruct;
+import com.google.gdata.data.spreadsheet.Cell;
 import com.google.gdata.data.spreadsheet.CellEntry;
 import com.google.gdata.data.spreadsheet.CellFeed;
 import com.google.gdata.data.spreadsheet.CustomElementCollection;
@@ -72,7 +78,6 @@ import com.google.gdata.data.spreadsheet.WorksheetEntry;
 import com.google.gdata.data.spreadsheet.WorksheetFeed;
 import com.google.gdata.util.ServiceException;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
 
@@ -377,13 +382,12 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		
 	
 		student.getAccess().add(student.getStudentGoogleId());	
-		AtomicLong generator = new AtomicLong();
-		student.setId( generator.incrementAndGet());
+		student.setId(new Date().getTime());
 		
 		drive = drive(cred);
 		calendar = calendar(cred);
 		//create folder for student
-		File studentFolder = folder(student.getStudentGoogleId());
+		File studentFolder = folder(student.getId().toString());
 		List<ParentReference> parent = parent(roster.getRosterFolderId());
 		studentFolder.setParents(parent);
 		List<Permission> permissions = new ArrayList<Permission>();
@@ -456,46 +460,90 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	
 	//GRADEDWORK CRUD
 	
-	private void deleteGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
-		String gwCheck = req.getParameter("student");
-		Long id = Longs.tryParse(gwCheck);
-		List<Key<Object>> keys = db().load().ancestor(Key.create(GradedWork.class, id)).keys().list();
-		db().delete().keys(keys);
-	}
-	
-	private void saveGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+	private void deleteGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException, ServiceException{
 		Credential cred = this.getCredential();
 		SpreadsheetService sheets = sheets(cred);
 		
+		String gwCheck = Preconditions.checkNotNull(req.getParameter("assignement"));
+		String gradebook = req.getParameter("gradebook");
+		GradedWork gradedWork = gson.fromJson(gwCheck, GradedWork.class);
+		
+		//delete row from gradebook///
+		
+		//Not a DB takes some working to get what you want 
+		//so query id col for the id should only be one. 
+		//the row number corresponds to the col in gradebook
+		//delete the col in gradebook
+		WorksheetEntry worksheet = gradedWorkSheet(cred, gradebook);
+		CellQuery cQuery = new CellQuery(worksheet.getCellFeedUrl());
+		cQuery.setRange("A2:A");
+		cQuery.setStringCustomParameter("id", gradedWork.getId().toString());
+		cQuery.setMaxResults(1);
+		CellEntry cellEntry = sheets.getFeed(cQuery, CellFeed.class).getEntries().get(0);
+		Cell cell = cellEntry.getCell();
+		//now get rid of record in gradedWork	
+		ListQuery lQuery = new ListQuery(worksheet.getListFeedUrl());
+		lQuery.setStringCustomParameter("id", gradedWork.getId().toString());
+		ListEntry entry = sheets.getFeed(lQuery, ListFeed.class).getEntries().get(0);
+		//if gradedwork deleted then all related student work should be deleted too.
+		
+		
+		//get the spreadsheet//
+		SpreadsheetEntry spreadsheet = sheets.getFeed(spreadsheetURL(gradebook), SpreadsheetFeed.class).getEntries().get(0);
+		for(String s: gradedWork.getAssignedTo()){
+			WorksheetQuery wQuery = new WorksheetQuery(spreadsheet.getWorksheetFeedUrl());
+			wQuery.setTitleQuery(s);
+			WorksheetEntry studentWorksheet = sheets.getFeed(wQuery, WorksheetFeed.class).getEntries().get(0);
+			
+			ListQuery slQuery = new ListQuery(studentWorksheet.getListFeedUrl());
+			slQuery.setStringCustomParameter("gradedworkId",gradedWork.getId().toString());
+			ListEntry sEntry = sheets.getFeed(slQuery, ListFeed.class).getEntries().get(0);
+			sEntry.delete();
+		}
+		
+		entry.delete();
+		//grive some boolean
+		
+	}
+	
+	private void saveGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException, ServiceException{
+		Credential cred = this.getCredential();
+		SpreadsheetService sheets = sheets(cred);
+		Boolean firstSave = false;
 		Calendar calendar = GoogleUtils.calendar(cred);
 		
 		String gwCheck = Preconditions.checkNotNull(req.getParameter("assignment"));
-		String eventCheck = Preconditions.checkNotNull(req.getParameter("event"));
 		String calId = Preconditions.checkNotNull("calendarId");
 		String gradebook = Preconditions.checkNotNull(req.getParameter("gradebook"));
 		
 		GradedWork gradedWork = gson.fromJson(gwCheck, GradedWork.class);
-		Event event = gson.fromJson(eventCheck, Event.class);
+		Event event = gradedWork.getEvent();
 		//if the id is null or zero then this is a first save/////
 		if(gradedWork.getId() == null || gradedWork.getId() ==  0){
+			//this is a firstSave
+			firstSave = true;
 			//assign id from uuid
-			Long id = new AtomicLong().getAndIncrement();
+			Long id = new Date().getTime();
 			gradedWork.setId(id);
+			} //id assigned
 		
 		//lets stuff json obj in description
 		//this way we get list from google and have access to our object
 		//essentially using google as the db  ... obviously bad practice
-		String descript = event.getDescription()+ "-* Kimchi-Assignment *-";
+		String descript = event.getDescription()+ "\n\n-* Kimchi-Assignment *-";
 		event.setDescription(descript);
 	
 		Event.ExtendedProperties exProps = new Event.ExtendedProperties();
 		Map<String, String> arg = ImmutableMap.of("gradedWork", gradedWork.getId().toString());
 		exProps.setPrivate(arg);
 		event.setExtendedProperties(exProps);
-		
+		if(firstSave){
 		event = calendar.events().insert(calId, event).execute();
+		}else{
+			event = calendar.events().update(calId, event.getId(), event).execute();
+		}
 		gradedWork.setEventId(event.getId());
-		SpreadsheetFeed ssf = sheets.getFeed(new URL(GoogleUtils.SheetsScope +"/spreadsheets/" + gradebook +"/private/basic"), SpreadsheetFeed.class);
+		SpreadsheetFeed ssf = sheets.getFeed(spreadsheetURL(gradebook), SpreadsheetFeed.class);
 		SpreadsheetEntry spreadsheet = ssf.getEntries().get(0);
 	
 		WorksheetQuery wQ = new WorksheetQuery(spreadsheet.getWorksheetFeedUrl());
@@ -505,7 +553,18 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		WorksheetEntry worksheet = wsf.getEntries().get(0);
 		
 		ListFeed lf = sheets.getFeed(worksheet.getListFeedUrl(), ListFeed.class);
-		ListEntry entry = new ListEntry();
+		ListEntry entry = null;
+		if(firstSave){
+		 entry = new ListEntry();
+		}
+		else{
+			List<ListEntry> rowList = lf.getEntries();
+			for(ListEntry row:rowList){
+				if(row.getTitle().getPlainText().equalsIgnoreCase(gradedWork.getId().toString())){
+					entry = row;
+				}
+			}
+		}
 		entry.setTitle(new PlainTextConstruct(gradedWork.getId().toString()));
 		CustomElementCollection cols  = entry.getCustomElements();
 		cols.setValueLocal("id", gradedWork.getId().toString());
@@ -516,129 +575,195 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		cols.setValueLocal("type", gradedWork.getGradedWorkType().name());
 		cols.setValueLocal("finishedGrading", gradedWork.isFinishedGrading().toString());
 		cols.setValueLocal("subject", gradedWork.getSubject().name());
-		cols.setValueLocal("dateAssigned", gradedWork.getAssignedDate().);
+		cols.setValueLocal("dateAssigned", gradedWork.getAssignedDate());
+		cols.setValueLocal("assignedTo", 
+				CharMatcher.anyOf("[]").removeFrom(Iterators.toString(gradedWork.getStandards().iterator())));
 		cols.setValueLocal("standards", 
 		CharMatcher.anyOf("[]").removeFrom(Iterators.toString(gradedWork.getStandards().iterator())));
+		if(firstSave){
+		//insert entry
+		sheets.insert(worksheet.getListFeedUrl(), entry);
 	
 		}else{  ////////////UPDATE the GW /////////////////////
 			//check that everything is kosher/////
-			GradedWork gw = db().load().type(GradedWork.class).filter("id", gradedWork.getId()).filter("rosterId", rosId).first().now();
-			if(gw == null){
-				//throw an exception
-			}else{
-				event.setDescription(event.getDescription()+"-* Kimchi-Assignment *-");
-				event = calendar.events().update(gradedWork.getCalendarId(), event.getId(), event).execute();
-				db().save().entity(gradedWork);
-			}
+			
+			entry.update();
 		}
 		
-		
+		//send the entry and event backacross the wire;
 		
 		
 	}
 	
 	private void listGradedWorks(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
 		//return google cal events
-		String rosterCheck = Preconditions.checkNotNull(req.getParameter("roster"));
 		String calId = Preconditions.checkNotNull(req.getParameter("calendar"));
-		Long rosId  = Preconditions.checkNotNull(Longs.tryParse(rosterCheck), "Must have ligitimate roster");
-		Preconditions.checkArgument(AppValid.rosterCheck(rosId), "Must have a ligitimate roster");
+		String pageToken  = Preconditions.checkNotNull("cursor");
+		
 		
 		Credential cred = this.getCredential();
 		Calendar cal = GoogleUtils.calendar(cred);
-		cal.events().list(calId).setQ("-* Kimchi-Assignment *-").setFields("").execute();
-		
-		
+		Events events = cal.events().list(calId).setQ("-* Kimchi-Assignment *-")
+		.setFields("summary,description,start,end,attachements").setMaxResults(50).setPageToken(pageToken).execute();
 	}
 	
-	private void getGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+	private void listGradedWorksFromSheet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServiceException{
+		Credential cred = this.getCredential();
+		SpreadsheetService sheets = sheets(cred);
+		String spreadsheetId = Preconditions.checkNotNull(req.getParameter("gradebook"));
+		String cursor = Preconditions.checkNotNull(req.getParameter("cursor"));
+		
+		
+		
+		WorksheetEntry gradedWorkSheet = gradedWorkSheet(cred,spreadsheetId);
+		
+		ListQuery lQuery = new ListQuery(gradedWorkSheet.getListFeedUrl());
+		lQuery.setReverse(true);
+		lQuery.setStartIndex(Ints.tryParse(cursor));
+		
+		List<ListEntry> gradedWorkList = sheets.getFeed(lQuery, ListFeed.class).getEntries();
+		List<GradedWork> gwList = new ArrayList<GradedWork>();
+		for(ListEntry l: gradedWorkList){
+			gwList.add(this.recordToGradedWork(l));
+		}
+		
+		//return the gwtList
+	}
+	
+	
+	private void getGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException, ServiceException{
 		
 		//event should include gw id and return this gw and all related student works
 		//param id of gradedwork roster Id and current user
-		String userCheck = Preconditions.checkNotNull(req.getParameter("user"));
-		String rosterCheck = Preconditions.checkNotNull(req.getParameter("roster"));
-		String gwCheck = Preconditions.checkNotNull(req.getParameter("assignment"));
-		Long rosterId = Longs.tryParse(rosterCheck);
-		Long gwId = Longs.tryParse(gwCheck);
 		
-		AppUser user = gson.fromJson(userCheck, AppUser.class);
-		GradedWork gradedWork = db().load().type(GradedWork.class).id(gwId).now();
-		//check if user is on list
-		if(gradedWork.getAccess().contains(user.getAcctId())){
-			//proceed
-			//load the studentwork
-			List<StudentWork> studentWorks = ImmutableList.copyOf(db().load().keys(gradedWork.getStudentWorkKeys()).values());
-			gradedWork.getStudentWorks().addAll(studentWorks);
-			//send it over the wire
-		}
-		
-		
-		
+		String gradebook = Preconditions.checkNotNull(req.getParameter("gradebook"));
+		String assignmentId = Preconditions.checkNotNull(req.getParameter("assignment"));
+	
+		Credential cred = this.getCredential();
+		WorksheetEntry gradedWorkSheet = gradedWorkSheet(cred, gradebook);
+		ListQuery lQuery = new ListQuery(gradedWorkSheet.getListFeedUrl());
+		lQuery.setMaxResults(1);
+		lQuery.setStringCustomParameter("id", assignmentId);
+		ListEntry gradedWork = sheets(cred).getFeed(lQuery, ListFeed.class).getEntries().get(0);
+			
 	}
 	
-	private void manageAssignment(HttpServletRequest req, HttpServletResponse res){
-		//expect two arrays here one for assignedTo and unAssignedTo
+	private void manageStudentWork(HttpServletRequest req, HttpServletResponse res) throws MalformedURLException, IOException, ServiceException{
+		String gradebook = Preconditions.checkNotNull(req.getParameter("gradebook"));
 		String assignCheck = Preconditions.checkNotNull(req.getParameter("assign"));
 		String unassignCheck = Preconditions.checkNotNull(req.getParameter("unassign"));
-		String gwCheck = Preconditions.checkNotNull(req.getParameter("assignment"));
-		
-		RosterStudent[] assign = gson.fromJson(assignCheck, RosterStudent[].class);
-		RosterStudent[] unassign = gson.fromJson(unassignCheck, RosterStudent[].class);
-		GradedWork gw = gson.fromJson(gwCheck, GradedWork.class);
-		req.setAttribute("assign", assign);
-		req.setAttribute("assignment", gw);
-		req.setAttribute("unassign", unassign);
-		try {
-			unassignGradedWork(req,res);
-		} catch (IOException | ServletException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		try {
-			assignGradedWork(req,res);
-		} catch (IOException | ServletException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
-	private void unassignGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
-			RosterStudent[] students = (RosterStudent[]) req.getAttribute("unassign");
-			GradedWork gradedWork = (GradedWork)req.getAttribute("assignment");
-			
-	}
-	
-	private void assignGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
-		
-		//Gradedwork must be explicitly assigned so that takes the guess work out of creating calendar events
-		//is single calendar or multiple????
-		//first step must be created then assigned or wait in limbo so index on isAssigned
-		
-		//gradedwork needed
-		GradedWork gradedWork = gson.fromJson(req.getParameter("gradedWork"), GradedWork.class);
-		//getting back an array of string
-		String studentsCheck = Preconditions.checkNotNull(req.getParameter("students"));
-		Long[] studentList = gson.fromJson(studentsCheck, Long[].class);
-		List<StudentWork> studentWorkList = new ArrayList<StudentWork>();
-		for(Long s:studentList){
-			StudentWork sw = new StudentWork();
-			sw.setGradedWorkId(gradedWork.getId());
-			sw.setRosterStudentId(s);
-			studentWorkList.add(sw);
-		}
-		
-		//assign to these students
-		gradedWork.setStudentWorkKeys(db().save().entities(studentWorkList).now().keySet());
-		db().save().entity(gradedWork);
 
+		StudentWork[] assign  = gson.fromJson(assignCheck, StudentWork[].class);
+		StudentWork[] unassign  = gson.fromJson(unassignCheck, StudentWork[].class);
+		
+		//update the gradedWork
+		Credential cred = this.getCredential();
+		SpreadsheetService sheets = sheets(cred);
+		
 	}
 	
-		private void saveStudentWork(HttpServletRequest req, HttpServletResponse res){
-			String studentCheck = Preconditions.checkNotNull(req.getParameter("studentWork"));
-			StudentWork[] studentWork = gson.fromJson(studentCheck, StudentWork[].class);
-			db().save().entities(studentWork);
+	private void unassignStudentWork(StudentWork[] studentWork,String gradebook) throws MalformedURLException, IOException, ServiceException{
+	
+		Credential cred = this.getCredential();
+		SpreadsheetService sheets = sheets(cred);
+		SpreadsheetEntry spreadsheet = sheets.getFeed(spreadsheetURL(gradebook), SpreadsheetFeed.class).getEntries().get(0);
+		WorksheetQuery wQuery = new WorksheetQuery(spreadsheet.getWorksheetFeedUrl());
+		for(StudentWork sw : studentWork){
+			wQuery.setTitleExact(true);
+			wQuery.setTitleQuery(sw.getRosterStudentId().toString());
+			WorksheetEntry worksheet = sheets.getFeed(wQuery, WorksheetFeed.class).getEntries().get(0);
+			
+			ListQuery lQuery = new ListQuery(worksheet.getListFeedUrl());
+			lQuery.setStringCustomParameter("id", sw.getId().toString());
+			ListEntry entry = sheets.getFeed(lQuery, ListFeed.class).getEntries().get(0);
+			//do some checking
+			entry.delete();
+		}
+			
+	}
+	
+
+		private void assignStudentWork(StudentWork[] studentWork,String gradebook) throws IOException, ServiceException, IllegalArgumentException, IllegalAccessException{
+		
+			List<StudentWork> updateList = new ArrayList<StudentWork>();
+			for(int i = 0; i< studentWork.length; i++){
+				if(studentWork[i].getId()!= null && studentWork[i].getId() != 0){
+					updateList.add(Arrays.asList(studentWork).remove(i));
+				}
+
+			}
+			/////////////update studentWowrk/////
+			Boolean updateUpdated = false;
+			if(updateList.size()> 0){
+			updateUpdated = updateStudentWork(updateList,gradebook);
+			}
+			
+			Boolean savedUpdated = false;
+			
+			if(studentWork.length > 0){
+				savedUpdated = insertStudentWork(studentWork, gradebook);
+			}
+			
+			//if both are saved send them back as one array
+			if(savedUpdated && updateUpdated){
+			updateList.addAll(Arrays.asList(studentWork));
+			}else{
+				//send an error//
+			}
+			
+			
+			
 			
 		}
+		
+		private Boolean insertStudentWork(StudentWork[] sw, String sheetId) throws IOException, ServiceException, IllegalArgumentException, IllegalAccessException{
+			Credential cred = this.getCredential();
+			SpreadsheetService sheets = sheets(cred);
+			
+		
+			URL	url = spreadsheetURL(sheetId);
+			
+			SpreadsheetEntry spreadsheet = sheets.getEntry(url, SpreadsheetEntry.class);
+			URL wsUrl = spreadsheet.getWorksheetFeedUrl();
+			WorksheetQuery wQuery = new WorksheetQuery(wsUrl);
+			//iterate the list and get studentwork for all the sheets
+			for(StudentWork s: sw){
+				s.setId(new Date().getTime());
+				wQuery.setTitleQuery(s.getRosterStudentId().toString());
+				WorksheetEntry worksheet = sheets.getFeed(wQuery, WorksheetFeed.class).getEntries().get(0);
+				ListEntry listEntry = studentWorkToRecord(s);
+				sheets.insert(worksheet.getListFeedUrl(), listEntry);
+			}	
+			
+			return true;
+		}
+		
+		private Boolean updateStudentWork(List<StudentWork> studentWork,String sheetId) throws IOException, ServiceException, IllegalArgumentException, IllegalAccessException{
+			Credential cred = this.getCredential();
+			SpreadsheetService sheets = sheets(cred);
+			URL url = spreadsheetURL(sheetId);
+			SpreadsheetEntry spreadsheet = sheets.getEntry(url, SpreadsheetEntry.class);
+			URL wsUrl = spreadsheet.getWorksheetFeedUrl();
+			WorksheetQuery wQuery = new WorksheetQuery(wsUrl);
+			for(StudentWork s: studentWork){
+				wQuery.setTitleQuery(s.getRosterStudentId().toString());
+				WorksheetEntry worksheet = sheets.getFeed(wQuery, WorksheetFeed.class).getEntries().get(0);
+				ListQuery lQuery = new ListQuery(worksheet.getListFeedUrl());
+				lQuery.setStringCustomParameter("id", s.getId().toString());
+				lQuery.setMaxResults(1);
+				ListFeed lFeed = sheets.getFeed(lQuery, ListFeed.class);
+				ListEntry entry = lFeed.getEntries().get(0);
+					for(Field f:s.getClass().getDeclaredFields()){
+					f.setAccessible(true);
+					entry.getCustomElements().setValueLocal(f.getName(), f.get(s).toString());
+				}//inner for
+				entry.update();	
+			}//outer for
+			
+			return true;
+		}
+		
+
 		
 	///STUDENT INCIDENT CRUD
 	private void updateStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
@@ -685,7 +810,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		RosterStudent student = gson.fromJson(studentCheck, RosterStudent.class);
 		Event event = gson.fromJson(eventCheck , Event.class);
 		
-		incident.setId(new AtomicLong().incrementAndGet());
+		incident.setId(new Date().getTime());
 		Credential cred = this.getCredential();
 		Calendar calendar = calendar(cred);
 		ExtendedProperties ext = new ExtendedProperties();
@@ -713,66 +838,66 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	private void getStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
 		
 	
-	///LESSON CRUD
-	private void createLesson(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void deleteLesson(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void saveLesson(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void searchLesson(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void listLesson(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void getLesson(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
 	
+	private GradedWork recordToGradedWork(ListEntry l){
+		
+		GradedWork gw = new GradedWork();
+		gw.setTitle(l.getCustomElements().getValue("title"));
+		gw.setDescription(l.getCustomElements().getValue("description"));
+		gw.setEventId(l.getCustomElements().getValue("eventId"));
+		gw.setFinishedGrading(Boolean.valueOf(l.getCustomElements().getValue("finishedGrading")));
+		gw.setGradedWorkType(GradedWorkType.valueOf(l.getCustomElements().getValue("type").toUpperCase()));
+		gw.setId(Long.valueOf(l.getCustomElements().getValue("id")));
+		gw.setPointsPossible(Double.valueOf(l.getCustomElements().getValue("pointsPossible")));
+		gw.setSubject(SubjectType.valueOf(l.getCustomElements().getValue("subject").toUpperCase()));
+		gw.setMediaUrl(l.getCustomElements().getValue("mediaURL"));
+		List<String>assignedTo = Splitter.on(',').splitToList(l.getCustomElements().getValue("assignedTo"));
+		gw.getAssignedTo().addAll(assignedTo);
+		List<String>standards = Splitter.on(',').splitToList(l.getCustomElements().getValue("standards"));
+		gw.getStandards().addAll(standards);
+		
+		return gw;
+		
+	}
+	private ListEntry gradedWorkToRecord(GradedWork gradedWork){
+		ListEntry entry = new ListEntry();
+		entry.setTitle(new PlainTextConstruct(gradedWork.getId().toString()));
+		CustomElementCollection cols  = entry.getCustomElements();
+		cols.setValueLocal("id", gradedWork!=null?gradedWork.getId().toString():Long.toString(new Date().getTime()));
+		cols.setValueLocal("title", gradedWork.getTitle());
+		cols.setValueLocal("description", gradedWork.getDescription());
+		cols.setValueLocal("pointsPossible", gradedWork.getPointsPossible().toString());
+		cols.setValueLocal("eventId", gradedWork.getEventId());
+		cols.setValueLocal("type", gradedWork.getGradedWorkType().name());
+		cols.setValueLocal("finishedGrading", gradedWork.isFinishedGrading().toString());
+		cols.setValueLocal("subject", gradedWork.getSubject().name());
+		cols.setValueLocal("dateAssigned", gradedWork.getAssignedDate());
+		cols.setValueLocal("assignedTo", 
+		CharMatcher.anyOf("[]").removeFrom(Iterators.toString(gradedWork.getAssignedTo().iterator())));
+		cols.setValueLocal("standards", 
+		CharMatcher.anyOf("[]").removeFrom(Iterators.toString(gradedWork.getStandards().iterator())));
+		return entry;
+	}
 	
-	//QUIZ CRUD
-	private void createQuiz(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void deleteQuiz(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void saveQuiz(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void queryQuiz(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void searchQuiz(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void listQuiz(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void getQuiz(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
+	private StudentWork recordToStudentWork(ListEntry l){
+		StudentWork sw = new StudentWork();
+		sw.setId(Longs.tryParse(l.getCustomElements().getValue("id")));
+		sw.setMediaUrl(l.getCustomElements().getValue("studentUrl"));
+		sw.setMessage(l.getCustomElements().getValue("message"));
+		sw.setRosterStudentId(Longs.tryParse(l.getCustomElements().getValue("studentId")));
+		sw.setDateTaken(l.getCustomElements().getValue("dateTaken"));
+		sw.setPointsEarned(Doubles.tryParse(l.getCustomElements().getValue("pointsEarned")));
+		sw.setStudentWorkStatus(l.getCustomElements().getValue("status"));
+		
+		return sw;	
+	}
 	
-	//QUIZ QUESTION CRUD
-	private void createQuizQuestion(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void deleteQuizQuestion(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void saveQuizQuestion(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void queryQuizQuestion(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void searchQuizQuestion(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void listQuizQuestion(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void getQuizQuestion(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	
-	//CCSTANDARD CRUD
-	private void createCCStandard(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void deleteCCStandard(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void saveCCStandard(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void queryCCStandard(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void searchCCStandard(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void listCCStandard(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void getCCStandard(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	
-	//EDUCATIONAL LINK CRUD
-	private void createEducationalLink(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void deleteEducationalLink(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void saveEducationalLink(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void queryEducationalLink(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void searchEducationalLink(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void listEducationalLink(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void getEducationalLink(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	
-	//VOCAB CRUD
-	private void createVocab(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void deleteVocab(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void saveVocab(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void queryVocab(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void searchVocab(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void listVocab(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void getVocab(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	
-	//VOCAB LIST CRUD
-	private void createVocabList(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void deleteVocabList(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void saveVocabList(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void queryVocabList(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void searchVocabList(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void listVocabList(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
-	private void getVocabList(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{}
+	private ListEntry studentWorkToRecord(StudentWork sw) throws IllegalArgumentException, IllegalAccessException{
+		ListEntry listEntry = new ListEntry();
+		for(Field f: StudentWork.class.getDeclaredFields()){
+			f.setAccessible(true);
+			listEntry.getCustomElements().setValueLocal(f.getName(), f.get(sw).toString());
+		}
+		return listEntry;
+	}
 }

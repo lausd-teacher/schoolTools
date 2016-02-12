@@ -4,22 +4,10 @@ import static com.googlecode.objectify.ObjectifyService.*;
 
 import java.util.Collection;
 import java.util.List;
+
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
-
-import net.videmantay.server.entity.EducationalLink;
-import net.videmantay.server.entity.GradedWork;
-import net.videmantay.server.entity.Lesson;
-import net.videmantay.server.entity.SeatingChart;
-import net.videmantay.server.entity.SeatingChartDetail;
-import net.videmantay.server.entity.Showcase;
-import net.videmantay.server.entity.Standard;
-import net.videmantay.server.entity.StandardReview;
-import net.videmantay.server.entity.StudentIncident;
-import net.videmantay.server.entity.StudentJob;
-import net.videmantay.server.entity.StudentWork;
-import net.videmantay.server.entity.Vocab;
-import net.videmantay.server.entity.VocabList;
+import com.googlecode.objectify.Work;
 
 
 public class DB<T> {
@@ -32,7 +20,7 @@ public class DB<T> {
 		factory().register(AppUser.class);
 		
 		//Roster and Deps
-		factory().register(Roster.class);
+		/*factory().register(Roster.class);
 		factory().register(RosterStudent.class);
 		factory().register(GradedWork.class);
 		factory().register(StudentWork.class);
@@ -48,7 +36,7 @@ public class DB<T> {
 		factory().register(VocabList.class);
 		factory().register(Standard.class);
 		factory().register(StandardReview.class);
-		factory().register(EducationalLink.class);
+		factory().register(EducationalLink.class);*/
 		
 	}
 	
@@ -76,8 +64,14 @@ public class DB<T> {
   
   
   public  Key<T> save(T clazz){
-		
-		return DB.db().save().entity(clazz).now();
+	
+		return ofy().transactNew(new Work<Key<T>>(){
+
+			@Override
+			public Key<T> run() {
+				// TODO Auto-generated method stub
+				return db().save().entity(clazz).now();
+			}});
 	}
 	
 	public  void delete(T entity){
@@ -85,7 +79,13 @@ public class DB<T> {
 	}
 	
 	public  List<T> list(){
-		return DB.db().load().type(clazz).list();
+		return DB.db().transactNew(new Work<List<T>>(){
+
+			@Override
+			public List<T> run() {
+				return DB.db().load().type(clazz).list();
+			}});
+		
 	}
 	
 	public  List<T> query(String condition, Object value){

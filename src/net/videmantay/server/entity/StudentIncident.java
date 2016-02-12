@@ -3,6 +3,7 @@ package net.videmantay.server.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.google.api.services.calendar.model.Event;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
@@ -20,6 +21,7 @@ public class StudentIncident implements Serializable {
 	private Long studentId;
 	private String date;
 	private String eventId;
+	private Event event;
 	private String mediaUrl;
 	private String summary;
 	private Boolean parentsContacted;
@@ -60,6 +62,14 @@ public class StudentIncident implements Serializable {
 	};
 
 	
+	public Event getEvent() {
+		return event;
+	}
+
+	public void setEvent(Event event) {
+		this.event = event;
+	}
+
 	public String getMediaUrl() {
 		return mediaUrl;
 	}

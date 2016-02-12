@@ -1,6 +1,7 @@
 package net.videmantay.server;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,20 +16,17 @@ import org.apache.commons.validator.routines.UrlValidator;
 
 import net.videmantay.server.user.AppUser;
 import net.videmantay.server.user.DB;
-import net.videmantay.server.user.RosterDetail;
-import net.videmantay.server.user.RosterStudent;
+import static net.videmantay.admin.AdminUrl.*;
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.CharMatcher;
+import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
-import com.googlecode.objectify.cmd.QueryKeys;
-
 import static com.googlecode.objectify.ObjectifyService.ofy;
 import static net.videmantay.server.user.DB.*;
-
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Strings;
 
 
 /*
@@ -39,16 +37,11 @@ import com.google.common.base.Strings;
 @SuppressWarnings("serial")
 public class AdminService  extends HttpServlet {
 	
-	private final String ADMIN_PAGE = "/admin";
-	private final  String USER_SAVE ="/admin/saveuser";
-	private final String USER_DELETE = "/admin/deleteuser"; 
-	private final String USER_GET = "/admin/getuser";
-	private final String USER_LIST = "/admin/listusers";
-	private final String USER_PIC_URL = "/admin/getuserpicurl";
+	
 	private final String BLOBSTORE_HANDLER = "/admin/handleblobstore";
 	private final Logger log = Logger.getLogger("Admin Service");
 	
-	private Gson gson = new Gson();
+	private final Gson gson = new Gson();
 	
 
 	
@@ -75,7 +68,6 @@ public class AdminService  extends HttpServlet {
 			case ADMIN_PAGE: getAdminView(req, res);break;//get amdin page
 			case USER_GET : getUserAcct(req, res);break ;///end first gate
 			case USER_LIST: listUserAccts(req, res);break     ;
-			case USER_SAVE : saveUserAcct(req, res);break; 
 			}
 		}
 		if(req.getMethod().equalsIgnoreCase("POST")){
@@ -160,7 +152,7 @@ public class AdminService  extends HttpServlet {
 							
 			AppUser modify =	db().load().type(AppUser.class).id(acct.getId()).now();
 			log.log(Level.INFO, "acct from the DB by id is : " + gson.toJson(modify));
-			modify.setAcctId(acct.getAcctId());
+			modify.setAcctId(Preconditions.checkNotNull(acct.getAcctId()));
 			modify.setFirstName(acct.getFirstName());
 			modify.setLastName(acct.getLastName());
 			modify.setRoles(acct.getRoles());
@@ -171,8 +163,14 @@ public class AdminService  extends HttpServlet {
 			modify.setAuthToken(acct.getAuthToken());
 			modify.setEmail(acct.getEmail());
 			modify.setTitle(acct.getTitle());
+			modify.setUserStatus(acct.getUserStatus());
+			ofy().transactNew(new VoidWork(){
+
+				@Override
+				public void vrun() {
+					appUserDB.save(modify);
+				}});
 			
-			appUserDB.save(modify);
 				
 			}//end else account will be update
 	
@@ -277,14 +275,17 @@ public class AdminService  extends HttpServlet {
 	
 	}
 	
-private void validateAppUser(final HttpServletRequest req, final HttpServletResponse res,final AppUser appUser) throws IOException, ServletException{
+	private void validateAppUser(final HttpServletRequest req, final HttpServletResponse res,final AppUser appUser) throws IOException, ServletException{
 	EmailValidator emailV =  EmailValidator.getInstance();
+	boolean urlValid = false;
+	if(!appUser.getPicUrl().isEmpty()){
 	UrlValidator urlV = UrlValidator.getInstance();
+	urlValid = urlV.isValid(appUser.getPicUrl());
+	}
 	//one big if to validate the user 
-	if(!emailV.isValid(appUser.getAcctId())
-		&&!urlV.isValid(appUser.getPicUrl())
-		&& Strings.isNullOrEmpty(appUser.getFirstName())
-		&& Strings.isNullOrEmpty(appUser.getLastName())){
+	if(!emailV.isValid(appUser.getAcctId())||urlValid
+		|| Strings.isNullOrEmpty(appUser.getFirstName())
+		|| Strings.isNullOrEmpty(appUser.getLastName())){
 		//send back to client 
 		
 			System.out.println("Invalid user");
@@ -298,5 +299,5 @@ private void validateAppUser(final HttpServletRequest req, final HttpServletResp
 	
 		
 }
-	
+
 }
