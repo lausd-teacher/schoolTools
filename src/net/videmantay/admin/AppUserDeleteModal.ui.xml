@@ -1,0 +1,20 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui" >
+	<m:MaterialModal ui:field="deleteModal">
+		<m:MaterialModalContent>
+			<g:HTMLPanel>
+				<div><h4>Are you sure you want to delte user </h4>
+					<h6 ui:field="deletedUserHeading"></h6>
+				</div>
+			</g:HTMLPanel>
+		</m:MaterialModalContent>
+		<m:MaterialModalFooter>
+		<g:HorizontalPanel>
+			<m:MaterialAnchorButton ui:field="cancelDeleteBtn" text="Cancel" backgroundColor="red" waves="LIGHT"/>
+			<m:MaterialAnchorButton ui:field="confirmDeleteBtn" text="OK" waves="LIGHT"/>
+		</g:HorizontalPanel>
+		</m:MaterialModalFooter>
+	</m:MaterialModal>
+</ui:UiBinder> 

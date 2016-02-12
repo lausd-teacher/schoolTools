@@ -1,0 +1,80 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:m="urn:import:gwt.material.design.client.ui" 
+	xmlns:h="urn:import:gwt.material.design.client.ui.html"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	</ui:style>
+	<m:MaterialCard ui:field="card">
+		<m:MaterialCardContent>
+			<m:MaterialCardTitle text="Users" iconType="PERSON"
+				iconPosition="LEFT" textColor="black" />
+			<g:FormPanel ui:field="form">
+				<g:HTMLPanel>
+					<m:MaterialRow>
+						<m:MaterialColumn>
+							<m:MaterialLabel text="Title:"></m:MaterialLabel>
+						</m:MaterialColumn>
+						<m:MaterialColumn>
+							<m:MaterialListBox ui:field="title" />
+						</m:MaterialColumn>
+					</m:MaterialRow>
+					<m:MaterialInput ui:field="acctId" type="EMAIL"
+						required="true" placeholder="account id" />
+					<h:Label ui:field="acctIdError" styleName="errorLabel" text="Must be valid email" textColor="red lighten-1"/>
+					<m:MaterialInput ui:field="firstName" type="TEXT"
+						required="true" placeholder="first name" />
+					<h:Label ui:field="firstNameError" styleName="errorLabel" text="This field is required" textColor="red lighten-1"/>
+					<m:MaterialInput ui:field="lastName" type="TEXT"
+						required="true" placeholder="last name" />
+					<h:Label ui:field="lastNameError" styleName="errorLabel" text="This field is required" textColor="red lighten-1"/>
+					<m:MaterialInput type="TEXT" ui:field="middleName"
+						placeholder="middle name" />
+					<m:MaterialInput type="TEXT" ui:field="extendedName"
+						placeholder="extended name" />
+					<h:Div>
+						<m:MaterialLabel text="Inactive:"></m:MaterialLabel>
+						<m:MaterialCheckBox ui:field="inactiveCheck" value="false" visible="true" />
+					</h:Div>
+					<m:MaterialLabel text="Roles:"></m:MaterialLabel>
+					<h:Label ui:field="roleError" styleName="errorLabel" text="You must assign a role to the user" textColor="red" />
+					<m:MaterialRow width="100%">
+						<m:MaterialCard ui:field="rolesSelectCard"
+							backgroundColor="green lighten-5">
+							<m:MaterialCardContent>
+								<h:Div grid="m3 3">
+									<m:MaterialLabel text="Student" />
+									<m:MaterialCheckBox ui:field="studentCheck" />
+								</h:Div>
+								<h:Div grid="m3 3">
+									<m:MaterialLabel text="Teacher" />
+									<m:MaterialCheckBox ui:field="teacherCheck" />
+								</h:Div>
+								<h:Div grid="m3 3">
+									<m:MaterialLabel text="Faculty" />
+									<m:MaterialCheckBox ui:field="facultyCheck" />
+								</h:Div>
+								<h:Div grid="m3 3">
+									<m:MaterialLabel text="Admin" />
+									<m:MaterialCheckBox ui:field="adminCheck" />
+								</h:Div>
+							</m:MaterialCardContent>
+						</m:MaterialCard>
+					</m:MaterialRow>
+				</g:HTMLPanel>
+			</g:FormPanel>
+		</m:MaterialCardContent>
+		<m:MaterialCardAction>
+			<m:MaterialRow>
+				<m:MaterialColumn>
+					<m:MaterialAnchorButton ui:field="submitBtn"
+						text="Submit" backgroundColor="green" waves="LIGHT" />
+				</m:MaterialColumn>
+				<m:MaterialColumn>
+					<m:MaterialAnchorButton ui:field="cancelBtn"
+						text="Cancel" backgroundColor="red" waves="LIGHT" />
+				</m:MaterialColumn>
+			</m:MaterialRow>
+		</m:MaterialCardAction>
+	</m:MaterialCard>
+</ui:UiBinder> 

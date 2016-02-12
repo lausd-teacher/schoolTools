@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.7.0//EN" "http://google-web-toolkit.googlecode.com/svn/tags/2.7.0/distro-source/core/src/gwt-module.dtd">
+<module rename-to="teacher">
+	<inherits name="com.google.gwt.query.Query" />
+	<inherits name="org.gwtbootstrap3.GwtBootstrap3CDN" />
+	<inherits name="gwt.material.design.GwtMaterialDesignBasic" />
+	<inherits name="gwt.material.design.themes.GwtMaterialThemeGreen" />
+	<source path="teacher" />
+	<entry-point class="net.videmantay.teacher.Teacher"></entry-point>
+</module>
