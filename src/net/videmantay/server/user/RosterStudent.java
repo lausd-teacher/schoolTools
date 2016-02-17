@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Serialize;
@@ -52,14 +53,15 @@ public class RosterStudent extends DBObj implements  Comparator<RosterStudent> {
 	@Parent
 	private Key<Roster> rosterKey;
 	
+	@Ignore
+	private RosterDetail rosterDetail;
 	
 	private String studentFolderId;
 	private String studentCalId;
 	private String studentTasksId;
 	
 	public RosterStudent(){
-		AtomicLong al = new AtomicLong();
-		this.id = al.incrementAndGet();
+		
 	}
 	public Date getCreateOn() {
 		return createOn;
@@ -157,6 +159,13 @@ public class RosterStudent extends DBObj implements  Comparator<RosterStudent> {
 	}
 	public void setRosterKey(Key<Roster> rosterKey) {
 		this.rosterKey = rosterKey;
+	}
+	public RosterDetail getRosterDetail(){
+		return this.rosterDetail;
+	}
+	
+	public void setRostserDetail(RosterDetail rosDe){
+		this.rosterDetail = rosDe;
 	}
 	public void setId(Long id) {
 		this.id = id;

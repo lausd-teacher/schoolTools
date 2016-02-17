@@ -1,0 +1,72 @@
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:h="urn:import:gwt.material.design.client.ui.html">
+
+
+	<ui:style>
+        .label{
+            margin: 24px;
+        }
+        .profile{
+		border:1px solid DarkGreen;
+		padding:2em;
+		font-family:Verdana;
+
+	}
+    </ui:style>
+	<g:HTMLPanel>
+		<header>
+			<!-- NavBar -->
+			<m:MaterialNavBar activates="sideNav"
+				backgroundColor="green">
+				<m:MaterialNavBrand text="C.H. Kim App" />
+				<m:MaterialNavSection float="RIGHT">
+					<m:MaterialTooltip text="Calendar" position="BOTTOM">
+						<m:MaterialLink iconType="EVENT"
+							iconPosition="NONE" />
+					</m:MaterialTooltip>
+					<m:MaterialTooltip text="Todo" position="BOTTOM">
+						<m:MaterialLink iconType="LIST"
+							iconPosition="NONE" />
+					</m:MaterialTooltip>
+					<m:MaterialTooltip text="Notifications" position="BOTTOM">
+						<m:MaterialLink iconType="NOTIFICATIONS"
+							iconPosition="NONE" />
+					</m:MaterialTooltip>
+				</m:MaterialNavSection>
+			</m:MaterialNavBar>
+			<!-- SideNav -->
+			<m:MaterialSideNav type="CLIP" m:id="sideNav"
+				closeOnClick="true">
+				<h:Div m:id="profile" styleName="{style.profile}">
+					<h:Span>Tanilo ViDemantay</h:Span>
+					<h:Br></h:Br>
+					<h:Span>5th grade</h:Span>
+				</h:Div>
+				<h:Div ui:field="sideNavLinks">
+				<m:MaterialLink text="Starter" iconType="WHATSHOT" />
+				<m:MaterialLink text="Apps" iconType="VIEW_MODULE" />
+				<m:MaterialLink text="Notifications" textColor="blue"
+					iconType="NOTIFICATIONS" separator="true" />
+				<m:MaterialLink text="Navigation" textColor="blue"
+					iconType="NAVIGATION" />
+				<m:MaterialLink text="Favorite" textColor="blue"
+					iconType="FAVORITE" />
+				</h:Div>
+			</m:MaterialSideNav>
+		</header>
+
+		<m:MaterialContainer ui:field="main" fontSize="0.8em"
+			width="100%">
+
+		</m:MaterialContainer>
+
+		<!-- FAB -->
+		<m:MaterialFAB>
+			<m:MaterialTooltip text="Create" position="LEFT">
+				<m:MaterialButton ui:field="fab" type="FLOATING"
+					backgroundColor="green darken-4" iconType="ADD" size="LARGE" />
+			</m:MaterialTooltip>
+		</m:MaterialFAB>
+	</g:HTMLPanel>
+</ui:UiBinder>

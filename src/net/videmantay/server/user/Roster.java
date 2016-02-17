@@ -3,18 +3,10 @@ package net.videmantay.server.user;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-
-
-
-import java.util.UUID;
-
-import net.videmantay.server.entity.AppContact;
 import net.videmantay.server.entity.Badge;
 import net.videmantay.server.entity.GoogleService;
 import net.videmantay.server.entity.SeatingChart;
@@ -24,7 +16,6 @@ import net.videmantay.server.entity.TeacherInfo;
 import net.videmantay.shared.GradeLevel;
 
 import com.googlecode.objectify.Key;
-import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
@@ -99,8 +90,6 @@ public class Roster extends DBObj implements Serializable{
 	@Serialize
 	private Badge[] badges;
 	
-	private Set<Key<AppContact>> contacts = new HashSet<Key<AppContact>>();
-	
 	private List<Key<StudentGroup>> studentGroups = new ArrayList<Key<StudentGroup>>();
 	
 	private  String rosterFolderId;
@@ -125,14 +114,6 @@ public class Roster extends DBObj implements Serializable{
 
 	public void setStudentJobs(StudentJob[] studentJobs) {
 		this.studentJobs = studentJobs;
-	}
-
-	public Set<Key<AppContact>> getContacts() {
-		return contacts;
-	}
-
-	public void setContacts(Set<Key<AppContact>> contacts) {
-		this.contacts = contacts;
 	}
 
 	public Long getId() {

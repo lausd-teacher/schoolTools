@@ -1,0 +1,18 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<m:MaterialCard>
+		<m:MaterialCardContent ui:field="cardContent">
+			<m:MaterialCardTitle ui:field="cardTitle" />
+			<m:MaterialLabel></m:MaterialLabel>
+		</m:MaterialCardContent>
+		<m:MaterialCardAction ui:field="cardAction">
+		<m:MaterialRow>
+			<m:MaterialColumn></m:MaterialColumn>
+			<m:MaterialColumn></m:MaterialColumn>
+			<m:MaterialColumn></m:MaterialColumn>
+		</m:MaterialRow>
+		</m:MaterialCardAction>
+	</m:MaterialCard>
+</ui:UiBinder> 

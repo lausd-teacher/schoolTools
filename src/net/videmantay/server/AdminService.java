@@ -137,7 +137,7 @@ public class AdminService  extends HttpServlet {
 					@Override
 					public void vrun() {
 						
-						//Teacher set up will happen when teacher 
+						//Roster set up will happen when teacher 
 						//first use apps
 						
 					

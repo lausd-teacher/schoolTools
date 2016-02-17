@@ -36,6 +36,8 @@ public class GradedWork extends Assignment implements Serializable{
 	/*otherwise csv of students remove [] */
 	/*consider moving to assignment */
 	private Set<String> assignedTo =new HashSet<String>();
+	
+	
 	public String getEventId() {
 		return eventId;
 	}

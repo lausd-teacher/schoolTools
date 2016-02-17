@@ -5,6 +5,6 @@
 	<inherits name="org.gwtbootstrap3.GwtBootstrap3CDN" />
 	<inherits name="gwt.material.design.GwtMaterialDesignBasic" />
 	<inherits name="gwt.material.design.themes.GwtMaterialThemeGreen" />
-	<source path="teacher" />
-	<entry-point class="net.videmantay.teacher.Teacher"></entry-point>
+	<source path="roster" />
+	<entry-point class="net.videmantay.roster.Roster"></entry-point>
 </module>
