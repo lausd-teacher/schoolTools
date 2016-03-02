@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.common.collect.ImmutableSet;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
@@ -19,24 +20,28 @@ import com.googlecode.objectify.annotation.Parent;
 public class RosterSetting extends DBObj implements Serializable{
 	
 	@Id
-	private Long id;
+	public Long id;
 
 	@Ignore
-	private Boolean overrideDefault;
+	public Boolean overrideDefault;
 	
 	@Index 
-	private String acctId;
+	public String acctId;
 	
 	@Parent
-	private transient Key<AppUser> parent;
+	public transient Key<AppUser> parent;
 	
-	private Set<String> folderNames = new HashSet<>();
+	public Set<String> folderNames = new HashSet<>();
 	
-	private Set<String> taskNames = new HashSet<>();
+	public Set<String> taskNames = new HashSet<>();
 	
-	private Set<String> calendarNames = new HashSet<>();
+	public Set<String> calendarNames = new HashSet<>();
 	
-	private Boolean includeContacts = false;
+	public Boolean includeContacts = false;
+	
+	public RosterSetting(){
+		defaultSetting();
+	}
 	
 
 	public Long getId() {
@@ -93,7 +98,11 @@ public class RosterSetting extends DBObj implements Serializable{
 		return false;
 	}
 
-	
+	public RosterSetting defaultSetting(){
+		
+		folderNames.addAll(ImmutableSet.of("Students", "Forms", "Lessons","Assignments"));
+		return this;
+	}
 	
 
 }

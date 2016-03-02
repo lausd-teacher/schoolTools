@@ -63,8 +63,8 @@ public class TemplateGen{
 	
 	public static String getTeacherPage(){
 		try {
-			Template adminPage = cfg.getTemplate("teacher.html");
-			return adminPage.toString();
+			Template teacherPage = cfg.getTemplate("/WEB-INF/html/teacher.html");
+			return teacherPage.toString();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

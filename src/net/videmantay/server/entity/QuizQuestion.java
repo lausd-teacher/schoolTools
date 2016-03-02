@@ -18,18 +18,19 @@ public abstract class QuizQuestion implements Serializable{
 	 */
 	private static final long serialVersionUID = -5659584459936842149L;
 	
-	private Date createOn;
-	private String createdBy;
-	private Date lastUpdate;
-	private Long versionNum;
+	public Date createOn;
+	public String createdBy;
+	public Date lastUpdate;
+	public Long versionNum;
 	@Id
-	private Long id;
-	private Long answerKey;
-	private List<Key> standards;
-	private String questionType;
-	private String prompt;
-	private Boolean isCorrect;
-	private String exmplanation;
+	public Long id;
+	public List<Long> standards;
+	public String questionType;
+	public String prompt;
+	public Boolean isCorrect;
+	public String explanation;
+	public String correctAnswer;
+	public String testerResponse;
 	
 	enum QuestionType{MULTIPLE_ANSWER, SINGLE_ANSWER, TRUE_FALSE, TEXT_ANSWER,MATCHING }
 
@@ -65,11 +66,11 @@ public abstract class QuizQuestion implements Serializable{
 		this.versionNum = versionNum;
 	}
 
-	public List<Key> getStandards() {
+	public List<Long> getStandards() {
 		return standards;
 	}
 
-	public void setStandards(List<Key> standards) {
+	public void setStandards(List<Long> standards) {
 		this.standards = standards;
 	}
 
@@ -98,23 +99,23 @@ public abstract class QuizQuestion implements Serializable{
 	}
 
 	public String getExmplanation() {
-		return exmplanation;
+		return explanation;
 	}
 
 	public void setExmplanation(String exmplanation) {
-		this.exmplanation = exmplanation;
+		this.explanation = exmplanation;
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public Long getAnswerKey() {
-		return answerKey;
+	public String getCorrectAnswer() {
+		return correctAnswer;
 	}
 
-	public void setAnswerKey(Long answerKey) {
-		this.answerKey = answerKey;
+	public void setAnswerKey(String correctAnswer) {
+		this.correctAnswer = correctAnswer;
 	};
 	
 }

@@ -1,6 +1,8 @@
 package net.videmantay.server.entity;
 
-public  class GoogleService {
+import java.io.Serializable;
+
+public  class GoogleService implements Serializable {
 	protected String title;
 	protected String id;
 	protected String description;

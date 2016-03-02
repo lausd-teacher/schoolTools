@@ -14,6 +14,7 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Serialize;
 
+import net.videmantay.shared.UserRoles;
 import net.videmantay.shared.UserStatus;
 
 
@@ -53,7 +54,7 @@ public  class AppUser extends DBObj implements Serializable{
 	private  Boolean isFirstLogin;
 	private String mainDriveFolder;
 	
-	private  Set<String> roles = new  HashSet<String>();
+	private  Set<UserRoles> roles = new  HashSet<UserRoles>();
 	
 	public AppUser(){}
 	
@@ -182,11 +183,11 @@ public  class AppUser extends DBObj implements Serializable{
 		this.authToken = authToken;
 	}
 
-	public Set<String> getRoles() {
+	public Set<UserRoles> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(Set<String> roles) {
+	public void setRoles(Set<UserRoles> roles) {
 		this.roles = roles;
 	}
 

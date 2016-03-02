@@ -10,10 +10,10 @@ public class TeacherDesk implements Serializable{
 	 */
 	private static final long serialVersionUID = -5006652809201296034L;
 	
-	private Integer top;
-	private Integer left;
-	private Double rotate;
-	private String imgBackgroundUrl;
+	public Integer top;
+	public Integer left;
+	public Double rotate;
+	public String imgBackgroundUrl;
 	public Integer getTop() {
 		return top;
 	}

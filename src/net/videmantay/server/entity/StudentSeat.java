@@ -12,13 +12,13 @@ public class StudentSeat implements Serializable{
 	 */
 	private static final long serialVersionUID = 4912335951117569448L;
 	
-	private String matrix;
-	private String top;
-	private String left;
-	private boolean isEmpty;
-	private Integer seatNum;
-	private RosterStudent rosterStudent;
-	private StudentGroup studentGroup;
+	public String matrix;
+	public String top;
+	public String left;
+	public boolean isEmpty;
+	public Integer seatNum;
+	public RosterStudent rosterStudent;
+	public StudentGroup studentGroup;
 	
 	public String getMatrix() {
 		return matrix;

@@ -57,6 +57,14 @@ public class GradedWorkJson extends AssignmentJson {
 		this.assignedDate = assignedDate;
 	}-*/;
 	
+	public final native String getDueDate()/*-{
+		return this.dueDate;
+	}-*/;
+	
+	public final native void setDueDate(String date)/*-{
+	         this.dueDate = date;
+	}-*/;
+	
 	public final native Boolean isFinishedGrading()/*-{
 		return this.finishedGrading;
 	}-*/;

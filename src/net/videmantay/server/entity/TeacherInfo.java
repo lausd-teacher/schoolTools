@@ -1,9 +1,11 @@
 package net.videmantay.server.entity;
 
-public class TeacherInfo {
-	private String title;
-	private String lastName;
-	private String picUrl;
+import java.io.Serializable;
+
+public class TeacherInfo implements Serializable{
+	public String title;
+	public String lastName;
+	public String picUrl;
 	
 	public String getTitle() {
 		return title;

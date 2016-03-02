@@ -40,31 +40,34 @@ public class GoogleUtils {
 	private final static String applicationName = "Kimchi";
 	private final static String clientId = "";
 	private final static String clientSecret = "";
-	private final static AppEngineDataStoreFactory dataStoreFactory =new AppEngineDataStoreFactory();
+	public final static AppEngineDataStoreFactory dataStoreFactory = AppEngineDataStoreFactory.getDefaultInstance();
 	
 	public final static String ContactsScope = "https://www.google.com/m8/feeds";
 	public final static String SheetsScope = "https://spreadsheets.google.com/feeds";
-
+	public final static String UserScope ="https://www.googleapis.com/auth/userinfo.email";
+	public final static String PhotoScope ="https://www.googleapis.com/auth/photos";
+	public final static String SitesScope = "https://sites.google.com/feeds/";
 	
 	
 	
 	public static GoogleAuthorizationCodeFlow authFlow(String userId) throws IOException{
 		ArrayList<String> scopes = new ArrayList<String>();
 		scopes.add(DriveScopes.DRIVE);
-		scopes.add(DriveScopes.DRIVE_APPDATA);
 		scopes.add(CalendarScopes.CALENDAR);
 		scopes.add(TasksScopes.TASKS);
 		scopes.add(ContactsScope);
 		scopes.add(SheetsScope);
+		//scopes.add(UserScope);
+		scopes.add(PhotoScope);
+		scopes.add(SitesScope);
 		
 		GoogleAuthorizationCodeFlow flow = 
 				  new GoogleAuthorizationCodeFlow.Builder(transport,jsonFactory,clientId,clientSecret,scopes)
 				  .setDataStoreFactory(dataStoreFactory)	
 				  .addRefreshListener(new DataStoreCredentialRefreshListener(userId,dataStoreFactory))
-				  .build();
-		
-		flow.loadCredential(userId);
-						
+				  .setAccessType("offline")
+				  .setApprovalPrompt("auto")
+				  .build();				
 		return flow;	
 	}
 	
@@ -110,35 +113,26 @@ public class GoogleUtils {
 		return folder;
 	}
 	
-	public static WorksheetEntry gradedWorkSheet(Credential cred, String id) throws MalformedURLException, IOException, ServiceException{
-		return worksheetEntry(cred,id,"gradedWork");
-	}
+
 	
-	public static WorksheetEntry gradebookSheet(Credential cred, String id) throws MalformedURLException, IOException, ServiceException{
-		return worksheetEntry(cred, id, "gradeBook");
-	}
-	
-	public static SpreadsheetEntry spreadsheetEntry(Credential cred, String sheetId) throws MalformedURLException, IOException, ServiceException{
-		SpreadsheetService sheets = sheets(cred);
-		SpreadsheetEntry spreadsheet = sheets.getFeed(spreadsheetURL(sheetId), SpreadsheetFeed.class).getEntries().get(0);
-		return spreadsheet;
-	}
-	
-	public static WorksheetEntry worksheetEntry(Credential cred, String sheetId, String title) throws MalformedURLException, IOException, ServiceException{
-		SpreadsheetService sheets = sheets(cred);
-		SpreadsheetEntry spreadsheet = spreadsheetEntry(cred, sheetId);
-		WorksheetQuery wQuery = new WorksheetQuery(spreadsheet.getWorksheetFeedUrl());
-		wQuery.setTitleQuery(title);
-		WorksheetEntry worksheet = sheets.getFeed(wQuery, WorksheetFeed.class).getEntries().get(0);
-		
-		return worksheet;
-	}
-	
-	static URL spreadsheetURL(String id) throws MalformedURLException{
-		return new URL(SheetsScope +"/spreadsheets/" + id +"/private/basic");
+	public static SpreadsheetEntry spreadsheetById(SpreadsheetFeed feed, String sheetId){
+		List<SpreadsheetEntry> list = feed.getEntries();
+		for(SpreadsheetEntry s: list){
+			if(s.getKey().equals(sheetId)){
+				return s;
+				
+			}
+		}
+		return null;
 		
 	}
-	static String redirectUri(HttpServletRequest req) {
+	
+
+	
+	public static URL spreadsheetURL() throws MalformedURLException{
+		return new URL(SheetsScope +"/spreadsheets/private/full/");	
+	}
+	public static String redirectUri(HttpServletRequest req) {
 	    GenericUrl url = new GenericUrl(req.getRequestURL().toString());
 	    url.setRawPath("/oauth2callback");
 	    return url.build();

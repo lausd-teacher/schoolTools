@@ -12,22 +12,20 @@ import com.google.gdata.data.DateTime;
 
 public class GradedWork extends Assignment implements Serializable{
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2502828195108307440L;
-
-	private String eventId = "";
+	
+	public String eventId = "";
 	 			
-	private GradedWorkType gradedWorkType = GradedWorkType.HOMEWORK;
+	public GradedWorkType type = GradedWorkType.HOMEWORK;
 	
-	private Language lang = Language.ENGLISH;
+	public Language lang = Language.ENGLISH;
 	
-	private Double pointsPossible = 0.0;
+	public Double pointsPossible = 0.0;
 	
-	private String assignedDate = DateTime.now().toString();
+	public String assignedDate = DateTime.now().toString();
 	
-	private Boolean finishedGrading = false;
+	public String dueDate = DateTime.now().toString();
+	
+	public Boolean finishedGrading = false;
 	
 	private Event event = null;
 	
@@ -35,7 +33,7 @@ public class GradedWork extends Assignment implements Serializable{
 	/* key word 'ALL' case insensitive for all */
 	/*otherwise csv of students remove [] */
 	/*consider moving to assignment */
-	private Set<String> assignedTo =new HashSet<String>();
+	public Set<String> assignedTo =new HashSet<String>();
 	
 	
 	public String getEventId() {
@@ -49,12 +47,12 @@ public class GradedWork extends Assignment implements Serializable{
 
 
 	public GradedWorkType getGradedWorkType() {
-		return gradedWorkType;
+		return type;
 	}
 
 
 	public void setGradedWorkType(GradedWorkType gradedWorkType) {
-		this.gradedWorkType = gradedWorkType;
+		this.type = gradedWorkType;
 	}
 	
 	public Double getPointsPossible(){
@@ -83,6 +81,12 @@ public class GradedWork extends Assignment implements Serializable{
 
 	public void setAssignedDate(String assignedDate) {
 		this.assignedDate = assignedDate;
+	}
+	public String getDueDate(){
+		return this.dueDate;
+	}
+	public void setDueDate (String date){
+		this.dueDate = date;
 	}
 	
 	public Boolean isFinishedGrading(){

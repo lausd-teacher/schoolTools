@@ -1,6 +1,8 @@
 package net.videmantay.server.user;
 
-public interface Validate {
+import java.io.Serializable;
+
+public interface Validate extends Serializable {
 
 	public boolean valid();
 }

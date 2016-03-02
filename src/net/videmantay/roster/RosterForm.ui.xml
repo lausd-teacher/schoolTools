@@ -1,0 +1,43 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:m="urn:import:gwt.material.design.client.ui" 
+	xmlns:h="urn:import:gwt.material.design.client.ui.html"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	</ui:style>
+	<m:MaterialCard ui:field="card">
+		<m:MaterialCardContent>
+			<m:MaterialCardTitle text="Roster" iconType="CLASS"
+				iconPosition="LEFT" textColor="black" />
+			<g:FormPanel ui:field="form">
+				<g:HTMLPanel>
+					<m:MaterialInput ui:field="title" type="EMAIL"
+						required="true" placeholder="account id" />
+					<h:Label ui:field="titleError" styleName="errorLabel" text="Must be valid email" textColor="red lighten-1"/>
+					<m:MaterialInput ui:field="description" type="TEXT"
+						required="true" placeholder="description" />
+					<h:Label ui:field="descriptionError" styleName="errorLabel" text="This field is required" textColor="red lighten-1"/>
+					<m:MaterialInput ui:field="roomNum" type="TEXT"
+						required="true" placeholder="room number" />
+					<h:Label ui:field="roomNumError" styleName="errorLabel" text="This field is required" textColor="red lighten-1"/>
+					<m:MaterialInput type="DATE" ui:field="startDate"
+						placeholder="start date" />
+					<m:MaterialInput type="DATE" ui:field="endDate"
+						placeholder="end date" />
+				</g:HTMLPanel>
+			</g:FormPanel>
+		</m:MaterialCardContent>
+		<m:MaterialCardAction>
+			<m:MaterialRow>
+				<m:MaterialColumn>
+					<m:MaterialAnchorButton ui:field="submitBtn"
+						text="Submit" backgroundColor="green" waves="LIGHT" />
+				</m:MaterialColumn>
+				<m:MaterialColumn>
+					<m:MaterialAnchorButton ui:field="cancelBtn"
+						text="Cancel" backgroundColor="red" waves="LIGHT" />
+				</m:MaterialColumn>
+			</m:MaterialRow>
+		</m:MaterialCardAction>
+	</m:MaterialCard>
+</ui:UiBinder> 

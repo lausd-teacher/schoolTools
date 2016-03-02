@@ -15,14 +15,14 @@ public class SeatingChart implements Serializable {
 	private static final long serialVersionUID = 2656470746976405698L;
 	
 	@Id
-	private Long id;
-	private String title;
-	private String descript;
+	public Long id;
+	public String title;
+	public String descript;
 	
 	
 	@Serialize
-	private Set<StudentSeat> seats;
-	private TeacherDesk teacherDesk;
+	public Set<StudentSeat> seats;
+	public TeacherDesk teacherDesk;
 	public String getTitle() {
 		return title;
 	}

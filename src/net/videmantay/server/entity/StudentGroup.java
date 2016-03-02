@@ -1,5 +1,6 @@
 package net.videmantay.server.entity;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import com.google.api.services.tasks.model.Tasks;
@@ -12,24 +13,24 @@ import net.videmantay.shared.GroupingType;
 
 
 
-public class StudentGroup {
+public class StudentGroup implements Serializable{
 	
 	
-	private Long id;
+	public Long id;
 	
-	private String title;
+	public String title;
 	
-	private String objective;
+	public String objective;
 	
-	private GroupingType type;
+	public GroupingType type;
 	
-	private String backGroundColor;
+	public String backGroundColor;
 	
-	private String textColor;
+	public String textColor;
 	
-	private String borderColor;
+	public String borderColor;
 	
-	private Set<String> students;
+	public Set<String> students;
 
 	public Long getId() {
 		return id;

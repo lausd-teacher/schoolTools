@@ -42,57 +42,58 @@ public class Roster extends DBObj implements Serializable{
 
 	
 	@Id
-	private Long id;
+	public Long id;
 	
 	@Index
-	private String ownerId;
+	public String ownerId;
 	
-	private String title;
+	public String title;
 	
-	private String description;
+	public String description;
 	
-	private String roomNum;
+	public String roomNum;
 
 	@Serialize
-	private TeacherInfo teacherInfo;
+	public TeacherInfo teacherInfo;
 	
-	private GradeLevel gradeLevel;
+	public GradeLevel gradeLevel;
 	
-	private Date startDate;
+	public Date startDate;
 	
 	
-	private Date endDate;
+	public Date endDate;
 	
 	//all map to a spreadsheet
-	private String rollBook;
-	private String gradeBook;
-	private String behaviorReport;
+	public String rollBook;
+	public String gradeBook;
+	public String behaviorReport;
 	
 	@Serialize
-	private List<GoogleService> googleCalendars = new ArrayList<GoogleService>();
+	public List<GoogleService> googleCalendars = new ArrayList<GoogleService>();
 	
 	@Serialize 
-	private List<GoogleService> googleTasks = new ArrayList<GoogleService>();
+	public List<GoogleService> googleTasks = new ArrayList<GoogleService>();
 
 	
 	//maybe a sorted set by last name???
 	private Set<Key<RosterStudent>>studentKeys = new HashSet<Key<RosterStudent>>();
 	
 	@Ignore
-	private Set<RosterStudent> rosterStudents = new HashSet<RosterStudent>();
+	public Set<RosterStudent> rosterStudents = new HashSet<RosterStudent>();
 		
 	@Serialize
-	private StudentJob[] studentJobs;
+	public StudentJob[] studentJobs;
 	
 	@Serialize
-	private SeatingChart[] seatingCharts;
+	public SeatingChart[] seatingCharts;
 	
 	@Serialize
-	private Badge[] badges;
+	public Badge[] badges;
 	
-	private List<Key<StudentGroup>> studentGroups = new ArrayList<Key<StudentGroup>>();
+	@Serialize
+	public StudentGroup[] studentGroups;
 	
-	private  String rosterFolderId;
+	public  String rosterFolderId;
 	
 	///Constructors
 	
@@ -180,11 +181,11 @@ public class Roster extends DBObj implements Serializable{
 		this.teacherInfo = teacherInfo;
 	}
 
-	public List<Key<StudentGroup>> getStudentGroups() {
+	public StudentGroup[] getStudentGroups() {
 		return studentGroups;
 	}
 
-	public void setStudentGroups(List<Key<StudentGroup>> studentGroups) {
+	public void setStudentGroups(StudentGroup[] studentGroups) {
 		this.studentGroups = studentGroups;
 	}
 	
@@ -254,12 +255,10 @@ public class Roster extends DBObj implements Serializable{
 
 	public RosterDetail createDetail(){
 		RosterDetail detail = new RosterDetail();
-		detail.setId(this.id);
 		detail.setDescription(this.description);
 		detail.setTitle(this.title);
 		detail.setGradeLevel(this.gradeLevel);
 		detail.setTeacherInfo(this.teacherInfo);
-		detail.setParent(Key.create(Roster.class, this.id));
 		detail.setOwnerId(this.getOwnerId());
 		return detail;
 	}

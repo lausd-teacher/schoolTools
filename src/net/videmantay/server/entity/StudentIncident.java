@@ -16,18 +16,18 @@ public class StudentIncident implements Serializable {
 	 */
 	private static final long serialVersionUID = -8576611663190914147L;
 	
-	private Long id;
+	public Long id;
 	
-	private Long studentId;
-	private String date;
-	private String eventId;
-	private Event event;
-	private String mediaUrl;
-	private String summary;
-	private Boolean parentsContacted;
-	private Integer pointValue;
+	public Long studentId;
+	public String date;
+	public String eventId;
+	public Event event;
+	public String mediaUrl;
+	public String summary;
+	public Boolean parentsContacted;
+	public Integer pointValue;
 	@Index
-	private BehaviorType type;
+	public BehaviorType type;
 	
 	
 	//LOOK INTO BETTER QUALIFICATIONS

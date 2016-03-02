@@ -18,9 +18,9 @@ public class StandardReview implements Serializable{
 	private static final long serialVersionUID = -8102253140861257292L;
 	
 	@Id
-	private Long id;
-	private Long ccStandard;
-	private List<Long> links;
+	public Long id;
+	public Long ccStandard;
+	public List<Long> links;
 	public Long getCcStandard() {
 		return ccStandard;
 	}

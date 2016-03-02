@@ -1,10 +1,12 @@
 package net.videmantay.server.entity;
 
-public class MediaInfo {
-	private String url;
-	private String thumbnail;
-	private String description;
-	private String title;
+import java.io.Serializable;
+
+public class MediaInfo implements Serializable{
+	public String url;
+	public String thumbnail;
+	public String description;
+	public String title;
 	
 	
 

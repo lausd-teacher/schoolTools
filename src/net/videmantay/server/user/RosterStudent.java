@@ -1,5 +1,6 @@
 package net.videmantay.server.user;
 
+import java.io.Serializable;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -22,54 +23,45 @@ import net.videmantay.server.entity.StudentJob;
 
 
 @Entity
-public class RosterStudent extends DBObj implements  Comparator<RosterStudent> {
+public class RosterStudent extends DBObj implements  Serializable,Comparator<RosterStudent> {
 	
 	@Id
-	private Long id;
-	private Date createOn;
-	
+	public Long id;
 	///Key to roster detail not parent roster
 	//why not set actual key???
-	private Long roster;
-	private String firstName;
-	private String lastName;
-	private String extName;
-	private String picUrl;
-	private Date DOB;
-	private Boolean glasses;
-	private String eldLevel;
-	private Set<StudentJob> jobs;
-	private Boolean inactive;
+	public Long roster;
+	public String firstName;
+	public String lastName;
+	public String extName;
+	public String picUrl;
+	public Date DOB;
+	public Boolean glasses;
+	public String eldLevel;
+	public Set<StudentJob> jobs;
+	public Boolean inactive;
 	
 	
 	@Index
-	private String studentGoogleId;
+	public String studentGoogleId;
 	
-	private Integer[] positviePoints;
-	private Integer[] NegativePoints;
+	public Integer[] positviePoints;
+	public Integer[] NegativePoints;
 	@Serialize
-	private Set<Badge> badges;
+	public Set<Badge> badges;
 
 	@Parent
-	private Key<Roster> rosterKey;
+	public Key<Roster> rosterKey;
 	
 	@Ignore
-	private RosterDetail rosterDetail;
+	public RosterDetail rosterDetail;
 	
-	private String studentFolderId;
-	private String studentCalId;
-	private String studentTasksId;
+	public String studentFolderId;
+	public String studentCalId;
+	public String studentTasksId;
 	
 	public RosterStudent(){
 		
 	}
-	public Date getCreateOn() {
-		return createOn;
-	}
-	public void setCreateOn(Date createOn) {
-		this.createOn = createOn;
-	}
-
 	public Long getRoster() {
 		return roster;
 	}

@@ -5,7 +5,7 @@
 	<m:MaterialCard>
 		<m:MaterialCardContent ui:field="cardContent">
 			<m:MaterialCardTitle ui:field="cardTitle" />
-			<m:MaterialLabel></m:MaterialLabel>
+			<m:MaterialLabel ui:field="cardDescript"></m:MaterialLabel>
 		</m:MaterialCardContent>
 		<m:MaterialCardAction ui:field="cardAction">
 		<m:MaterialRow>

@@ -15,14 +15,14 @@ public class StudentJob implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = -8098272788361413932L;
-	private Long id;
-	private String iconUrl;
-	private String title;
-	private String jobDescription;
-	private String startDate;
-	private String endDate;
-	private List<String> assignedStudents;
-	private String category;
+	public Long id;
+	public String iconUrl;
+	public String title;
+	public String jobDescription;
+	public String startDate;
+	public String endDate;
+	public List<Long> assignedStudents;
+	public String category;
 	
 	
 	public String getIconUrl() {
@@ -57,10 +57,10 @@ public class StudentJob implements Serializable{
 	public void setId(Long id){
 		this.id = id;
 	}
-	public List<String> getAssignedStudents() {
+	public List<Long> getAssignedStudents() {
 		return assignedStudents;
 	}
-	public void setAssignedStudents(List<String> assignedStudents) {
+	public void setAssignedStudents(List<Long> assignedStudents) {
 		this.assignedStudents = assignedStudents;
 	}
 

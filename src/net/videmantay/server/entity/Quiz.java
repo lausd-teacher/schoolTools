@@ -22,26 +22,30 @@ public class Quiz implements Serializable{
 	private static final long serialVersionUID = -3218458268220288678L;
 	
 	
-	private Date createOn;
+	public Date createOn;
 	@Index
-	private String ownedBy;
-	private Date lastUpdate;
-	private Long versionNum;
+	public String ownedBy;
+	public Date lastUpdate;
+	public Long versionNum;
 	
 	@Id
-	private Long id;
+	public Long id;
 	
-	private Double percentage;
-	private Integer correctAnswers;
-	private Integer incorrectAnswers;
-	private String descript;
 	@Index
-	private String title;
-	private SubjectType subjectType;
-	private Set<Long> standardsCovered;
+	
+	public Integer attempt;
+	
+	public Double percentage;
+	public Integer correctAnswers;
+	public Integer incorrectAnswers;
+	public String descript;
+	@Index
+	public String title;
+	public SubjectType subjectType;
+	public Set<Long> standardsCovered;
 	
 	
-	private List<Long> questions;
+	public List<Long> sections;
 
 
 	public Date getCreateOn() {
@@ -146,16 +150,18 @@ public class Quiz implements Serializable{
 
 
 	public List<Long> getQuestions() {
-		return questions;
+		return sections;
 	}
 
 
 	public void setQuestions(List<Long> questions) {
-		this.questions = questions;
+		this.sections = questions;
 	}
 
 
 	public Long getId() {
 		return id;
 	}
+	
+	
 }

@@ -1,5 +1,6 @@
 package net.videmantay.server.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -9,24 +10,24 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
 @Entity
-public class VocabList {
+public class VocabList implements Serializable {
 	
 	@Id
-	private Long id;
-	private Date createOn;
-	private String createdBy;
-	private Date lastUpdate;
-	private Long versionNum;
+	public Long id;
+	public Date createOn;
+	public String createdBy;
+	public Date lastUpdate;
+	public Long versionNum;
 	@Index
-	private  String title;
-	private String unitNum;
-	private String weekNum;
-	private String bookTitle;
-	private String theme;
+	public  String title;
+	public String unitNum;
+	public String weekNum;
+	public String bookTitle;
+	public String theme;
 	@Index
-	private Date start;
-	private Date end;
-	private Set<Long> vocab;
+	public Date start;
+	public Date end;
+	public Set<Long> vocab;
 	public Date getCreateOn() {
 		return createOn;
 	}

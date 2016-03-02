@@ -21,20 +21,20 @@ public class RosterDetail extends DBObj implements Serializable {
 	private static final long serialVersionUID = -8560762171107782047L;
 
 	@Id
-	private Long id;
+	public Long id;
 	
 	@Parent
-	private Key<Roster> parent;
+	public Key<Roster> parent;
 	
-	private String title;
+	public String title;
 	
-	private String description;
+	public String description;
 
-	private TeacherInfo teacherInfo;
+	public TeacherInfo teacherInfo;
 	
-	private GradeLevel gradeLevel;
+	public GradeLevel gradeLevel;
 	
-	private transient String ownerId;
+	public transient String ownerId;
 	
 
 	public Long getId() {
@@ -43,6 +43,7 @@ public class RosterDetail extends DBObj implements Serializable {
 
 	public void setId(Long rosterId) {
 		this.id = rosterId;
+		this.parent = Key.create(Roster.class, id);
 	}
 
 	public Key<Roster> getParent() {

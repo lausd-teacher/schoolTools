@@ -18,15 +18,15 @@ public class SeatingChartDetail implements Serializable{
 	
 	
 	@Id
-	private Long id;
-	private String title;
-	private String descript;
-	private Date createOn;
-	private Date lastUpdate;
+	public Long id;
+	public String title;
+	public String descript;
+	public Date createOn;
+	public Date lastUpdate;
 	//have html svg converter so that
 	// we can have a thumbnail of the seatingChart
-	String thumbnailUrl;
-	private Long seatingChartId;
+	public String thumbnailUrl;
+	public Long seatingChartId;
 	public String getTitle() {
 		return title;
 	}

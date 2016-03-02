@@ -22,6 +22,7 @@ import gwt.material.design.client.ui.MaterialListBox;
 import gwt.material.design.client.ui.html.Label;
 
 import net.videmantay.admin.json.AppUserJson;
+import net.videmantay.shared.UserRoles;
 import net.videmantay.shared.UserStatus;
 
 import java.util.HashSet;
@@ -289,7 +290,7 @@ public class AppUserForm extends Composite {
 				$(roleError).hide();
 			}
 			for(String s:checkBoxState){
-				copy.addRole(s);
+				copy.addRole(s.toUpperCase());
 			}
 			
 			
@@ -352,7 +353,7 @@ public class AppUserForm extends Composite {
 				adminCheck.setVisible(true);adminCheck.setValue(false);
 			}else{
 			for(String s: data.getRoles()){
-				checkBoxState.add(s);
+				checkBoxState.add(s.toLowerCase());
 				switch(s.toLowerCase()){
 				case "student": studentCheck.setValue(true);studentCheck.setVisible(true);break;
 				case "faculty": facultyCheck.setValue(true);facultyCheck.setVisible(true);break;

@@ -1,8 +1,10 @@
 package net.videmantay.server.entity;
 
+import java.io.Serializable;
+
 import net.videmantay.shared.BadgeType;
 
-public class Badge {
+public class Badge implements Serializable{
 
 	private String title;
 	private String description;

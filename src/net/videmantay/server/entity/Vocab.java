@@ -1,5 +1,6 @@
 package net.videmantay.server.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -11,28 +12,28 @@ import com.googlecode.objectify.annotation.Index;
 
 
 @Entity
-public class Vocab {
+public class Vocab implements Serializable {
 	
 	@Id
-	private Long id;
-	private Date createOn;
-	private String createdBy;
-	private Date lastUpdate;
-	private Long versionNum;
+	public Long id;
+	public Date createOn;
+	public String createdBy;
+	public Date lastUpdate;
+	public Long versionNum;
 	@Index
-	private String vocab;
-	private String definition;
-	private String exampleSentence;
-	private String picUrl;
+	public String vocab;
+	public String definition;
+	public String exampleSentence;
+	public String picUrl;
 	@Index
-	private SubjectType subject;
-	private Set<String> antonyms;
-	private Set<String> synonyms;
+	public SubjectType subject;
+	public Set<String> antonyms;
+	public Set<String> synonyms;
 	@Index
-	private String unit;
+	public String unit;
 	@Index
-	private String lesson;
-	private String text;
+	public String lesson;
+	public String text;
 	public Date getCreateOn() {
 		return createOn;
 	}

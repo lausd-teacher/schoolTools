@@ -17,42 +17,51 @@
 	<g:HTMLPanel>
 		<header>
 			<!-- NavBar -->
-			<m:MaterialNavBar activates="sideNav"
-				backgroundColor="green">
-				<m:MaterialNavBrand text="C.H. Kim App" />
-				<m:MaterialNavSection float="RIGHT">
-					<m:MaterialTooltip text="Calendar" position="BOTTOM">
+			<m:MaterialNavBar activates="sideNav" backgroundColor="green">
+				<m:MaterialNavBrand text="Kim,C.H. i" />
+				<m:MaterialNavSection hideOn="HIDE_ON_SMALL_DOWN" float="RIGHT">
+					<m:MaterialTooltip ui:field="calendarTooltip" text="Calendar" position="LEFT">
 						<m:MaterialLink iconType="EVENT"
-							iconPosition="NONE" />
+							iconPosition="NONE" activates="dropthis"/>
 					</m:MaterialTooltip>
-					<m:MaterialTooltip text="Todo" position="BOTTOM">
+					<m:MaterialTooltip ui:field="todoTooltip" text="Todo" position="LEFT">
 						<m:MaterialLink iconType="LIST"
-							iconPosition="NONE" />
+							iconPosition="NONE" activates="dp2"/>
 					</m:MaterialTooltip>
-					<m:MaterialTooltip text="Notifications" position="BOTTOM">
+					<m:MaterialTooltip ui:field="notificationTooltip" text="Notifications" position="LEFT">
 						<m:MaterialLink iconType="NOTIFICATIONS"
-							iconPosition="NONE" />
+							iconPosition="NONE" activates="dp3"/>
 					</m:MaterialTooltip>
 				</m:MaterialNavSection>
 			</m:MaterialNavBar>
+			<m:MaterialDropDown belowOrigin="true" activator="dropthis">
+				<m:MaterialLink text="Long away"/>
+				<m:MaterialLink text="Good going"></m:MaterialLink>
+			</m:MaterialDropDown>
+						<m:MaterialDropDown belowOrigin="true" activator="dp2">
+				<m:MaterialLink text="Long away"/>
+				<m:MaterialLink text="Good going"></m:MaterialLink>
+			</m:MaterialDropDown>
+						<m:MaterialDropDown belowOrigin="true" constrainWidth="false" activator="dp3">
+				<m:MaterialLink text="Long so what do i see away"/>
+				<m:MaterialLink text="Good going"></m:MaterialLink>
+			</m:MaterialDropDown>
 			<!-- SideNav -->
 			<m:MaterialSideNav type="CLIP" m:id="sideNav"
 				closeOnClick="true">
 				<h:Div m:id="profile" styleName="{style.profile}">
-					<h:Span>Tanilo ViDemantay</h:Span>
+					<m:MaterialImage></m:MaterialImage>
 					<h:Br></h:Br>
-					<h:Span>5th grade</h:Span>
+					<h:Span ui:field="profileName"></h:Span>
 				</h:Div>
-				<h:Div ui:field="sideNavLinks">
-				<m:MaterialLink text="Starter" iconType="WHATSHOT" />
-				<m:MaterialLink text="Apps" iconType="VIEW_MODULE" />
-				<m:MaterialLink text="Notifications" textColor="blue"
-					iconType="NOTIFICATIONS" separator="true" />
-				<m:MaterialLink text="Navigation" textColor="blue"
-					iconType="NAVIGATION" />
-				<m:MaterialLink text="Favorite" textColor="blue"
-					iconType="FAVORITE" />
-				</h:Div>
+				<m:MaterialLink ui:field="rosterLink" text="Roster" textColor="green" iconType="CLASS" />
+				<m:MaterialLink ui:field="calendarLink" text="Calendar" textColor="orange" iconType="EVENT" />
+				<m:MaterialLink ui:field="libraryLink" text="Library" textColor="light-green darken-4"
+					iconType="MY_LIBRARY_BOOKS"/>
+				<m:MaterialLink ui:field="lessonsLink" text="Lessons" textColor="amber darken-4"
+					iconType="CONTENT_PASTE" />
+				<m:MaterialLink ui:field="settingsLink" text="Settings" textColor="green"
+					iconType="SETTINGS" />
 			</m:MaterialSideNav>
 		</header>
 

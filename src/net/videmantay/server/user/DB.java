@@ -20,9 +20,11 @@ public class DB<T> {
 		factory().register(AppUser.class);
 		
 		//Roster and Deps
-		/*factory().register(Roster.class);
+		factory().register(Roster.class);
+		factory().register(RosterDetail.class);
 		factory().register(RosterStudent.class);
-		factory().register(GradedWork.class);
+		factory().register(RosterSetting.class);
+		/*factory().register(GradedWork.class);
 		factory().register(StudentWork.class);
 		factory().register(StudentIncident.class);
 		factory().register(StudentJob.class);
@@ -63,7 +65,7 @@ public class DB<T> {
 	}
   
   
-  public  Key<T> save(T clazz){
+  public  Key<T> save(final T clazz){
 	
 		return ofy().transactNew(new Work<Key<T>>(){
 

@@ -16,13 +16,13 @@ public class Standard implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 9179699746226642563L;
-	private Long id;
-	private String standardCode;
-	private String definition;
-	private String gradeLevel;
-	private String subject;
-	private String subSubject;
-	private List<String> keyWords;
+	public Long id;
+	public String standardCode;
+	public String definition;
+	public String gradeLevel;
+	public String subject;
+	public String subSubject;
+	public List<String> keyWords;
 	
 	public String getStandardCode() {
 		return standardCode;

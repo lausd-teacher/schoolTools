@@ -1,25 +1,26 @@
 package net.videmantay.server.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class QuizSection {
+public class QuizSection implements Serializable {
 
-	private Long id;
+	public Long id;
 	
-	private SectionType type;
+	public SectionType type;
 	
-	private List<Long> questions = new ArrayList<Long>();
+	public List<Long> questions = new ArrayList<Long>();
 	
-	private String description;
+	public String description;
 	
-	private Boolean randomOrder;
+	public Boolean randomOrder;
 	
-	private String instructions;
+	public String instructions;
 	
 	
 	
-	private enum SectionType{}
+	public enum SectionType{}
 	
 }
 

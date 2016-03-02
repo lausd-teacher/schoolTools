@@ -1,5 +1,6 @@
 package net.videmantay.server.entity;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,25 +14,25 @@ import com.googlecode.objectify.annotation.Index;
 
 
 
-public class Assignment {
+public class Assignment implements Serializable {
 	
 	
-	private Long id;
+	public Long id;
 	
-	private String title;
+	public String title;
 	
 
-	private Set<String>standards = new HashSet<String>();
+	public Set<String>standards = new HashSet<String>();
 	
-	private Set<GradeLevel> gradeLevels;
+	public Set<GradeLevel> gradeLevels;
 	
-	private String mediaUrl;
+	public String mediaUrl;
 	
-	private String description;
+	public String description;
 	
-	private SubjectType subject;
+	public SubjectType subject;
 	
-	private Set<EducationalLink> links;
+	public Set<EducationalLink> links;
 	
 
 	public Long getId() {

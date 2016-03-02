@@ -32,7 +32,6 @@ public class AuthCallback extends
 	protected AuthorizationCodeFlow initializeFlow() throws ServletException,
 			IOException {
 		User user = UserServiceFactory.getUserService().getCurrentUser();
-		// TODO Auto-generated method stub
 		return GoogleUtils.authFlow(user.getUserId());
 	}
 	
@@ -41,7 +40,7 @@ public class AuthCallback extends
 	      throws ServletException, IOException {
 		  AuthorizationCodeFlow auth = initializeFlow();
 		  
-	    resp.sendRedirect("/test");
+	    resp.sendRedirect("/teacher");
 	  }
 
 	  @Override

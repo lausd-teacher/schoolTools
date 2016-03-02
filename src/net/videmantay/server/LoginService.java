@@ -3,6 +3,7 @@ package net.videmantay.server;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ import com.google.appengine.api.users.*;
 
 import net.videmantay.server.user.AppUser;
 import net.videmantay.server.user.DB;
+import net.videmantay.shared.UserRoles;
 
 
 
@@ -22,17 +24,17 @@ public class LoginService extends HttpServlet {
 	
 	
 	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse res){
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 		login(req, res);
 	}
 	
 	@Override
-	public void doPost(HttpServletRequest req, HttpServletResponse res){
+	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
 		login(req, res);
 	}
 	
 	
-	private void  login(HttpServletRequest req , HttpServletResponse res){
+	private void  login(HttpServletRequest req , HttpServletResponse res) throws ServletException,IOException{
 		 User user = null;
 		
 	
@@ -59,14 +61,13 @@ public class LoginService extends HttpServlet {
 			return;
 		}
 		
-		req.getSession().setAttribute("appUser", appUser);
-		if(appUser.getRoles().contains(AppRole.ADMIN)){
+		if(appUser.getRoles().contains(UserRoles.ADMIN)){
 			
-		}else if(appUser.getRoles().contains(AppRole.TEACHER)){
-		
-		}else if(appUser.getRoles().contains(AppRole.FACULTY)){
+		}else if(appUser.getRoles().contains(UserRoles.TEACHER)){
+			res.sendRedirect("/teacher");
+		}else if(appUser.getRoles().contains(UserRoles.FACULTY)){
 			
-		}else if(appUser.getRoles().contains(AppRole.STUDENT)){
+		}else if(appUser.getRoles().contains(UserRoles.STUDENT)){
 			
 		}
 			

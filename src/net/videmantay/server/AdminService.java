@@ -16,6 +16,8 @@ import org.apache.commons.validator.routines.UrlValidator;
 
 import net.videmantay.server.user.AppUser;
 import net.videmantay.server.user.DB;
+import net.videmantay.shared.UserRoles;
+
 import static net.videmantay.admin.AdminUrl.*;
 
 import com.google.common.base.Preconditions;
@@ -150,7 +152,7 @@ public class AdminService  extends HttpServlet {
 				
 			}else{// account will be updated
 							
-			AppUser modify =	db().load().type(AppUser.class).id(acct.getId()).now();
+			final AppUser modify =	db().load().type(AppUser.class).id(acct.getId()).now();
 			log.log(Level.INFO, "acct from the DB by id is : " + gson.toJson(modify));
 			modify.setAcctId(Preconditions.checkNotNull(acct.getAcctId()));
 			modify.setFirstName(acct.getFirstName());
@@ -216,7 +218,7 @@ public class AdminService  extends HttpServlet {
 				//grabe the entire graph that pertains to that user.
 				//if it is a teacher then delete all of his rosters
 				//if it is a student delete all rosterStudent references
-				if(acct.getRoles().contains(AppRole.STUDENT)){
+				if(acct.getRoles().contains(UserRoles.STUDENT)){
 					
 				}//end roster check
 				Key<AppUser> createdKey = Key.create(AppUser.class, acct.getId());

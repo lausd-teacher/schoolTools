@@ -2,6 +2,8 @@ package net.videmantay.admin.json;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
+import net.videmantay.shared.UserRoles;
+
 
 
 public class AppUserJson extends JavaScriptObject {

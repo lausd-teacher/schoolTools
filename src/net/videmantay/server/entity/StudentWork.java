@@ -1,5 +1,6 @@
 package net.videmantay.server.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
 import net.videmantay.shared.GradedWorkType;
@@ -7,21 +8,21 @@ import net.videmantay.shared.StudentWorkStatus;
 import net.videmantay.shared.SubjectType;
 
 
-public class StudentWork {
+public class StudentWork implements Serializable{
 
-	private Long id;
+	public Long id;
 
-	private Long rosterStudentId;
-	private Double percentage;
-	private Double pointsEarned;
-	private String letterGrade;
-	private String message;
-	private GradedWorkType type;
-	private StudentWorkStatus studentWorkStatus = StudentWorkStatus.NOT_TURNED_IN;
-	private String dateTaken;
-	private String mediaUrl;
+	public Long rosterStudentId;
+	public Double percentage;
+	public Double pointsEarned;
+	public String letterGrade;
+	public String message;
+	public GradedWorkType type;
+	public StudentWorkStatus studentWorkStatus = StudentWorkStatus.NOT_TURNED_IN;
+	public String dateTaken;
+	public String mediaUrl;
 	
-	private SubjectType subject;
+	public SubjectType subject;
 	
 	//List of standard to review with accomany links;
 	private List<StandardReview> standardReviews;

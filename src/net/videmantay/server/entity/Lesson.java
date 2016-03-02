@@ -24,19 +24,19 @@ public class Lesson extends DBObj implements Serializable{
 	private static final long serialVersionUID = -6200640680813126874L;
 	
 	@Id
-	private Long id;
+	public Long id;
 	
 	@Index
-	private String title;
-	private List<Long> standards;
-	private GradeLevel gradeLevel;
+	public String title;
+	public List<Long> standards;
+	public GradeLevel gradeLevel;
 	@Index
-	private SubjectType subject;
-	private List<String> keyWords;
-	private String mediaUrl;
+	public SubjectType subject;
+	public List<String> keyWords;
+	public String mediaUrl;
 	private List<EducationalLink> links;
 	private Quiz quiz;
-	private Set<Long> vocabList;
+	public Set<Long> vocabList;
 	public Long getId() {
 		return id;
 	}

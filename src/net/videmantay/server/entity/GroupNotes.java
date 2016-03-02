@@ -1,14 +1,16 @@
 package net.videmantay.server.entity;
 
-public class GroupNotes {
+import java.io.Serializable;
 
-	private Long id;
-	private Long groupId;
-	private String dateTime;
-	private String description;
-	private String activity;
-	private Boolean metObjetive;
-	private Double duration;
+public class GroupNotes implements Serializable{
+
+	public Long id;
+	public Long groupId;
+	public String dateTime;
+	public String description;
+	public String activity;
+	public Boolean metObjetive;
+	public Double duration;
 	
 	public Long getId() {
 		return id;

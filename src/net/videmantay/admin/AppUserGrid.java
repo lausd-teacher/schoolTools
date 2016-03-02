@@ -25,6 +25,7 @@ import static com.google.gwt.query.client.GQuery.*;
 import com.google.gwt.query.client.Function;
 
 import net.videmantay.admin.json.AppUserJson;
+import net.videmantay.shared.UserRoles;
 
 public class AppUserGrid extends DataGrid<AppUserJson> {
 

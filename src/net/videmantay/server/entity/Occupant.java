@@ -1,13 +1,15 @@
 package net.videmantay.server.entity;
 
-public class Occupant {
+import java.io.Serializable;
+
+public class Occupant implements Serializable {
 	
-	private String firstName;
-	private String lastName;
-	private String pic;
-	private String id;
-	private String seatId;
-	private OccupantType type;
+	public String firstName;
+	public String lastName;
+	public String pic;
+	public String id;
+	public String seatId;
+	public OccupantType type;
 	
 	public String getFirstName() {
 		return firstName;
