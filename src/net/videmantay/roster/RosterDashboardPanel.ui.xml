@@ -1,0 +1,43 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+		<m:MaterialTab ui:field="tab" backgroundColor="green darken-4" indicatorColor="green accent-1" height="2.5em">
+			<m:MaterialTabItem ><m:MaterialLink href="#tab1" text="Dashboard" textColor="white"/></m:MaterialTabItem>
+			<m:MaterialTabItem ><m:MaterialLink href="#tab2" text="Calendar" textColor="white"/></m:MaterialTabItem>
+			<m:MaterialTabItem ><m:MaterialLink href="#tab3" text="Reports" textColor="white"/></m:MaterialTabItem>
+		</m:MaterialTab>
+		<div  id="tab1">
+			<m:MaterialRow backgroundColor="green accent-3" textColor="green darken-4">
+				<m:MaterialColumn>
+					<m:MaterialButton text="Roll"></m:MaterialButton>
+				
+					<m:MaterialButton text="Homework"></m:MaterialButton>
+				
+					<m:MaterialButton text="Groups"></m:MaterialButton>
+				
+					<m:MaterialButton text="Random"></m:MaterialButton>
+			
+					<m:MaterialButton text="Select All"></m:MaterialButton>
+				</m:MaterialColumn>
+				<m:MaterialColumn hideOn="HIDE_ON_SMALL">
+				<g:HorizontalPanel>
+					<m:MaterialLabel text="Grid" />
+					<m:MaterialSwitch ></m:MaterialSwitch>
+					<m:MaterialLabel text="Seating Chart" />
+				</g:HorizontalPanel>
+				</m:MaterialColumn>
+			</m:MaterialRow>
+		</div>
+		<div id="tab2">
+			<h2>TAB 2</h2>
+		</div>
+		<div  id="tab3">
+			<h2>TAB 3</h2>
+		</div>
+	</g:HTMLPanel>
+</ui:UiBinder> 

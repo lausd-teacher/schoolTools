@@ -12,6 +12,7 @@ import com.google.gwt.core.client.JsonUtils;
 import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialLoader;
+import gwt.material.design.client.ui.MaterialRow;
 import net.videmantay.student.json.RosterDetailJson;
 
 public class RosterGrid extends MaterialContainer{
@@ -23,8 +24,6 @@ public class RosterGrid extends MaterialContainer{
 	@Override
 	public void onLoad(){
 		MaterialLoader.showLoading(true);
-		refreshList();
-		
 	}
 	
 	public void drawGrid(){
@@ -33,13 +32,16 @@ public class RosterGrid extends MaterialContainer{
 			showEmptyList();
 		}else{
 		this.clear();
+		MaterialRow row = new MaterialRow();
 		for(int i= 0; i<= rosterList.size(); i++){
 			
-			MaterialColumn col = new MaterialColumn(12,4,2);
+			
+			MaterialColumn col = new MaterialColumn(12,6,4);
 			RosterPanel panel = new RosterPanel();
 			panel.setData(rosterList.get(i));
 			col.add(panel);
-			this.add(col);
+			row.add(col);
+			this.add(row);
 			}//end for
 		}//end else
 	}

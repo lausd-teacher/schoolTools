@@ -6,12 +6,10 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.IsWidget;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import static com.google.gwt.query.client.GQuery.*;
-import com.google.gwt.query.client.Function;
-
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialLink;
@@ -25,18 +23,10 @@ public class RosterMain extends Composite {
 	interface RosterMainUiBinder extends UiBinder<Widget, RosterMain> {
 	}
 	
-	public interface Display extends IsWidget{
-		public void fab();
-		
-	}
-	private Display display;
-	
 	@UiField
-	MaterialContainer main;
+	MaterialContainer mainPanel;
 	
-	@UiField
-	MaterialButton	fab;
-	
+
 	@UiField
 	MaterialLink rosterLink;
 	
@@ -58,34 +48,22 @@ public class RosterMain extends Composite {
 	@UiField
 	MaterialTooltip notificationTooltip;
 
-	ClickHandler fabClick = new ClickHandler(){
-
-		@Override
-		public void onClick(ClickEvent event) {
-		display.fab();
-		$(fab).hide();
-			
-		}};
+	
 	
 	public RosterMain() {
 		initWidget(uiBinder.createAndBindUi(this));
-		this.rosters();
 	}
 	
 	@Override 
 	public void onLoad(){
-		fab.addClickHandler(fabClick);
-		
+	
 	}
 	
 	public void rosters(){
-		main.clear();
-		setDisplay(new RosterDisplay());
+		console.log("RosterMain rosters(); called");
+		mainPanel.clear();
+		mainPanel.add(new RosterDisplay());
 	}
 	
-	private void setDisplay(Display display){
-		this.display = display;
-		main.add(display);
-	}
 
 }

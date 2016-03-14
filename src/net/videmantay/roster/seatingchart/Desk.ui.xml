@@ -1,0 +1,130 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder">
+	<ui:style>
+	
+	</ui:style>
+	<div ui:field="doubleDesk" class="desk doubledesk">
+		<div class="rotate">
+		<table>
+			<tr><!--  -->
+				<td><div class="seat pos1"></div></td>
+				<td><div class="seat pos2"></div></td>
+			</tr>
+		</table>
+		</div>
+	</div>
+	<div ui:field="singleDesk" class="desk singledesk">
+		<div class="rotate">
+		<table>
+			<tr>
+				<td><div class="seat pos1"></div></td>
+			</tr>
+		</table>
+		</div>
+	</div>
+	<div ui:field="kidneyTable" class="desk kidney">
+		<div class="rotate">
+		<table>
+			<tr>
+				<td><div class="seat pos1"></div></td>
+				<td><div class="seat pos2"></div></td>
+				<td><div class="seat pos3"></div></td>
+			</tr>
+			<tr>
+				<td><div class="seat pos4"></div></td>
+				<td><div class="seat pos5"></div></td>
+				<td><div class="seat pos6"></div></td>
+			</tr>
+		</table>
+		</div>
+	</div>
+	<div ui:field="carpetSm" class="desk carpetSm">
+		<div class="rotate">
+		<table>
+		<tr>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		</tr>
+		<tr>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		</tr>
+		<tr>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		</tr>
+		<tr>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		</tr>
+		<tr>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		</tr>
+		</table>
+		</div>
+	</div>
+	<div ui:field="carpetFull" class="desk carpet">
+		<div class="rotate">
+		<table>
+		<tr>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		</tr>
+		<tr>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		</tr>
+		<tr>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		</tr>
+		<tr>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		</tr>
+		<tr>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		</tr>
+		<tr>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		<td><div class="seat pos"></div></td>
+		</tr>
+		</table>
+		</div>
+	</div>
+</ui:UiBinder>
