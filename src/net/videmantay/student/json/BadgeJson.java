@@ -2,7 +2,7 @@ package net.videmantay.student.json;
 
 import com.google.gwt.core.client.JavaScriptObject;
 
-import net.videmantay.shared.BadgeType;
+import net.videmantay.shared.GoalType;
 
 public class BadgeJson extends JavaScriptObject {
 
@@ -26,10 +26,10 @@ public class BadgeJson extends JavaScriptObject {
 	public final native void setUrl(String url) /*-{
 		this.url = url;
 	}-*/;
-	public final native BadgeType getType() /*-{
+	public final native GoalType getType() /*-{
 		return type;
 	}-*/;
-	public final native void setType(BadgeType type) /*-{
+	public final native void setType(GoalType type) /*-{
 		this.type = type;
 	}-*/;
 }

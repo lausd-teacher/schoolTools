@@ -2,6 +2,8 @@ package net.videmantay.roster.json;
 
 import java.util.Set;
 
+import com.google.gwt.core.client.JsArrayString;
+
 import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.Language;
 import net.videmantay.student.json.EventJson;
@@ -84,12 +86,12 @@ public class GradedWorkJson extends AssignmentJson {
 	}-*/;
 
 
-	public final native Set<String> getAssignedTo() /*-{
+	public final native JsArrayString getAssignedTo() /*-{
 		return this.assignedTo;
 	}-*/;
 
 
-	public final native void setAssignedTo(Set<String> assignedTo) /*-{
+	public final native void setAssignedTo(JsArrayString assignedTo) /*-{
 		this.assignedTo = assignedTo;
 	}-*/;
 }

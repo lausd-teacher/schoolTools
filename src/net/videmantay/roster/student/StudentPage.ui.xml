@@ -1,0 +1,86 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<g:HTMLPanel>
+		<m:MaterialPanel>
+			<m:MaterialRow addStyleName="studentPageRows">
+				<m:MaterialColumn><m:MaterialLabel text="RemoveStudent" /><m:MaterialIcon iconType="REMOVE"/></m:MaterialColumn>
+				<m:MaterialColumn><m:MaterialLabel ui:field="studentViewLabel" text="View as Student" /></m:MaterialColumn>
+			</m:MaterialRow>
+		</m:MaterialPanel>
+		<m:MaterialRow>
+			<m:MaterialColumn>
+				<m:MaterialPanel ui:field="studentProfPanel">
+					<g:HTMLPanel>
+						<m:MaterialIcon ui:field="studentEditIcon" iconType="EDIT"/>
+						<table>
+							<tbody>
+								<tr><th><m:MaterialImage ui:field="stuImage" /></th></tr>
+								<tr><td><div>
+										<span ui:field="firstName"></span><br/>
+										<span ui:field="lastName"/><br/>
+										<span ui:field="extName"/><br/>
+										<span ui:field="DOB" /><br/>
+								</div></td></tr>
+							</tbody>
+						</table>
+					</g:HTMLPanel>
+				</m:MaterialPanel>
+			</m:MaterialColumn>
+			<m:MaterialColumn>
+			<!-- Alphabetize the row for easy  -->
+			<m:MaterialRow ui:field="assignmentRow">
+					<m:MaterialPanel>
+						<m:MaterialCard>
+							<m:MaterialCardTitle text="Assignments"></m:MaterialCardTitle>
+							<m:MaterialCardContent></m:MaterialCardContent>
+						</m:MaterialCard>
+					</m:MaterialPanel>
+				</m:MaterialRow>
+			<m:MaterialRow ui:field="attendanceRow">
+					<m:MaterialPanel>
+						<m:MaterialCard>
+							<m:MaterialCardTitle text="Attendance" iconType="EVENT">
+							</m:MaterialCardTitle>
+							<m:MaterialCardContent></m:MaterialCardContent>
+						</m:MaterialCard>
+					</m:MaterialPanel>
+				</m:MaterialRow>
+				<m:MaterialRow ui:field="behaviorRow">
+					<m:MaterialPanel>
+						<m:MaterialCard>
+							<m:MaterialCardTitle text="Behavior Report"></m:MaterialCardTitle>
+							<m:MaterialCardContent></m:MaterialCardContent>
+						</m:MaterialCard>
+					</m:MaterialPanel>
+				</m:MaterialRow>
+				<m:MaterialRow ui:field="goalRow">
+					<m:MaterialPanel>
+						<m:MaterialCard>
+							<m:MaterialCardTitle text="Goals"></m:MaterialCardTitle>
+							<m:MaterialCardContent></m:MaterialCardContent>
+						</m:MaterialCard>
+					</m:MaterialPanel>
+				</m:MaterialRow>
+				<m:MaterialRow ui:field="groupRow">
+					<m:MaterialPanel>
+						<m:MaterialCard>
+							<m:MaterialCardTitle text="Groups" iconType="GROUP">
+							</m:MaterialCardTitle>
+							<m:MaterialCardContent></m:MaterialCardContent>
+						</m:MaterialCard>
+					</m:MaterialPanel>
+				</m:MaterialRow>
+				<m:MaterialRow ui:field="jobRow">
+					<m:MaterialPanel>
+						<m:MaterialCard>
+							<m:MaterialCardTitle text="Jobs"></m:MaterialCardTitle>
+							<m:MaterialCardContent></m:MaterialCardContent>
+						</m:MaterialCard>
+					</m:MaterialPanel>
+				</m:MaterialRow>
+			</m:MaterialColumn>
+		</m:MaterialRow>
+	</g:HTMLPanel>
+</ui:UiBinder> 

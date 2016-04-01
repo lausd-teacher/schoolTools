@@ -1,9 +1,8 @@
 package net.videmantay.student.json;
 
-import java.util.Date;
-import java.util.Set;
-
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsArrayInteger;
 
 
 public class RosterStudentJson extends JavaScriptObject {
@@ -39,10 +38,10 @@ public class RosterStudentJson extends JavaScriptObject {
 		this.eldLevel = eldLevel;
 		return this;
 	}-*/;
-	public final native Set<StudentJobJson> getJobs() /*-{
+	public final native JsArray<StudentJobJson> getJobs() /*-{
 		return jobs;
 	}-*/;
-	public final native RosterStudentJson setJobs(Set<StudentJobJson> jobs) /*-{
+	public final native RosterStudentJson setJobs(JsArray<StudentJobJson> jobs) /*-{
 		this.jobs = jobs;
 		return this;
 	}-*/;
@@ -67,10 +66,10 @@ public class RosterStudentJson extends JavaScriptObject {
 		this.picUrl = picUrl;
 		return this;
 	}-*/;
-	public final native Date getDOB() /*-{
+	public final native String getDOB() /*-{
 		return DOB;
 	}-*/;
-	public final native RosterStudentJson setDOB(Date dOB) /*-{
+	public final native RosterStudentJson setDOB(String dOB) /*-{
 		DOB = dOB;
 		return this;
 	}-*/;
@@ -82,25 +81,25 @@ public class RosterStudentJson extends JavaScriptObject {
 		return this;
 	}-*/;
 
-	public final native Integer[] getPositviePoints() /*-{
+	public final native JsArrayInteger getPositviePoints() /*-{
 		return positviePoints;
 	}-*/;
-	public final native RosterStudentJson setPositviePoints(Integer[] positviePoints) /*-{
+	public final native RosterStudentJson setPositviePoints(JsArrayInteger positviePoints) /*-{
 		this.positviePoints = positviePoints;
 		return this;
 	}-*/;
-	public final native Integer[] getNegativePoints() /*-{
+	public final native JsArrayInteger getNegativePoints() /*-{
 		return NegativePoints;
 	}-*/;
-	public final native RosterStudentJson setNegativePoints(Integer[] negativePoints) /*-{
+	public final native RosterStudentJson setNegativePoints(JsArrayInteger negativePoints) /*-{
 		NegativePoints = negativePoints;
 		return this;
 	}-*/;
-	public final native Set<BadgeJson> getBadges() /*-{
-		return badges;
+	public final native JsArray<BadgeJson> getBadges() /*-{
+		return goals;
 	}-*/;
-	public final native RosterStudentJson setBadges(Set<BadgeJson> badges) /*-{
-		this.badges = badges;
+	public final native RosterStudentJson setBadges(JsArray<BadgeJson> badges) /*-{
+		this.badges = goals;
 		return this;
 	}-*/;
 	public final native Long getId()/*-{

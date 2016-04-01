@@ -1,16 +1,16 @@
 package net.videmantay.roster.seatingchart.json;
 
-import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
 
 public class DeskJson extends FurnitureJson {
 
 	protected DeskJson(){}
 	
-	public final native StudentSeatJson[] getSeats()/*-{
+	public final native JsArray<StudentSeatJson> getSeats()/*-{
 		return this.seats;
 	}-*/;
 	
-	public final native void setSeats(StudentSeatJson[] seats)/*-{
+	public final native void setSeats(JsArray<StudentSeatJson> seats)/*-{
 		
 	}-*/;
 	

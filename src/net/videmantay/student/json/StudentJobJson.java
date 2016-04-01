@@ -3,6 +3,7 @@ package net.videmantay.student.json;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArrayString;
 
 public class StudentJobJson extends JavaScriptObject {
 
@@ -40,10 +41,10 @@ public class StudentJobJson extends JavaScriptObject {
 	public final native void setId(Long id)/*-{
 		this.id = id;
 	}-*/;
-	public final native List<String> getAssignedStudents() /*-{
+	public final native JsArrayString getAssignedStudents() /*-{
 		return this.assignedStudents;
 	}-*/;
-	public final native void setAssignedStudents(List<String> assignedStudents) /*-{
+	public final native void setAssignedStudents(JsArrayString assignedStudents) /*-{
 		this.assignedStudents = assignedStudents;
 	}-*/;
 

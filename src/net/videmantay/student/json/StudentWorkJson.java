@@ -3,6 +3,7 @@ package net.videmantay.student.json;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
 
 import net.videmantay.server.entity.StandardReview;
 import net.videmantay.shared.GradedWorkType;
@@ -82,14 +83,6 @@ public class StudentWorkJson extends JavaScriptObject {
 		this.mediaUrl = mediaUrl;
 	}-*/;
 
-
-	public final native List<StandardReview> getStandardReviews() /*-{
-		return this.standardReviews;
-	}-*/;
-
-	public final native void setStandardReviews(List<StandardReview> standardReviews) /*-{
-		this.standardReviews = standardReviews;
-	}-*/;
 
 	public final native Long getId() /*-{
 		return this.id;

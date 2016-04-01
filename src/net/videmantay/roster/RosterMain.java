@@ -14,6 +14,7 @@ import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialTooltip;
+import net.videmantay.shared.LoginInfo;
 
 public class RosterMain extends Composite {
 

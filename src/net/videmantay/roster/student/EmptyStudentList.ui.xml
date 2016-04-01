@@ -1,0 +1,15 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+			xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+	<div class="emptyStudentList">
+		<h3>No Registered Students...</h3>
+		<p>It would appear that you have no student registered for this classroom. <br/>
+			Please use the bottom corner button to add some.
+		</p>
+	</div>
+	</g:HTMLPanel>
+</ui:UiBinder>

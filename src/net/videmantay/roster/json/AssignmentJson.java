@@ -3,6 +3,7 @@ package net.videmantay.roster.json;
 import java.util.Set;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArrayString;
 
 import net.videmantay.server.entity.EducationalLink;
 import net.videmantay.shared.GradeLevel;
@@ -28,11 +29,11 @@ public class AssignmentJson extends JavaScriptObject {
 		this.title = title;
 	}-*/;
 
-	public final native Set<String> getStandards()/*-(
+	public final native JsArrayString getStandards()/*-(
 		return this.standards;
 	}-*/;
 
-	public final native void setStandards(Set<String> standards)/*-(
+	public final native void setStandards(JsArrayString standards)/*-(
 		this.standards = standards;
 	}-*/;
 

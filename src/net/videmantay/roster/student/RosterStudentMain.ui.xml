@@ -1,0 +1,25 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	<m:MaterialCard>
+	<m:MaterialCardTitle text="Student List" />
+	<m:MaterialCardContent>
+		<m:MaterialRow>
+			<m:MaterialColumn ui:field="studentContent">
+				<m:MaterialCollection ui:field="studentCollection" />
+			</m:MaterialColumn>	
+		</m:MaterialRow>
+		</m:MaterialCardContent>
+		</m:MaterialCard>
+		<!-- FAB -->
+		<m:MaterialFAB>
+			<m:MaterialTooltip text="New Student" position="LEFT">
+				<m:MaterialButton ui:field="fab" type="FLOATING"
+					backgroundColor="green darken-4" iconType="ADD" size="LARGE" />
+			</m:MaterialTooltip>
+		</m:MaterialFAB>
+</ui:UiBinder> 

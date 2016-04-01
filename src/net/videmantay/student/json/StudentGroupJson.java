@@ -3,6 +3,9 @@ package net.videmantay.student.json;
 import java.util.Set;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsArrayNumber;
+import com.google.gwt.core.client.JsArrayString;
 
 import net.videmantay.shared.GroupingType;
 
@@ -66,11 +69,11 @@ public class StudentGroupJson extends JavaScriptObject {
 		this.borderColor = borderColor;
 	}-*/;
 
-	public final native Set<String> getStudents() /*-{
+	public final native JsArrayNumber getStudents() /*-{
 		return this.students;
 	}-*/;
 
-	public final native void setStudents(Set<String> students) /*-{
+	public final native void setStudents(JsArrayNumber students) /*-{
 		this.students = students;
 	}-*/;
 }

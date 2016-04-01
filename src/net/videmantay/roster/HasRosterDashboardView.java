@@ -12,6 +12,8 @@ public interface HasRosterDashboardView {
 	
 	public void selectAll();
 	
+	public void multipleSelect();
+	
 	public void home();
 	
 	public void doneCheckHW();
@@ -25,6 +27,8 @@ public interface HasRosterDashboardView {
 	public void doneSelectAll();
 	
 	public void deselectAll();
+	
+	public void doneMultipleSelect();
 	
 	
 }

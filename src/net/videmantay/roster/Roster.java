@@ -44,12 +44,9 @@ public class Roster implements EntryPoint , ValueChangeHandler<String> {
 		
 	}
 	
-	@Override
-	public void onValueChange(ValueChangeEvent<String> e){
-		
-	}
+	
 
-	/*@Override
+	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
 		//parse token and see if there are subpaths
 		ArrayList<String> token = new ArrayList<String>();
@@ -75,7 +72,7 @@ public class Roster implements EntryPoint , ValueChangeHandler<String> {
 			if(mainState){
 				loadDisplay(token.get(1));
 			}else{
-				classroom.setClassroom(token.get(1));
+				//classroom.setClassroom(token.get(1));
 			}//load the class regardless
 			
 			//size of three means either a list of assignments, books, students,
@@ -108,11 +105,11 @@ public class Roster implements EntryPoint , ValueChangeHandler<String> {
 	
 	private void loadDisplay(String rosterId){
 		classroom = new ClassroomMain();
-		classroom.setClassroom(rosterId);
+		//classroom.setClassroom(rosterId);
 		RootPanel.get().clear(true);
 		RootPanel.get().add(classroom);
 		main = null;
 		mainState = false;
 	}
-*/
+
 }

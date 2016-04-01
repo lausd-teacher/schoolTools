@@ -1,6 +1,7 @@
 package net.videmantay.roster.seatingchart.json;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
 
 
 public class SeatingChartJson extends JavaScriptObject {
@@ -30,11 +31,11 @@ public class SeatingChartJson extends JavaScriptObject {
 		 this.descript = descript;
 	}-*/;
 	
-	public final native FurnitureJson[] getFurniture()/*-{
+	public final native JsArray<FurnitureJson> getFurniture()/*-{
 			return this.furniture;
 	}-*/; 
 	
-	public final native void setFurniture(FurnitureJson[] furniture)/*-{
+	public final native void setFurniture(JsArray<FurnitureJson> furniture)/*-{
 			this.furniture = furniture;
 	}-*/;
 }

@@ -31,10 +31,10 @@
 					<m:html.Div ui:field="studentCheckBox" addStyleName="studentCheckbox"></m:html.Div>
 				</td>
 			</tr>
-			<tr class="inicidentBar">
-				<td><m:MaterialImage ui:field="negIncident" addStyleName="negIncident"/></td>
+			<tr class="infoBar">
+				<td><m:MaterialLink ui:field="noteBtn" addStyleName="noteBtn"/></td>
 				<td><div class="middleBarIncident"></div></td>
-				<td><m:MaterialImage ui:field="posIncident" addStyleName="posIncident"/></td>
+				<td><m:MaterialLink ui:field="seeMoreBtn" addStyleName="seeMoreBtn"/></td>
 			</tr>
 			</table>
 			</div>

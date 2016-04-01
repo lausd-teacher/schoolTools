@@ -5,7 +5,7 @@
 	<ui:style>
 	
 	</ui:style>
-	<g:HTMLPanel>
+	<g:HTMLPanel styleName="classroom" ui:field="classroom">
 			<!-- NavBar -->
 			<m:MaterialNavBar activates="sideNav" backgroundColor="green" type="TALL">
 			<m:html.Div>

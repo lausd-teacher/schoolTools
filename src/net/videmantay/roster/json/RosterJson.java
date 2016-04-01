@@ -1,8 +1,7 @@
 package net.videmantay.roster.json;
 
 import com.google.gwt.core.client.JavaScriptObject;
-
-
+import com.google.gwt.core.client.JsArray;
 
 import net.videmantay.shared.GradeLevel;
 import net.videmantay.student.json.RosterStudentJson;
@@ -91,11 +90,11 @@ public class RosterJson extends JavaScriptObject {
 		return this;
 	}-*/;
 
-	public final native StudentGroupJson[] getStudentGroups()/*-{
+	public final native JsArray<StudentGroupJson> getStudentGroups()/*-{
 		return this.studentGroups;
 	}-*/;
 
-	public final native RosterJson setStudentGroups(StudentGroupJson[] studentGroups)/*-{
+	public final native RosterJson setStudentGroups(JsArray<StudentGroupJson> studentGroups)/*-{
 		this.studentGroups = studentGroups;
 		return this;
 	}-*/;
@@ -109,20 +108,20 @@ public class RosterJson extends JavaScriptObject {
 		return this;
 	}-*/;
 	
-	public final native GoogleServiceJson[] getGoogleCalendars()/*-{
+	public final native JsArray<GoogleServiceJson> getGoogleCalendars()/*-{
 		return this.googleCalendars;
 	}-*/;
 	
-	public final native RosterJson setGoogleCalendars(GoogleServiceJson[] googleCals)/*-{
+	public final native RosterJson setGoogleCalendars(JsArray<GoogleServiceJson> googleCals)/*-{
 		this.googleCalendars = googleCals;
 		return this;
 	}-*/;
 	
-	public final native GoogleServiceJson[] getGoogleTasks()/*-{
+	public final native JsArray<GoogleServiceJson> getGoogleTasks()/*-{
 		return this.googleTasks;
 	}-*/;
 	
-	public final native RosterJson setGoogleTasks(GoogleServiceJson[] googleTasks)/*-{
+	public final native RosterJson setGoogleTasks(JsArray<GoogleServiceJson> googleTasks)/*-{
 		this.googleTasks = googleTasks;
 		return this;
 	}-*/;
@@ -136,11 +135,11 @@ public class RosterJson extends JavaScriptObject {
 		return this;
 	}-*/;
 	
-	public final native RosterStudentJson[] getRosterStudents()/*-{
+	public final native JsArray<RosterStudentJson> getRosterStudents()/*-{
 		return this.rosterStudents;
 	}-*/;
 
-	public final native RosterJson setRosterStudents(RosterStudentJson[] rosterStudents)/*-{
+	public final native RosterJson setRosterStudents(JsArray<RosterStudentJson> rosterStudents)/*-{
 		this.rosterStudents = rosterStudents;
 		return this;
 	}-*/;
