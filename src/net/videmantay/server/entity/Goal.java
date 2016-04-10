@@ -2,14 +2,14 @@ package net.videmantay.server.entity;
 
 import java.io.Serializable;
 
-import net.videmantay.shared.BadgeType;
+import net.videmantay.shared.GoalType;
 
-public class Badge implements Serializable{
+public class Goal implements Serializable{
 
-	private String title;
-	private String description;
-	private String url;
-	private BadgeType type;
+	public  String title;
+	public  String description;
+	public  String url;
+	public GoalType type;
 	
 	public String getTitle() {
 		return title;
@@ -29,10 +29,10 @@ public class Badge implements Serializable{
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public BadgeType getType() {
+	public GoalType getType() {
 		return type;
 	}
-	public void setType(BadgeType type) {
+	public void setType(GoalType type) {
 		this.type = type;
 	}
 }

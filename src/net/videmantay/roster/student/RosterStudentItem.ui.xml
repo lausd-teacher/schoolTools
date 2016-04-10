@@ -5,13 +5,13 @@
 	<ui:style>
 	
 	</ui:style>
-	<m:MaterialRow ui:field="studentItem" addStyleName="studentItem">
+	<m:MaterialRow ui:field="studentItem">
 		<m:MaterialColumn>
 			<m:MaterialImage ui:field="studentImg" />
 		</m:MaterialColumn>
 		<m:MaterialColumn>
 			<m:html.Div>
-				<m:htmlSpan ui:field="firstName" /><m:html.Span ui:field="lastName" />
+				<m:html.Span ui:field="firstName" /><m:html.Span ui:field="lastName" />
 			</m:html.Div>
 		</m:MaterialColumn>
 		<m:MaterialColumn></m:MaterialColumn>

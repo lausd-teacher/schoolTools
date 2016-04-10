@@ -27,6 +27,8 @@ public class GradedWork extends Assignment implements Serializable{
 	
 	public Boolean finishedGrading = false;
 	
+	public Long rubric;
+	
 	private Event event = null;
 	
 	/*list of students the assignemt is assigned to */
@@ -115,6 +117,14 @@ public class GradedWork extends Assignment implements Serializable{
 
 	public void setAssignedTo(Set<String> assignedTo) {
 		this.assignedTo = assignedTo;
+	}
+	
+	public Long getRubric(){
+		return this.rubric;
+	}
+	
+	public void setRubric(Long rubric){
+		this.rubric = rubric;
 	}
 	
 	public String getGradedbookCol(){

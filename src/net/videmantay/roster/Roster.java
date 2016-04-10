@@ -2,6 +2,7 @@ package net.videmantay.roster;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.History;
@@ -9,91 +10,83 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.seatingchart.SeatingChartPanel;
+import net.videmantay.student.json.RosterDetailJson;
 
 import static com.google.gwt.query.client.GQuery.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import com.google.common.base.Splitter;
 import com.google.gwt.query.client.*;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
+import com.google.common.primitives.Longs;
 
 public class Roster implements EntryPoint , ValueChangeHandler<String> {
 	private RosterMain main;
 	private ClassroomMain classroom;
-	
+	private final JsArray<RosterDetailJson> rosterList;
 	private boolean mainState = true;
 
 	
+	Roster(){
+		rosterList = window.getPropertyJSO("rosterList").cast();
+	}
 	@Override
 	public void onModuleLoad() {
-	
+		//populate rosterList all app essential data
+		//actually the list of ready rosters are hard coded by the server.
 		
-		RootPanel.get().add(new ClassroomMain());
-	///all the history and events must be handled here
+		
 		History.addValueChangeHandler(this);
-		String token = History.getToken();
-		if(token == null || token.equals("")){
-			History.newItem("rosters", true);
-		}
-			History.fireCurrentHistoryState();
-			
-			//handle all events for Roster here including rosterdisplay etc
-			//actually the displays should handle the lesser events
 		
+		String token = History.getToken();	
+		if(token == null || token.isEmpty() || token.equals("rosters")){
+			History.newItem("rosters");
+		}
+	History.fireCurrentHistoryState();
 	}
-	
 	
 
 	@Override
 	public void onValueChange(ValueChangeEvent<String> event) {
+		//for some reason rosterList becomes null??
+		
 		//parse token and see if there are subpaths
 		ArrayList<String> token = new ArrayList<String>();
 		Iterator<String> iter  = Splitter.on("/").split(event.getValue()).iterator();
 		while(iter.hasNext()){
 			token.add(iter.next());
 		}
-		if(token.size() <= 1){console.log("token size = " + token.size());
-		loadMain();
+		if(token.size() == 1){console.log("token size = " + token.size());
 		switch(event.getValue()){
 		case "books": return;
 		case "settings":return;
 		case "calendars":return;
-	//	default: main.rosters(); return;
+		case "lessons":return;
+		default: loadMain();
 			}//end switch
 		}//end if single token 
-		//now handle the times where you must parse path
-		
-		//according to the size of the array there are only so many possibilities
-		//size two means you are at dashboard
-		if(token.size() >= 2 && token.get(0).equalsIgnoreCase("roster")){
-		//set the mainview to false
-			if(mainState){
-				loadDisplay(token.get(1));
-			}else{
-				//classroom.setClassroom(token.get(1));
-			}//load the class regardless
-			
-			//size of three means either a list of assignments, books, students,
-			//jobs,groups,goals,showcase,lessons,quizes,vocab,behaviors,seatingChart
-			
-			if(token.size() >= 3){
-				classroom.showView(token.get(2));
-			}
-			
-			//size of four means specific items in one of the list above
-			if(token.size() >= 4){
-				classroom.showViewItem(token.get(3));
-			}
-			//size of five means state ie seatinchar , grid , list, gradebook etc
-			//may just handle with tabs
-		}//end roster path
-				
+				if(token.size()>= 2 && token.get(0).equalsIgnoreCase("roster")){
+					console.log("If token size 2 or greated called");
+					//first check id is kosher
+					//and then load display with id
+					for(int i =0; i < rosterList.length(); i++){
+						console.log("looping to compare ids");
+						if(Longs.tryParse(token.get(1))==rosterList.get(i).getId()){
+							console.log("If ids matched is called");
+							loadDisplay(token);
+							break;
+						}
+					}
+				}
 	}//change handler
 	
 	private void loadMain(){
 		console.log("loaded main");
+		//ensure History token is correct
+		History.newItem("rosters");
 		main = new RosterMain();
 		RootPanel.get().clear();
 		RootPanel.get().add(main);
@@ -103,10 +96,20 @@ public class Roster implements EntryPoint , ValueChangeHandler<String> {
 		mainState = true;
 	}
 	
-	private void loadDisplay(String rosterId){
+	private void loadDisplay(ArrayList<String> token){
+		
+		console.log("load display called");
+		//convert this to a switch when more displays or added
+		//ie lesson creator display
+		
+		
+		if(mainState){
 		classroom = new ClassroomMain();
-		//classroom.setClassroom(rosterId);
-		RootPanel.get().clear(true);
+		}
+			classroom.setClassroom(token);
+		
+		console.log("classroom main is null");
+		RootPanel.get().clear();
 		RootPanel.get().add(classroom);
 		main = null;
 		mainState = false;

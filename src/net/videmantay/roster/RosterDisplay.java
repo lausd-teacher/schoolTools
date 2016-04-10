@@ -46,7 +46,7 @@ public class RosterDisplay extends Composite{
 		@Override
 		public void f(){
 			$(rosterForm).hide();
-			rosterGrid.refreshList();
+			rosterGrid.drawGrid();
 			$(rosterGrid).show();
 			$(fab).show();
 		}
@@ -71,7 +71,6 @@ public class RosterDisplay extends Composite{
 	public void onLoad(){
 		
 		$(rosterForm).hide();
-		rosterGrid.refreshList();
 		fab.addClickHandler(fabClick);
 		//handle the form and grid events here
 		$(body).on("rosterredraw", rosterRedraw);

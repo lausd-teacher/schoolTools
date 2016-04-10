@@ -10,6 +10,7 @@ import net.videmantay.shared.SubjectType;
 
 public class StudentWork implements Serializable{
 
+	//same id as gradedwork////
 	public Long id;
 
 	public Long rosterStudentId;
@@ -23,6 +24,7 @@ public class StudentWork implements Serializable{
 	public String mediaUrl;
 	
 	public SubjectType subject;
+
 	
 	//List of standard to review with accomany links;
 	private List<StandardReview> standardReviews;

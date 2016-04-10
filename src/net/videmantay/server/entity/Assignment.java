@@ -32,7 +32,7 @@ public class Assignment implements Serializable {
 	
 	public SubjectType subject;
 	
-	public Set<EducationalLink> links;
+	private Set<EducationalLink> links;
 	
 
 	public Long getId() {

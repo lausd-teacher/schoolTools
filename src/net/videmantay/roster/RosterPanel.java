@@ -1,8 +1,10 @@
 package net.videmantay.roster;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
@@ -10,11 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
 import gwt.material.design.client.ui.MaterialCardContent;
 import gwt.material.design.client.ui.MaterialCardTitle;
 import gwt.material.design.client.ui.MaterialLabel;
-
 import static com.google.gwt.query.client.GQuery.*;
-import com.google.gwt.query.client.*;
-
-import net.videmantay.roster.json.RosterJson;
 import net.videmantay.student.json.RosterDetailJson;
 
 public class RosterPanel extends Composite {
@@ -29,23 +27,27 @@ public class RosterPanel extends Composite {
 	public MaterialCardTitle cardTitle;
 	@UiField
 	public MaterialLabel cardDescript;
-	
+	private RosterDetailJson rosterDetail;
 	public RosterPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
 	public void setData(RosterDetailJson data){
-		$(this).data("roster", data);
-		cardTitle.setText($(this).data("roster", RosterDetailJson.class).getTitle());
-		cardDescript.setText($(this).data("roster", RosterDetailJson.class).getDescription());
-		$(this).data("roster", RosterDetailJson.class).getId();
-		
-		
+		console.log("Set data called for " + data.getTitle());
+		rosterDetail = data;
+		cardTitle.setText(data.getTitle());
+		cardDescript.setText(data.getDescription());	
 		//set click functions now
-		$(cardContent).click(new Function(){
+	}
+	
+	@Override
+	public void onLoad(){
+		$(this).find(".card-title").click(new Function(){
 			@Override
-			public void f(){
-				$(body).trigger(RosterEvent.ROSTER_VIEW, $(this).data("roster", RosterDetailJson.class).getId());
+			public boolean f(Event e){
+				console.log("roster panel clicked");
+				History.newItem("roster/" + rosterDetail.getId());
+				return true;
 			}
 		});
 	}

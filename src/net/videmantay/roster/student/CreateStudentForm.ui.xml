@@ -6,47 +6,42 @@
 	<ui:style>
 	
 	</ui:style>
+	<g:HTMLPanel>
 	<m:MaterialModal ui:field="modal">
-	<m:MaterialModalContent>
-	<m:MaterialCard>
-		<m:MaterialCardTitle>
-			<g:HTMLPanel>
-				<div><h3>Create Student</h3></div>
-			</g:HTMLPanel>
-		</m:MaterialCardTitle>
-		<m:MaterialCardContent>
+		<m:MaterialModalContent ui:field="modalContent">
 		<g:FormPanel ui:field="form">
+			<g:HTMLPanel>
 			<m:MaterialRow>
 				<m:MaterialColumn>
-					<div><m:MaterialImage ui:field="studentImg"/>
-					<br/><m:MaterialLabel ui:field="imgUrl" />
-					</div>
+					<m:MaterialImage ui:field="studentImg" type="CIRCLE"/>
+					<m:html.Br/>
+					<m:MaterialLabel ui:field="imgUrl" />
 				</m:MaterialColumn>
 				<m:MaterialColumn>
-					<m:MaterialButton ui:field="pickerButton"/>
+					<m:MaterialButton ui:field="pickerButton" text="Upload"/>
 				</m:MaterialColumn>
 			</m:MaterialRow>
 				<m:MaterialRow>
-					<m:MaterialTextBox ui:field="firstName"></m:MaterialTextBox>
+					<m:MaterialTextBox ui:field="firstName" placeholder="First Name"></m:MaterialTextBox>
 				</m:MaterialRow>
 				<m:MaterialRow>
-					<m:MaterialTextBox ui:field="lastName"></m:MaterialTextBox>
+					<m:MaterialTextBox ui:field="lastName" placeholder="Last Name"></m:MaterialTextBox>
 				</m:MaterialRow>
 				<m:MaterialRow>
-					<m:MaterialTextBox ui:field="extName"></m:MaterialTextBox>
+					<m:MaterialTextBox ui:field="extName" placeholder ="Extended Name"></m:MaterialTextBox>
 				</m:MaterialRow>
 				<m:MaterialRow>
-					<m:MaterialDatePicker ui:field="DOB"></m:MaterialDatePicker>
+					<m:MaterialDatePicker ui:field="DOB" placeholder="D.O.B"></m:MaterialDatePicker>
 				</m:MaterialRow>
+				</g:HTMLPanel>
 			</g:FormPanel>
-		</m:MaterialCardContent>
-		<m:MaterialCardAction>
+		</m:MaterialModalContent>
+		<m:MaterialFooter>
 			<m:MaterialRow>
 				<m:MaterialColumn><m:MaterialButton ui:field="okBtn" text="Ok" /></m:MaterialColumn>
 				<m:MaterialColumn><m:MaterialButton ui:field="cancelBtn" text="Cancel"/></m:MaterialColumn>
 			</m:MaterialRow>
-		</m:MaterialCardAction>
-	</m:MaterialCard>
-	</m:MaterialModalContent>
+		</m:MaterialFooter>
 	</m:MaterialModal>
+	</g:HTMLPanel>
 </ui:UiBinder> 

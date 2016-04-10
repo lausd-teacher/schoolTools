@@ -37,7 +37,7 @@ public class GoogleUtils {
 	
 	private final static GsonFactory jsonFactory = new GsonFactory();
 	private final static UrlFetchTransport transport = new UrlFetchTransport();
-	private final static String applicationName = "Kimchi";
+	private final static String applicationName = "";
 	private final static String clientId = "";
 	private final static String clientSecret = "";
 	public final static AppEngineDataStoreFactory dataStoreFactory = AppEngineDataStoreFactory.getDefaultInstance();
@@ -46,6 +46,7 @@ public class GoogleUtils {
 	public final static String SheetsScope = "https://spreadsheets.google.com/feeds";
 	public final static String UserScope ="https://www.googleapis.com/auth/userinfo.email";
 	public final static String PhotoScope ="https://www.googleapis.com/auth/photos";
+	public final static String PhotoUploadScope ="https://www.googleapis.com/auth/photos.upload";
 	public final static String SitesScope = "https://sites.google.com/feeds/";
 	
 	
@@ -57,8 +58,9 @@ public class GoogleUtils {
 		scopes.add(TasksScopes.TASKS);
 		scopes.add(ContactsScope);
 		scopes.add(SheetsScope);
-		//scopes.add(UserScope);
+		scopes.add(UserScope);
 		scopes.add(PhotoScope);
+		scopes.add(PhotoUploadScope);
 		scopes.add(SitesScope);
 		
 		GoogleAuthorizationCodeFlow flow = 
@@ -96,7 +98,9 @@ public class GoogleUtils {
 	}
 	
 	public static File folder(String title){
-		File folder = new File().setMimeType("application/vnd.google-apps.folder").setTitle(title);
+		File folder = new File();
+		folder.setTitle(title);
+		folder.setMimeType("application/vnd.google-apps.folder");
 		return folder;
 	}
 	

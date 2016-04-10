@@ -26,35 +26,35 @@ public  class AppUser extends DBObj implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6653229961000100210L;
+	public static final long serialVersionUID = -6653229961000100210L;
 	
 	@Id
-	private Long id;
+	public Long id;
 	
 	@Index
-	private String acctId;//Google Id may be different than email 
+	public String acctId;//Google Id may be different than email 
 							// in cases where teacher want to use their email
 							//and not a videmantay.net acct
 							//acct id will reflect videmantay.net
 	
-	private String email;
+	public String email;
 	
-	private String firstName;
-	private String lastName;
-	private String middleName;
-	private String extendedName;
-	private UserTitle title;
+	public String firstName;
+	public String lastName;
+	public String middleName;
+	public String extendedName;
+	public UserTitle title;
 
-	private String picUrl;
-	private String authToken;
-	private boolean loggedIn;
+	public String picUrl;
+	public String authToken;
+	public boolean loggedIn;
 
-	private  UserStatus userStatus;
-	private  Integer loginTimes;
-	private  Boolean isFirstLogin;
-	private String mainDriveFolder;
+	public  UserStatus userStatus;
+	public  Integer loginTimes;
+	public  Boolean isFirstLogin;
+	public String mainDriveFolder;
 	
-	private  Set<UserRoles> roles = new  HashSet<UserRoles>();
+	public  Set<UserRoles> roles = new  HashSet<UserRoles>();
 	
 	public AppUser(){}
 	
@@ -232,6 +232,50 @@ public  class AppUser extends DBObj implements Serializable{
 	public boolean valid() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+	
+	public LoginInfo getLoginInfo(){
+		return new LoginInfo(acctId, firstName,lastName, extendedName,title, 
+				picUrl, authToken,mainDriveFolder,loggedIn, isFirstLogin);
+	}
+	
+	public static class LoginInfo{
+		private LoginInfo(){}
+		
+		public LoginInfo(String acctId, String firstName, String lastName, String extendedName, UserTitle title,
+				String picUrl, String authToken,String mainDriveFolder, boolean loggedIn, Boolean isFirstLogin){
+			this.acctId = acctId;
+			this.firstName = firstName;
+			this.lastName = lastName;
+			this.extendedName = extendedName;
+			this.authToken = authToken;
+			this.mainDriveFolder = mainDriveFolder;
+			this.loggedIn = loggedIn;
+			this.isFirstLogin = isFirstLogin;
+			this.title = title;
+			this.picUrl = picUrl;
+		}
+		
+		@Index
+		public String acctId;//Google Id may be different than email 
+								// in cases where teacher want to use their email
+								//and not a videmantay.net acct
+								//acct id will reflect videmantay.net
+		
+		public String email;
+		
+		public String firstName;
+		public String lastName;
+		public String middleName;
+		public String extendedName;
+		public UserTitle title;
+
+		public String picUrl;
+		public String authToken;
+		public boolean loggedIn;
+		public  Boolean isFirstLogin;
+		public String mainDriveFolder;
+		
 	}
 	
 	

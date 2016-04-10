@@ -36,7 +36,6 @@ import static net.videmantay.server.user.DB.*;
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.appengine.auth.oauth2.AbstractAppEngineAuthorizationCodeServlet;
-import com.google.api.client.googleapis.batch.BatchRequest;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.util.Preconditions;
 import com.google.api.services.calendar.model.*;
@@ -51,6 +50,7 @@ import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.model.TaskList;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.labs.repackaged.com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
@@ -63,12 +63,9 @@ import com.google.gdata.client.contacts.ContactsService;
 import com.google.gdata.client.sites.SitesService;
 import com.google.gdata.client.spreadsheet.CellQuery;
 import com.google.gdata.client.spreadsheet.ListQuery;
-import com.google.gdata.client.spreadsheet.SpreadsheetQuery;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
 import com.google.gdata.client.spreadsheet.WorksheetQuery;
-import com.google.gdata.data.Link;
 import com.google.gdata.data.PlainTextConstruct;
-import com.google.gdata.data.batch.BatchOperationType;
 import com.google.gdata.data.spreadsheet.Cell;
 import com.google.gdata.data.spreadsheet.CellEntry;
 import com.google.gdata.data.spreadsheet.CellFeed;
@@ -79,11 +76,14 @@ import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
 import com.google.gdata.data.spreadsheet.SpreadsheetFeed;
 import com.google.gdata.data.spreadsheet.WorksheetEntry;
 import com.google.gdata.data.spreadsheet.WorksheetFeed;
-import com.google.gdata.model.batch.BatchUtils;
 import com.google.gdata.util.ServiceException;
 import com.google.gson.Gson;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
+
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
@@ -103,6 +103,9 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		} catch (GeneralSecurityException | ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (TemplateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
@@ -113,11 +116,14 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		} catch (GeneralSecurityException | ServiceException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (TemplateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	
 	
-	private void init(HttpServletRequest req, HttpServletResponse res)throws IOException , ServletException, GeneralSecurityException, ServiceException{
+	private void init(HttpServletRequest req, HttpServletResponse res)throws IOException , ServletException, GeneralSecurityException, ServiceException, TemplateException{
 		//authorize
 		initializeFlow();
 		// 3. Route The Path
@@ -155,11 +161,37 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	////////////////end oauth ///////////////////////////////////////////////////////
 	
 	//Teacher view////
-	private void getTeacherView(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException{
+	private void getTeacherView(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, TemplateException{
 		if(AppValid.roleCheck(UserRoles.TEACHER)){
+			User acct = UserServiceFactory.getUserService().getCurrentUser();
 		res.addHeader("Access-Control-Allow-Origin", "http://127.0.0.1:8888");
-		res.getWriter().write(TemplateGen.getTeacherPage());}
-		else{
+		Map<String, Object> data = new HashMap<String, Object>();
+		AppUser user = db().load().type(AppUser.class).filter("acctId", acct.getEmail()).first().now();
+	if(this.getUserId(req).equals(acct.getUserId())){
+		System.out.println("user id are equal");
+	
+		Credential cred = authFlow(acct.getUserId()).loadCredential(acct.getUserId());
+		if(cred.getExpiresInSeconds() <1800){
+			cred.refreshToken();
+		}
+		user.setAuthToken(cred.getAccessToken());
+		
+	}
+	else{
+		System.out.println("User id didn't equal no oauth then");
+			//res.sendRedirect("/somewhere else");
+		}
+		
+		//get roster list
+		List<RosterDetail> rosters = db().load().type(RosterDetail.class).filter("ownerId", acct.getEmail() ).list();
+		log.log(Level.INFO, "roster is length is " + rosters.size());
+		String loginInfo = gson.toJson(user);
+		String rosterList = gson.toJson(rosters);
+		data.put("loginInfo", loginInfo);
+		data.put("rosterList", rosterList);
+		Template teacherPage = TemplateGen.getTeacherPage();
+		teacherPage.process(data, res.getWriter());
+		}else{
 			res.sendRedirect("/login");
 		}
 	}
@@ -171,7 +203,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			res.sendRedirect("/login");
 		}
 		final DB<Roster> rosterDB = new DB<Roster>(Roster.class);
-		final Credential cred;
+		Credential cred = null;
 		
 		Drive drive;
 		Calendar calendar;
@@ -184,7 +216,16 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		
 		RosterSetting settings;
 		final Roster roster;
-		final User user = UserServiceFactory.getUserService().getCurrentUser();
+		final UserService us =UserServiceFactory.getUserService();
+		final User user = us.getCurrentUser();
+		if(UserServiceFactory.getUserService().isUserLoggedIn()){
+		cred = authFlow(user.getUserId()).loadCredential(user.getUserId());
+			if(cred.getExpiresInSeconds() < 1800){
+				cred.refreshToken();
+			}
+		}else{
+			res.sendRedirect(us.createLoginURL("/teacher"));
+		}
 		
 		
 		 String rosterCheck = req.getParameter("roster");
@@ -247,8 +288,8 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		}else{//this is a first save set up docs,calendar,etc
 	
 		final AppUser appUser = db().load().type(AppUser.class).filter("acctId",user.getEmail()).first().now();
-		 cred = this.getCredential();
-		 System.out.println( "This is what the cred looks like: " + gson.toJson(cred));
+		
+		// System.out.println( "This is what the cred looks like: " + gson.toJson(cred));
 		 //check for roster setting in the db 
 		 settings = db().load().type(RosterSetting.class).filter("acctId",user.getEmail()).first().now();
 		 if(settings == null){
@@ -290,10 +331,14 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 				gradeBook.setParents(listOfP);
 			File behaviorReport = spreadsheet("BehaviorReport");
 				behaviorReport.setParents(listOfP);
+				File goalBook = spreadsheet("GoalBook");
+				goalBook.setParents(listOfP);
+				
 				
 				rollBook = drive.files().insert(rollBook).execute();
 				gradeBook = drive.files().insert(gradeBook).execute();
 				behaviorReport = drive.files().insert(behaviorReport).execute();
+				goalBook = drive.files().insert(goalBook).execute();
 				
 				roster.setGradeBook(gradeBook.getId());
 				System.out.println("gradeBook id is: " + gradeBook.getId());
@@ -301,12 +346,19 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 				roster.setBehaviorReport(behaviorReport.getId());
 				
 				//set up the spreadsheet here
-				GradeBookSetup setUp = new GradeBookSetup(gradeBook.getId(), cred.getAccessToken());
 				Queue queue = QueueFactory.getDefaultQueue();
+				
+				GradeBookSetup setUp = new GradeBookSetup(gradeBook.getId(), cred.getAccessToken());
 				queue.add(TaskOptions.Builder.withPayload(setUp));
 				
 				RollBookSetup rollSet = new RollBookSetup(rollBook.getId(), cred.getAccessToken());
 				queue.add(TaskOptions.Builder.withPayload(rollSet));
+				
+				GoalBookSetup goalSet = new GoalBookSetup(goalBook.getId(), cred.getAccessToken());
+				queue.add(TaskOptions.Builder.withPayload(goalSet));
+				
+				BehaviorReportSetup behaviorSetup = new BehaviorReportSetup(behaviorReport.getId(), cred.getAccessToken());
+				queue.add(TaskOptions.Builder.withPayload(behaviorSetup));
 				
 				
 				
@@ -353,7 +405,6 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			
 			rd.setId(rosterDB.save(roster).getId());
 			db().save().entity(rd);
-			// Set up a google sites for Class info
 		}//end first save else////////
 	
 
@@ -389,7 +440,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	private void listRoster(HttpServletRequest req, HttpServletResponse res) throws ServletException,IOException{
 		//this method will only list the roster 
 		User user = UserServiceFactory.getUserService().getCurrentUser();
-		List<RosterDetail> rosters = db().load().type(RosterDetail.class).filter("acctId", user.getEmail() ).list();
+		List<RosterDetail> rosters = db().load().type(RosterDetail.class).filter("ownerId", user.getEmail() ).list();
 		log.log(Level.INFO, "list of rosters is: " + gson.toJson(rosters) );
 		res.getWriter().write(gson.toJson(rosters));
 	}
@@ -402,14 +453,14 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		String idCheck = Preconditions.checkNotNull(req.getParameter("roster"));
 		Long id = Longs.tryParse(idCheck);
 		
-		 Roster roster = db().load().type(Roster.class).filter("id", id).filter("acctId",user.getEmail()).first().now();
-		if(roster == null){
+		 Roster roster = db().load().type(Roster.class).id(id).now();
+		if(roster == null|| !roster.getOwnerId().equals(user.getEmail()) ){
 			//send something bad
 			res.setStatus(res.SC_UNAUTHORIZED, "Unauthorized request");
 			res.flushBuffer();
 			return;
 		}
-		
+		res.getWriter().write(gson.toJson(roster));
 	}
 	
 	////////RosterStudent CRUD ///////////////////////////////
@@ -418,8 +469,14 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	{
 		Drive drive;
 		Calendar calendar;
-		Credential cred = this.getCredential();
-		
+		Credential cred = null;
+		UserService us =UserServiceFactory.getUserService();
+		User user = us.getCurrentUser();
+		if(UserServiceFactory.getUserService().isUserLoggedIn()){
+		cred = authFlow(user.getUserId()).loadCredential(user.getUserId());
+		}else{
+			res.sendRedirect(us.createLoginURL("/teacher"));
+		}
 		String studentCheck = Preconditions.checkNotNull(req.getParameter("student"));
 		String rosterCheck = Preconditions.checkNotNull(req.getParameter("roster"));
 		
@@ -841,7 +898,6 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		String calId = Preconditions.checkNotNull(req.getParameter("calId"));
 		String incidentCheck = Preconditions.checkNotNull(req.getParameter("incident"));
 		StudentIncident incident = gson.fromJson(incidentCheck, StudentIncident.class);
-		cal.events().delete(calId, incident.getEventId()).execute();
 		StudentIncident dbCheck = null;
 	try{
 		dbCheck = db().load().type(StudentIncident.class).id(incident.getId()).now();
@@ -869,7 +925,6 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		incidentMap.put("incident", incident.getId().toString());
 		ext.setPrivate(incidentMap);
 		event.setExtendedProperties(ext);
-		incident.setEventId(calendar.events().insert(student.getStudentCalId(), event).execute().getId());
 		db().save().entity(incident);
 		
 		//give the incident back;

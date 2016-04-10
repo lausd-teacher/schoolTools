@@ -8,6 +8,8 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
+import net.videmantay.shared.BehaviorType;
+
 
 public class StudentIncident implements Serializable {
 
@@ -20,21 +22,16 @@ public class StudentIncident implements Serializable {
 	
 	public Long studentId;
 	public String date;
-	public String eventId;
-	public Event event;
+	public String iconUrl;
 	public String mediaUrl;
 	public String summary;
 	public Boolean parentsContacted;
 	public Integer pointValue;
+	public String eventId;
 	@Index
 	public BehaviorType type;
 	
 	
-	//LOOK INTO BETTER QUALIFICATIONS
-	@Index
-	enum BehaviorType{SEVER, MODERATE, INCIDENTAL, GOOD, BETTER , BEST}
-
-
 	public Long getId() {
 		return id;
 	}
@@ -50,24 +47,6 @@ public class StudentIncident implements Serializable {
 
 	public void setStudentId(Long studentId) {
 		this.studentId = studentId;
-	}
-
-
-	public String getEventId() {
-		return eventId;
-	}
-
-	public void setEventId(String id) {
-		this.eventId = id;
-	};
-
-	
-	public Event getEvent() {
-		return event;
-	}
-
-	public void setEvent(Event event) {
-		this.event = event;
 	}
 
 	public String getMediaUrl() {
@@ -125,6 +104,22 @@ public class StudentIncident implements Serializable {
 	
 	public void setDate(String date){
 		this.date = date;
+	}
+	
+	public String getIconUrl(){
+		return this.iconUrl;
+	}
+	
+	public void setIconUrl(String url){
+		this.iconUrl = url;
+	}
+	
+	public String getEventId(){
+		return this.eventId;
+	}
+	
+	public void setEventId(String id){
+		this.eventId = id;
 	}
 
 	

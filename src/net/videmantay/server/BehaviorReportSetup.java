@@ -14,6 +14,7 @@ import com.google.gdata.data.spreadsheet.SpreadsheetFeed;
 import com.google.gdata.data.spreadsheet.WorksheetEntry;
 import com.google.gdata.util.ServiceException;
 
+import net.videmantay.server.entity.Incident;
 import net.videmantay.server.entity.StudentIncident;
 
 public class BehaviorReportSetup implements DeferredTask {
@@ -22,7 +23,7 @@ public class BehaviorReportSetup implements DeferredTask {
 	public final String id;
 	
 	
-	public BehaviorReportSetup(final String oauth, final String sheet){
+	public BehaviorReportSetup(final String sheet, final String oauth){
 		token = oauth;
 		id = sheet;
 	}
@@ -39,14 +40,14 @@ public class BehaviorReportSetup implements DeferredTask {
 			feed = service.getFeed(GoogleUtils.spreadsheetURL(), SpreadsheetFeed.class);
 			SpreadsheetEntry behaviorReport = GoogleUtils.spreadsheetById(feed, id);
 			WorksheetEntry behaviorWorksheet = behaviorReport.getDefaultWorksheet();
-			behaviorWorksheet.setTitle(new PlainTextConstruct("Behavior Report"));
+			behaviorWorksheet.setTitle(new PlainTextConstruct("Incident Types"));
 			behaviorWorksheet.setRowCount(1);
-			behaviorWorksheet.setColCount(StudentIncident.class.getFields().length);
+			behaviorWorksheet.setColCount(Incident.class.getFields().length);
 			behaviorWorksheet.update();
 			
 			CellFeed cFeed = service.getFeed(behaviorWorksheet.getCellFeedUrl(), CellFeed.class);
 	
-			Field[] fields = StudentIncident.class.getFields();
+			Field[] fields = Incident.class.getFields();
 			
 			
 			for(int i = 1; i <= fields.length; i++){

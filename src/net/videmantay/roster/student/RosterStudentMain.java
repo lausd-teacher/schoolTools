@@ -40,8 +40,8 @@ public class RosterStudentMain extends Composite {
 	@UiField
 	MaterialButton fab;
 	
-	CreateStudentForm stuForm = new CreateStudentForm();
-	
+	@UiField
+	CreateStudentForm stuForm;
 	private EmptyStudentList empty = new EmptyStudentList();
 	
 	private Function studentListUpdated = new Function(){
@@ -61,7 +61,6 @@ public class RosterStudentMain extends Composite {
 	
 	public RosterStudentMain() {
 		initWidget(uiBinder.createAndBindUi(this));
-		
 		drawList();
 		fab.addClickHandler(clickHandler);
 		$(body).on(RosterEvent.STUDENT_LIST_UPDATED, studentListUpdated);
@@ -75,10 +74,11 @@ public class RosterStudentMain extends Composite {
 	
 	private void drawList(){
 		//get a hold of the roster student
-				JsArray<RosterStudentJson> students = $("#classroom").data("classroom", RosterJson.class).getRosterStudents();
+		JsArray<RosterStudentJson> students = ((RosterJson)window.getPropertyJSO("roster")).getRosterStudents();
 				//if its empty show empty content
-				if(students.length() < 1){
+				if(students == null ||students.length() < 1){
 					showEmpty();
+					return;
 				}
 				for(int i = 0; i < students.length(); i++){
 					RosterStudentItem rsi = new RosterStudentItem(students.get(i));
@@ -86,7 +86,4 @@ public class RosterStudentMain extends Composite {
 					
 				}
 	}
-	
-	
-
 }

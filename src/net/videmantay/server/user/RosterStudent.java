@@ -18,7 +18,7 @@ import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 import com.googlecode.objectify.annotation.Serialize;
 
-import net.videmantay.server.entity.Badge;
+import net.videmantay.server.entity.Goal;
 import net.videmantay.server.entity.StudentJob;
 
 
@@ -47,10 +47,10 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 	public Integer[] positviePoints;
 	public Integer[] NegativePoints;
 	@Serialize
-	public Set<Badge> badges;
+	public Set<Goal> goals;
 
 	@Parent
-	public Key<Roster> rosterKey;
+	public transient Key<Roster> rosterKey;
 	
 	@Ignore
 	public RosterDetail rosterDetail;
@@ -136,11 +136,11 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 	public void setNegativePoints(Integer[] negativePoints) {
 		NegativePoints = negativePoints;
 	}
-	public Set<Badge> getBadges() {
-		return badges;
+	public Set<Goal> getBadges() {
+		return goals;
 	}
-	public void setBadges(Set<Badge> badges) {
-		this.badges = badges;
+	public void setBadges(Set<Goal> goals) {
+		this.goals = goals;
 	}
 	public Long getId() {
 		return id;

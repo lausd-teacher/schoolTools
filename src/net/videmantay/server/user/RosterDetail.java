@@ -6,12 +6,13 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.annotation.Cache;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 
 import net.videmantay.server.entity.TeacherInfo;
 import net.videmantay.shared.GradeLevel;
 
-
+@Cache
 @Entity
 public class RosterDetail extends DBObj implements Serializable {
 
@@ -24,7 +25,7 @@ public class RosterDetail extends DBObj implements Serializable {
 	public Long id;
 	
 	@Parent
-	public Key<Roster> parent;
+	public transient Key<Roster> parent;
 	
 	public String title;
 	
@@ -34,6 +35,7 @@ public class RosterDetail extends DBObj implements Serializable {
 	
 	public GradeLevel gradeLevel;
 	
+	@Index
 	public transient String ownerId;
 	
 

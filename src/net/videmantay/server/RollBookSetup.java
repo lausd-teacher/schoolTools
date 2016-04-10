@@ -60,7 +60,7 @@ public class RollBookSetup implements DeferredTask {
 			
 			WorksheetEntry logs  = new WorksheetEntry();
 			logs.setTitle(new PlainTextConstruct("Logs"));
-			logs.setColCount(3);
+			logs.setColCount(4);
 			logs.setRowCount(1);
 			
 			CellEntry logDate = new CellEntry(1,1, "date");
@@ -90,7 +90,7 @@ public class RollBookSetup implements DeferredTask {
 		//setup studentJob sheet
 		
 		
-		//setup badges
+		//setup goals
 		
 		
 	

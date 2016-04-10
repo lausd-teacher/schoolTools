@@ -5,6 +5,7 @@ import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -13,6 +14,7 @@ import gwt.material.design.client.ui.html.Span;
 
 import static com.google.gwt.query.client.GQuery.*;
 
+import net.videmantay.roster.json.RosterJson;
 import net.videmantay.student.json.RosterStudentJson;
 
 public class RosterStudentItem extends Composite {
@@ -41,6 +43,7 @@ public class RosterStudentItem extends Composite {
 		studentImg.setUrl(url);
 		firstName.setText(student.getFirstName());
 		lastName.setText(student.getLastName());
+		$(this).id(rs.getId().toString());
 	}
 	
 	
@@ -50,14 +53,20 @@ public class RosterStudentItem extends Composite {
 			@Override
 			public boolean f(Event e){
 				if($(".studentItem").filter(".selectedStudentItem").equals(this)){
-					return true;
-				}
+				}else{
 				$(".studentItem").filter(".selectedStudentItem").removeClass(".selectedStudentItem");
 				$(this).addClass(".selectedStudentItem");
-				$(this).trigger("studentPage", student);
+				}
+				//This is handled by Roster(Entry point)
+				History.newItem("roster/" + $("#classroom").data("classroom", RosterJson.class).getId()+
+						"/student" + student.getId());
 				return true;
 			}
 		});
+	}
+	
+	public void showStudentPage(){
+		
 	}
 
 }

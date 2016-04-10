@@ -18,11 +18,9 @@ public class SeatingChart implements Serializable {
 	public Long id;
 	public String title;
 	public String descript;
-	
-	
 	@Serialize
-	public Set<StudentSeat> seats;
-	public TeacherDesk teacherDesk;
+	public Furniture[] furniture;
+	
 	public String getTitle() {
 		return title;
 	}
@@ -36,19 +34,6 @@ public class SeatingChart implements Serializable {
 		this.descript = descript;
 	}
 	
-	public Set<StudentSeat> getSeats() {
-		return seats;
-	}
-	public void setSeats(Set<StudentSeat> seats) {
-		this.seats = seats;
-	}
-	public TeacherDesk getTeacherDesk() {
-		return teacherDesk;
-	}
-	public void setTeacherDesk(TeacherDesk teacherDesk) {
-		this.teacherDesk = teacherDesk;
-	}
-
 	public Long getId() {
 		return id;
 	}

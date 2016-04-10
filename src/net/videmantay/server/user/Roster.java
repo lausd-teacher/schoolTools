@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import net.videmantay.server.entity.Badge;
+import net.videmantay.server.entity.Goal;
 import net.videmantay.server.entity.GoogleService;
 import net.videmantay.server.entity.SeatingChart;
 import net.videmantay.server.entity.StudentGroup;
@@ -45,7 +45,7 @@ public class Roster extends DBObj implements Serializable{
 	public Long id;
 	
 	@Index
-	public String ownerId;
+	public transient String ownerId;
 	
 	public String title;
 	
@@ -67,6 +67,7 @@ public class Roster extends DBObj implements Serializable{
 	public String rollBook;
 	public String gradeBook;
 	public String behaviorReport;
+
 	
 	@Serialize
 	public List<GoogleService> googleCalendars = new ArrayList<GoogleService>();
@@ -86,9 +87,6 @@ public class Roster extends DBObj implements Serializable{
 	
 	@Serialize
 	public SeatingChart[] seatingCharts;
-	
-	@Serialize
-	public Badge[] badges;
 	
 	@Serialize
 	public StudentGroup[] studentGroups;

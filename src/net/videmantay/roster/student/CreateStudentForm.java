@@ -8,6 +8,7 @@ import com.floreysoft.gwt.picker.client.domain.ViewId;
 import com.floreysoft.gwt.picker.client.domain.result.BaseResult;
 import com.floreysoft.gwt.picker.client.domain.result.PhotoResult;
 import com.floreysoft.gwt.picker.client.domain.result.ViewToken;
+import com.floreysoft.gwt.picker.client.utils.PickerLoader;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -20,11 +21,14 @@ import com.google.gwt.user.client.ui.Widget;
 
 import static com.google.gwt.query.client.GQuery.*;
 
+import gwt.material.design.client.constants.Display;
 import gwt.material.design.client.ui.MaterialButton;
+import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialDatePicker;
 import gwt.material.design.client.ui.MaterialImage;
 import gwt.material.design.client.ui.MaterialLabel;
 import gwt.material.design.client.ui.MaterialModal;
+import gwt.material.design.client.ui.MaterialModalContent;
 import gwt.material.design.client.ui.MaterialTextBox;
 import net.videmantay.shared.LoginInfo;
 import net.videmantay.student.json.RosterStudentJson;
@@ -37,9 +41,6 @@ public class CreateStudentForm extends Composite{
 	interface CreateStudentFormUiBinder extends UiBinder<Widget, CreateStudentForm> {
 	}
 	
-
-	@UiField
-	MaterialModal modal;
 	
 	@UiField
 	MaterialImage studentImg;
@@ -71,6 +72,12 @@ public class CreateStudentForm extends Composite{
 	@UiField
 	MaterialDatePicker DOB;
 	
+	@UiField
+	MaterialModal modal;
+	
+	@UiField
+	MaterialModalContent modalContent;
+	
 	private RosterStudentJson student;
 	
 	private DateTimeFormat df = DateTimeFormat.getFormat("yyyy-MM-dd");
@@ -79,16 +86,16 @@ public class CreateStudentForm extends Composite{
         
         @Override
         public void onCanceled() {
-          picker.setVisible(false);
+          picker.setVisible(false); 
         }
 
 		@Override
 		public void onPicked(ViewToken viewToken, BaseResult result) {
 			PhotoResult pr = result.cast();
-			String url = pr.getDocs().get(0).getUrl();
+			String url = pr.getDocs().get(0).getThumbnails().get(pr.getDocs().get(0).getThumbnails().length() -1).getUrl();
 			studentImg.setUrl(url);
 			imgUrl.setText(url);
-			picker.setVisible(false);
+			picker.setVisible(false);		
 		}
       };
       
@@ -103,7 +110,8 @@ public class CreateStudentForm extends Composite{
 		@Override
 		public void onClick(ClickEvent event) {
 			$(window).trigger("studentcreate", getFormData());
-			
+			form.reset();
+			modal.closeModal();
 		}};
 	
 	private ClickHandler cancelHandler = new ClickHandler(){
@@ -117,26 +125,25 @@ public class CreateStudentForm extends Composite{
 	
 	
 	private Picker picker;
-	private final LoginInfo info = window.getPropertyJSO("loginInfo").cast();
+	private final LoginInfo info = LoginInfo.create();
+	
 	
 ///Constructor Here , Almost lost it//////////////////////////////////////////////
 	public CreateStudentForm() {
 		initWidget(uiBinder.createAndBindUi(this));
+		console.log("info to string authToken" + info.getAuthToken());
+		//give form a size
 		//set up the picker
-		picker = PickerBuilder.create()
-				.addView(ViewId.PHOTO_UPLOAD)
-				.addView(ViewId.PHOTOS)
-				.setOAuthToken(info.getOAuthToken())
-				.enableFeature(Feature.SIMPLE_UPLOAD_ENABLED)
-				.addCallback(callback)
-				.build();
-		picker.setVisible(false);
+		modalContent.setDisplay(Display.BLOCK);
 				
-		//picker button clickHandler
-		pickerButton.addClickHandler(handler);
-		okBtn.addClickHandler(okHandler);
-		cancelBtn.addClickHandler(cancelHandler);
-		
+						picker = PickerBuilder.create()
+								.addView(ViewId.PHOTOS)
+								.setDeveloperKey("AIzaSyAuQ-J6_5P8UnbHLN9KHj91zAMf8Ouj6tI")
+								.setOAuthToken(info.getAuthToken())
+								.setSize(900, 600)
+								.addCallback(callback)
+								.build();
+						picker.setVisible(false);
 	}
 	///////////////////END CONSTR////////////////////////////////////////////////
 	
@@ -156,6 +163,17 @@ public class CreateStudentForm extends Composite{
 		student.setDOB(df.format(DOB.getDate()));
 		
 		return student;
+	}
+	
+	@Override
+	public void onLoad(){
+		
+						
+				//picker button clickHandler
+				pickerButton.addClickHandler(handler);
+				okBtn.addClickHandler(okHandler);
+				cancelBtn.addClickHandler(cancelHandler);
+				
 	}
 	
 

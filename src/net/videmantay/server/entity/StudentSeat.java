@@ -12,54 +12,41 @@ public class StudentSeat implements Serializable{
 	 */
 	private static final long serialVersionUID = 4912335951117569448L;
 	
-	public String matrix;
-	public String top;
-	public String left;
-	public boolean isEmpty;
-	public Integer seatNum;
-	public RosterStudent rosterStudent;
-	public StudentGroup studentGroup;
 	
-	public String getMatrix() {
-		return matrix;
-	}
-	public void setMatrix(String matrix) {
-		this.matrix = matrix;
-	}
-	public String getTop() {
-		return top;
-	}
-	public void setTop(String top) {
-		this.top = top;
-	}
-	public String getLeft() {
-		return left;
-	}
-	public void setLeft(String left) {
-		this.left = left;
-	}
+	public Integer seatNum;
+	public Long rosterStudent;
+	public Long studentGroup;
+	public String color;
+	public String url;
+	public boolean isEmpty;
+	
+	
 	public boolean isEmpty() {
+		if(rosterStudent == null ||rosterStudent == 0L){
+			this.isEmpty = false;
+		}else{
+			this.isEmpty = true;
+		}
+		
 		return isEmpty;
 	}
-	public void setEmpty(boolean isEmpty) {
-		this.isEmpty = isEmpty;
-	}
+	
 	public Integer getSeatNum() {
 		return seatNum;
 	}
 	public void setSeatNum(Integer seatNum) {
 		this.seatNum = seatNum;
 	}
-	public RosterStudent getRosterStudent() {
+	public Long getRosterStudent() {
 		return rosterStudent;
 	}
-	public void setRosterStudent(RosterStudent rosterStudent) {
+	public void setRosterStudent(Long rosterStudent) {
 		this.rosterStudent = rosterStudent;
 	}
-	public StudentGroup getStudentGroup() {
+	public Long getStudentGroup() {
 		return studentGroup;
 	}
-	public void setStudentGroup(StudentGroup studentGroup) {
+	public void setStudentGroup(Long studentGroup) {
 		this.studentGroup = studentGroup;
 	}
 

@@ -1,8 +1,11 @@
 package net.videmantay.server;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.HashMap;
+import java.util.Map;
 
 import freemarker.template.Configuration;
 import freemarker.template.DefaultObjectWrapper;
@@ -61,16 +64,16 @@ public class TemplateGen{
 		return error();
 	}
 	
-	public static String getTeacherPage(){
+	public static Template getTeacherPage(){
 		try {
 			Template teacherPage = cfg.getTemplate("/WEB-INF/html/teacher.html");
-			return teacherPage.toString();
+			return teacherPage;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
 		
-		return error();
 	}
 	
 	public static String getStudentPage(){

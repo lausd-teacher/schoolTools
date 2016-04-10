@@ -24,6 +24,11 @@ public class RosterGrid extends MaterialContainer{
 	@Override
 	public void onLoad(){
 		MaterialLoader.showLoading(true);
+		JsArray<RosterDetailJson> rosters = window.getPropertyJSO("rosterList").cast();
+		for(int i = 0; i < rosters.length(); i++){
+			rosterList.add(rosters.get(i));
+		}
+		drawGrid();
 	}
 	
 	public void drawGrid(){
@@ -33,7 +38,7 @@ public class RosterGrid extends MaterialContainer{
 		}else{
 		this.clear();
 		MaterialRow row = new MaterialRow();
-		for(int i= 0; i<= rosterList.size(); i++){
+		for(int i= 0; i< rosterList.size(); i++){
 			
 			
 			MaterialColumn col = new MaterialColumn(12,6,4);
@@ -49,27 +54,6 @@ public class RosterGrid extends MaterialContainer{
 	public void showEmptyList(){
 		this.clear();
 		this.add(this.emptyList);
-	}
-	
-	public void refreshList(){
-		Ajax.get(RosterUrl.LIST_ROSTERS)
-		.done(new Function(){
-			@Override
-			public void f(){
-				console.log(this.arguments(0).toString());
-				try{
-				JsArray<RosterDetailJson> list = JsonUtils.safeEval((String)this.arguments(0)).cast();
-				rosterList.clear();
-				for(int i = 0; i < list.length(); i++){
-				rosterList.add(list.get(i));
-				}//end for
-				drawGrid();
-				}catch(Exception e){
-					drawGrid();
-					
-				}
-			}
-		});
 	}
 
 

@@ -6,30 +6,61 @@
 	
 	</ui:style>
 	<g:HTMLPanel>
-		<m:MaterialTab ui:field="tab" backgroundColor="green darken-4" indicatorColor="green accent-1" height="2.5em">
-			<m:MaterialTabItem ><m:MaterialLink href="#tab1" text="Dashboard" textColor="white"/></m:MaterialTabItem>
-			<m:MaterialTabItem ><m:MaterialLink href="#tab2" text="Calendar" textColor="white"/></m:MaterialTabItem>
-			<m:MaterialTabItem ><m:MaterialLink href="#tab3" text="Reports" textColor="white"/></m:MaterialTabItem>
+		<m:MaterialTab ui:field="tab" backgroundColor="green darken-4" indicatorColor="orange accent-4" height="2.5em">
+			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab1" text="Dashboard" textColor="white"/></m:MaterialTabItem>
+			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab2" text="Calendar" textColor="white"/></m:MaterialTabItem>
+			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab3" text="Reports" textColor="white"/></m:MaterialTabItem>
 		</m:MaterialTab>
 		<div  id="tab1">
-			<m:MaterialRow backgroundColor="green accent-3" textColor="green darken-4">
-				<m:MaterialColumn>
-					<m:MaterialButton text="Roll"></m:MaterialButton>
-				
-					<m:MaterialButton text="Homework"></m:MaterialButton>
-				
-					<m:MaterialButton text="Groups"></m:MaterialButton>
-				
-					<m:MaterialButton text="Random"></m:MaterialButton>
-			
-					<m:MaterialButton text="Select All"></m:MaterialButton>
-				</m:MaterialColumn>
-				<m:MaterialColumn hideOn="HIDE_ON_SMALL">
+			<m:MaterialRow backgroundColor="green accent-3" textColor="green darken-4" paddingLeft="10" centerOn="CENTER_ON_SMALL">
+			<m:MaterialColumn  grid="l4" hideOn="HIDE_ON_MED_DOWN" float="RIGHT">
 				<g:HorizontalPanel>
 					<m:MaterialLabel text="Grid" />
 					<m:MaterialSwitch ></m:MaterialSwitch>
 					<m:MaterialLabel text="Seating Chart" />
 				</g:HorizontalPanel>
+				</m:MaterialColumn>
+			<m:MaterialColumn grid="s12 m12 l8" float="LEFT">
+				<m:MaterialColumn grid="s2">
+					<m:MaterialPanel textColor="green" paddingTop="11">
+						<g:HTMLPanel> 
+							<m:MaterialIcon iconType="PLAYLIST_ADD_CHECK"/>
+							<br/><m:MaterialLabel text="Roll"/>
+						</g:HTMLPanel>
+					</m:MaterialPanel>
+				</m:MaterialColumn>
+				<m:MaterialColumn grid="s2">
+				<m:MaterialPanel textColor="green"  paddingTop="11" > 
+						<g:HTMLPanel> 
+							<m:MaterialIcon iconType="EVENT"/>
+							<br/><m:MaterialLabel text="Homework" />
+						</g:HTMLPanel>
+				</m:MaterialPanel>
+				</m:MaterialColumn>
+				<m:MaterialColumn grid="s2">
+					<m:MaterialPanel textColor="green" paddingTop="11"><!--  -->
+						<g:HTMLPanel> 
+							<m:MaterialIcon iconType="GROUP_WORK"/><br/>
+							<m:MaterialLabel text="Group" />
+						</g:HTMLPanel>
+					</m:MaterialPanel>
+				</m:MaterialColumn>
+				<m:MaterialColumn grid="s2">
+					<m:MaterialPanel textColor="green"  paddingTop="11"><!--  -->
+						<g:HTMLPanel> 
+							<m:MaterialIcon iconType="SHUFFLE"/>
+							<br/> <m:MaterialLabel text="Random"/>
+						</g:HTMLPanel>
+					</m:MaterialPanel>
+			</m:MaterialColumn>
+			<m:MaterialColumn grid="s2">
+					<m:MaterialPanel textColor="green"  paddingTop="11"><!--  -->
+						<g:HTMLPanel>
+							<m:MaterialIcon iconType="SELECT_ALL"/>
+							<br/><m:MaterialLabel text="Select All" />
+						</g:HTMLPanel>
+					</m:MaterialPanel>
+				</m:MaterialColumn>
 				</m:MaterialColumn>
 			</m:MaterialRow>
 		</div>
