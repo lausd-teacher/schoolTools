@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>teacher</title>
+   <style>
+   .ui-rotatable-handle {
+    height: 16px;
+    width: 16px;
+    cursor: pointer;
+    background-image: url(rotate.png);
+    background-size: 100%;
+    left: 2px;
+    bottom: 2px;
+}
+	div.picker-dialog{
+		width:80%;
+		height:80%;
+		
+	}
+	li.tab.myTab {
+		height:inherit;
+	}
+	ul.tabs li.tab.myTab a span{
+		   
+    display: block !important;
+   
+	}
+   </style>
+  </head>
+	<script>
+		var loginInfo = ${loginInfo};
+		
+		var rosterList = ${rosterList};
+	
+	</script>
+  <body>
+    <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
+<script src="jquery-2.1.4.min.js"></script>
+<script src="jquery-ui.min.js"></script>
+<script src="jquery.ui.rotatable.min.js"></script>
+
+  <script type="text/javascript" language="javascript" src="teacher/teacher.nocache.js"></script> 
+  <!--  The Following proves that picker works with oAuth2 -->
+  <script type="text/javascript">
+      // Use the API Loader script to load google.picker and gapi.auth.
+      function onApiLoad() {
+        gapi.load('picker');
+      }
+	</script>
+    <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script> 
+  </body>
+</html>
