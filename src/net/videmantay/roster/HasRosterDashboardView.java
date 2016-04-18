@@ -1,6 +1,8 @@
 package net.videmantay.roster;
 
-public interface HasRosterDashboardView {
+import com.google.gwt.user.client.ui.IsWidget;
+
+public interface HasRosterDashboardView extends IsWidget {
 
 	public void checkHW();
 	
@@ -16,6 +18,8 @@ public interface HasRosterDashboardView {
 	
 	public void home();
 	
+	public void arrangeFurniture();
+	
 	public void doneCheckHW();
 	
 	public void doneGroups();
@@ -29,6 +33,8 @@ public interface HasRosterDashboardView {
 	public void deselectAll();
 	
 	public void doneMultipleSelect();
+	
+	public void doneArrangeFurniture();
 	
 	
 }

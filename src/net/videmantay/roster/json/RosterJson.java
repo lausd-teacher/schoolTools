@@ -3,6 +3,7 @@ package net.videmantay.roster.json;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
+import net.videmantay.roster.seatingchart.json.SeatingChartDetailJson;
 import net.videmantay.shared.GradeLevel;
 import net.videmantay.student.json.RosterStudentJson;
 import net.videmantay.student.json.StudentGroupJson;
@@ -170,5 +171,28 @@ public class RosterJson extends JavaScriptObject {
 		this.behaviorReport = behaviorReport;
 		return this;
 	}-*/;
+	
+	public final native JsArray<SeatingChartDetailJson> getSeatingCharts()/*-{
+			return this.seatingCharts
+	}-*/;
+	
+	public final native RosterJson setSeatingCharts(JsArray<SeatingChartDetailJson> seatingCharts)/*-{
+						this.seatingCharts = seatingCharts;
+	}-*/;
+	
+	public final native JsArray<SeatingChartDetailJson> addSeatingChart(SeatingChartDetailJson seatingChart)/*-{
+				this.seatingCharts.push(seatingChart);
+	}-*/;
+	
+	public final native JsArray<SeatingChartDetailJson> removeSeatingChart(SeatingChartDetailJson seatingChart)/*-{
+							for(var i = 0; i< this.seatingCharts.length; i++){
+							    if(seatingCharts[i].id == seatingChart.id){
+							    seatingCharts.splice(i,1);	
+							    }	
+							}
+							
+							return this.seatingCharts;
+	}-*/;
+	
 	
 }

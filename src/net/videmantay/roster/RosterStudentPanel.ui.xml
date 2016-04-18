@@ -12,7 +12,7 @@
 			<tr><!-- Student Image Row -->
 				<td colspan="2">
 					<div class="counterRotate">
-						<m:MaterialImage ui:field="studentImg" addStyleName="studentImg" />
+						<m:MaterialImage ui:field="studentImg" addStyleNames="studentImg" />
 					</div>
 				</td>
 			</tr>
@@ -22,19 +22,19 @@
 				<table>
 				<tr>
 				<td rowspan="2">
-					<m:html.Div ui:field="studentName" class="studnetName">
-						<m:html.Span ui:field="firstName" addStyleName="first"/><br/>
-						<m:html.Span ui:field="lastName" addStyleName="last" />
+					<m:html.Div ui:field="studentName" addStyleNames="studnetName">
+						<m:html.Span ui:field="firstName" addStyleNames="first"/><m:html.Br />
+						<m:html.Span ui:field="lastName" addStyleNames="last" />
 					</m:html.Div>
 				</td>
 				<td rowspan="1">
-					<m:html.Div ui:field="studentCheckBox" addStyleName="studentCheckbox"></m:html.Div>
+					<m:html.Div ui:field="studentCheckBox" addStyleNames="studentCheckbox"></m:html.Div>
 				</td>
 			</tr>
 			<tr class="infoBar">
-				<td><m:MaterialLink ui:field="noteBtn" addStyleName="noteBtn"/></td>
+				<td><m:MaterialLink ui:field="noteBtn" addStyleNames="noteBtn"/></td>
 				<td><div class="middleBarIncident"></div></td>
-				<td><m:MaterialLink ui:field="seeMoreBtn" addStyleName="seeMoreBtn"/></td>
+				<td><m:MaterialLink ui:field="seeMoreBtn" addStyleNames="seeMoreBtn"/></td>
 			</tr>
 			</table>
 			</div>

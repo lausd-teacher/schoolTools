@@ -8,8 +8,8 @@
 			
 			<m:MaterialNavBrand  ui:field="rosterTitle" textAlign="CENTER"/>
 			
-			<m:MaterialNavSection textAlign="CENTER" float="RIGHT" marginRight="11.5">
-				<m:MaterialAnchorButton ui:field="classtimeBtn"   text="Class Time" activates="classtime"/>
+			<m:MaterialNavSection   float="RIGHT" marginRight="110" >
+				<m:MaterialAnchorButton  ui:field="classtimeBtn"   fontSize="1.75em" text="Class Time"  activates="classtime"/>
 					<m:MaterialDropDown activator="classtime" ui:field="classtimeDrop">
 				<m:MaterialLink text="First Link" />
 				<m:MaterialLink text="Second Title" />
@@ -17,7 +17,7 @@
 			</m:MaterialNavSection>
 			</m:MaterialNavBar>
 			<h:Div padding="5" marginBottom="-3" backgroundColor="green" hideOn="HIDE_ON_LARGE" textColor="white">
-				<m:MaterialAnchorButton width="100%" text="Class Time"  textAlign="CENTER" iconType="ARROW_DROP_DOWN" iconPosition="RIGHT" activates="classtime2"/>
+				<m:MaterialAnchorButton  width="100%" text="Class Time" fontSize="1.25em" textAlign="CENTER" iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT" activates="classtime2"/>
 				<m:MaterialDropDown activator="classtime2" ui:field="classtimeDrop2">
 				<m:MaterialLink text="First Link" />
 				<m:MaterialLink text="Second Title" />

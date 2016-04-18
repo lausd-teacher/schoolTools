@@ -142,14 +142,18 @@ public final class PickerBuilder extends JavaScriptObject {
   	return this.getOAuthToken();
   }-*/;
   
+  public final native PickerBuilder setOrigin(String origin)/*-{
+  		return this.setOrigin(origin);
+  }-*/;
+   
   /**
    * Set the preferred dialog size. The dialog will be auto-centered. It has a
    * minimum size of (566,350) and a maximum size of (1051,650).
    * 
    * @return The picker builder instance
    */
-  public native PickerBuilder setSize() /*-{
-		return this.setSize();
+  public native PickerBuilder setSize(int width, int height) /*-{
+		return this.setSize(width, height);
   }-*/;
 
   /**
@@ -308,6 +312,10 @@ public final class PickerBuilder extends JavaScriptObject {
    */
   public native PickerBuilder setAppId(String driveAppId) /*-{
 		return this.setAppId(driveAppId);
+  }-*/;
+  
+  public final native PickerBuilder setDeveloperKey(String key)/*-{
+  			return this.setDeveloperKey(key);
   }-*/;
 
   /**

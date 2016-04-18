@@ -12,63 +12,93 @@
 			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab3" text="Reports" textColor="white" waves="ORANGE"/></m:MaterialTabItem>
 		</m:MaterialTab>
 		<div  id="tab1">
-			<m:MaterialRow backgroundColor="green accent-3" textColor="green darken-4" paddingLeft="10" centerOn="CENTER_ON_SMALL">
-			<m:MaterialColumn  grid="l4" hideOn="HIDE_ON_MED_DOWN" float="RIGHT">
-				<g:HorizontalPanel>
-					<m:MaterialLabel text="Grid" />
-					<m:MaterialSwitch ui:field="gridSwitch" ></m:MaterialSwitch>
-					<m:MaterialLabel text="Seating Chart" />
-					<m:MaterialAnchorButton ui:field="seatingChartSettingBtn" type="FLAT" activates="seatingChartOpts" iconType="SETTINGS"/>
-				</g:HorizontalPanel>
-				<m:MaterialDropDown activator="seatingChartOpts">
+			<m:MaterialRow height="3em" backgroundColor="green accent-3" textColor="green darken-4" paddingLeft="10" centerOn="CENTER_ON_SMALL">
+			<m:MaterialColumn  grid="l3" hideOn="HIDE_ON_MED_DOWN" float="LEFT">
+				<m:MaterialRow>
+					<m:MaterialColumn grid="l1">
+					<m:MaterialLabel text="Grid" paddingRight="3.0"/>
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="l3">
+					<m:MaterialSwitch ui:field="gridSwitch"></m:MaterialSwitch>
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="l3">
+					<m:MaterialLabel text="Seating Chart" paddingLeft="7.5" />
+					</m:MaterialColumn>
+				</m:MaterialRow><!--  -->
+				</m:MaterialColumn>
+			<m:MaterialColumn grid="s12 m12 l8">
+				<m:MaterialColumn grid="s1 m1 l1">
+					<m:MaterialPanel  paddingTop="12">
+						<g:HTMLPanel>
+							<m:MaterialTooltip  text="Roll">
+							<m:MaterialIcon iconType="ASSIGNMENT_IND" iconSize="SMALL"/>
+							</m:MaterialTooltip>
+						</g:HTMLPanel>
+					</m:MaterialPanel>
+				</m:MaterialColumn>
+				<m:MaterialColumn grid="s1 m1 l1">
+				<m:MaterialPanel  paddingTop="12" > 
+						<g:HTMLPanel> 
+						<m:MaterialTooltip text="Homework">
+							<m:MaterialIcon ui:field="hwBtn" iconType="PLAYLIST_ADD_CHECK" iconSize="SMALL"/>
+							</m:MaterialTooltip>
+						</g:HTMLPanel>
+				</m:MaterialPanel>
+				</m:MaterialColumn>
+				<m:MaterialColumn grid="s1 m1 l1">
+					<m:MaterialPanel  paddingTop="12"><!--  -->
+						<g:HTMLPanel> 
+						<m:MaterialTooltip text="Groups">
+							<m:MaterialIcon iconType="GROUP_WORK" iconSize="SMALL"/>
+						</m:MaterialTooltip>	
+						</g:HTMLPanel>
+					</m:MaterialPanel>
+				</m:MaterialColumn>
+			<m:MaterialColumn grid="s1 m1 l1">
+					<m:MaterialPanel  paddingTop="12"><!--  -->
+						<g:HTMLPanel>
+						<m:MaterialTooltip text="Sections">
+							<m:MaterialIcon iconType="SELECT_ALL" iconSize="SMALL"/>
+							</m:MaterialTooltip>
+						</g:HTMLPanel>
+					</m:MaterialPanel>
+				</m:MaterialColumn>
+				<m:MaterialColumn grid="s1 m1 l1">
+					<m:MaterialPanel  paddingTop="12"><!--  -->
+						<g:HTMLPanel> 
+						<m:MaterialTooltip text="Random">
+							<m:MaterialIcon iconType="SHUFFLE" iconSize="SMALL"/>
+						</m:MaterialTooltip>
+						</g:HTMLPanel>
+					</m:MaterialPanel>
+			</m:MaterialColumn>
+				<m:MaterialColumn grid="s1 m1 l1">
+					<m:MaterialPanel  paddingTop="12"><!--  -->
+						<g:HTMLPanel>
+						<m:MaterialTooltip text="Multiple">
+							<m:MaterialIcon iconType="GROUP_ADD" iconSize="SMALL"/>
+							</m:MaterialTooltip>
+						</g:HTMLPanel>
+					</m:MaterialPanel>
+				</m:MaterialColumn>
+				<m:MaterialColumn grid="s4 m3 l3">
+					<m:MaterialPanel  marginLeft="5" paddingTop="12"><!--  -->
+						<g:HTMLPanel>
+						<m:MaterialTooltip text="Edit">
+							<m:MaterialIcon fontSize="2em"  activates="seatingChartOpts" iconType="EDIT" iconSize="MEDIUM" />
+							</m:MaterialTooltip>
+						</g:HTMLPanel>
+					</m:MaterialPanel>
+					<m:MaterialDropDown activator="seatingChartOpts">
 					<m:MaterialLink ui:field="furnitureSetLink"  text="Seats"/>
 					<m:MaterialLink ui:field="studentSetLink"  text="Students"/>
 					<m:MaterialLink ui:field="printChartLink"  text="print chart"/>
 				</m:MaterialDropDown>
 				</m:MaterialColumn>
-			<m:MaterialColumn grid="s12 m12 l8" float="LEFT">
-				<m:MaterialColumn grid="s2">
-					<m:MaterialPanel textColor="green" paddingTop="11">
-						<g:HTMLPanel> 
-							<m:MaterialIcon iconType="ASSIGNMENT_IND"/>
-							<br/><m:MaterialLabel hideOn="HIDE_ON_SMALL" text="Roll"/>
-						</g:HTMLPanel>
-					</m:MaterialPanel>
-				</m:MaterialColumn>
-				<m:MaterialColumn grid="s2">
-				<m:MaterialPanel textColor="green"  paddingTop="11" > 
-						<g:HTMLPanel> 
-							<m:MaterialIcon iconType="PLAYLIST_ADD_CHECK"/>
-							<br/><m:MaterialLabel hideOn="HIDE_ON_SMALL" text="Homework" />
-						</g:HTMLPanel>
-				</m:MaterialPanel>
-				</m:MaterialColumn>
-				<m:MaterialColumn grid="s2">
-					<m:MaterialPanel textColor="green" paddingTop="11"><!--  -->
-						<g:HTMLPanel> 
-							<m:MaterialIcon iconType="GROUP_WORK"/><br/>
-							<m:MaterialLabel hideOn="HIDE_ON_SMALL" text="Group" />
-						</g:HTMLPanel>
-					</m:MaterialPanel>
-				</m:MaterialColumn>
-				<m:MaterialColumn grid="s2">
-					<m:MaterialPanel textColor="green"  paddingTop="11"><!--  -->
-						<g:HTMLPanel> 
-							<m:MaterialIcon iconType="SHUFFLE"/>
-							<br/> <m:MaterialLabel hideOn="HIDE_ON_SMALL" text="Random"/>
-						</g:HTMLPanel>
-					</m:MaterialPanel>
-			</m:MaterialColumn>
-			<m:MaterialColumn grid="s2">
-					<m:MaterialPanel textColor="green"  paddingTop="11"><!--  -->
-						<g:HTMLPanel>
-							<m:MaterialIcon iconType="SELECT_ALL"/>
-							<br/><m:MaterialLabel hideOn="HIDE_ON_SMALL" text="Select All" />
-						</g:HTMLPanel>
-					</m:MaterialPanel>
-				</m:MaterialColumn>
 				</m:MaterialColumn>
 			</m:MaterialRow>
+			<g:HTMLPanel ui:field="tab1Main">
+			</g:HTMLPanel>
 		</div>
 		<div id="tab2">
 			<h2>TAB 2</h2>

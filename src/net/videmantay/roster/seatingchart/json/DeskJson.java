@@ -6,6 +6,16 @@ public class DeskJson extends FurnitureJson {
 
 	protected DeskJson(){}
 	
+	
+	public final native String getId()/*-{
+	
+			return this.id;
+	}-*/;
+	
+	public final native DeskJson setId(String id)/*-{
+			this.id = id;
+			return this;
+	}-*/;
 	public final native JsArray<StudentSeatJson> getSeats()/*-{
 		return this.seats;
 	}-*/;

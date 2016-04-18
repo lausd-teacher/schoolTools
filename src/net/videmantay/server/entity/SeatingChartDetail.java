@@ -21,12 +21,10 @@ public class SeatingChartDetail implements Serializable{
 	public Long id;
 	public String title;
 	public String descript;
-	public Date createOn;
 	public Date lastUpdate;
 	//have html svg converter so that
 	// we can have a thumbnail of the seatingChart
 	public String thumbnailUrl;
-	public Long seatingChartId;
 	public String getTitle() {
 		return title;
 	}
@@ -39,12 +37,6 @@ public class SeatingChartDetail implements Serializable{
 	public void setDescript(String descript) {
 		this.descript = descript;
 	}
-	public Date getCreateOn() {
-		return createOn;
-	}
-	public void setCreateOn(Date createOn) {
-		this.createOn = createOn;
-	}
 	public Date getLastUpdate() {
 		return lastUpdate;
 	}
@@ -56,12 +48,6 @@ public class SeatingChartDetail implements Serializable{
 	}
 	public void setThumbnailUrl(String thumbnailUrl) {
 		this.thumbnailUrl = thumbnailUrl;
-	}
-	public Long getSeatingChartId() {
-		return seatingChartId;
-	}
-	public void setSeatingChart(Long seatingChartId) {
-		this.seatingChartId = seatingChartId;
 	}
 	public Long getId() {
 		return id;

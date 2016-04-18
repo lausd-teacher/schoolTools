@@ -31,13 +31,13 @@ public class Draggable extends UiWidget<Draggable, Draggable.Options> {
       return {};
     }-*/;
 
-    public native final Options addClasses(Boolean addClasses)
+    public native final Options addClasses(boolean addClasses)
     /*-{
       this["addClasses"] = addClasses;
       return this;
     }-*/;
 
-    public native final Boolean addClasses()
+    public native final boolean addClasses()
     /*-{
       return this["addClasses"];
     }-*/;
@@ -132,35 +132,35 @@ public class Draggable extends UiWidget<Draggable, Draggable.Options> {
       return this["cursor"];
     }-*/;
 
-    public native final Options cursorAt(JavaScriptObject cursorAt)
+    public native final Options cursorAt(CursorAt cursorAt)
     /*-{
       this["cursorAt"] = cursorAt;
       return this;
     }-*/;
 
-    public native final JavaScriptObject cursorAt()
+    public native final CursorAt cursorAt()
     /*-{
       return this["cursorAt"];
     }-*/;
 
-    public native final Options delay(Integer delay)
+    public native final Options delay(int delay)
     /*-{
       this["delay"] = delay;
       return this;
     }-*/;
 
-    public native final Integer delay()
+    public native final int delay()
     /*-{
       return this["delay"];
     }-*/;
 
-    public native final Options distance(Integer distance)
+    public native final Options distance(int distance)
     /*-{
       this["distance"] = distance;
       return this;
     }-*/;
 
-    public native final Integer distance()
+    public native final int distance()
     /*-{
       return this["distance"];
     }-*/;
@@ -210,40 +210,40 @@ public class Draggable extends UiWidget<Draggable, Draggable.Options> {
       return this["helper"];
     }-*/;
 
-    public native final Options iframeFix(Boolean iframeFix)
+    public native final Options iframeFix(boolean iframeFix)
     /*-{
       this["iframeFix"] = iframeFix;
       return this;
     }-*/;
 
-    public native final Boolean iframeFix()
+    public native final boolean iframeFix()
     /*-{
       return this["iframeFix"];
     }-*/;
 
-    public native final Options opacity(Float opacity)
+    public native final Options opacity(double opacity)
     /*-{
       this["opacity"] = opacity;
       return this;
     }-*/;
 
-    public native final Float opacity()
+    public native final double opacity()
     /*-{
       return this["opacity"];
     }-*/;
 
-    public native final Options refreshPositions(Boolean refreshPositions)
+    public native final Options refreshPositions(boolean refreshPositions)
     /*-{
       this["refreshPositions"] = refreshPositions;
       return this;
     }-*/;
 
-    public native final Boolean refreshPositions()
+    public native final boolean refreshPositions()
     /*-{
       return this["refreshPositions"];
     }-*/;
 
-    public native final Options revert(Boolean revert)
+    public native final Options revert(boolean revert)
     /*-{
       this["revert"] = revert;
       return this;
@@ -260,18 +260,18 @@ public class Draggable extends UiWidget<Draggable, Draggable.Options> {
       return this["revert"];
     }-*/;
 
-    public native final Boolean isRevert()
+    public native final boolean isRevert()
     /*-{
       return this["revert"];
     }-*/;
 
-    public native final Options revertDuration(Integer revertDuration)
+    public native final Options revertDuration(int revertDuration)
     /*-{
       this["revertDuration"] = revertDuration;
       return this;
     }-*/;
 
-    public native final Integer revertDuration()
+    public native final int revertDuration()
     /*-{
       return this["revertDuration"];
     }-*/;
@@ -287,29 +287,29 @@ public class Draggable extends UiWidget<Draggable, Draggable.Options> {
       return this["scope"];
     }-*/;
 
-    public native final Options scroll(Boolean scroll)
+    public native final Options scroll(boolean scroll)
     /*-{
       this["scroll"] = scroll;
       return this;
     }-*/;
 
-    public native final Boolean scroll()
+    public native final boolean scroll()
     /*-{
       return this["scroll"];
     }-*/;
 
-    public native final Options scrollSensitivity(Integer scrollSensitivity)
+    public native final Options scrollSensitivity(int scrollSensitivity)
     /*-{
       this["scrollSensitivity"] = scrollSensitivity;
       return this;
     }-*/;
 
-    public native final Integer scrollSensitivity()
+    public native final int scrollSensitivity()
     /*-{
       return this["scrollSensitivity"];
     }-*/;
 
-    public native final Options scrollSpeed(Integer scrollSpeed)
+    public native final Options scrollSpeed(int scrollSpeed)
     /*-{
       this["scrollSpeed"] = scrollSpeed;
       return this;
@@ -320,7 +320,7 @@ public class Draggable extends UiWidget<Draggable, Draggable.Options> {
       return this["scrollSpeed"];
     }-*/;
 
-    public native final Options snap(Boolean snap)
+    public native final Options snap(boolean snap)
     /*-{
       this["snap"] = snap;
       return this;
@@ -343,13 +343,13 @@ public class Draggable extends UiWidget<Draggable, Draggable.Options> {
       return this["snapMode"];
     }-*/;
 
-    public native final Options snapTolerance(Integer snapTolerance)
+    public native final Options snapTolerance(int snapTolerance)
     /*-{
       this["snapTolerance"] = snapTolerance;
       return this;
     }-*/;
 
-    public native final Integer snapTolerance()
+    public native final int snapTolerance()
     /*-{
       return this["snapTolerance"];
     }-*/;
@@ -371,18 +371,17 @@ public class Draggable extends UiWidget<Draggable, Draggable.Options> {
       return this;
     }
 
-    public native final Options zIndex(Integer zIndex)
+    public native final Options zIndex(int zIndex)
     /*-{
       this["zIndex"] = zIndex;
       return this;
     }-*/;
 
-    public native final Integer zIndex()
+    public native final int zIndex()
     /*-{
       return this["zIndex"];
     }-*/;
-    
-   
+
   }
 
   public static class Event extends JavaScriptObject {

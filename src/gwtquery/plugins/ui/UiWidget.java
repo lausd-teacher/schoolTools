@@ -78,22 +78,13 @@ public abstract class UiWidget<T extends UiWidget<?, ?>, O extends WidgetOptions
   public native final T bind(String name, Function f)
   /*-{
     this.@gwtquery.plugins.ui.UiWidget::ui = this.@gwtquery.plugins.ui.UiWidget::ui.bind(name, function(event, ui) {
-    	console.log('bind called');
-      f.@com.google.gwt.query.client.Function::f(Lcom/google/gwt/user/client/Event;[Ljava/lang/Object;)(event, ui);
+    	console.log(ui);
+      f.@com.google.gwt.query.client.Function::f(Lcom/google/gwt/user/client/Event;[Ljava/lang/Object;)(event, [ui]);
     });
     return this;
   }-*/;
   
-  @Override
-  public  native final T on(String name, Function... f)/*-{
-	 this.@gwtquery.plugins.ui.UiWidget::ui = 
-	 	this.@gwtquery.plugins.ui.UiWidget::ui.on(name,function(event, ui){
-	 for(var i= 0; i < f.length; i++){
-      f[i].@com.google.gwt.query.client.Function::f(Lcom/google/gwt/user/client/Event;[Ljava/lang/Object;)(event, ui);
-	 }});
-    return this;
-  }-*/;
-
+  
   protected JavaScriptObject invoke(String method) {
     return invoke(ui, widgetType, method);
   }
@@ -195,6 +186,7 @@ public abstract class UiWidget<T extends UiWidget<?, ?>, O extends WidgetOptions
 
   private native final JavaScriptObject initUiWidget(String type, NodeList<Element> list, O options)
   /*-{
+  	
     return $wnd.jQuery(list)[type](options);
   }-*/;
 

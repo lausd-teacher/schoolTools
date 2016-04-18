@@ -1,25 +1,45 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui">
-	<ui:style>
-		.absolute{position:absolute}
-	</ui:style>
-	<g:HTMLPanel styleName="seatingChartPanel">
-		<header>
-			<m:MaterialPanel id="furnitureToolBar">
-				<m:MaterialRow ui:field="furnitureIconList">
-					
-				</m:MaterialRow>
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:h="urn:import:gwt.material.design.client.ui.html">
+	<g:HTMLPanel styleName="seatingChart">
+	<table>
+		<tr>
+		<td colspan="2">
+		<h:Div ui:field="toolsPanel" addStyleNames="toolsPanel">
+		<m:MaterialPanel   ui:field="studentTools">
+		<m:MaterialLabel text="StudentList" />
+		<m:MaterialCollection  ui:field="studentList" />
+		</m:MaterialPanel>
+			<m:MaterialPanel ui:field="furnitureTools">
+				<m:MaterialLabel text="Furniture" />
+				<m:MaterialCollection ><!--  -->
+					<m:MaterialCollectionItem><!--  -->
+						<m:MaterialImage addStyleNames="furnitureIcon" url="../img/doubleDesk.png" caption="Single Desk"/>
+					</m:MaterialCollectionItem>
+					<m:MaterialCollectionItem><!--  -->
+						<m:MaterialImage addStyleNames="furnitureIcon" caption="Double Desk"/>
+					</m:MaterialCollectionItem>
+					<m:MaterialCollectionItem><!--  -->
+						<m:MaterialImage caption="Kidney Table"/>
+					</m:MaterialCollectionItem>
+					<m:MaterialCollectionItem><!--  -->
+						<m:MaterialImage caption="Small Carpet"/>
+					</m:MaterialCollectionItem>
+					<m:MaterialCollectionItem><!--  -->
+						<m:MaterialImage caption="Big Carpet"/>
+					</m:MaterialCollectionItem>
+				</m:MaterialCollection>
 			</m:MaterialPanel>
-		</header>
-		<div class="mainWrapper">
-		<m:MaterialSideNav ui:field="studentList">
-		<m:MaterialLink ui:field="studentToolPanel" />
-		</m:MaterialSideNav>
-		<m:MaterialContainer ui:field="floorPlan" addStyleName="{style.absolute}">
-
-		</m:MaterialContainer>
-		</div>
+		</h:Div>
+		</td>
+		<td>
+		<g:AbsolutePanel ui:field="floorPlan" addStyleNames="floorPlan">
+			<h:Span text="It appears that you have not yet developed a seating chart! No Worries just hit the tab to get you started"/>
+		</g:AbsolutePanel>
+		</td><!--  -->
+		</tr>
+		</table>
 	</g:HTMLPanel>
 </ui:UiBinder> 

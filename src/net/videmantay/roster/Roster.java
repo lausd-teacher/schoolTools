@@ -2,25 +2,18 @@ package net.videmantay.roster;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.RootPanel;
 
-import net.videmantay.roster.json.RosterJson;
-import net.videmantay.roster.seatingchart.SeatingChartPanel;
 import net.videmantay.student.json.RosterDetailJson;
 
 import static com.google.gwt.query.client.GQuery.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
 import com.google.common.base.Splitter;
-import com.google.gwt.query.client.*;
-import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.common.primitives.Longs;
 
 public class Roster implements EntryPoint , ValueChangeHandler<String> {
@@ -46,6 +39,7 @@ public class Roster implements EntryPoint , ValueChangeHandler<String> {
 			History.newItem("rosters");
 		}
 	History.fireCurrentHistoryState();
+		
 	}
 	
 
