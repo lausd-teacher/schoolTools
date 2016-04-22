@@ -33,19 +33,18 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 	public String firstName;
 	public String lastName;
 	public String extName;
-	public String picUrl;
+	public Thumbnail[] thumbnails;
 	public Date DOB;
 	public Boolean glasses;
 	public String eldLevel;
 	public Set<StudentJob> jobs;
-	public Boolean inactive;
-	
+	public boolean inactive = false;
 	
 	@Index
-	public String studentGoogleId;
+	public String acctId;
 	
-	public Integer[] positviePoints;
-	public Integer[] NegativePoints;
+	public int[] points; 
+	
 	@Serialize
 	public Set<Goal> goals;
 
@@ -105,11 +104,12 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 	public void setExtName(String extName){
 		this.extName = extName;
 	}
-	public String getPicUrl() {
-		return picUrl;
+	public void setPicUrl(Thumbnail[] thumbnails) {
+		this.thumbnails = thumbnails;
 	}
-	public void setPicUrl(String picUrl) {
-		this.picUrl = picUrl;
+	
+	public Thumbnail[] getThumbnails(){
+		return this.thumbnails;
 	}
 	public Date getDOB() {
 		return DOB;
@@ -117,25 +117,14 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 	public void setDOB(Date dOB) {
 		DOB = dOB;
 	}
-	public String getStudentGoogleId() {
-		return studentGoogleId;
+	public String getAcctId() {
+		return acctId;
 	}
-	public void setStudentGoogleId(String studentGoogleId) {
-		this.studentGoogleId = studentGoogleId;
+	public void setAcctId(String studentGoogleId) {
+		this.acctId = studentGoogleId;
 	}
 
-	public Integer[] getPositviePoints() {
-		return positviePoints;
-	}
-	public void setPositviePoints(Integer[] positviePoints) {
-		this.positviePoints = positviePoints;
-	}
-	public Integer[] getNegativePoints() {
-		return NegativePoints;
-	}
-	public void setNegativePoints(Integer[] negativePoints) {
-		NegativePoints = negativePoints;
-	}
+	
 	public Set<Goal> getBadges() {
 		return goals;
 	}
@@ -199,7 +188,7 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 				+ ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((roster == null) ? 0 : roster.hashCode());
 		result = prime * result
-				+ ((studentGoogleId == null) ? 0 : studentGoogleId.hashCode());
+				+ ((acctId == null) ? 0 : acctId.hashCode());
 		return result;
 	}
 	@Override
@@ -236,10 +225,10 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 				return false;
 		} else if (!roster.equals(other.roster))
 			return false;
-		if (studentGoogleId == null) {
-			if (other.studentGoogleId != null)
+		if (acctId == null) {
+			if (other.acctId != null)
 				return false;
-		} else if (!studentGoogleId.equals(other.studentGoogleId))
+		} else if (!acctId.equals(other.acctId))
 			return false;
 		return true;
 	}

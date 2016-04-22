@@ -25,6 +25,8 @@ public class RosterGrid extends MaterialContainer{
 	public void onLoad(){
 		MaterialLoader.showLoading(true);
 		JsArray<RosterDetailJson> rosters = window.getPropertyJSO("rosterList").cast();
+		console.log("These are the rosters that were loaded on RosterMain");
+		console.log(rosters);
 		for(int i = 0; i < rosters.length(); i++){
 			rosterList.add(rosters.get(i));
 		}

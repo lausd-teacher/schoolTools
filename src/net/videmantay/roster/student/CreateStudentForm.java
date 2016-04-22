@@ -10,9 +10,11 @@ import com.floreysoft.gwt.picker.client.domain.result.PhotoResult;
 import com.floreysoft.gwt.picker.client.domain.result.ViewToken;
 import com.floreysoft.gwt.picker.client.utils.PickerLoader;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.shared.DateTimeFormat;
+import com.google.gwt.query.client.Properties;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -27,9 +29,11 @@ import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialDatePicker;
 import gwt.material.design.client.ui.MaterialImage;
 import gwt.material.design.client.ui.MaterialLabel;
+import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialModalContent;
 import gwt.material.design.client.ui.MaterialTextBox;
+import net.videmantay.roster.json.RosterJson;
 import net.videmantay.shared.LoginInfo;
 import net.videmantay.student.json.RosterStudentJson;
 
@@ -61,6 +65,9 @@ public class CreateStudentForm extends Composite{
 	FormPanel form;
 	
 	@UiField
+	MaterialTextBox schoolEmail;
+	
+	@UiField
 	MaterialTextBox firstName;
 	
 	@UiField
@@ -78,7 +85,9 @@ public class CreateStudentForm extends Composite{
 	@UiField
 	MaterialModalContent modalContent;
 	
-	private RosterStudentJson student;
+	private  RosterStudentJson student = RosterStudentJson.createObject().cast();
+	
+	private final RosterJson roster  = window.getPropertyJSO("roster").cast();
 	
 	private DateTimeFormat df = DateTimeFormat.getFormat("yyyy-MM-dd");
 	
@@ -92,6 +101,7 @@ public class CreateStudentForm extends Composite{
 		@Override
 		public void onPicked(ViewToken viewToken, BaseResult result) {
 			PhotoResult pr = result.cast();
+			student.setThumbnails(pr.getDocs().get(0).getThumbnails());
 			String url = pr.getDocs().get(0).getThumbnails().get(pr.getDocs().get(0).getThumbnails().length() -1).getUrl();
 			studentImg.setUrl(url);
 			imgUrl.setText(url);
@@ -110,14 +120,14 @@ public class CreateStudentForm extends Composite{
 		@Override
 		public void onClick(ClickEvent event) {
 			$(window).trigger("studentcreate", getFormData());
-			form.reset();
-			modal.closeModal();
+			MaterialLoader.showLoading(true);
 		}};
 	
 	private ClickHandler cancelHandler = new ClickHandler(){
 
 		@Override
 		public void onClick(ClickEvent event) {
+			student = RosterStudentJson.createObject().cast();
 			form.reset();
 			modal.closeModal();
 			
@@ -153,26 +163,31 @@ public class CreateStudentForm extends Composite{
 	
 	public void hide(){
 		modal.closeModal();
+		form.reset();
+		student = RosterStudentJson.createObject().cast();
 	}
 	
 	private RosterStudentJson getFormData(){
-		student = RosterStudentJson.createObject().cast();
+		
+		student.setAcctId(schoolEmail.getValue());
 		student.setFirstName(firstName.getValue());
 		student.setLastName(lastName.getValue());
 		student.setExtName(extName.getValue());
 		student.setDOB(df.format(DOB.getDate()));
-		
+		student.setRoster(roster.getId());
 		return student;
 	}
 	
+	
+	
 	@Override
 	public void onLoad(){
-		
 						
 				//picker button clickHandler
 				pickerButton.addClickHandler(handler);
 				okBtn.addClickHandler(okHandler);
 				cancelBtn.addClickHandler(cancelHandler);
+				student = RosterStudentJson.createObject().cast();
 				
 	}
 	

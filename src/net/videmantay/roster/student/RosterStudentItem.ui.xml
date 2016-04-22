@@ -7,7 +7,7 @@
 	</ui:style>
 	<m:MaterialRow ui:field="studentItem">
 		<m:MaterialColumn>
-			<m:MaterialImage ui:field="studentImg" />
+			<m:MaterialImage ui:field="studentImg" width="64px" height="64px"/>
 		</m:MaterialColumn>
 		<m:MaterialColumn>
 			<m:html.Div>

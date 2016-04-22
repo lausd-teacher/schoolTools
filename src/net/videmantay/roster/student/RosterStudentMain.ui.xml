@@ -12,6 +12,13 @@
 	<m:MaterialCardContent>
 		<m:MaterialRow>
 			<m:MaterialColumn ui:field="studentContent">
+			<g:HTMLPanel ui:field="emptyStudentList">
+				<h3>You List Appears To Be Empty...</h3>
+				<div>It appears that you have no registered students
+				or maybe you have just registered one. In case of the latter just 
+				refresh your screen , otherwise use the bottom button to begin
+				registering student for this class.</div>
+			</g:HTMLPanel>
 				<m:MaterialCollection ui:field="studentCollection" />
 			</m:MaterialColumn>	
 		</m:MaterialRow>

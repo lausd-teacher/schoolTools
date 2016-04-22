@@ -128,14 +128,24 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		initializeFlow();
 		// 3. Route The Path
 		String path = req.getRequestURI();
-		
+		log.log(Level.INFO, "the path is " + path);
 		switch(path){
 		
 	
 		case "/teacher":getTeacherView(req,res);break;
+		
+		//route roster
 		case RosterUrl.LIST_ROSTERS:listRoster(req, res);break;
-		case RosterUrl.CREATE_RSOTER:saveRoster(req,res);break;
+		case RosterUrl.CREATE_ROSTER:saveRoster(req,res);break;
 		case RosterUrl.GET_ROSTER: getRoster(req,res);break;
+		case RosterUrl.DELETE_ROSTER:deleteRoster(req,res);break;
+		
+		//route student
+		case RosterUrl.CREATE_STUDENT:saveRosterStudent(req,res);break;
+		case RosterUrl.UPDATE_STUDENT:updateRosterStudent(req,res);break;
+		case RosterUrl.DELETE_STUDENT: deleteRosterStudent(req,res);break;
+		
+		
 		
 		}
 		
@@ -286,7 +296,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			
 		/////////FIRST SAVE HERE ///////////////////////////////////////////////////////////////////////////		
 		}else{//this is a first save set up docs,calendar,etc
-	
+				log.log(Level.INFO, "first save callded");
 		final AppUser appUser = db().load().type(AppUser.class).filter("acctId",user.getEmail()).first().now();
 		
 		// System.out.println( "This is what the cred looks like: " + gson.toJson(cred));
@@ -295,7 +305,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		 if(settings == null){
 			 settings = new RosterSetting().defaultSetting();
 		 }
-		 drive = GoogleUtils.drive(cred);
+		/* drive = GoogleUtils.drive(cred);
 		 
 		 			//first check if main drive folder has been set
 		 		if(appUser.getMainDriveFolder()==null || appUser.getMainDriveFolder().isEmpty()){
@@ -360,7 +370,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 				BehaviorReportSetup behaviorSetup = new BehaviorReportSetup(behaviorReport.getId(), cred.getAccessToken());
 				queue.add(TaskOptions.Builder.withPayload(behaviorSetup));
 				
-				
+				*/
 				
 			/*	//optional folders use settings
 				//only if there are any
@@ -397,7 +407,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			
 			//save the owner on the server side
 			roster.setOwnerId(user.getEmail());
-			roster.getAccess().add(user.getEmail());
+			
 			
 			//at this point there is no id so we wait for one
 			//to assign to rd
@@ -460,6 +470,10 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			res.flushBuffer();
 			return;
 		}
+		
+		//load student
+		
+		roster.getRosterStudents().addAll( db().load().keys(roster.studentKeys).values());
 		res.getWriter().write(gson.toJson(roster));
 	}
 	
@@ -467,6 +481,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	
 	private void saveRosterStudent(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException
 	{
+		log.log(Level.INFO,"Save Roster student called");
 		Drive drive;
 		Calendar calendar;
 		Credential cred = null;
@@ -478,21 +493,33 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			res.sendRedirect(us.createLoginURL("/teacher"));
 		}
 		String studentCheck = Preconditions.checkNotNull(req.getParameter("student"));
-		String rosterCheck = Preconditions.checkNotNull(req.getParameter("roster"));
+		
 		
 		RosterStudent student = gson.fromJson(studentCheck, RosterStudent.class);
-		Roster roster = gson.fromJson(rosterCheck, Roster.class);
+		log.log(Level.INFO, "student acctId is " + student.getAcctId() );
+		//check for duplicate//////
+		Roster roster = db().load().type(Roster.class).id(student.getRoster()).now();
+		if(roster == null || !roster.getOwnerId().equals(user.getEmail())){
+			//return with error
+			log.log(Level.INFO, "Roster is null");
+		}
 		
 			//first save access to rosterDetail
-			RosterDetail rd = db().load().type(RosterDetail.class).id(student.getRoster()).now();
-			rd.getAccess().add(student.getStudentGoogleId());	
+			Key<Roster> rKey = Key.create(Roster.class, roster.getId());
+			Key<RosterDetail> rdKey = Key.create(rKey, RosterDetail.class, roster.getId());
+			RosterDetail rd = db().load().key(rdKey).now();
+			log.log(Level.INFO,  "rd is null ? " + (rd == null));
+			rd.getAccess().add(student.getAcctId());	
 			db().save().entity(rd);
 		
 	
-		student.getAccess().add(student.getStudentGoogleId());	
-		student.setId(new Date().getTime());
+		student.getAccess().add(student.getAcctId());	
+		Key<RosterStudent> key = db().save().entity(student).now();
+		student.setId(key.getId());
+		roster.getStudentKeys().add(key);
+		db().save().entity(roster);
 		
-		drive = drive(cred);
+		/*drive = drive(cred);
 		calendar = calendar(cred);
 		//create folder for student
 		File studentFolder = folder(student.getId().toString());
@@ -500,34 +527,23 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		studentFolder.setParents(parent);
 		List<Permission> permissions = new ArrayList<Permission>();
 		Permission perm = new Permission();
-		perm.setEmailAddress(student.getStudentGoogleId());
+		perm.setEmailAddress(student.getAcctId());
 		perm.setRole("reader");
-		perm.setValue(student.getStudentGoogleId());
+		perm.setValue(student.getAcctId());
 		perm.setType("user");
 		permissions.add(perm);
 		studentFolder.setPermissions(permissions);
 		
-		
-		
 		studentFolder = drive.files().insert(studentFolder).execute();
-		student.setStudentFolderId(studentFolder.getId());
+		student.setStudentFolderId(studentFolder.getId());*/
 		
-		com.google.api.services.calendar.model.Calendar cal = new com.google.api.services.calendar.model.Calendar();
-		cal.setSummary(student.getStudentGoogleId());
-		cal.setDescription("Calendar for " + student.getFirstName() +" " + student.getLastName()+ " that includes assignments, events , and incidents.");
-		cal = calendar.calendars().insert(cal).execute();
-		student.setStudentCalId(cal.getId());
-		
-		AclRule rule = new AclRule();
-		rule.setRole("reader");
-		rule.setId(student.getStudentGoogleId());
-		rule.setScope(new Scope().setValue(student.getStudentGoogleId()).setType("user"));
-		calendar.acl().insert(cal.getId(), rule).execute();
+		res.getWriter().write(gson.toJson(student));
+		res.flushBuffer();
+		return;
 		
 	}
-	private void updateStudent(HttpServletRequest req, HttpServletResponse res) throws IOException{
+	private void updateRosterStudent(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		Drive drive;
-		Calendar calendar;
 		Credential cred = this.getCredential();
 		
 		String studentCheck = Preconditions.checkNotNull(req.getParameter("student"));
@@ -537,21 +553,18 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		if(dbCheck == null){
 			//throw exception
 		}
-		if(!student.getStudentGoogleId().equals(dbCheck.getStudentGoogleId())){
+		if(!student.getAcctId().equals(dbCheck.getAcctId())){
 		drive = drive(cred);
 		File folder = drive.files().get(student.getStudentFolderId()).execute();
-		folder.setTitle(student.getStudentGoogleId());
+		folder.setTitle(student.getAcctId());
 		drive.files().update(folder.getId(), folder).execute();
-		
-		calendar = calendar(cred);
-		com.google.api.services.calendar.model.Calendar cal = calendar.calendars().get(student.getStudentCalId()).execute();
-		cal.setSummary(student.getStudentGoogleId());
-		cal.setDescription("Calendar for " + student.getFirstName() +" " + student.getLastName()+ " that includes assignments, events , and incidents.");
-		calendar.calendars().update(cal.getId(), cal).execute();
 		
 		}
 		db().save().entity(student);
+		res.getWriter().write(studentCheck);
+		res.flushBuffer();
 		
+		return;
 				
 	}
 	
@@ -562,6 +575,8 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		db().delete().key(Key.create(RosterStudent.class, id));
 		//List<Key<StudentWork>> studentWork = db().load().type(StudentWork.class).filter("studentId", id).keys().list();
 		//db().delete().keys(studentWork);
+		Stuff<String> stuff = new Stuff<>("Student deleted");
+		res.getWriter().write(gson.toJson(stuff));
 	}
 	
 	//roster student automatically get listed with the roster

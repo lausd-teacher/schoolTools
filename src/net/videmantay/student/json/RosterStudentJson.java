@@ -1,5 +1,6 @@
 package net.videmantay.student.json;
 
+import com.floreysoft.gwt.picker.client.domain.result.Thumbnail;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayInteger;
@@ -17,7 +18,7 @@ public class RosterStudentJson extends JavaScriptObject {
 		return this;
 	}-*/;
 	public final native String getFirstName() /*-{
-		return firstName;
+		return this.firstName;
 	}-*/;
 	public final native RosterStudentJson setFirstName(String firstName) /*-{
 		this.firstName = firstName;
@@ -25,28 +26,28 @@ public class RosterStudentJson extends JavaScriptObject {
 	}-*/;
 	
 	public final native Boolean getGlasses() /*-{
-		return glasses;
+		return this.glasses;
 	}-*/;
 	public final native RosterStudentJson setGlasses(Boolean glasses) /*-{
 		this.glasses = glasses;
 		return this;
 	}-*/;
 	public final native String getEldLevel() /*-{
-		return eldLevel;
+		return this.eldLevel;
 	}-*/;
 	public final native RosterStudentJson setEldLevel(String eldLevel) /*-{
 		this.eldLevel = eldLevel;
 		return this;
 	}-*/;
 	public final native JsArray<StudentJobJson> getJobs() /*-{
-		return jobs;
+		return this.jobs;
 	}-*/;
 	public final native RosterStudentJson setJobs(JsArray<StudentJobJson> jobs) /*-{
 		this.jobs = jobs;
 		return this;
 	}-*/;
 	public final native String getLastName() /*-{
-		return lastName;
+		return this.lastName;
 	}-*/;
 	public final native RosterStudentJson setLastName(String lastName) /*-{
 		this.lastName = lastName;
@@ -59,51 +60,38 @@ public class RosterStudentJson extends JavaScriptObject {
 		this.extName = extName;
 		return this;
 	}-*/;
-	public final native String getPicUrl() /*-{
-		return picUrl;
+	public final native JsArray<Thumbnail> getThumbnails() /*-{
+		return this.thumbnails;
 	}-*/;
-	public final native RosterStudentJson setPicUrl(String picUrl) /*-{
-		this.picUrl = picUrl;
+	public final native RosterStudentJson setThumbnails(JsArray<Thumbnail> thumbnails) /*-{
+		this.thumbnails = thumbnails;
 		return this;
 	}-*/;
 	public final native String getDOB() /*-{
-		return DOB;
+		return this.DOB;
 	}-*/;
 	public final native RosterStudentJson setDOB(String dOB) /*-{
-		DOB = dOB;
+		this.DOB = dOB;
 		return this;
 	}-*/;
-	public final native String getStudentGoogleId() /*-{
-		return studentGoogleId;
+	public final native String getAcctId() /*-{
+		return this.acctId;
 	}-*/;
-	public final native RosterStudentJson setStudentGoogleId(String studentGoogleId) /*-{
-		this.studentGoogleId = studentGoogleId;
+	public final native RosterStudentJson setAcctId(String acctId) /*-{
+		this.acctId = acctId;
 		return this;
 	}-*/;
-
-	public final native JsArrayInteger getPositviePoints() /*-{
-		return positviePoints;
-	}-*/;
-	public final native RosterStudentJson setPositviePoints(JsArrayInteger positviePoints) /*-{
-		this.positviePoints = positviePoints;
-		return this;
-	}-*/;
-	public final native JsArrayInteger getNegativePoints() /*-{
-		return NegativePoints;
-	}-*/;
-	public final native RosterStudentJson setNegativePoints(JsArrayInteger negativePoints) /*-{
-		NegativePoints = negativePoints;
-		return this;
-	}-*/;
+	
+	
 	public final native JsArray<BadgeJson> getBadges() /*-{
-		return goals;
+		return this.badges;
 	}-*/;
 	public final native RosterStudentJson setBadges(JsArray<BadgeJson> badges) /*-{
-		this.badges = goals;
+		this.badges = badges;
 		return this;
 	}-*/;
 	public final native Long getId()/*-{
-		return id;
+		return this.id;
 	}-*/;
 	public final native RosterDetailJson getRosterDetail()/*-{
 		return this.rosterDetail;
@@ -118,28 +106,38 @@ public class RosterStudentJson extends JavaScriptObject {
 	}-*/;
 	
 	public final native String getStudentFolderId() /*-{
-		return studentFolderId;
+		return this.studentFolderId;
 	}-*/;
 	public final native RosterStudentJson setStudentFolderId(String studentFolderId) /*-{
 		this.studentFolderId = studentFolderId;
 		return this;
 	}-*/;
+	
+	public final native JsArrayInteger getPoints()/*-{
+		return this.points;
+	}-*/;
+	
+	public final native RosterStudentJson setPoints(JsArrayInteger points)/*-{
+		this.points = points;
+	return this;
+}-*/;
+	
 	public final native String getStudentCalId() /*-{
-		return studentCalId;
+		return this.studentCalId;
 	}-*/;
 	public final native RosterStudentJson setStudentCalId(String studentCalId) /*-{
 		this.studentCalId = studentCalId;
 		return this;
 	}-*/;
 	public final native String getStudentTasksId() /*-{
-		return studentTasksId;
+		return this.studentTasksId;
 	}-*/;
 	public final native RosterStudentJson setStudentTasksId(String studentTasksId) /*-{
 		this.studentTasksId = studentTasksId;
 		return this;
 	}-*/;
 	public final native Boolean getInactive() /*-{
-		return inactive;
+		return this.inactive;
 	}-*/;
 	public final native RosterStudentJson setInactive(Boolean inactive) /*-{
 		this.inactive = inactive;

@@ -128,7 +128,7 @@ public class RosterForm extends Composite{
 			//show the errors
 			return;
 		}
-		Ajax.post(RosterUrl.CREATE_RSOTER, $$("roster:" + JsonUtils.stringify(data)));
+		Ajax.post(RosterUrl.CREATE_ROSTER, $$("roster:" + JsonUtils.stringify(data)));
 		//look into RosterDisplay to handle or Roster???
 		$(body).trigger("rosterredraw");
 	}

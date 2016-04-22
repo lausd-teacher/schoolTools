@@ -45,7 +45,7 @@ public class RosterStudentPanel extends Composite {
 		//set the id of the panel to student id 
 		//this is so we can query and hide it when necessary
 		this.getElement().setId(student.getId().toString());
-		studentImg.setUrl(student.getPicUrl());
+		studentImg.setUrl(student.getThumbnails().get(0).getUrl());
 		firstName.setText(student.getFirstName());
 		lastName.setText(student.getLastName());
 		

@@ -14,7 +14,7 @@ import net.videmantay.shared.GradeLevel;
 
 @Cache
 @Entity
-public class RosterDetail extends DBObj implements Serializable {
+ public class RosterDetail extends DBObj implements Serializable {
 
 	/**
 	 * 

@@ -22,6 +22,9 @@
 				</m:MaterialColumn>
 			</m:MaterialRow>
 				<m:MaterialRow>
+					<m:MaterialTextBox ui:field="schoolEmail" placeholder="school email"></m:MaterialTextBox>
+				</m:MaterialRow>
+				<m:MaterialRow>
 					<m:MaterialTextBox ui:field="firstName" placeholder="First Name"></m:MaterialTextBox>
 				</m:MaterialRow>
 				<m:MaterialRow>

@@ -39,11 +39,11 @@ public class RosterStudentItem extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		student = rs;
 		
-		String url = (student.getPicUrl() == null)? "default String": student.getPicUrl();
+		String url = (student.getThumbnails() == null)? "/img/user.svg": student.getThumbnails().get(1).getUrl();
 		studentImg.setUrl(url);
 		firstName.setText(student.getFirstName());
 		lastName.setText(student.getLastName());
-		$(this).id(rs.getId().toString());
+		$(this).id(rs.getId() +"");
 	}
 	
 	
@@ -52,13 +52,17 @@ public class RosterStudentItem extends Composite {
 		$(this).click(new Function(){
 			@Override
 			public boolean f(Event e){
-				if($(".studentItem").filter(".selectedStudentItem").equals(this)){
-				}else{
+				if(!$(".studentItem").filter(".selectedStudentItem").equals(this)){
 				$(".studentItem").filter(".selectedStudentItem").removeClass(".selectedStudentItem");
 				$(this).addClass(".selectedStudentItem");
 				}
 				//This is handled by Roster(Entry point)
-				History.newItem("roster/" + $("#classroom").data("classroom", RosterJson.class).getId()+
+				//roster is a window object
+				RosterJson roster = window.getPropertyJSO("roster").cast();
+				if(roster == null || roster.getId() == null){
+					//what todo?
+				}
+				History.newItem("roster/" + roster.getId()+
 						"/student" + student.getId());
 				return true;
 			}

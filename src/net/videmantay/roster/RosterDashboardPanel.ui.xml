@@ -12,7 +12,7 @@
 			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab3" text="Reports" textColor="white" waves="ORANGE"/></m:MaterialTabItem>
 		</m:MaterialTab>
 		<div  id="tab1">
-			<m:MaterialRow height="3em" backgroundColor="green accent-3" textColor="green darken-4" paddingLeft="10" centerOn="CENTER_ON_SMALL">
+			<m:MaterialRow ui:field="toolbar" height="3em" backgroundColor="green accent-3" textColor="green darken-4" paddingLeft="10" centerOn="CENTER_ON_SMALL">
 			<m:MaterialColumn  grid="l3" hideOn="HIDE_ON_MED_DOWN" float="LEFT">
 				<m:MaterialRow>
 					<m:MaterialColumn grid="l1">
@@ -95,6 +95,11 @@
 					<m:MaterialLink ui:field="printChartLink"  text="print chart"/>
 				</m:MaterialDropDown>
 				</m:MaterialColumn>
+				</m:MaterialColumn>
+			</m:MaterialRow>
+			<m:MaterialRow ui:field="doneToolbar"> 
+				<m:MaterialColumn>
+					<m:MaterialAnchorButton addStyleNames="doneBtn" ui:field="doneBtn" text="DONE"></m:MaterialAnchorButton>
 				</m:MaterialColumn>
 			</m:MaterialRow>
 			<g:HTMLPanel ui:field="tab1Main">

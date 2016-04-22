@@ -77,7 +77,7 @@ public class Roster extends DBObj implements Serializable{
 
 	
 	//maybe a sorted set by last name???
-	private Set<Key<RosterStudent>>studentKeys = new HashSet<Key<RosterStudent>>();
+	public transient Set<Key<RosterStudent>>studentKeys = new HashSet<Key<RosterStudent>>();
 	
 	@Ignore
 	public Set<RosterStudent> rosterStudents = new HashSet<RosterStudent>();

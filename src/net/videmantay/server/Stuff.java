@@ -7,7 +7,7 @@ import net.videmantay.shared.StuffType;
 
 public class Stuff<T> {
 
-	private List<T> stuff;
+	private List<T> stuff = new ArrayList<T>();
 	private StuffType type = StuffType.MESSAGE;
 	
 	
@@ -32,16 +32,15 @@ public class Stuff<T> {
 	}
 	
 	public Stuff(T thing, StuffType type){
-		this.stuff = new ArrayList<T>();
 		this.stuff.add(thing);
 		this.setType(type);
 	}
 	
 	public Stuff(T thing){
-		this.type = StuffType.LIST;
-		this.stuff = new ArrayList<T>();
 		this.stuff.add(thing);
 	}
+	
+	
 	
 	public List<T> getStuff(){
 		return this.stuff;
@@ -56,9 +55,7 @@ public class Stuff<T> {
 	}
 	
 	public void add(T t){
-		if(this.stuff == null){
-			this.stuff = new ArrayList<T>();
-		}
+	
 		this.stuff.add(t);
 	}
 	

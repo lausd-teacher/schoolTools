@@ -1,10 +1,8 @@
 package net.videmantay.roster;
 
-import com.google.common.base.Splitter;
 import com.google.common.primitives.Longs;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsonUtils;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.query.client.Function;
@@ -18,14 +16,9 @@ import com.google.gwt.user.client.ui.Widget;
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialNavBrand;
-import gwt.material.design.client.ui.html.Div;
-import gwt.material.design.client.ui.html.Span;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.student.RosterStudentMain;
 import net.videmantay.roster.student.StudentPage;
-import net.videmantay.shared.LoginInfo;
-import net.videmantay.student.json.RosterStudentJson;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,25 +41,6 @@ public class ClassroomMain extends Composite{
 	MaterialLink studentLink;
 	//private final Element classroom = this.getElement();
 	private  RosterJson classRoster;
-	private final Function studentCreate = new Function(){
-		@Override
-		public void f(){
-			RosterStudentJson student = this.arguments(0);
-			Ajax.post(RosterUrl.CREATE_STUDENT, $$("student:" + JsonUtils.stringify(student)))
-			.done(new Function(){
-				@Override
-				public void f(){
-					RosterStudentJson students = this.arguments(0);
-					
-					$(body).trigger(RosterEvent.STUDENT_LIST_UPDATED);
-				}
-			});
-		}
-	};
-	
-	
-	private final LoginInfo user = window.getPropertyJSO("loginInfo").cast();
-	
 	
 	public ClassroomMain() {
 		this.initWidget(uiBinder.createAndBindUi(this));
@@ -105,6 +79,8 @@ public class ClassroomMain extends Composite{
 						classRoster = JsonUtils.safeEval((String) this.arguments(0)).cast();
 						rosterTitle.setText(classRoster.getTitle());	
 						window.setPropertyJSO("roster", classRoster);
+						console.log("The followingis the  roster posted to the window:");
+						console.log(classRoster);
 							if(token.size()>= 3){
 							 path.addAll(token.subList(2, token.size()));
 
@@ -171,17 +147,6 @@ public class ClassroomMain extends Composite{
 		}else{
 			return classRoster.getId();
 		}
-	}
-	
-	
-	
-	@Override
-	public void onLoad(){
-		$(body).on(RosterEvent.STUDENT_CREATE, studentCreate);
-	}//end load
-	
-	
-	
-	
+	}	
 
 }

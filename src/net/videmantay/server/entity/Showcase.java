@@ -11,7 +11,7 @@ import com.googlecode.objectify.annotation.Parent;
 
 import net.videmantay.server.user.Roster;
 
-@Entity
+@Entity 
 public class Showcase implements Serializable{
 
 	/**

@@ -102,7 +102,7 @@ public class Roster implements EntryPoint , ValueChangeHandler<String> {
 		}
 			classroom.setClassroom(token);
 		
-		console.log("classroom main is null");
+
 		RootPanel.get().clear();
 		RootPanel.get().add(classroom);
 		main = null;
