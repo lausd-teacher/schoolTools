@@ -35,10 +35,13 @@ public class StudentPage extends Composite {
 	@UiField
 	MaterialImage stuImage;
 	
+	private  StudentPage $this;
+	
 	private  RosterStudentJson student;
 	
 	public StudentPage() {
 		initWidget(uiBinder.createAndBindUi(this));
+		$this = this;
 	}
 	
 	public StudentPage(Long id){
@@ -54,6 +57,11 @@ public class StudentPage extends Composite {
 				break;
 			}
 		}
+	}
+	
+	@Override
+	public void onUnload(){
+		$this = null;
 	}
 
 }

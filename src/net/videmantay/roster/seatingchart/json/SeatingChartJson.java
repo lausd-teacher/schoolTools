@@ -38,4 +38,5 @@ public class SeatingChartJson extends JavaScriptObject {
 	public final native void setFurniture(JsArray<FurnitureJson> furniture)/*-{
 			this.furniture = furniture;
 	}-*/;
+	
 }

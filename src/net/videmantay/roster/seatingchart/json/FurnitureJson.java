@@ -31,11 +31,21 @@ public class FurnitureJson extends JavaScriptObject {
 		}-*/;
 	
 	public final native String getType()/*-{
+		//furniture type - desk, teacherdesk, bookshelf, etc
 			return this.type;
 		}-*/;
 	
 	public final native void setType(String type)/*-{
+		//furniture type - desk, teacherdesk, bookshelf, etc
 			this.type = type;
+	}-*/;
+	
+	public final native void setKind(String kind)/*-{
+		this.kind = kind;
+	}-*/;
+	
+	public final native String getKind()/*-{
+		return this.kind;
 	}-*/;
 	
 	public final native Integer getZIndex()/*-{
@@ -61,11 +71,4 @@ public class FurnitureJson extends JavaScriptObject {
 			this.backgroundColor = color;
 	}-*/;
 	
-	public final native String getKind()/*-{
-			return this.kind;
-	}-*/;
-	
-	public final native void setKind(String kind)/*-{
-		this.kind = kind;
-	}-*/;
 }

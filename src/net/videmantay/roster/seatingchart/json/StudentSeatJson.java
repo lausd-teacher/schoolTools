@@ -33,7 +33,6 @@ public class StudentSeatJson extends JavaScriptObject {
 	public final native String getColor()/*-{
 		return this.color;
 	}-*/;
-	
 	public final native void setColor(String color)/*-{
 		 this.color = color;
 	}-*/;

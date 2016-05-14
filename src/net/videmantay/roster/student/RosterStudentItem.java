@@ -1,6 +1,8 @@
 package net.videmantay.roster.student;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -49,24 +51,24 @@ public class RosterStudentItem extends Composite {
 	
 	@Override
 	public void onLoad(){
-		$(this).click(new Function(){
+		this.addDomHandler(new ClickHandler(){
+
 			@Override
-			public boolean f(Event e){
+			public void onClick(ClickEvent event) {
 				if(!$(".studentItem").filter(".selectedStudentItem").equals(this)){
-				$(".studentItem").filter(".selectedStudentItem").removeClass(".selectedStudentItem");
-				$(this).addClass(".selectedStudentItem");
-				}
-				//This is handled by Roster(Entry point)
-				//roster is a window object
-				RosterJson roster = window.getPropertyJSO("roster").cast();
-				if(roster == null || roster.getId() == null){
-					//what todo?
-				}
-				History.newItem("roster/" + roster.getId()+
-						"/student" + student.getId());
-				return true;
-			}
-		});
+					$(".studentItem").filter(".selectedStudentItem").removeClass(".selectedStudentItem");
+					$(this).addClass(".selectedStudentItem");
+					}
+					//This is handled by Roster(Entry point)
+					//roster is a window object
+					RosterJson roster = window.getPropertyJSO("roster").cast();
+					if(roster == null || roster.getId() == null){
+						//what todo?
+					}
+					History.newItem("roster/" + roster.getId()+
+							"/students/" + student.getId());
+				
+			}}, ClickEvent.getType());
 	}
 	
 	public void showStudentPage(){

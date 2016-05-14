@@ -3,32 +3,32 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m="urn:import:gwt.material.design.client.ui"
 	xmlns:h="urn:import:gwt.material.design.client.ui.html">
-	<g:HTMLPanel styleName="seatingChart">
+	<g:HTMLPanel ui:field="seatingChart" styleName="seatingChart">
 	<table>
 		<tr>
-		<td colspan="2">
+		<td>
 		<h:Div ui:field="toolsPanel" addStyleNames="toolsPanel">
-		<m:MaterialPanel   ui:field="studentTools">
+		<m:MaterialPanel   ui:field="studentTools" addStyleNames="studentTools">
 		<m:MaterialLabel text="StudentList" />
 		<m:MaterialCollection  ui:field="studentList" />
 		</m:MaterialPanel>
-			<m:MaterialPanel ui:field="furnitureTools">
+			<m:MaterialPanel ui:field="furnitureTools" addStyleNames="furnitureTools">
 				<m:MaterialLabel text="Furniture" />
 				<m:MaterialCollection ><!--  -->
 					<m:MaterialCollectionItem><!--  -->
-						<m:MaterialImage addStyleNames="furnitureIcon" url="../img/doubleDesk.png" caption="Single Desk"/>
+						<m:MaterialImage m:id="singleDeskIcon" addStyleNames="furnitureIcon" url="../img/doubleDesk.png" caption="Single Desk"/>
 					</m:MaterialCollectionItem>
 					<m:MaterialCollectionItem><!--  -->
-						<m:MaterialImage addStyleNames="furnitureIcon" caption="Double Desk"/>
+						<m:MaterialImage m:id="doubleDeskIcon" addStyleNames="furnitureIcon" caption="Double Desk"/>
 					</m:MaterialCollectionItem>
 					<m:MaterialCollectionItem><!--  -->
-						<m:MaterialImage caption="Kidney Table"/>
+						<m:MaterialImage m:id="kidneyTableIcon" caption="Kidney Table"/>
 					</m:MaterialCollectionItem>
 					<m:MaterialCollectionItem><!--  -->
-						<m:MaterialImage caption="Small Carpet"/>
+						<m:MaterialImage m:id="carpetSmIcon" caption="Small Carpet"/>
 					</m:MaterialCollectionItem>
 					<m:MaterialCollectionItem><!--  -->
-						<m:MaterialImage caption="Big Carpet"/>
+						<m:MaterialImage m:id="carptetBgIcon" caption="Big Carpet"/>
 					</m:MaterialCollectionItem>
 				</m:MaterialCollection>
 			</m:MaterialPanel>
@@ -36,7 +36,7 @@
 		</td>
 		<td>
 		<g:AbsolutePanel ui:field="floorPlan" addStyleNames="floorPlan">
-			<h:Span text="It appears that you have not yet developed a seating chart! No Worries just hit the tab to get you started"/>
+			<h:Span addStyleNames="emptySeatingChart" ui:field="emptyFurnitureLabel" text="It appears that you have not yet developed a seating chart! No Worries just hit the tab to get you started"/>
 		</g:AbsolutePanel>
 		</td><!--  -->
 		</tr>

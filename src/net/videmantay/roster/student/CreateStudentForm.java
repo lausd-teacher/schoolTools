@@ -95,23 +95,27 @@ public class CreateStudentForm extends Composite{
         
         @Override
         public void onCanceled() {
-          picker.setVisible(false); 
+          picker.setVisible(false);
+          modal.openModal();
         }
 
 		@Override
 		public void onPicked(ViewToken viewToken, BaseResult result) {
+			modal.openModal();
 			PhotoResult pr = result.cast();
 			student.setThumbnails(pr.getDocs().get(0).getThumbnails());
 			String url = pr.getDocs().get(0).getThumbnails().get(pr.getDocs().get(0).getThumbnails().length() -1).getUrl();
 			studentImg.setUrl(url);
 			imgUrl.setText(url);
-			picker.setVisible(false);		
+			picker.setVisible(false);
+			
 		}
       };
       
       private ClickHandler handler = new ClickHandler(){
 		@Override
 		public void onClick(ClickEvent event) {
+			modal.closeModal();
 			picker.setVisible(true);
 		}};
 	
@@ -119,8 +123,12 @@ public class CreateStudentForm extends Composite{
 
 		@Override
 		public void onClick(ClickEvent event) {
-			$(window).trigger("studentcreate", getFormData());
+			event.preventDefault();
+			$(body).trigger("studentcreate", getFormData());
+			form.reset();
+			modal.closeModal();
 			MaterialLoader.showLoading(true);
+			
 		}};
 	
 	private ClickHandler cancelHandler = new ClickHandler(){

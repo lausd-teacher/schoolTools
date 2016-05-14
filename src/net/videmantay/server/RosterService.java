@@ -145,6 +145,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		case RosterUrl.UPDATE_STUDENT:updateRosterStudent(req,res);break;
 		case RosterUrl.DELETE_STUDENT: deleteRosterStudent(req,res);break;
 		
+		case RosterUrl.GET_SEATINGCHART:getSeatingChart(req,res);break;
 		
 		
 		}
@@ -305,6 +306,8 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		 if(settings == null){
 			 settings = new RosterSetting().defaultSetting();
 		 }
+		 
+		 
 		/* drive = GoogleUtils.drive(cred);
 		 
 		 			//first check if main drive folder has been set
@@ -489,6 +492,9 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		User user = us.getCurrentUser();
 		if(UserServiceFactory.getUserService().isUserLoggedIn()){
 		cred = authFlow(user.getUserId()).loadCredential(user.getUserId());
+		if(cred.getExpiresInSeconds() <= 1800){
+			cred.refreshToken();
+		}
 		}else{
 			res.sendRedirect(us.createLoginURL("/teacher"));
 		}
@@ -885,9 +891,73 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			
 			return true;
 		}
+	//SEATING CHART CRUD/////////
+		private void getSeatingChart(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+			String classTimeCheck = Preconditions.checkNotNull(req.getParameter("classTime"));
+			ClassTime classTime = gson.fromJson(classTimeCheck, ClassTime.class);
+			SeatingChart seatingChart = db().load().type(SeatingChart.class).id(classTime.getId()).now();
+			
+			res.getWriter().write(gson.toJson(seatingChart));
+			res.flushBuffer();
+		}
 		
+		private void createSeatingChart(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
+			String classTimeCheck = Preconditions.checkNotNull(req.getParameter("classTime"));
+			ClassTime classTime = gson.fromJson(classTimeCheck, ClassTime.class);
+			SeatingChart seatingChart = new SeatingChart();
+			
+			User user = UserServiceFactory.getUserService().getCurrentUser();
+			if(user == null || ! UserServiceFactory.getUserService().isUserLoggedIn()){
+				//throw some error
+			}else{
+				seatingChart.ownerId = user.getEmail();
+			}
+			
+			classTime.setId( db().save().entity(seatingChart).now().getId() );
+			
+			res.getWriter().write(gson.toJson(classTime));
+			
+		}
+		
+		private void upSeatingChart(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
+			String seatingChartCheck = Preconditions.checkNotNull(req.getParameter("seatingChart"));
+			SeatingChart seatingChart = gson.fromJson(seatingChartCheck, SeatingChart.class);
+			SeatingChart seatingChartDB = db().load().type(SeatingChart.class).id(seatingChart.id).now();
+			if(!seatingChartDB.ownerId.equals(seatingChart.ownerId)){
+				//throw error
+				res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				res.getWriter().write("Error updating seating chart");
+			}else{
+				//procede
+				db().save().entity(seatingChart);
+			}
+			
+			res.getWriter().write(gson.toJson(seatingChart));
+			
+		}
+		
+		private void deleteSeatingChat(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
+			
+			UserService us = UserServiceFactory.getUserService();
+			User user = us.getCurrentUser();
+			if(!us.isUserLoggedIn()){
+				//do some error
+			}
+			String classTimeCheck = Preconditions.checkNotNull(req.getParameter("classTime"));
+			ClassTime classTime = gson.fromJson(classTimeCheck, ClassTime.class);
+			
+			SeatingChart s = db().load().type(SeatingChart.class).id(classTime.id).now();
+			if(s != null && s.ownerId.equals(user.getEmail())){
+				db().delete().entity(s);
+				
+				res.setStatus(HttpServletResponse.SC_OK);
+				res.getWriter().write("Delete Successful");
+			}
+			
+			
+		}
 
-		
+	////////////////////////	
 	///STUDENT INCIDENT CRUD
 	private void updateStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
 		String incidentCheck = Preconditions.checkNotNull(req.getParameter("incident"));

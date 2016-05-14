@@ -1,43 +1,41 @@
 package net.videmantay.roster.seatingchart;
 
 
-import com.google.common.html.HtmlEscapers;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.client.ScriptInjector;
 import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.Style.Overflow;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.plugins.effects.PropertiesAnimation.Easing;
+import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialCollection;
-import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialPanel;
+import gwt.material.design.client.ui.html.Span;
 import gwtquery.plugins.ui.DroppableUi;
-import gwtquery.plugins.ui.UiFunction;
 import gwtquery.plugins.ui.interactions.CursorAt;
 import gwtquery.plugins.ui.interactions.Draggable;
 import gwtquery.plugins.ui.interactions.Droppable;
 
 import java.util.ArrayList;
+import java.util.Stack;
+
 import static com.google.gwt.query.client.GQuery.*;
 import static gwtquery.plugins.ui.Ui.Ui;
 import net.videmantay.roster.HasRosterDashboardView;
+import net.videmantay.roster.RosterEvent;
 import net.videmantay.roster.RosterStudentPanel;
 import net.videmantay.roster.json.RosterJson;
+import net.videmantay.roster.seatingchart.json.ClassTimeJson;
 import net.videmantay.roster.seatingchart.json.DeskJson;
 import net.videmantay.roster.seatingchart.json.FurnitureJson;
 import net.videmantay.roster.seatingchart.json.SeatingChartJson;
@@ -52,7 +50,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	}
 
 	private SeatingChartJson data;
-	
+	private JsArray<FurnitureJson> tempFurnitureList;
 	
 	@UiField
 	AbsolutePanel floorPlan;
@@ -63,35 +61,18 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	@UiField
 	MaterialCollection studentList;
 	
+	@UiField
+	HTMLPanel seatingChart;
+	
+	@UiField
+	Span emptyFurnitureLabel;
+	
 	//Pull roster from window//
 	private final RosterJson roster;
-	//action list
-	private ArrayList<Action> actions = new ArrayList<Action>();
 	
+	//action list for undos
+	private final Stack<Action> stack = new Stack<Action>();
 	
-	
-	private UiFunction dropFurniture = new UiFunction(){
-										@Override
-										public boolean f(Event e, DroppableUi ui){
-											
-											
-											return true;
-										}
-										};
-	private UiFunction dropStudentOnDesk = new UiFunction(){
-											@Override
-											public boolean f(Event e,DroppableUi ui){
-												
-												return true;
-											}
-											};
-	private UiFunction dropStudentOnList = new UiFunction(){
-											@Override
-											public boolean f(Event e,DroppableUi ui){
-												
-												return true;
-											}
-											};
 	
 	public SeatingChartPanel() {
 		//first check for jQuery ui
@@ -100,17 +81,60 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 			ScriptInjector.fromUrl("/loader.js").setWindow(ScriptInjector.TOP_WINDOW).inject();
 		}
 		initWidget(uiBinder.createAndBindUi(this));
-		roster = $(window).data("classroom", RosterJson.class);
+		roster = window.getPropertyJSO("roster").cast();
+		console.log("The roster from seating chart is : ");
+		console.log(roster);
+	
 		$(this).css("position", "absolute");
 		
 	}
 	
 	@Override
 	public void onLoad(){
-		$(furnitureTools).css($$("display:'none'"));
-	}
+		console.log("seating chart onload called");
+		//first check if there is a class time if that is null create a temporary one then 
+		//create a new temp seating chart.
+		$(seatingChart).on(RosterEvent.DRAW_SEATINGCHART, new Function(){
+				@Override
+				public  boolean f(Event e){
+					SeatingChartJson s = window.getPropertyJSO("seatingChart").cast();
+					setSeatingChart(s);
+					
+					return true;
+				}
+		});
+		
+		//$(".seatingChart").on("managerFurniture", null);
+		
+			//check if a seating chart has already been designedated in the window
+			ClassTimeJson classTime = window.getPropertyJSO("classtime").cast();
+			console.log("The class time from seating chart is...");
+			console.log(classTime);
+			
+				//we are going to see if seating chart has been loaded and if not load
+				data = window.getPropertyJSO("seatingChart").cast();
+				if(data == null){
+					//load from class time
+					if(classTime.getId() == null){
+						//get create classtime form/////////
+						
+					}else{
+					Ajax.post("/teacher/getseatingchart/" , $$("classTime:" + JsonUtils.stringify(classTime)))
+					.done(new Function(){
+						@Override
+						public void f(){
+							SeatingChartJson seatingChartJson = JsonUtils.safeEval((String) this.getArgument(0));
+							window.setPropertyJSO("seatingChart", seatingChartJson);
+							$(seatingChart).trigger(RosterEvent.DRAW_SEATINGCHART);
+							setSeatingChart(seatingChartJson);
+						}
+					});
+					}//end else
+				}
+			
+	}//end onLoad
 	
-	public void setData(SeatingChartJson seatingChart){
+	public void setSeatingChart(SeatingChartJson seatingChart){
 		data = seatingChart;
 		drawChart();
 	}
@@ -130,9 +154,9 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		
 		// go through list of furniture and place them on floorPlan
 		for(int i =0; i< data.getFurniture().length(); i++){		
-			HTMLPanel deskPanel = Desk.getDouble();
-			$(deskPanel).data("desk", data.getFurniture().get(i));
-			$(floorPlan).append(deskPanel.getElement())
+			HTMLPanel furniturePanel = FurnitureUtils.byKind(data.getFurniture().get(i).getKind());
+			$(furniturePanel).data("furniture", data.getFurniture().get(i));
+			$(floorPlan).append(furniturePanel.getElement())
 			.css("left", data.getFurniture().get(i).getLeft())
 			.css("top", data.getFurniture().get(i).getTop())
 			.css("transform", "rotate("+data.getFurniture().get(i).getRotate()+"rad)");
@@ -147,7 +171,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 						//then pop to make iterations shorter
 						for(RosterStudentPanel rsp : stuPanels){
 							if(rsp.getElement().getId().equals(studentSeats.get(j).getRosterStudent().toString())){
-									$(deskPanel).find(".pos"+(j+1))
+									$(furniturePanel).find(".pos"+(j+1))
 										.append($(rsp.getElement()).clone());
 									
 									rsp.setVisible(false);
@@ -259,6 +283,12 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	public void doneArrangeStudents(){};
 	
 	public  void arrangeFurniture(){
+		
+		tempFurnitureList = JsArray.createArray().cast();
+		for(int i = 0; i < data.getFurniture().length(); i++){
+			tempFurnitureList.push(data.getFurniture().get(i));
+		}
+		
 		$(furnitureTools).as(Effects).clipAppear( );
 		
 		Draggable.Options dragOpts = Draggable.Options.create();
@@ -278,20 +308,22 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		$(floorPlan).as(Ui).droppable(dropOpts).bind(Droppable.Event.drop, new Function(){
 			@Override
 			public boolean f(Event e,Object...ui){
-			
-			HTMLPanel drop = Desk.getDouble();
-			console.log(drop);
-			console.log("screenY is " + e.getScreenY() + " client height is " + body.getOffsetHeight() + "px scroll height is " + body.getScrollHeight());
-			$(drop).css($$("position:'absolute', width:'11em',height:'5em'"));
-			$(drop).css("left",e.getScreenX()  - floorPlan.getAbsoluteLeft()+"px");
-			//screen change when drop 
-			int top = (body.getScrollHeight() - body.getOffsetHeight()) - (body.getScrollTop());
-			$(drop).css("top",e.getScreenY()- top -floorPlan.getAbsoluteTop() + "px");
-			//$(floorPlan).append(drop.toString());
+			DroppableUi dropUi = (DroppableUi) ui[0];
+			//get the kind from the droppable helper
+			String iconId = dropUi.draggable().get().getId();
+			HTMLPanel drop = FurnitureUtils.byIconId(iconId);
+			$(drop).css($$("position:'absolute', width:'8em',height:'4em'"));
+			String left = e.getClientX()  - floorPlan.getAbsoluteLeft()+ body.getScrollLeft()+"px";
+			String top = e.getClientY() - floorPlan.getAbsoluteTop()+ body.getScrollTop() + "px";
+			$(drop).css("left",left);
+			$(drop).css("top",top );
 			floorPlan.add(drop);
+			
+			
+			stack.push(new FurnitureAddAction(drop, tempFurnitureList));
 			Draggable.Options dragOpt2 =Draggable.Options.create();
 			CursorAt cursorAt = CursorAt.create();
-			cursorAt.setTop(10).setLeft(10);
+			cursorAt.setTop((int) Math.floor(drop.getOffsetHeight()/2)).setLeft((int)Math.floor(drop.getOffsetWidth()/2));
 			dragOpt2.containment(".floorPlan").cursorAt(cursorAt);
 			$(drop).as(Ui).draggable(dragOpt2).rotatable();
 				return true;
@@ -299,7 +331,17 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		});
 	};
 	
-	public void doneArrangeFurniture(){};
+	public void doneArrangeFurniture(){
+		//here we need a way to keep track of temporary furniture
+		//and then finalize it.
+		
+		
+	};
+	
+	public void onCancel(){
+		stack.clear();
+		
+	}
 
 	public void deleteFurniture(DivElement furniture){
 		//first check to see if it's a desk and if the desk has students

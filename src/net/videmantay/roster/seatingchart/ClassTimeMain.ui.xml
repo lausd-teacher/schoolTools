@@ -1,0 +1,22 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:f="urn:import:org.gwtbootstrap3.extras.fullcalendar.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+	<m:MaterialRow ui:field="classTimeGrid">
+		<m:MaterialColumn ui:field="controlCol" grid="m4 l4">
+			<!-- Drag drop subject to dadd to library -->
+		</m:MaterialColumn>
+		<m:MaterialColumn  ui:field="calCol" grid="m8 l8">
+		<!-- Full Calendar Week View for class schedule -->
+		</m:MaterialColumn>
+	</m:MaterialRow>
+	<m:MaterialFAB>
+		<m:MaterialButton ui:field="createBtn" type="FLOATING"/>
+	</m:MaterialFAB>
+	</g:HTMLPanel>
+</ui:UiBinder> 

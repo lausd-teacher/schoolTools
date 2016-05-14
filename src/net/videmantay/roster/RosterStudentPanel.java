@@ -1,5 +1,6 @@
 package net.videmantay.roster;
 
+import com.google.common.primitives.Longs;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -37,15 +38,15 @@ public class RosterStudentPanel extends Composite {
 
 
 	public RosterStudentPanel(RosterStudentJson student) {
-		initWidget(uiBinder.createAndBindUi(this));
+		this();
 		setData(student);
 	}
 	
 	public void setData(RosterStudentJson student){
 		//set the id of the panel to student id 
 		//this is so we can query and hide it when necessary
-		this.getElement().setId(student.getId().toString());
-		studentImg.setUrl(student.getThumbnails().get(0).getUrl());
+		this.getElement().setId(student.getId() +"");
+		//studentImg.setUrl(student.getThumbnails().get(0).getUrl());
 		firstName.setText(student.getFirstName());
 		lastName.setText(student.getLastName());
 		

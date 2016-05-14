@@ -1,6 +1,8 @@
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
-	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:m="urn:import:gwt.material.design.client.ui"
-	xmlns:h="urn:import:gwt.material.design.client.ui.html">
+	xmlns:g='urn:import:com.google.gwt.user.client.ui'
+	 xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:h="urn:import:gwt.material.design.client.ui.html"
+	xmlns:v="urn:import:net.videmantay.shared">
 
 
 	<ui:style>
@@ -49,15 +51,11 @@
 			<!-- SideNav -->
 			<m:MaterialSideNav type="CLIP" m:id="sideNav"
 				closeOnClick="true">
-				<h:Div m:id="profile" styleName="{style.profile}">
-					<m:MaterialImage></m:MaterialImage>
-					<h:Br></h:Br>
-					<h:Span ui:field="profileName"></h:Span>
-				</h:Div>
+				<v:UserProfilePanel></v:UserProfilePanel>
 				<m:MaterialLink ui:field="rosterLink" text="Roster" textColor="green" iconType="CLASS" />
 				<m:MaterialLink ui:field="calendarLink" text="Calendar" textColor="orange" iconType="EVENT" />
 				<m:MaterialLink ui:field="libraryLink" text="Library" textColor="light-green darken-4"
-					iconType="MY_LIBRARY_BOOKS"/>
+					iconType="BOOK"/>
 				<m:MaterialLink ui:field="lessonsLink" text="Lessons" textColor="amber darken-4"
 					iconType="CONTENT_PASTE" />
 				<m:MaterialLink ui:field="settingsLink" text="Settings" textColor="green"

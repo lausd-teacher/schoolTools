@@ -7,23 +7,19 @@
 	
 	</ui:style>
 	<g:HTMLPanel>
-	<m:MaterialCard>
-	<m:MaterialCardTitle text="Student List" />
-	<m:MaterialCardContent>
-		<m:MaterialRow>
-			<m:MaterialColumn ui:field="studentContent">
-			<g:HTMLPanel ui:field="emptyStudentList">
-				<h3>You List Appears To Be Empty...</h3>
-				<div>It appears that you have no registered students
-				or maybe you have just registered one. In case of the latter just 
-				refresh your screen , otherwise use the bottom button to begin
-				registering student for this class.</div>
-			</g:HTMLPanel>
-				<m:MaterialCollection ui:field="studentCollection" />
-			</m:MaterialColumn>	
-		</m:MaterialRow>
-		</m:MaterialCardContent>
-		</m:MaterialCard>
+	<m:MaterialTab>
+		<m:MaterialTabItem> <m:MaterialLink text="Students" href="#stuHomeTab" /></m:MaterialTabItem>
+		<m:MaterialTabItem> <m:MaterialLink text="Calendar" href="#stuCalTab" /></m:MaterialTabItem>
+		<m:MaterialTabItem> <m:MaterialLink text="Reports" href="#stuReportTab" /></m:MaterialTabItem>	
+	</m:MaterialTab>
+	<div id="stuHomeTab">
+		<div ui:field="rosterStudentMain" >
+			<v:RosterStudentCollection ui:field="studentCollection" />
+			<v:StudentPage ui:field="studentPage" />
+		</div>
+	</div>
+	<div id="stuCalTab"></div>
+	<div id="studReportTab"></div>
 		<!-- FAB -->
 		<m:MaterialFAB>
 			<m:MaterialTooltip text="New Student" position="LEFT">

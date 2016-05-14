@@ -1,9 +1,43 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
 	<ui:style>
 	
 	</ui:style>
 	<g:HTMLPanel>
+			<m:MaterialCard>
+				<m:MaterialCardTitle></m:MaterialCardTitle>
+				<m:MaterialCardContent>
+					<g:FormPanel>
+						<g:HTMLPanel>
+							<m:MaterialTextBox ui:field="title" placeholder="Title" />
+							<m:MaterialTextArea ui:field="description" placeholder="Description" />
+							<m:MaterialListBox />
+							<m:MaterialDoubleBox  ui:field="pointsPossible" placeholder="Points possible" />
+							<m:MaterialDatePicker />
+							<m:MaterialDatePicker />
+							<m:MaterialLabel text="Assign to: " />
+							<g:HTMLPanel>
+								<table> 
+									<tr> 
+										<th><div><label>Select All:</label><m:MaterialCheckBox ui:field="selectAllBox" /></div></th>
+									</tr>
+									<tr> 
+										<m:MaterialRow ui:field="assignToGrid" />
+									</tr>
+								</table>
+								
+							</g:HTMLPanel>
+						</g:HTMLPanel>
+					</g:FormPanel>
+				</m:MaterialCardContent>
+				<m:MaterialCardAction>
+				<m:MaterialRow> 
+					<m:MaterialColumn><m:MaterialButton text="OK" type="RAISED"/></m:MaterialColumn>
+					<m:MaterialColumn><m:MaterialButton text="CANCEL" type="RAISED"/></m:MaterialColumn>
+				</m:MaterialRow>
+				</m:MaterialCardAction>
+			</m:MaterialCard>
 	</g:HTMLPanel>
 </ui:UiBinder> 

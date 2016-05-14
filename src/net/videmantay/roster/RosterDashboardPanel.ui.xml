@@ -1,11 +1,12 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui">
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:h="urn:import:gwt.material.design.client.ui.html">
 	<ui:style>
 	
 	</ui:style>
-	<g:HTMLPanel>
+	<g:HTMLPanel height="100%" width="100%">
 		<m:MaterialTab ui:field="tab" backgroundColor="green darken-4" indicatorColor="orange accent-4" height="2.5em" >
 			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab1" text="Dashboard" textColor="white" waves="ORANGE"/></m:MaterialTabItem>
 			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab2" text="Calendar" textColor="white" waves="ORANGE"/></m:MaterialTabItem>
@@ -13,6 +14,11 @@
 		</m:MaterialTab>
 		<div  id="tab1">
 			<m:MaterialRow ui:field="toolbar" height="3em" backgroundColor="green accent-3" textColor="green darken-4" paddingLeft="10" centerOn="CENTER_ON_SMALL">
+			
+				<m:MaterialAnchorButton ui:field="classtimeBtn" addStyleNames="classTimeBtn" float="RIGHT" text="Class Time" fontSize="1.10em"  marginRight="5.0" textAlign="CENTER" iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT" activates="classtime"/>
+				<m:MaterialDropDown activator="classtime" ui:field="classtimeDrop">
+					<m:MaterialLink text="Manage..." />
+				</m:MaterialDropDown>
 			<m:MaterialColumn  grid="l3" hideOn="HIDE_ON_MED_DOWN" float="LEFT">
 				<m:MaterialRow>
 					<m:MaterialColumn grid="l1">
@@ -24,10 +30,18 @@
 					<m:MaterialColumn grid="l3">
 					<m:MaterialLabel text="Seating Chart" paddingLeft="7.5" />
 					</m:MaterialColumn>
+					<m:MaterialColumn>
+						<m:MaterialIcon ui:field="seatingChartEditIcon" iconType="EDIT" activates="seatingChartEdit" />
+						<m:MaterialDropDown activator="seatingChartEdit">
+							<m:MaterialLink ui:field="manageFurnitureLink" text="Manage Furntirue"/>
+							<m:MaterialLink ui:field="arrangeStudentsLink" text="Arrange Students" />
+							<m:MaterialLink ui:field="manageStationsLink" text="Manage Stations" />
+						</m:MaterialDropDown>
+					</m:MaterialColumn>
 				</m:MaterialRow><!--  -->
 				</m:MaterialColumn>
-			<m:MaterialColumn grid="s12 m12 l8">
-				<m:MaterialColumn grid="s1 m1 l1">
+			<m:MaterialColumn grid="s6 m6 l6">
+				<m:MaterialColumn grid="s2 m2 l1">
 					<m:MaterialPanel  paddingTop="12">
 						<g:HTMLPanel>
 							<m:MaterialTooltip  text="Roll">
@@ -36,7 +50,7 @@
 						</g:HTMLPanel>
 					</m:MaterialPanel>
 				</m:MaterialColumn>
-				<m:MaterialColumn grid="s1 m1 l1">
+				<m:MaterialColumn grid="s2 m2 l1">
 				<m:MaterialPanel  paddingTop="12" > 
 						<g:HTMLPanel> 
 						<m:MaterialTooltip text="Homework">
@@ -44,8 +58,8 @@
 							</m:MaterialTooltip>
 						</g:HTMLPanel>
 				</m:MaterialPanel>
-				</m:MaterialColumn>
-				<m:MaterialColumn grid="s1 m1 l1">
+				</m:MaterialColumn >
+				<m:MaterialColumn grid="s2 m2 l1">
 					<m:MaterialPanel  paddingTop="12"><!--  -->
 						<g:HTMLPanel> 
 						<m:MaterialTooltip text="Groups">
@@ -54,16 +68,7 @@
 						</g:HTMLPanel>
 					</m:MaterialPanel>
 				</m:MaterialColumn>
-			<m:MaterialColumn grid="s1 m1 l1">
-					<m:MaterialPanel  paddingTop="12"><!--  -->
-						<g:HTMLPanel>
-						<m:MaterialTooltip text="Sections">
-							<m:MaterialIcon iconType="SELECT_ALL" iconSize="SMALL"/>
-							</m:MaterialTooltip>
-						</g:HTMLPanel>
-					</m:MaterialPanel>
-				</m:MaterialColumn>
-				<m:MaterialColumn grid="s1 m1 l1">
+				<m:MaterialColumn grid="s2 m2 l1">
 					<m:MaterialPanel  paddingTop="12"><!--  -->
 						<g:HTMLPanel> 
 						<m:MaterialTooltip text="Random">
@@ -72,7 +77,7 @@
 						</g:HTMLPanel>
 					</m:MaterialPanel>
 			</m:MaterialColumn>
-				<m:MaterialColumn grid="s1 m1 l1">
+				<m:MaterialColumn grid="s2 m2 l1">
 					<m:MaterialPanel  paddingTop="12"><!--  -->
 						<g:HTMLPanel>
 						<m:MaterialTooltip text="Multiple">
@@ -80,20 +85,6 @@
 							</m:MaterialTooltip>
 						</g:HTMLPanel>
 					</m:MaterialPanel>
-				</m:MaterialColumn>
-				<m:MaterialColumn grid="s4 m3 l3">
-					<m:MaterialPanel  marginLeft="5" paddingTop="12"><!--  -->
-						<g:HTMLPanel>
-						<m:MaterialTooltip text="Edit">
-							<m:MaterialIcon fontSize="2em"  activates="seatingChartOpts" iconType="EDIT" iconSize="MEDIUM" />
-							</m:MaterialTooltip>
-						</g:HTMLPanel>
-					</m:MaterialPanel>
-					<m:MaterialDropDown activator="seatingChartOpts">
-					<m:MaterialLink ui:field="furnitureSetLink"  text="Seats"/>
-					<m:MaterialLink ui:field="studentSetLink"  text="Students"/>
-					<m:MaterialLink ui:field="printChartLink"  text="print chart"/>
-				</m:MaterialDropDown>
 				</m:MaterialColumn>
 				</m:MaterialColumn>
 			</m:MaterialRow>

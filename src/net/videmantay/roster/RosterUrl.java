@@ -33,5 +33,7 @@ public class RosterUrl {
 	public final static String LIST_GROUPS ="/teacher/listgroups";
 	public final static String GET_GROUP  = "/teacher/getgroup";
 	
+	public final static String GET_SEATINGCHART ="/teacher/getseatingchart";
+	
 	
 }

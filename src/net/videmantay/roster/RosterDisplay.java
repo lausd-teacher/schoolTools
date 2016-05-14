@@ -83,6 +83,4 @@ public class RosterDisplay extends Composite{
 		//clear up all the events on the bus with off
 	}
 
-	
-	
 }
