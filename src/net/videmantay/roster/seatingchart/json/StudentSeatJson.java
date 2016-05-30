@@ -6,11 +6,11 @@ public class StudentSeatJson extends JavaScriptObject {
 	
 	protected StudentSeatJson(){};
 	
-	public final native Integer getSeatNum()/*-{
+	public final native int getSeatNum()/*-{
 		return this.seatNum;
 	}-*/;
 	
-	public final native void setSeatNum(Integer num)/*-{
+	public final native void setSeatNum(int num)/*-{
 	 	this.seatNum = num;
 	}-*/;
 	

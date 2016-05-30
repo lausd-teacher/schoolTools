@@ -36,6 +36,7 @@ import static net.videmantay.server.user.DB.*;
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.appengine.auth.oauth2.AbstractAppEngineAuthorizationCodeServlet;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.util.Preconditions;
 import com.google.api.services.calendar.model.*;
@@ -44,7 +45,6 @@ import com.google.api.services.calendar.model.Event.ExtendedProperties;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
-import com.google.api.services.drive.model.ParentReference;
 import com.google.api.services.drive.model.Permission;
 import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.model.TaskList;
@@ -54,6 +54,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.labs.repackaged.com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Iterators;
 import com.google.common.primitives.Doubles;
@@ -146,6 +147,8 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		case RosterUrl.DELETE_STUDENT: deleteRosterStudent(req,res);break;
 		
 		case RosterUrl.GET_SEATINGCHART:getSeatingChart(req,res);break;
+		case RosterUrl.CREATE_SEATINGCHART:createSeatingChart(req,res);break;
+		case RosterUrl.UPDATE_SEATINGCHART:updateSeatingChart(req,res);break;
 		
 		
 		}
@@ -208,7 +211,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	}
 	
 	//ROSTER CRUD
-	private void saveRoster(HttpServletRequest req, HttpServletResponse res)throws IOException,ServletException, GeneralSecurityException, ServiceException{
+	private void saveRoster(final HttpServletRequest req, final HttpServletResponse res)throws IOException,ServletException, GeneralSecurityException, ServiceException{
 		if(!AppValid.roleCheck(UserRoles.TEACHER)){
 			//send to login
 			res.sendRedirect("/login");
@@ -277,22 +280,22 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 						public void vrun() {
 							rosterDB.save(roster);
 							db().save().entity(rosDetail);
+							
 						}});
+					//send rosterDetail back
+					try {
+						res.getWriter().write(gson.toJson(rosDetail));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				
 
 					}else{
 				//throw an error here.
 			
-			//send a confirmation message
-			ArrayList<String> message= new ArrayList<String>();
-			message.add("Roster update successful");
-			Stuff<String> stuff = new Stuff<String>(message);
-			stuff.setType(StuffType.MESSAGE);
-			String returnThis = gson.toJson(stuff);
-			res.getWriter().write(returnThis);
-			return;
-			
 		}
+				
 			}// end if roster id Null ///////////END UPDATE ROSTER /////////////////////
 			
 		/////////FIRST SAVE HERE ///////////////////////////////////////////////////////////////////////////		
@@ -304,40 +307,46 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		 //check for roster setting in the db 
 		 settings = db().load().type(RosterSetting.class).filter("acctId",user.getEmail()).first().now();
 		 if(settings == null){
+			 log.log(Level.INFO, "settings was null create new settings");
 			 settings = new RosterSetting().defaultSetting();
 		 }
 		 
 		 
-		/* drive = GoogleUtils.drive(cred);
+		drive = GoogleUtils.drive(cred);
 		 
 		 			//first check if main drive folder has been set
 		 		if(appUser.getMainDriveFolder()==null || appUser.getMainDriveFolder().isEmpty()){
 		 			//assign a main folder
 		 			File kimchiFile = GoogleUtils.folder("Kimchi");
-		 			kimchiFile = drive.files().insert(kimchiFile).execute();
+		 			kimchiFile = drive.files().create(kimchiFile).execute();
 		 			appUser.setMainDriveFolder(kimchiFile.getId());
 		 			db().save().entity(appUser);
 		 			
 		 		}
+		 		try{
+		 			//This is here to test existence of the file
+		 			File kimchiFile = drive.files().get(appUser.getMainDriveFolder()).execute();
+		 		}catch(GoogleJsonResponseException gjre){
+		 			File kimchiFile = GoogleUtils.folder("Kimchi");
+		 			kimchiFile = drive.files().create(kimchiFile).execute();
+		 			appUser.setMainDriveFolder(kimchiFile.getId());
+		 			db().save().entity(appUser);
+		 		}
 				File rosterFolder = GoogleUtils.folder(roster.getTitle());
 				rosterFolder.setDescription(roster.getDescription());
 				
-				//get Kimchi folder as parent of roster;
-				ParentReference parentFolder = new ParentReference();
-				parentFolder.setId(appUser.getMainDriveFolder());
-				List<ParentReference> rosParent = new ArrayList<ParentReference>();
-				rosParent.add(parentFolder);
-				rosterFolder.setParents(rosParent);
-				rosterFolder = drive.files().insert(rosterFolder).execute();
+				//Get Kimchi folder as parent for roster////
+				rosterFolder.setParents(ImmutableList.of(appUser.getMainDriveFolder()));
+				rosterFolder = drive.files().create(rosterFolder).execute();
 				roster.setRosterFolderId(rosterFolder.getId());
 				
 				
 				//set roster folder as parent for all other folders
-				ParentReference rp = new ParentReference();
-				rp.setId(rosterFolder.getId());
-				List<ParentReference> listOfP = new ArrayList<ParentReference>();
-				listOfP.add(rp);
-				
+				List<String> listOfP = ImmutableList.of(roster.getRosterFolderId());
+			File studentFolder = folder("Students");
+			studentFolder.setParents(listOfP);
+			roster.setStudentFolderId(drive.files().create(studentFolder).execute().getId());
+			
 			File rollBook = spreadsheet("RollBook");
 				rollBook.setParents(listOfP);
 				File gradeBook = spreadsheet("GradeBook");
@@ -348,10 +357,10 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 				goalBook.setParents(listOfP);
 				
 				
-				rollBook = drive.files().insert(rollBook).execute();
-				gradeBook = drive.files().insert(gradeBook).execute();
-				behaviorReport = drive.files().insert(behaviorReport).execute();
-				goalBook = drive.files().insert(goalBook).execute();
+				rollBook = drive.files().create(rollBook).execute();
+				gradeBook = drive.files().create(gradeBook).execute();
+				behaviorReport = drive.files().create(behaviorReport).execute();
+				goalBook = drive.files().create(goalBook).execute();
 				
 				roster.setGradeBook(gradeBook.getId());
 				System.out.println("gradeBook id is: " + gradeBook.getId());
@@ -360,6 +369,9 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 				
 				//set up the spreadsheet here
 				Queue queue = QueueFactory.getDefaultQueue();
+				
+				RosterFoldersSetup foldersSetup = new RosterFoldersSetup(cred.getAccessToken(), roster);
+				queue.add(TaskOptions.Builder.withPayload(foldersSetup));
 				
 				GradeBookSetup setUp = new GradeBookSetup(gradeBook.getId(), cred.getAccessToken());
 				queue.add(TaskOptions.Builder.withPayload(setUp));
@@ -373,7 +385,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 				BehaviorReportSetup behaviorSetup = new BehaviorReportSetup(behaviorReport.getId(), cred.getAccessToken());
 				queue.add(TaskOptions.Builder.withPayload(behaviorSetup));
 				
-				*/
+				
 				
 			/*	//optional folders use settings
 				//only if there are any
@@ -415,9 +427,29 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			//at this point there is no id so we wait for one
 			//to assign to rd
 			RosterDetail rd = roster.createDetail();
-			
-			rd.setId(rosterDB.save(roster).getId());
+			Key<Roster> rosterKey = rosterDB.save(roster);
+			rd.setId(rosterKey.getId());
 			db().save().entity(rd);
+			
+			//set up default class time and seating chart
+			SeatingChart seatingChart = new SeatingChart();
+			seatingChart.rosterKey = rosterKey;
+			ClassTime classTime = new ClassTime();
+			classTime.setTitle("Class Time");
+			classTime.setDescript("Class Time is a protocol to help student with transitioning from one task to the next.\n For Example 'Carpet Time', 'Reading Groups', etc");
+			classTime.setId(db().save().entity(seatingChart).now().getId());
+			roster.getClassTimes().add(classTime);
+			roster.setId(rosterKey.getId());
+			db().save().entity(roster);
+			
+			//send roster detail
+			try {
+				res.getWriter().write(gson.toJson(rd));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}//end first save else////////
 	
 
@@ -486,7 +518,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	{
 		log.log(Level.INFO,"Save Roster student called");
 		Drive drive;
-		Calendar calendar;
+		
 		Credential cred = null;
 		UserService us =UserServiceFactory.getUserService();
 		User user = us.getCurrentUser();
@@ -519,35 +551,34 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			db().save().entity(rd);
 		
 	
-		student.getAccess().add(student.getAcctId());	
-		Key<RosterStudent> key = db().save().entity(student).now();
-		student.setId(key.getId());
-		roster.getStudentKeys().add(key);
-		db().save().entity(roster);
-		
-		/*drive = drive(cred);
-		calendar = calendar(cred);
+		drive = drive(cred);
 		//create folder for student
-		File studentFolder = folder(student.getId().toString());
-		List<ParentReference> parent = parent(roster.getRosterFolderId());
-		studentFolder.setParents(parent);
-		List<Permission> permissions = new ArrayList<Permission>();
+		File studentFolder = folder(student.acctId);
+		
+		studentFolder.setParents(ImmutableList.of(roster.getStudentFolderId()));
+		studentFolder = drive.files().create(studentFolder).execute();
+		
+	
 		Permission perm = new Permission();
 		perm.setEmailAddress(student.getAcctId());
 		perm.setRole("reader");
-		perm.setValue(student.getAcctId());
 		perm.setType("user");
-		permissions.add(perm);
-		studentFolder.setPermissions(permissions);
 		
-		studentFolder = drive.files().insert(studentFolder).execute();
-		student.setStudentFolderId(studentFolder.getId());*/
+		
+		drive.permissions().create(studentFolder.getId(), perm).setFields("id").execute();
+		
+		student.setStudentFolderId(studentFolder.getId());
+		student.getAccess().add(student.getAcctId());	
+		Key<RosterStudent> key = db().save().entity(student).now();
+		roster.getStudentKeys().add(key);
+		db().save().entity(roster);
 		
 		res.getWriter().write(gson.toJson(student));
 		res.flushBuffer();
 		return;
 		
 	}
+	
 	private void updateRosterStudent(HttpServletRequest req, HttpServletResponse res) throws IOException{
 		Drive drive;
 		Credential cred = this.getCredential();
@@ -562,12 +593,12 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		if(!student.getAcctId().equals(dbCheck.getAcctId())){
 		drive = drive(cred);
 		File folder = drive.files().get(student.getStudentFolderId()).execute();
-		folder.setTitle(student.getAcctId());
+		folder.setName(student.getAcctId());
 		drive.files().update(folder.getId(), folder).execute();
 		
 		}
 		db().save().entity(student);
-		res.getWriter().write(studentCheck);
+		res.getWriter().write(gson.toJson(student));
 		res.flushBuffer();
 		
 		return;
@@ -891,11 +922,26 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			
 			return true;
 		}
+		
 	//SEATING CHART CRUD/////////
 		private void getSeatingChart(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+			log.log(Level.INFO, "get seating chart called");
+			log.log(Level.INFO, "param names are " + req.getParameterNames().nextElement() );
 			String classTimeCheck = Preconditions.checkNotNull(req.getParameter("classTime"));
 			ClassTime classTime = gson.fromJson(classTimeCheck, ClassTime.class);
-			SeatingChart seatingChart = db().load().type(SeatingChart.class).id(classTime.getId()).now();
+			Long rosterId = Longs.tryParse(req.getParameter("roster"));
+			
+			Roster roster = db().load().type(Roster.class).id(rosterId).now();
+			UserService us = UserServiceFactory.getUserService();
+			User user = us.getCurrentUser();
+			if(user == null || us.isUserLoggedIn()){
+				//throw exception
+			}
+			if(!roster.ownerId.equals(user.getEmail())){
+				//throw exception
+			}
+			Key<SeatingChart> key = Key.create(roster.getKey(),SeatingChart.class,classTime.id);
+			SeatingChart seatingChart = db().load().key(key).now();
 			
 			res.getWriter().write(gson.toJson(seatingChart));
 			res.flushBuffer();
@@ -903,36 +949,60 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		
 		private void createSeatingChart(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
 			String classTimeCheck = Preconditions.checkNotNull(req.getParameter("classTime"));
+			Long rosterId = Longs.tryParse(req.getParameter("roster"));
+			
+			Roster roster = db().load().key(Key.create(Roster.class, rosterId)).now();
+			
+			log.log(Level.INFO, "Roster in create class time is null?  " + (roster == null));
 			ClassTime classTime = gson.fromJson(classTimeCheck, ClassTime.class);
 			SeatingChart seatingChart = new SeatingChart();
 			
 			User user = UserServiceFactory.getUserService().getCurrentUser();
 			if(user == null || ! UserServiceFactory.getUserService().isUserLoggedIn()){
 				//throw some error
-			}else{
-				seatingChart.ownerId = user.getEmail();
 			}
+				
+			if(roster == null || !roster.getOwnerId().equals(user.getEmail())){
+					//throw exception
+				}
+			seatingChart.rosterKey = roster.getKey();	
+				
+			
 			
 			classTime.setId( db().save().entity(seatingChart).now().getId() );
+			if(roster.getClassTimes() == null){
+				roster.setClassTimes(new ArrayList<ClassTime>());
+			}
+			roster.classTimes.add(classTime);
+			db().save().entity(roster);
 			
 			res.getWriter().write(gson.toJson(classTime));
 			
 		}
 		
-		private void upSeatingChart(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
+		private void updateSeatingChart(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException{
+			UserService us = UserServiceFactory.getUserService();
+			User user = us.getCurrentUser();
+			
 			String seatingChartCheck = Preconditions.checkNotNull(req.getParameter("seatingChart"));
+			log.log(Level.INFO, "the seating chart is \n " + seatingChartCheck);
 			SeatingChart seatingChart = gson.fromJson(seatingChartCheck, SeatingChart.class);
-			SeatingChart seatingChartDB = db().load().type(SeatingChart.class).id(seatingChart.id).now();
-			if(!seatingChartDB.ownerId.equals(seatingChart.ownerId)){
+			
+			Long rosterId = Longs.tryParse(req.getParameter("roster"));
+			Roster roster = db().load().type(Roster.class).id(rosterId).now();
+			if(!roster.ownerId.equals(user.getEmail())){
 				//throw error
-				res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-				res.getWriter().write("Error updating seating chart");
-			}else{
-				//procede
-				db().save().entity(seatingChart);
 			}
 			
-			res.getWriter().write(gson.toJson(seatingChart));
+			Key<SeatingChart> key = Key.create(roster.getKey(), SeatingChart.class, seatingChart.getId());
+			SeatingChart seatingChartDB = db().load().key(key).now();
+			if(seatingChartDB == null){
+				//throw error
+			}
+			seatingChart.rosterKey = roster.getKey();
+			db().save().entity(seatingChart);
+			
+			//res.getWriter().write(gson.toJson(seatingChart));
 			
 		}
 		
@@ -945,15 +1015,18 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			}
 			String classTimeCheck = Preconditions.checkNotNull(req.getParameter("classTime"));
 			ClassTime classTime = gson.fromJson(classTimeCheck, ClassTime.class);
+			Long rosterId = Longs.tryParse("roster");
+			Roster roster = db().load().type(Roster.class).id(rosterId).now();
+			log.log(Level.INFO, "classTimes length before remove is " + roster.classTimes.size());
+			Arrays.asList(roster.classTimes).remove(classTime);
+			log.log(Level.INFO, "classTimes length AFTER remove is " + roster.classTimes.size());
+
+			Key<SeatingChart> key = Key.create(roster.getKey(), SeatingChart.class, classTime.id);
+			db().delete().key(key);
+			db().save().entity(roster);
 			
-			SeatingChart s = db().load().type(SeatingChart.class).id(classTime.id).now();
-			if(s != null && s.ownerId.equals(user.getEmail())){
-				db().delete().entity(s);
-				
 				res.setStatus(HttpServletResponse.SC_OK);
 				res.getWriter().write("Delete Successful");
-			}
-			
 			
 		}
 

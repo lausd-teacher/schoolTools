@@ -4,9 +4,6 @@
 	xmlns:m="urn:import:gwt.material.design.client.ui"
 	xmlns:h="urn:import:gwt.material.design.client.ui.html">
 	<g:HTMLPanel ui:field="seatingChart" styleName="seatingChart">
-	<table>
-		<tr>
-		<td>
 		<h:Div ui:field="toolsPanel" addStyleNames="toolsPanel">
 		<m:MaterialPanel   ui:field="studentTools" addStyleNames="studentTools">
 		<m:MaterialLabel text="StudentList" />
@@ -16,10 +13,10 @@
 				<m:MaterialLabel text="Furniture" />
 				<m:MaterialCollection ><!--  -->
 					<m:MaterialCollectionItem><!--  -->
-						<m:MaterialImage m:id="singleDeskIcon" addStyleNames="furnitureIcon" url="../img/doubleDesk.png" caption="Single Desk"/>
+						<m:MaterialImage m:id="singleDeskIcon" addStyleNames="furnitureIcon" url="../img/singleDesk.png" caption="Single Desk"/>
 					</m:MaterialCollectionItem>
 					<m:MaterialCollectionItem><!--  -->
-						<m:MaterialImage m:id="doubleDeskIcon" addStyleNames="furnitureIcon" caption="Double Desk"/>
+						<m:MaterialImage m:id="doubleDeskIcon" addStyleNames="furnitureIcon" url="../img/doubleDesk.png" caption="Double Desk"/>
 					</m:MaterialCollectionItem>
 					<m:MaterialCollectionItem><!--  -->
 						<m:MaterialImage m:id="kidneyTableIcon" caption="Kidney Table"/>
@@ -33,13 +30,8 @@
 				</m:MaterialCollection>
 			</m:MaterialPanel>
 		</h:Div>
-		</td>
-		<td>
-		<g:AbsolutePanel ui:field="floorPlan" addStyleNames="floorPlan">
-			<h:Span addStyleNames="emptySeatingChart" ui:field="emptyFurnitureLabel" text="It appears that you have not yet developed a seating chart! No Worries just hit the tab to get you started"/>
-		</g:AbsolutePanel>
-		</td><!--  -->
-		</tr>
-		</table>
+		<h:Div ui:field="floorPlan" addStyleNames="floorPlan">
+			<h:Span addStyleNames="emptySeatingChart" ui:field="emptyFurnitureLabel" text=""/>
+		</h:Div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

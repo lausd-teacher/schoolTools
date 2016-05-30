@@ -173,11 +173,6 @@ public class RosterJson extends JavaScriptObject {
 	}-*/;
 	
 	public final native JsArray<ClassTimeJson> getClassTimes()/*-{
-		if(this.classTimes == null){
-			this.classTimes = [{title:"Class Time", isDefault:true,descript:"This is the default Class Time. Class Time is \n"+
-								" a set a protocol you have in place so that student transition time is cut to a minimum.\n"+
-								" Ex: Carpet Time, Group Time"}];
-		}
 			return this.classTimes;
 	}-*/;
 	

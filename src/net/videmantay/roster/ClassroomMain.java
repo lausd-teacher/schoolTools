@@ -40,7 +40,6 @@ public class ClassroomMain extends Composite{
 
 	final ClassroomMain $this;
 	
-	private HasUpdateClassTime updateClassTimer;
 	@UiField
 	MaterialContainer mainPanel;
 	
@@ -54,6 +53,8 @@ public class ClassroomMain extends Composite{
 	MaterialSideNav sideNav;
 		
 	private  RosterJson classRoster;
+	
+	
 	
 	public ClassroomMain() {
 		this.initWidget(uiBinder.createAndBindUi(this));
@@ -99,6 +100,7 @@ public class ClassroomMain extends Composite{
 		}
 		
 		if($this.getRosterId() == null ||id != $this.getRosterId()){
+			console.log("Roster ajax called made from classroom main");
 			//Asyncall to get my roster with id of id
 			//setView must be called after roster is set
 			Ajax.post(RosterUrl.GET_ROSTER, $$("roster:" + id))
@@ -108,6 +110,7 @@ public class ClassroomMain extends Composite{
 						classRoster = JsonUtils.safeEval((String) this.arguments(0)).cast();
 						rosterTitle.setText(classRoster.getTitle());
 						window.setPropertyJSO("roster", classRoster);
+						setClasstime(classRoster.getClassTimes().get(0));
 						
 							if(token.size()>= 3){
 							 path.addAll(token.subList(2, token.size()));
@@ -118,12 +121,18 @@ public class ClassroomMain extends Composite{
 					}
 			});}else{
 					//no need to wait for id to load view just doit
+					//need to check that classtime is set if not get default
+				if(window.getPropertyJSO("classtime") == null){
+					console.log("classTime was null is called");
+					window.setPropertyJSO("classtime", classRoster.getClassTimes().get(0));
+				}
 						if(token.size()>= 3){
 					 path.addAll(token.subList(2, token.size()));
-
+					 //classtime may have been set
+					 
 					 setView(path);
 					}else{homeView();}
-						}
+						}// end else roster will be here
 	}
 	
 	private void setView(List<String> path){
@@ -185,12 +194,11 @@ public class ClassroomMain extends Composite{
 		console.log("classmain homeView called");
 		mainPanel.clear();
 		RosterDashboardPanel panel = new RosterDashboardPanel();
-		this.updateClassTimer = panel;
 		mainPanel.add(panel);
 	}
 	
 	private void setClasstime(ClassTimeJson classTime){
-		updateClassTimer.updateClassTime();
+		window.setPropertyJSO("classtime", classTime);
 		
 	}
 	

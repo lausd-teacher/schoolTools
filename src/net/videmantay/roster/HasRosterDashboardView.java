@@ -20,6 +20,10 @@ public interface HasRosterDashboardView extends IsWidget {
 	
 	public void arrangeFurniture();
 	
+	public void arrangeStudents();
+	
+	public void manageStations();
+	
 	public void doneCheckHW();
 	
 	public void doneGroups();
@@ -30,11 +34,19 @@ public interface HasRosterDashboardView extends IsWidget {
 	
 	public void doneSelectAll();
 	
+	public void undo();
+	
+	public void cancel();
+	
 	public void deselectAll();
 	
 	public void doneMultipleSelect();
 	
 	public void doneArrangeFurniture();
+	
+	public void doneArrangeStudents();
+	
+	public void doneManageStations();
 	
 	
 }

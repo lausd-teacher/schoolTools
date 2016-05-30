@@ -34,6 +34,8 @@ public class RosterUrl {
 	public final static String GET_GROUP  = "/teacher/getgroup";
 	
 	public final static String GET_SEATINGCHART ="/teacher/getseatingchart";
+	public final static String CREATE_SEATINGCHART="/teacher/createseatingchart";
+	public final static String UPDATE_SEATINGCHART="/teacher/updateseatingchart";
 	
 	
 }

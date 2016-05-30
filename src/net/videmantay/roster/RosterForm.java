@@ -19,6 +19,7 @@ import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialCard;
 import gwt.material.design.client.ui.MaterialDatePicker;
 import gwt.material.design.client.ui.MaterialInput;
+import gwt.material.design.client.ui.MaterialLoader;
 import net.videmantay.admin.json.AppUserJson;
 import net.videmantay.roster.json.RosterJson;
 import static com.google.gwt.query.client.GQuery.*;
@@ -128,9 +129,17 @@ public class RosterForm extends Composite{
 			//show the errors
 			return;
 		}
-		Ajax.post(RosterUrl.CREATE_ROSTER, $$("roster:" + JsonUtils.stringify(data)));
+		MaterialLoader.showLoading(true);
+		Ajax.post(RosterUrl.CREATE_ROSTER, $$("roster:" + JsonUtils.stringify(data)))
+		.done(new Function(){
+			@Override
+			public void f(){
+				$(body).trigger("rosterredraw", this.getArgument(0));
+				MaterialLoader.showLoading(false);
+			}
+		});
 		//look into RosterDisplay to handle or Roster???
-		$(body).trigger("rosterredraw");
+		
 	}
 	
 	public void canel(){

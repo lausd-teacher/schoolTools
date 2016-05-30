@@ -1,10 +1,13 @@
 package net.videmantay.roster;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
@@ -16,6 +19,7 @@ import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 
 import net.videmantay.roster.json.RosterJson;
+import net.videmantay.student.json.RosterDetailJson;
 
 public class RosterDisplay extends Composite{
 
@@ -44,11 +48,16 @@ public class RosterDisplay extends Composite{
 		}};
 	Function rosterRedraw = new Function(){
 		@Override
-		public void f(){
+		public boolean f(Event e, Object...o){
+			RosterDetailJson rd = JsonUtils.safeEval((String)o[0]).cast();
+			JsArray<RosterDetailJson> rosterList = window.getPropertyJSO("rosterList").cast();
+			rosterList.push(rd);
 			$(rosterForm).hide();
 			rosterGrid.drawGrid();
 			$(rosterGrid).show();
 			$(fab).show();
+			
+			return true;
 		}
 	};
 	Function rosterCancel = new Function(){

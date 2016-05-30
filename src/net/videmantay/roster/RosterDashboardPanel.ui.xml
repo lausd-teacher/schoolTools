@@ -13,13 +13,16 @@
 			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#tab3" text="Reports" textColor="white" waves="ORANGE"/></m:MaterialTabItem>
 		</m:MaterialTab>
 		<div  id="tab1">
-			<m:MaterialRow ui:field="toolbar" height="3em" backgroundColor="green accent-3" textColor="green darken-4" paddingLeft="10" centerOn="CENTER_ON_SMALL">
-			
-				<m:MaterialAnchorButton ui:field="classtimeBtn" addStyleNames="classTimeBtn" float="RIGHT" text="Class Time" fontSize="1.10em"  marginRight="5.0" textAlign="CENTER" iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT" activates="classtime"/>
-				<m:MaterialDropDown activator="classtime" ui:field="classtimeDrop">
-					<m:MaterialLink text="Manage..." />
+			<m:MaterialAnchorButton ui:field="classroomtimeBar" centerOn="CENTER_ON_SMALL" grid="s12" width="100%" hideOn="HIDE_ON_MED_UP" addStyleNames="classTimeBar" text="Class Time" fontSize="1.10em" textAlign="CENTER" iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT" activates="classtimedrop"></m:MaterialAnchorButton>
+			<m:MaterialDropDown activator="classtimedrop" ui:field="classtimeDrop2">
+					<m:MaterialLink  addStyleNames="manageClassTimeLink" text="Manage..." />
 				</m:MaterialDropDown>
-			<m:MaterialColumn  grid="l3" hideOn="HIDE_ON_MED_DOWN" float="LEFT">
+			<m:MaterialRow ui:field="toolbar" height="3em" backgroundColor="green accent-3" textColor="green darken-4" paddingLeft="10" centerOn="CENTER_ON_SMALL">
+				<m:MaterialAnchorButton ui:field="classtimeBtn" hideOn="HIDE_ON_SMALL" addStyleNames="classTimeBtn" float="RIGHT" text="Class Time" fontSize="1.10em"  marginRight="5.0" textAlign="CENTER" iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT" activates="classtime"/>
+				<m:MaterialDropDown activator="classtime" ui:field="classtimeDrop">
+					<m:MaterialLink addStyleNames="manageClassTimeLink" text="Manage..." />
+				</m:MaterialDropDown>
+			<m:MaterialColumn  grid="l3" hideOn="HIDE_ON_MED_DOWN" float="LEFT" centerOn="CENTER_ON_SMALL">
 				<m:MaterialRow>
 					<m:MaterialColumn grid="l1">
 					<m:MaterialLabel text="Grid" paddingRight="3.0"/>
@@ -31,7 +34,7 @@
 					<m:MaterialLabel text="Seating Chart" paddingLeft="7.5" />
 					</m:MaterialColumn>
 					<m:MaterialColumn>
-						<m:MaterialIcon ui:field="seatingChartEditIcon" iconType="EDIT" activates="seatingChartEdit" />
+						<m:MaterialIcon ui:field="seatingChartEditIcon" iconType="EDIT" activates="seatingChartEdit" marginLeft="5.5"/>
 						<m:MaterialDropDown activator="seatingChartEdit">
 							<m:MaterialLink ui:field="manageFurnitureLink" text="Manage Furntirue"/>
 							<m:MaterialLink ui:field="arrangeStudentsLink" text="Arrange Students" />
@@ -40,12 +43,12 @@
 					</m:MaterialColumn>
 				</m:MaterialRow><!--  -->
 				</m:MaterialColumn>
-			<m:MaterialColumn grid="s6 m6 l6">
+			<m:MaterialColumn grid="s12 m6 l6">
 				<m:MaterialColumn grid="s2 m2 l1">
 					<m:MaterialPanel  paddingTop="12">
 						<g:HTMLPanel>
 							<m:MaterialTooltip  text="Roll">
-							<m:MaterialIcon iconType="ASSIGNMENT_IND" iconSize="SMALL"/>
+							<m:MaterialIcon  ui:field="rollIcon" iconType="ASSIGNMENT_IND" iconSize="SMALL"/>
 							</m:MaterialTooltip>
 						</g:HTMLPanel>
 					</m:MaterialPanel>
@@ -54,7 +57,7 @@
 				<m:MaterialPanel  paddingTop="12" > 
 						<g:HTMLPanel> 
 						<m:MaterialTooltip text="Homework">
-							<m:MaterialIcon ui:field="hwBtn" iconType="PLAYLIST_ADD_CHECK" iconSize="SMALL"/>
+							<m:MaterialIcon ui:field="hwIcon" iconType="ASSIGNMENT" iconSize="SMALL"/>
 							</m:MaterialTooltip>
 						</g:HTMLPanel>
 				</m:MaterialPanel>
@@ -63,8 +66,18 @@
 					<m:MaterialPanel  paddingTop="12"><!--  -->
 						<g:HTMLPanel> 
 						<m:MaterialTooltip text="Groups">
-							<m:MaterialIcon iconType="GROUP_WORK" iconSize="SMALL"/>
+							<m:MaterialIcon  ui:field="groupsIcon" iconType="GROUP_WORK" iconSize="SMALL"/>
 						</m:MaterialTooltip>	
+						</g:HTMLPanel>
+					</m:MaterialPanel>
+				</m:MaterialColumn>
+				<!-- This starts selects tools -->
+				<m:MaterialColumn grid="s2 m2 l1">
+					<m:MaterialPanel marginLeft="10" paddingTop="12"><!--  -->
+						<g:HTMLPanel>
+						<m:MaterialTooltip text="Multiple">
+							<m:MaterialIcon ui:field="multipleIcon" iconType="GROUP_ADD" iconSize="SMALL"/>
+							</m:MaterialTooltip>
 						</g:HTMLPanel>
 					</m:MaterialPanel>
 				</m:MaterialColumn>
@@ -72,7 +85,7 @@
 					<m:MaterialPanel  paddingTop="12"><!--  -->
 						<g:HTMLPanel> 
 						<m:MaterialTooltip text="Random">
-							<m:MaterialIcon iconType="SHUFFLE" iconSize="SMALL"/>
+							<m:MaterialIcon ui:field="randomIcon" iconType="SHUFFLE" iconSize="SMALL"/>
 						</m:MaterialTooltip>
 						</g:HTMLPanel>
 					</m:MaterialPanel>
@@ -80,18 +93,43 @@
 				<m:MaterialColumn grid="s2 m2 l1">
 					<m:MaterialPanel  paddingTop="12"><!--  -->
 						<g:HTMLPanel>
-						<m:MaterialTooltip text="Multiple">
-							<m:MaterialIcon iconType="GROUP_ADD" iconSize="SMALL"/>
+						<m:MaterialTooltip text="Select All">
+							<m:MaterialIcon ui:field="selectAllIcon" iconType="SELECT_ALL" iconSize="SMALL"/>
 							</m:MaterialTooltip>
 						</g:HTMLPanel>
 					</m:MaterialPanel>
 				</m:MaterialColumn>
 				</m:MaterialColumn>
 			</m:MaterialRow>
-			<m:MaterialRow ui:field="doneToolbar"> 
-				<m:MaterialColumn>
-					<m:MaterialAnchorButton addStyleNames="doneBtn" ui:field="doneBtn" text="DONE"></m:MaterialAnchorButton>
+			<m:MaterialRow ui:field="doneToolbar" backgroundColor="deep-orange darken-3" > 
+			<m:MaterialColumn hideOn="HIDE_ON_SMALL" ui:field="fullDoneToolbar" grid="s12 m12 l12">
+				<m:MaterialColumn grid="m3">
+					<m:MaterialAnchorButton  ui:field="doneBtn" text="DONE" iconType="DONE" backgroundColor="amber darken-2"></m:MaterialAnchorButton>
 				</m:MaterialColumn>
+				<m:MaterialColumn grid="m3">
+					<m:MaterialButton  ui:field="undoBtn" text="Undo" iconType="UNDO" backgroundColor="orange darken-2" />
+				</m:MaterialColumn>
+				<m:MaterialColumn grid="m3">
+					<m:MaterialAnchorButton ui:field="doneBarCancelBtn" text="CANCEL" iconType="CLEAR" backgroundColor="red darken-1"></m:MaterialAnchorButton>
+				</m:MaterialColumn>
+				<m:MaterialColumn grid="m3">
+					<m:MaterialButton  type="FLAT" textColor="white" text="Mangage" iconType="MORE_VERT" iconPosition="RIGHT"/>
+				</m:MaterialColumn>
+			</m:MaterialColumn>
+			<m:MaterialColumn ui:field="smDoneToolbar" hideOn="HIDE_ON_MED_UP">
+				<m:MaterialColumn grid="s3">
+					<m:MaterialButton ui:field="smDoneBtn"  iconType="DONE" backgroundColor="amber darken-2"></m:MaterialButton>
+				</m:MaterialColumn>
+				<m:MaterialColumn grid="s3">
+					<m:MaterialButton ui:field="smUndoBtn" iconType="UNDO" backgroundColor="orange darken-2"/>
+				</m:MaterialColumn>
+				<m:MaterialColumn grid="s3">
+					<m:MaterialButton ui:field="smDoneBarCancelBtn" iconType="CLEAR" backgroundColor="red darken-2"></m:MaterialButton>
+				</m:MaterialColumn>
+				<m:MaterialColumn grid="s3">
+					<m:MaterialButton type="FLAT"  iconType="MORE_VERT" textColor="white"/>
+				</m:MaterialColumn>
+			</m:MaterialColumn>
 			</m:MaterialRow>
 			<g:HTMLPanel ui:field="tab1Main">
 			</g:HTMLPanel>

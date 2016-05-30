@@ -20,6 +20,7 @@ import static com.google.gwt.query.client.GQuery.*;
 import com.google.common.primitives.Ints;
 
 import gwt.material.design.client.ui.MaterialAnchorButton;
+import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialDropDown;
 import gwt.material.design.client.ui.MaterialIcon;
 import gwt.material.design.client.ui.MaterialLink;
@@ -40,7 +41,19 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 	MaterialSwitch gridSwitch;
 	
 	@UiField
-	MaterialIcon hwBtn;
+	MaterialIcon hwIcon;
+	
+	@UiField
+	MaterialIcon groupsIcon;
+	
+	@UiField
+	MaterialIcon rollIcon;
+	
+	@UiField
+	MaterialIcon multipleIcon;
+	
+	@UiField
+	MaterialIcon randomIcon;
 	
 	@UiField
 	MaterialIcon seatingChartEditIcon;
@@ -61,10 +74,29 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 	
 	@UiField
 	MaterialLink manageFurnitureLink;
+	
 	@UiField
 	MaterialLink arrangeStudentsLink;
 	@UiField
 	MaterialLink manageStationsLink;
+	
+	@UiField
+	MaterialAnchorButton doneBtn;
+	
+	@UiField
+	MaterialButton smDoneBtn;
+	
+	@UiField
+	MaterialAnchorButton doneBarCancelBtn;
+	
+	@UiField
+	MaterialButton smDoneBarCancelBtn;
+	
+	@UiField
+	MaterialButton undoBtn;
+	
+	@UiField
+	MaterialButton smUndoBtn;
 	
 	private final RosterJson roster =window.getPropertyJSO("roster").cast();
 
@@ -73,7 +105,8 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 	private State state = State.DASHBOARD;
 	
 	private HasRosterDashboardView display;
-	RunAsyncCallback runAsync = new RunAsyncCallback(){
+
+	final RunAsyncCallback runAsync = new RunAsyncCallback(){
 
 		@Override
 		public void onFailure(Throwable reason) {
@@ -89,7 +122,7 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 		}};
 	//enum for state
 	enum View{GRID,CHART};
-	enum State{DASHBOARD,ROLL, HW,GROUP,SELECT_ALL,RANDOM}
+	enum State{DASHBOARD,ROLL, HW,GROUP, MULTIPLE_SELECT,RANDOM, FURNITURE_EDIT, STUDENT_EDIT, STATIONS_EDIT}
 	
 	
 	public RosterDashboardPanel() {
@@ -101,15 +134,7 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 		}
 		
 		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
-		hwBtn.addClickHandler( new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				toolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
-				doneToolbar.getElement().getStyle().setDisplay(Style.Display.BLOCK);
-				display.checkHW();
-				
-			}});
+		
 	
 		gridSwitch.addValueChangeHandler(new ValueChangeHandler<Boolean>(){
 
@@ -118,18 +143,13 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 				if(view == View.GRID){
 					view = View.CHART;
 					showChart();
+					
 				}else{
 					view = View.GRID;
 					showDisplay();
 				}
 			}});
-		seatingChartEditIcon.addClickHandler( new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				// update state for furniture edit
-				display.arrangeFurniture();
-			}});
+		
 		classtimeDrop.addSelectionHandler(new SelectionHandler<Widget>(){
 
 			@Override
@@ -144,40 +164,166 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 					classtimeBtn.setText(classTime.getTitle());
 				}	
 			}});
-		
+		/////////////////seatingChartEditLinks events
 		manageFurnitureLink.addClickHandler(new ClickHandler(){
-
 			@Override
 			public void onClick(ClickEvent event) {
-			 $(".seatingChart").trigger("manageFurniture");
-				
+			 display.arrangeFurniture();
+				state = State.FURNITURE_EDIT;
+				showDoneBar();
+				display.arrangeFurniture();
 			}});
 		arrangeStudentsLink.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
 				$(".seatingChart").trigger("arrangeStudents");
+				state= State.STUDENT_EDIT;
+				showDoneBar();
+				display.arrangeStudents();
 			}});
 		manageStationsLink.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
 				$(".seatingChart").trigger("manageStations");
+				state = State.STATIONS_EDIT;
+				showDoneBar();
+				display.manageStations();
 			}});
+		
+		////// toolbar buttons events//////////////////////
+		hwIcon.addClickHandler( new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				display.checkHW();
+				state = State.HW;
+				showDoneBar();
+			}});
+		rollIcon.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				display.takeRoll();
+				state = State.ROLL;
+				showDoneBar();
+			}});
+		groupsIcon.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				display.groups();
+				state = State.GROUP;
+				showDoneBar();
+			}});
+		randomIcon.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				display.pickRandom();
+				state = State.RANDOM;
+				showDoneBar();
+			}});
+		multipleIcon.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				display.multipleSelect();
+				state = State.MULTIPLE_SELECT;
+				showDoneBar();
+			}});
+		////////////
+		doneBtn.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				switch(state){
+				case FURNITURE_EDIT:display.doneArrangeFurniture(); break;
+				case STUDENT_EDIT: display.doneArrangeStudents(); break;
+				case STATIONS_EDIT: display.doneManageStations();break;
+				case HW: display.doneCheckHW();break;
+				case ROLL: display.doneTakeRoll();break;
+				case GROUP: display.doneGroups();break;
+				case RANDOM: display.donePickRandom(); break;
+				case MULTIPLE_SELECT: display.doneMultipleSelect(); break;
+				default: display.home();
+				}
+				display.home();
+				showToolBar();
+			}});
+		smDoneBtn.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				switch(state){
+				case FURNITURE_EDIT:display.doneArrangeFurniture(); break;
+				case STUDENT_EDIT: display.doneArrangeStudents(); break;
+				case STATIONS_EDIT: display.doneManageStations();break;
+				case HW: display.doneCheckHW();break;
+				case ROLL: display.doneTakeRoll();break;
+				case GROUP: display.doneGroups();break;
+				case RANDOM: display.donePickRandom(); break;
+				case MULTIPLE_SELECT: display.doneMultipleSelect(); break;
+				default: display.home();
+				}
+				display.home();
+				showToolBar();
+			}});
+		
+		undoBtn.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				display.undo();
+				
+			}});
+		
+		smUndoBtn.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				display.undo();
+				
+			}});
+		doneBarCancelBtn.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				display.cancel();
+				display.home();
+				showToolBar();
+			}});
+		
+		smDoneBarCancelBtn.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				display.cancel();
+				display.home();
+				showToolBar();
+			}});
+		
 		showDisplay();
 	}
 	
-	private void roll(){
-		
+	private void showDoneBar(){
+		toolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
+		doneToolbar.getElement().getStyle().setDisplay(Style.Display.BLOCK);
 	}
-	
+	private void showToolBar(){
+		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
+		toolbar.getElement().getStyle().setDisplay(Style.Display.BLOCK);
+	}
 	private void showChart(){
 		GWT.runAsync(runAsync);
+		seatingChartEditIcon.setVisible(true);
 	}
 	private void showDisplay(){
 		display = new ClassroomGrid();
 		tab1Main.clear();
 		tab1Main.add(display); 
+		seatingChartEditIcon.setVisible(false);
 	}
 
 	@Override
@@ -198,6 +344,12 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 		//load the classTimedrop
 		
 		JsArray<ClassTimeJson> classTimes = roster.getClassTimes();
+		if(classTimes == null){
+			classTimes = JsArray.createArray().cast();
+		}
+		if(classTimes.length() < 1){
+			
+		}
 		
 		for(int i = 0; i< classTimes.length(); i++){
 			MaterialLink link = new MaterialLink();

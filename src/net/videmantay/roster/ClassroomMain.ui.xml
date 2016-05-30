@@ -25,6 +25,7 @@
 				<m:MaterialLink ui:field="goalLink" text="Goals" textColor="green" iconType="CLASS" />
 				<m:MaterialLink ui:field="jobLink" text="Jobs" textColor="green" iconType="CLASS" />
 				<m:MaterialLink ui:field="seatingChartLink" text="Seatingcharts" textColor="green" iconType="EVENT_SEAT" />
+				<m:MaterialLink></m:MaterialLink>
 			</m:MaterialSideNav>
 		<m:MaterialContainer  ui:field="mainPanel" width="100%" height="100%" >
 		</m:MaterialContainer>

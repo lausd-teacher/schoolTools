@@ -6,7 +6,7 @@ import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayInteger;
 
 
-public class RosterStudentJson extends JavaScriptObject {
+public class RosterStudentJson extends JavaScriptObject{
 
 	protected RosterStudentJson(){}
 	

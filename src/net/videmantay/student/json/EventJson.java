@@ -4,4 +4,5 @@ import com.google.gwt.core.client.JavaScriptObject;
 
 public class EventJson extends JavaScriptObject {
 
+		protected EventJson(){}
 }

@@ -60,6 +60,7 @@
 					iconType="CONTENT_PASTE" />
 				<m:MaterialLink ui:field="settingsLink" text="Settings" textColor="green"
 					iconType="SETTINGS" />
+				<m:MaterialLink />
 			</m:MaterialSideNav>
 		</header>
 		<m:MaterialContainer m:id="mainPanel" ui:field="mainPanel" width="100%" height="100%" >

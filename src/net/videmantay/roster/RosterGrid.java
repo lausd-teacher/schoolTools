@@ -1,14 +1,10 @@
 package net.videmantay.roster;
 
-import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.query.client.Function;
 import java.util.ArrayList;
 
 import static com.google.gwt.query.client.GQuery.*;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.JsonUtils;
-
 import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialLoader;

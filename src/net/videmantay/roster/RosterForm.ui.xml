@@ -11,8 +11,8 @@
 				iconPosition="LEFT" textColor="black" />
 			<g:FormPanel ui:field="form">
 				<g:HTMLPanel>
-					<m:MaterialInput ui:field="title" type="EMAIL"
-						required="true" placeholder="account id" />
+					<m:MaterialInput ui:field="title" type="TEXT"
+						required="true" placeholder="Title" />
 					<h:Label ui:field="titleError" styleName="errorLabel" text="Must be valid email" textColor="red lighten-1"/>
 					<m:MaterialInput ui:field="description" type="TEXT"
 						required="true" placeholder="description" />
