@@ -13,7 +13,7 @@ public class RotatableUi extends JavaScriptObject {
 	}-*/;
 	
 	public final native Element element()/*-{
-			return this["element"];
+			return this["element"][0];
 	}-*/;
 	
 	public final native Angle angle()/*-{
@@ -23,14 +23,14 @@ public class RotatableUi extends JavaScriptObject {
 	public static class Angle extends JavaScriptObject{
 		protected Angle(){}
 		
-		public final native Double start()/*-{
+		public final native double start()/*-{
 				return this["start"];
 		}-*/;
 		
-		public final native Double current()/*-{
+		public final native double current()/*-{
 		return this["current"];
 	}-*/;
-		public final native Double stop()/*-{
+		public final native double stop()/*-{
 		return this["stop"];
 	}-*/;
 	}

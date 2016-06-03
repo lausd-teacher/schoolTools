@@ -136,6 +136,14 @@ public class RosterJson extends JavaScriptObject {
 		return this;
 	}-*/;
 	
+	public final native String getStudentFolderId()/*-{
+		return this.studentFolderId;
+	}-*/;
+	
+	public final native void setStudentFolderId(String studentFolder)/*-{
+		this.studentFolderId = studentFolder;
+	}-*/;
+	
 	public final native JsArray<RosterStudentJson> getRosterStudents()/*-{
 		return this.rosterStudents;
 	}-*/;

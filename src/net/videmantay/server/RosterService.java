@@ -88,6 +88,10 @@ import freemarker.template.TemplateException;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
+import com.google.appengine.api.urlfetch.FetchOptions;
+import com.google.appengine.api.urlfetch.HTTPRequest;
+import com.google.appengine.api.urlfetch.URLFetchService;
+import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 
 
 @SuppressWarnings("serial")
@@ -140,6 +144,8 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		case RosterUrl.CREATE_ROSTER:saveRoster(req,res);break;
 		case RosterUrl.GET_ROSTER: getRoster(req,res);break;
 		case RosterUrl.DELETE_ROSTER:deleteRoster(req,res);break;
+		//need for long process
+		
 		
 		//route student
 		case RosterUrl.CREATE_STUDENT:saveRosterStudent(req,res);break;
@@ -219,7 +225,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		final DB<Roster> rosterDB = new DB<Roster>(Roster.class);
 		Credential cred = null;
 		
-		Drive drive;
+		/*Drive drive;
 		Calendar calendar;
 		Tasks tasks;
 		ContactsService contactService;
@@ -228,7 +234,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	
 		
 		
-		RosterSetting settings;
+		RosterSetting settings;*/
 		final Roster roster;
 		final UserService us =UserServiceFactory.getUserService();
 		final User user = us.getCurrentUser();
@@ -301,11 +307,11 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		/////////FIRST SAVE HERE ///////////////////////////////////////////////////////////////////////////		
 		}else{//this is a first save set up docs,calendar,etc
 				log.log(Level.INFO, "first save callded");
-		final AppUser appUser = db().load().type(AppUser.class).filter("acctId",user.getEmail()).first().now();
+		
 		
 		// System.out.println( "This is what the cred looks like: " + gson.toJson(cred));
 		 //check for roster setting in the db 
-		 settings = db().load().type(RosterSetting.class).filter("acctId",user.getEmail()).first().now();
+				/* settings = db().load().type(RosterSetting.class).filter("acctId",user.getEmail()).first().now();
 		 if(settings == null){
 			 log.log(Level.INFO, "settings was null create new settings");
 			 settings = new RosterSetting().defaultSetting();
@@ -370,9 +376,6 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 				//set up the spreadsheet here
 				Queue queue = QueueFactory.getDefaultQueue();
 				
-				RosterFoldersSetup foldersSetup = new RosterFoldersSetup(cred.getAccessToken(), roster);
-				queue.add(TaskOptions.Builder.withPayload(foldersSetup));
-				
 				GradeBookSetup setUp = new GradeBookSetup(gradeBook.getId(), cred.getAccessToken());
 				queue.add(TaskOptions.Builder.withPayload(setUp));
 				
@@ -387,10 +390,10 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 				
 				
 				
-			/*	//optional folders use settings
+				//optional folders use settings
 				//only if there are any
 				
-			*/
+			
 					
 			//Set up Gradedwork Calendar and class events
 			calendar = GoogleUtils.calendar(cred);
@@ -418,7 +421,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			rosterTask.setTitle(taskList.getTitle());
 			rosterTask.setDescription("");
 			
-			roster.getGoogleTasks().add(rosterTask);
+			roster.getGoogleTasks().add(rosterTask);*/
 			
 			//save the owner on the server side
 			roster.setOwnerId(user.getEmail());
@@ -440,9 +443,14 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			classTime.setId(db().save().entity(seatingChart).now().getId());
 			roster.getClassTimes().add(classTime);
 			roster.setId(rosterKey.getId());
-			db().save().entity(roster);
-			
+			db().save().entity(roster).now();
 			//send roster detail
+			Queue queue = QueueFactory.getDefaultQueue();
+			TaskOptions to = TaskOptions.Builder.withUrl("/rostersetup")
+					.param("rosterId", rosterKey.getId()+"")
+					.param("userId", user.getUserId())
+					.param("acctId", user.getEmail());
+			queue.add(to);
 			try {
 				res.getWriter().write(gson.toJson(rd));
 			} catch (IOException e) {
@@ -552,7 +560,31 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		
 	
 		drive = drive(cred);
+		
+		//be sure roster has a student folder
+		if(roster.getStudentFolderId()==null || roster.getStudentFolderId().isEmpty()){
+			log.log(Level.INFO, "roster studentfolderid is either empty or null called");
+ 			//assign a main folder
+ 			File rosStudentFolder = GoogleUtils.folder("Students");
+ 			rosStudentFolder.setParents(ImmutableList.of(roster.getRosterFolderId()));
+ 			rosStudentFolder = drive.files().create(rosStudentFolder).execute();
+ 			roster.setStudentFolderId(rosStudentFolder.getId());
+ 			db().save().entity(roster);
+ 			
+ 		}
+ 		try{
+ 			//This is here to test existence of the file maybe 
+ 			//student folders has out-of-date data
+ 			drive.files().get(roster.getStudentFolderId()).execute();
+ 		}catch(GoogleJsonResponseException gjre){
+ 			File rosStudentFolder = GoogleUtils.folder("Students");
+ 			rosStudentFolder.setParents(ImmutableList.of(roster.getRosterFolderId()));
+ 			rosStudentFolder = drive.files().create(rosStudentFolder).execute();
+ 			roster.setStudentFolderId(rosStudentFolder.getId());
+ 			db().save().entity(roster);
+ 		}
 		//create folder for student
+ 		log.log(Level.INFO, "creating student folder called");
 		File studentFolder = folder(student.acctId);
 		
 		studentFolder.setParents(ImmutableList.of(roster.getStudentFolderId()));

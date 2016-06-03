@@ -52,32 +52,14 @@ public class RosterStudentMain extends Composite{
 	
 	private boolean studentState = false;
 	
+
 	private Function studentListUpdated = new Function(){
 		@Override
 		public void f(){
-			console.log((String)this.getArgument(0));
-			RosterStudentJson stu = JsonUtils.safeEval((String)this.getArgument(0)).cast();
-			students.push(stu);
-			stuForm.form.reset(); 
-			stuForm.hide();
-			MaterialLoader.showLoading(false);
 			studentCollection.drawList();
 		}
 	};
 	
-	private Function createStudent = new Function(){
-		@Override 
-		public boolean  f(Event e, Object...o){
-			e.preventDefault();
-			console.log("create student called + rosterStudent is :");
-			RosterStudentJson student = (RosterStudentJson) o[0];
-			console.log(o[0]);
-			Ajax.post(RosterUrl.CREATE_STUDENT, $$("student:" + JsonUtils.stringify(student)))
-			.done(studentListUpdated);
-			
-			return true;
-		}
-		};
 	ClickHandler clickHandler = new ClickHandler(){
 
 		@Override
@@ -91,7 +73,6 @@ public class RosterStudentMain extends Composite{
 		initWidget(uiBinder.createAndBindUi(this));
 		fab.addClickHandler(clickHandler);
 		$(body).on(RosterEvent.STUDENT_LIST_UPDATED, studentListUpdated);
-		$(body).on("studentcreate", createStudent);
 		studentPage.setVisible(false);	
 		studentCollection.drawList();
 	}

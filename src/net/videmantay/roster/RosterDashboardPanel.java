@@ -121,8 +121,8 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 			tab1Main.add(display);
 		}};
 	//enum for state
-	enum View{GRID,CHART};
-	enum State{DASHBOARD,ROLL, HW,GROUP, MULTIPLE_SELECT,RANDOM, FURNITURE_EDIT, STUDENT_EDIT, STATIONS_EDIT}
+	public enum View{GRID,CHART};
+	public enum State{DASHBOARD,ROLL, HW,GROUP, MULTIPLE_SELECT,RANDOM, FURNITURE_EDIT, STUDENT_EDIT, STATIONS_EDIT}
 	
 	
 	public RosterDashboardPanel() {
@@ -290,7 +290,7 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 
 			@Override
 			public void onClick(ClickEvent event) {
-				display.cancel();
+				display.cancel(state.name());
 				display.home();
 				showToolBar();
 			}});
@@ -299,7 +299,7 @@ public class RosterDashboardPanel extends Composite implements ClassroomMain.Has
 
 			@Override
 			public void onClick(ClickEvent event) {
-				display.cancel();
+				display.cancel(state.name());
 				display.home();
 				showToolBar();
 			}});

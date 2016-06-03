@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import net.videmantay.server.entity.ClassTime;
 import net.videmantay.server.entity.Goal;
 import net.videmantay.server.entity.GoogleService;
 import net.videmantay.server.entity.SeatingChart;
@@ -31,7 +32,7 @@ public class Roster extends DBObj implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	public static final long serialVersionUID = 1L;
 
 
 	/*
@@ -74,6 +75,9 @@ public class Roster extends DBObj implements Serializable{
 	
 	@Serialize 
 	public List<GoogleService> googleTasks = new ArrayList<GoogleService>();
+	
+	@Serialize
+	public List<GoogleService> googleFolders = new ArrayList<GoogleService>();
 
 	
 	//maybe a sorted set by last name???
@@ -83,15 +87,21 @@ public class Roster extends DBObj implements Serializable{
 	public Set<RosterStudent> rosterStudents = new HashSet<RosterStudent>();
 		
 	@Serialize
-	public StudentJob[] studentJobs;
+	public ArrayList<StudentJob> studentJobs = new ArrayList<>();
 	
 	@Serialize
-	public SeatingChart[] seatingCharts;
+	public ArrayList<ClassTime> classTimes = new ArrayList<>();
 	
 	@Serialize
-	public StudentGroup[] studentGroups;
+	public ArrayList<StudentGroup> studentGroups = new ArrayList<>();
 	
-	public  String rosterFolderId;
+	//folders for roster and place for student folders
+	
+	public  String rosterFolderId = "";
+	
+	public String studentFolderId = "";
+		
+
 	
 	///Constructors
 	
@@ -107,11 +117,11 @@ public class Roster extends DBObj implements Serializable{
 		this.studentKeys = students;
 	}
 
-	public StudentJob[] getStudentJobs() {
+	public ArrayList<StudentJob> getStudentJobs() {
 		return studentJobs;
 	}
 
-	public void setStudentJobs(StudentJob[] studentJobs) {
+	public void setStudentJobs(ArrayList<StudentJob> studentJobs) {
 		this.studentJobs = studentJobs;
 	}
 
@@ -179,11 +189,11 @@ public class Roster extends DBObj implements Serializable{
 		this.teacherInfo = teacherInfo;
 	}
 
-	public StudentGroup[] getStudentGroups() {
+	public ArrayList<StudentGroup> getStudentGroups() {
 		return studentGroups;
 	}
 
-	public void setStudentGroups(StudentGroup[] studentGroups) {
+	public void setStudentGroups(ArrayList<StudentGroup> studentGroups) {
 		this.studentGroups = studentGroups;
 	}
 	
@@ -193,6 +203,15 @@ public class Roster extends DBObj implements Serializable{
 	
 	public void setGradeLevel(GradeLevel grdLvl){
 		this.gradeLevel = grdLvl;
+	}
+	
+	public List<GoogleService> getGoogleFolders(){
+		return this.googleFolders;
+	}
+	
+	public void setGoogleFolders(List<GoogleService> folders){
+		this.googleFolders = folders;
+		
 	}
 	
 	public List<GoogleService> getGoogleCalendars(){
@@ -218,6 +237,15 @@ public class Roster extends DBObj implements Serializable{
 	public void setRosterFolderId(String rosterFolderId) {
 		this.rosterFolderId = rosterFolderId;
 	}
+	
+	public String getStudentFolderId(){
+		return this.studentFolderId;
+	}
+	
+	public void setStudentFolderId(String studentFolder){
+		this.studentFolderId = studentFolder;
+	}
+	
 	
 	public Set<RosterStudent> getRosterStudents() {
 		return rosterStudents;
@@ -250,6 +278,14 @@ public class Roster extends DBObj implements Serializable{
 	public void setBehaviorReport(String behaviorReport) {
 		this.behaviorReport = behaviorReport;
 	}
+	
+	public void setClassTimes(ArrayList<ClassTime> classTimes){
+		this.classTimes = classTimes;
+	}
+	
+	public ArrayList<ClassTime> getClassTimes(){
+		return this.classTimes;
+	}
 
 	public RosterDetail createDetail(){
 		RosterDetail detail = new RosterDetail();
@@ -259,6 +295,10 @@ public class Roster extends DBObj implements Serializable{
 		detail.setTeacherInfo(this.teacherInfo);
 		detail.setOwnerId(this.getOwnerId());
 		return detail;
+	}
+	
+	public Key<Roster> getKey(){
+		return Key.create(Roster.class, this.id);
 	}
 
 	@Override

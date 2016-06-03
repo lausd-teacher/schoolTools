@@ -20,17 +20,12 @@ import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
-import com.google.api.services.drive.model.ParentReference;
 import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.TasksScopes;
 import com.google.gdata.client.contacts.ContactsService;
 import com.google.gdata.client.spreadsheet.SpreadsheetService;
-import com.google.gdata.client.spreadsheet.WorksheetQuery;
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
 import com.google.gdata.data.spreadsheet.SpreadsheetFeed;
-import com.google.gdata.data.spreadsheet.WorksheetEntry;
-import com.google.gdata.data.spreadsheet.WorksheetFeed;
-import com.google.gdata.util.ServiceException;
 
 public class GoogleUtils {
 	private GoogleUtils(){}
@@ -99,21 +94,15 @@ public class GoogleUtils {
 	
 	public static File folder(String title){
 		File folder = new File();
-		folder.setTitle(title);
+		folder.setName(title);
 		folder.setMimeType("application/vnd.google-apps.folder");
 		return folder;
 	}
 	
-	public static List<ParentReference> parent(String parent){
-		List<ParentReference> list = new ArrayList<ParentReference>();
-		ParentReference parentFolder = new ParentReference();
-		parentFolder.setId(parent);
-		list.add(parentFolder);
-		return list;
-	}
+	
 	
 	public static File spreadsheet(String title){
-		File folder = new File().setMimeType("application/vnd.google-apps.spreadsheet").setTitle(title);
+		File folder = new File().setMimeType("application/vnd.google-apps.spreadsheet").setName(title);
 		return folder;
 	}
 	

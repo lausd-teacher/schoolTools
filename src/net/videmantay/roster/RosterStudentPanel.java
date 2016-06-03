@@ -2,6 +2,7 @@ package net.videmantay.roster;
 
 import com.google.common.primitives.Longs;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -23,7 +24,7 @@ public class RosterStudentPanel extends Composite {
 	HTMLPanel rosterStudentPanel;
 	
 	@UiField
-	MaterialImage studentImg;
+	DivElement studentImg;
 	
 	@UiField
 	Span firstName;
@@ -49,7 +50,8 @@ public class RosterStudentPanel extends Composite {
 		//studentImg.setUrl(student.getThumbnails().get(0).getUrl());
 		firstName.setText(student.getFirstName());
 		lastName.setText(student.getLastName());
-		
+		String url= student.getThumbnails() == null||student.getThumbnails().get(1).getUrl() == null ||student.getThumbnails().get(1).getUrl() == ""? "../img/user.svg":student.getThumbnails().get(1).getUrl();
+		studentImg.getStyle().setBackgroundImage("url('" + url +"')");
 	}
 
 }

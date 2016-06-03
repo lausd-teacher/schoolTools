@@ -14,19 +14,20 @@ public class StudentSeatJson extends JavaScriptObject {
 	 	this.seatNum = num;
 	}-*/;
 	
-	public final native Long getRosterStudent()/*-{
+	public final native String getRosterStudent()/*-{
 		return this.rosterStudent;
 	}-*/;
 	
-	public final native void setRosterStudent(Long student)/*-{
+	public final native void setRosterStudent(String student)/*-{
 	 	this.rosterStudent = student;
+	 	this.isEmpty = false;
 	}-*/;
 	
-	public final native Long getStudentGroup()/*-{
+	public final native String getStudentGroup()/*-{
 		return this.studentGroup;
 	}-*/;
 	
-	public final native void getStudentGroup(Long group)/*-{
+	public final native void getStudentGroup(String group)/*-{
 		 this.studentGroup = group;
 	}-*/;
 	
@@ -47,7 +48,7 @@ public class StudentSeatJson extends JavaScriptObject {
 	
 	
 	public final native boolean isEmpty()/*-{
-		if(this.rosterStudent != null || this.rosterStudent != 0){
+		if(this.rosterStudent == null || this.rosterStudent == ""){
 			this.isEmpty = true;}else{
 				this.isEmpty = false;}
 				return this.isEmpty;

@@ -13,7 +13,7 @@
 				<g:HTMLPanel>
 					<m:MaterialInput ui:field="title" type="TEXT"
 						required="true" placeholder="Title" />
-					<h:Label ui:field="titleError" styleName="errorLabel" text="Must be valid email" textColor="red lighten-1"/>
+					<h:Label ui:field="titleError" styleName="errorLabel" text="You must include a title" textColor="red lighten-1"/>
 					<m:MaterialInput ui:field="description" type="TEXT"
 						required="true" placeholder="description" />
 					<h:Label ui:field="descriptionError" styleName="errorLabel" text="This field is required" textColor="red lighten-1"/>

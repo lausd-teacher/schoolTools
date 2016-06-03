@@ -2,44 +2,25 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m="urn:import:gwt.material.design.client.ui">
-	<ui:style>
-	.important {
-		font-weight: bold;
-	}
-	</ui:style>
 	<g:HTMLPanel ui:field="rosterStudentPanel" styleName="rosterStudent">
-		<table><!--  -->
-			<tr><!-- Student Image Row -->
-				<td colspan="2">
-					<div class="counterRotate">
-						<m:MaterialImage ui:field="studentImg" addStyleNames="studentImg" />
+			<div class="studentHead"><!-- Student Image Row -->
+					<div  ui:field="studentImg" class="counterRotate">
 					</div>
-				</td>
-			</tr>
-			<tr><!-- Body of studentPane including name panel and behavior tool bar -->
-				<td>
+			</div><!-- end student head -->
+			<div class="studentBody"><!-- Body of studentPane including name panel and behavior tool bar -->
 				<div class="counterRotate"><!-- wrapped around a div for rotatable -->
-				<table>
-				<tr>
-				<td rowspan="2">
-					<m:html.Div ui:field="studentName" addStyleNames="studnetName">
+				<section class="studentInfoTable">
+					<m:html.Div ui:field="studentName" addStyleNames="studentName">
 						<m:html.Span ui:field="firstName" addStyleNames="first"/><m:html.Br />
 						<m:html.Span ui:field="lastName" addStyleNames="last" />
 					</m:html.Div>
-				</td>
-				<td rowspan="1">
 					<m:html.Div ui:field="studentCheckBox" addStyleNames="studentCheckbox"></m:html.Div>
-				</td>
-			</tr>
-			<tr class="infoBar">
-				<td><m:MaterialLink ui:field="noteBtn" addStyleNames="noteBtn"/></td>
-				<td><div class="middleBarIncident"></div></td>
-				<td><m:MaterialLink ui:field="seeMoreBtn" addStyleNames="seeMoreBtn"/></td>
-			</tr>
-			</table>
+				<div class="studentPanelToolbox">
+				<m:MaterialLink ui:field="noteBtn" addStyleNames="noteBtn"/>
+				<m:MaterialLink ui:field="seeMoreBtn" addStyleNames="seeMoreBtn"/>
+				</div>
+			</section><!--  -->
 			</div>
-			</td>
-		</tr>
-		</table>
+			</div><!-- end student body -->
 	</g:HTMLPanel>
 </ui:UiBinder> 

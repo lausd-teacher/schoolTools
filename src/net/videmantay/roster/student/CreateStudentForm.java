@@ -14,7 +14,9 @@ import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.shared.DateTimeFormat;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.Properties;
+import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -33,6 +35,8 @@ import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialModalContent;
 import gwt.material.design.client.ui.MaterialTextBox;
+import net.videmantay.roster.RosterEvent;
+import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.shared.LoginInfo;
 import net.videmantay.student.json.RosterStudentJson;
@@ -123,11 +127,23 @@ public class CreateStudentForm extends Composite{
 
 		@Override
 		public void onClick(ClickEvent event) {
-			event.preventDefault();
-			$(body).trigger("studentcreate", getFormData());
+			event.stopPropagation();
+			getFormData();
 			form.reset();
 			modal.closeModal();
 			MaterialLoader.showLoading(true);
+			Ajax.post(RosterUrl.CREATE_STUDENT,$$("student:" + JsonUtils.stringify(student)))
+			.done(new Function(){
+				@Override
+				public void f(){
+					console.log("create student form done return : " +  this.getArgument(0));
+					RosterStudentJson rosStu = JsonUtils.safeEval((String)this.getArgument(0));
+					RosterJson  roster = window.getPropertyJSO("roster").cast();
+					roster.getRosterStudents().push(rosStu);
+					$(body).trigger(RosterEvent.STUDENT_LIST_UPDATED);
+					MaterialLoader.showLoading(false);
+				}
+			});
 			
 		}};
 	
@@ -172,7 +188,7 @@ public class CreateStudentForm extends Composite{
 	public void hide(){
 		modal.closeModal();
 		form.reset();
-		student = RosterStudentJson.createObject().cast();
+		student = null;
 	}
 	
 	private RosterStudentJson getFormData(){

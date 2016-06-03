@@ -50,6 +50,8 @@ public class RosterDisplay extends Composite{
 		@Override
 		public boolean f(Event e, Object...o){
 			RosterDetailJson rd = JsonUtils.safeEval((String)o[0]).cast();
+			console.log("roster ajax finished here is the server response");
+			console.log(rd);
 			JsArray<RosterDetailJson> rosterList = window.getPropertyJSO("rosterList").cast();
 			rosterList.push(rd);
 			$(rosterForm).hide();

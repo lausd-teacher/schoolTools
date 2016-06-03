@@ -4,7 +4,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.query.client.Function;
 
 import gwtquery.plugins.ui.RotatableUi;
-import gwtquery.plugins.ui.UiFunction;
 import gwtquery.plugins.ui.UiPlugin;
 import gwtquery.plugins.ui.UiWidget;
 import gwtquery.plugins.ui.WidgetOptions;
@@ -33,10 +32,10 @@ public class Rotatable  extends UiWidget<Rotatable, Rotatable.Options>{
    	 		return this;
    	 	}-*/;
        
-   	 public final native Double angle()/*-{
+   	 public final native double angle()/*-{
    	 	return this["angle"];
    	 }-*/;
-	 public final native Options angle(Double rad)/*-{
+	 public final native Options angle(double rad)/*-{
 	 		this["angle"] = rad;
 	 		return this;
 	 	}-*/;
@@ -49,19 +48,26 @@ public class Rotatable  extends UiWidget<Rotatable, Rotatable.Options>{
     		return this;
     }-*/;
     
-    public final native Options rotate(UiFunction f)/*-{
-    		this["rotate"] = 
-    			f.@gwtquery.plugins.ui.UiFunction::f(Lcom/google/gwt/user/client/Event;Lgwtquery/plugins/ui/RotatableUi;);
-    }-*/;
-    
-    public final native Options start(UiFunction f)/*-{
-	this["start"] = 
-		f.@gwtquery.plugins.ui.UiFunction::f(Lcom/google/gwt/user/client/Event;Lgwtquery/plugins/ui/RotatableUi;);
+    public final native Options rotate(Function f)/*-{
+    		this["rotate"] = function(event, ui){
+ 
+		 f.@com.google.gwt.query.client.Function::f(Lcom/google/gwt/user/client/Event;[Ljava/lang/Object;)(event, [ui]);
+	}
+		return this;
 }-*/;
     
-    public final native Options stop(UiFunction f)/*-{
-	this["stop"] = 
-		f.@gwtquery.plugins.ui.UiFunction::f(Lcom/google/gwt/user/client/Event;Lgwtquery/plugins/ui/RotatableUi;);
+    public final native Options start(Function f)/*-{
+	this["start"] = function(event, ui){
+		 f.@com.google.gwt.query.client.Function::f(Lcom/google/gwt/user/client/Event;[Ljava/lang/Object;)(event, [ui]);
+	}
+		return this;
+}-*/;
+    
+    public final native Options stop(Function f)/*-{
+	this["stop"] = function(event, ui){
+		 f.@com.google.gwt.query.client.Function::f(Lcom/google/gwt/user/client/Event;[Ljava/lang/Object;)(event, [ui]);
+	}
+		return this;
 }-*/;
 	}
 

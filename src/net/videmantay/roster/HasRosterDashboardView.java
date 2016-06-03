@@ -36,7 +36,7 @@ public interface HasRosterDashboardView extends IsWidget {
 	
 	public void undo();
 	
-	public void cancel();
+	public void cancel(String state);
 	
 	public void deselectAll();
 	

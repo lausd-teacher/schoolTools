@@ -19,17 +19,20 @@ public class RosterGrid extends MaterialContainer{
 	
 	@Override
 	public void onLoad(){
+		
+		drawGrid();
+	}
+	
+	public void drawGrid(){
 		MaterialLoader.showLoading(true);
+		rosterList.clear();
 		JsArray<RosterDetailJson> rosters = window.getPropertyJSO("rosterList").cast();
 		console.log("These are the rosters that were loaded on RosterMain");
 		console.log(rosters);
 		for(int i = 0; i < rosters.length(); i++){
 			rosterList.add(rosters.get(i));
 		}
-		drawGrid();
-	}
-	
-	public void drawGrid(){
+		
 		MaterialLoader.showLoading(false);
 		if(rosterList == null || rosterList.size() <= 0){
 			showEmptyList();

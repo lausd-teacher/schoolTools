@@ -9,6 +9,9 @@ import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.Work;
 
+import net.videmantay.server.entity.ClassTime;
+import net.videmantay.server.entity.SeatingChart;
+
 
 public class DB<T> {
 	
@@ -24,12 +27,13 @@ public class DB<T> {
 		factory().register(RosterDetail.class);
 		factory().register(RosterStudent.class);
 		factory().register(RosterSetting.class);
+		factory().register(SeatingChart.class);
+		factory().register(ClassTime.class);
 		/*factory().register(GradedWork.class);
 		factory().register(StudentWork.class);
 		factory().register(StudentIncident.class);
 		factory().register(StudentJob.class);
-		factory().register(SeatingChart.class);
-		factory().register(SeatingChartDetail.class);
+		
 		factory().register(Showcase.class);
 		
 		//Lesson and Deps

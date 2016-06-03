@@ -3,12 +3,11 @@
 <module rename-to="teacher">
 	<inherits name="com.google.gwt.query.Query" />
 	<inherits name="gwtquery.plugins.Ui"/>
+	<inherits name="com.google.common.collect.Collect" />
+	 <inherits name="com.floreysoft.gwt.picker.Picker"/>
 	<inherits name="gwt.material.design.GwtMaterialDesignBasic" />
 	<inherits name="gwt.material.design.themes.GwtMaterialThemeGreen" />
-	<inherits name="com.google.common.primitives.Primitives" />
-	<inherits name="com.google.common.collect.Collect" />
-	<inherits name="com.google.common.html.Html" />
-	 <inherits name="com.floreysoft.gwt.picker.Picker"/>
+	<inherits name="gwt.material.design.addins.GWTMaterialAddins"/>
 	<source path="roster" />
 	<source path="student" />
 	<source path="shared" />

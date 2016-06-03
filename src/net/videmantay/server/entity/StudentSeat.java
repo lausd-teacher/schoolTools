@@ -10,11 +10,11 @@ public class StudentSeat implements Serializable{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 4912335951117569448L;
+	private static transient final long serialVersionUID = 4912335951117569448L;
 	
 	
 	public Integer seatNum;
-	public Long rosterStudent;
+	public String rosterStudent;
 	public Long studentGroup;
 	public String color;
 	public String url;
@@ -22,10 +22,10 @@ public class StudentSeat implements Serializable{
 	
 	
 	public boolean isEmpty() {
-		if(rosterStudent == null ||rosterStudent == 0L){
-			this.isEmpty = false;
-		}else{
+		if(rosterStudent == null ||rosterStudent.isEmpty()){
 			this.isEmpty = true;
+		}else{
+			this.isEmpty = false;
 		}
 		
 		return isEmpty;
@@ -37,10 +37,10 @@ public class StudentSeat implements Serializable{
 	public void setSeatNum(Integer seatNum) {
 		this.seatNum = seatNum;
 	}
-	public Long getRosterStudent() {
+	public String getRosterStudent() {
 		return rosterStudent;
 	}
-	public void setRosterStudent(Long rosterStudent) {
+	public void setRosterStudent(String rosterStudent) {
 		this.rosterStudent = rosterStudent;
 	}
 	public Long getStudentGroup() {

@@ -3,6 +3,7 @@ package net.videmantay.roster.seatingchart.json;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
+import net.videmantay.roster.seatingchart.FurnitureType;
 import net.videmantay.shared.DeskKind;
 
 public class FurnitureJson extends JavaScriptObject {
@@ -100,6 +101,7 @@ return this.seats;
 
 public final native void setSeats(JsArray<StudentSeatJson> seats)/*-{
 this.seats = seats;
+this.type="desk";
 }-*/;
 
 public final void setSeats(String kind){
@@ -134,6 +136,7 @@ return seat;
 public final static native FurnitureJson create()/*-{
 	return {rotate:0.0, 
 			kind:"double",
+			type:"desk",
 			top:"0px",
 			left:"0px"};
 	

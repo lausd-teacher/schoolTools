@@ -4,11 +4,13 @@ import gwtquery.plugins.ui.Ui;
 import gwtquery.plugins.ui.UiPlugin;
 import gwtquery.plugins.ui.UiWidget;
 import gwtquery.plugins.ui.WidgetOptions;
+import gwtquery.plugins.ui.interactions.Rotatable.Options;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArrayInteger;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 
 /**
@@ -381,6 +383,35 @@ public class Draggable extends UiWidget<Draggable, Draggable.Options> {
     /*-{
       return this["zIndex"];
     }-*/;
+    
+    //new added events
+    public final native Options start(Function f)/*-{
+   	this["start"] = function(event, ui){
+   		 f.@com.google.gwt.query.client.Function::f(Lcom/google/gwt/user/client/Event;[Ljava/lang/Object;)(event, [ui]);
+   	}
+   		return this;
+   }-*/;
+       
+       public final native Options stop(Function f)/*-{
+   	this["stop"] = function(event, ui){
+   		 f.@com.google.gwt.query.client.Function::f(Lcom/google/gwt/user/client/Event;[Ljava/lang/Object;)(event, [ui]);
+   	}
+   		return this;
+   }-*/;
+       
+       public final native Options drag(Function f)/*-{
+   	this["drag"] = function(event, ui){
+   		 f.@com.google.gwt.query.client.Function::f(Lcom/google/gwt/user/client/Event;[Ljava/lang/Object;)(event, [ui]);
+   	}
+   		return this;
+   }-*/;
+       
+       public final native Options create(Function f)/*-{
+   	this["create"] = function(event, ui){
+   		 f.@com.google.gwt.query.client.Function::f(Lcom/google/gwt/user/client/Event;[Ljava/lang/Object;)(event, [ui]);
+   	}
+   		return this;
+   }-*/;
 
   }
 

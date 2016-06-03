@@ -14,12 +14,12 @@ import net.videmantay.shared.GradeLevel;
 
 @Cache
 @Entity
- public class RosterDetail extends DBObj implements Serializable {
+public class RosterDetail extends DBObj implements Serializable {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8560762171107782047L;
+	public static final long serialVersionUID = -8560762171107782047L;
 
 	@Id
 	public Long id;

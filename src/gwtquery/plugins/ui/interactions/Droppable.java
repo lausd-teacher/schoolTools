@@ -81,13 +81,13 @@ public class Droppable extends UiWidget<Droppable, Droppable.Options> {
       return this["addClasses"];
     }-*/;
 
-    public native final Options greedy(Boolean greedy)
+    public native final Options greedy(boolean greedy)
     /*-{
       this["greedy"] = greedy;
       return this;
     }-*/;
 
-    public native final Boolean greedy()
+    public native final boolean greedy()
     /*-{
       return this["greedy"];
     }-*/;
