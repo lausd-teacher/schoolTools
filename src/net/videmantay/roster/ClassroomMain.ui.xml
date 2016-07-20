@@ -14,17 +14,15 @@
 			<m:MaterialSideNav type="CLIP" m:id="sideNav" ui:field="sideNav">
 				<v:UserProfilePanel></v:UserProfilePanel>
 				<m:MaterialLink ui:field="dashboardLink" iconType="DASHBOARD" text="Dashboard" textColor="grey darken-4"/>
-				<m:MaterialLink ui:field="studentLink" addStyleNames="studentLink classLink" text="Students" textColor="green" iconType="CLASS" />
-				<m:MaterialLink ui:field="assignmentLink" text="Assignments" textColor="orange" iconType="EVENT" />
-				<m:MaterialLink ui:field="groupLink" text="Groups" textColor="light-green darken-4"
-					iconType="LIBRARY_BOOKS"/>
+				<m:MaterialLink ui:field="studentLink" addStyleNames="studentLink classLink" text="Students" textColor="green" iconType="SCHOOL" />
+				<m:MaterialLink ui:field="classTimeLink" text="Class Time" textColor="green" iconType="SCHEDULE" />
+				<m:MaterialLink ui:field="assignmentLink" text="Assignments" textColor="orange" iconType="ASSIGNMENT" />
 				<m:MaterialLink ui:field="lessonPlanLink" text="Lesson Plans" textColor="amber darken-4"
-					iconType="CONTENT_PASTE" />
+					iconType="LIBRARY_BOOKS" />
 				<m:MaterialLink ui:field="incidentLink" text="Incidents" textColor="green"
-					iconType="SETTINGS" />
-				<m:MaterialLink ui:field="goalLink" text="Goals" textColor="green" iconType="CLASS" />
-				<m:MaterialLink ui:field="jobLink" text="Jobs" textColor="green" iconType="CLASS" />
-				<m:MaterialLink ui:field="seatingChartLink" text="Seatingcharts" textColor="green" iconType="EVENT_SEAT" />
+					iconType="FEEDBACK" />
+				<m:MaterialLink ui:field="goalLink" text="Goals" textColor="green" iconType="MOOD" />
+				<m:MaterialLink ui:field="jobLink" text="Jobs" textColor="green" iconType="BUSINESS_CENTER" />
 				<m:MaterialLink></m:MaterialLink>
 			</m:MaterialSideNav>
 		<m:MaterialContainer  ui:field="mainPanel" width="100%" height="100%" >

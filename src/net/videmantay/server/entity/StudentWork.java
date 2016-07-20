@@ -3,16 +3,28 @@ package net.videmantay.server.entity;
 import java.io.Serializable;
 import java.util.List;
 
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
+import com.googlecode.objectify.annotation.Parent;
+
+import net.videmantay.server.user.RosterStudent;
 import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.StudentWorkStatus;
 import net.videmantay.shared.SubjectType;
 
-
+@Entity
 public class StudentWork implements Serializable{
 
 	//same id as gradedwork////
+	@Id
 	public Long id;
-
+	
+	@Parent
+	public Key<GradedWork> gradedWorkKey;
+	
+	@Index
 	public Long rosterStudentId;
 	public Double percentage;
 	public Double pointsEarned;
@@ -20,18 +32,30 @@ public class StudentWork implements Serializable{
 	public String message;
 	public GradedWorkType type;
 	public StudentWorkStatus studentWorkStatus = StudentWorkStatus.NOT_TURNED_IN;
+	
+	
+	@Index
 	public String dateTaken;
 	public String mediaUrl;
+	
 	
 	public SubjectType subject;
 
 	
 	//List of standard to review with accomany links;
-	private List<StandardReview> standardReviews;
+	private List<Standard> standardReviews;
 	
 	public StudentWork(){
 		
 	}
+	
+	public StudentWork(GradedWork gradedWork, Long studentId){
+		rosterStudentId = studentId;
+		gradedWorkKey = Key.create(GradedWork.class, gradedWork.id);
+		type = gradedWork.type;
+		subject = gradedWork.subject;
+	}
+	
 	
 	public Long getRosterStudentId() {
 		return rosterStudentId;
@@ -103,14 +127,6 @@ public class StudentWork implements Serializable{
 	}
 
 
-	public List<StandardReview> getStandardReviews() {
-		return standardReviews;
-	}
-
-	public void setStandardReviews(List<StandardReview> standardReviews) {
-		this.standardReviews = standardReviews;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -134,6 +150,7 @@ public class StudentWork implements Serializable{
 		value.trim();
 		this.studentWorkStatus = StudentWorkStatus.valueOf(value.toUpperCase());
 	}
+	
 
 	
 }

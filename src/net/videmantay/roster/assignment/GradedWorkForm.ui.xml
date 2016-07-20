@@ -6,38 +6,33 @@
 	
 	</ui:style>
 	<g:HTMLPanel>
-			<m:MaterialCard>
-				<m:MaterialCardTitle></m:MaterialCardTitle>
-				<m:MaterialCardContent>
-					<g:FormPanel>
+		<m:MaterialModal ui:field="modal">
+			<m:MaterialModalContent>
+					<g:FormPanel ui:field="form">
 						<g:HTMLPanel>
 							<m:MaterialTextBox ui:field="title" placeholder="Title" />
 							<m:MaterialTextArea ui:field="description" placeholder="Description" />
-							<m:MaterialListBox />
+							<m:MaterialListBox ui:field="subject" placeholder="Subject" />
+							<m:MaterialListBox ui:field="type" placeholder="Type" />
+							<m:MaterialListBox ui:field="lang" placeholder="Language" />
 							<m:MaterialDoubleBox  ui:field="pointsPossible" placeholder="Points possible" />
-							<m:MaterialDatePicker />
-							<m:MaterialDatePicker />
-							<m:MaterialLabel text="Assign to: " />
-							<g:HTMLPanel>
-								<table> 
-									<tr> 
-										<th><div><label>Select All:</label><m:MaterialCheckBox ui:field="selectAllBox" /></div></th>
-									</tr>
-									<tr> 
-										<m:MaterialRow ui:field="assignToGrid" />
-									</tr>
-								</table>
-								
-							</g:HTMLPanel>
+							<m:MaterialDatePicker ui:field="assignedDate" placeholder="assigned date"/>
+							<m:MaterialDatePicker ui:field="dueDate" placeholder="due date"/>
+							<m:MaterialAnchorButton ui:field="fileUpload" type="FLAT" text="attachment" iconType="ATTACHMENT" /><br/><br/>
+								<m:MaterialPanel>
+								<m:MaterialRow>
+											<m:MaterialLabel grid="s2 m1 l1" float="LEFT" text="Assign to: " />
+											<m:MaterialCheckBox grid="s1" offset="s5" value="true" text="All" type="FILLED" ui:field="selectAllBox" />
+								</m:MaterialRow>
+								<m:MaterialRow ui:field="assignToGrid" grid="s4 m2 l1"/>
+							</m:MaterialPanel>	
 						</g:HTMLPanel>
 					</g:FormPanel>
-				</m:MaterialCardContent>
-				<m:MaterialCardAction>
 				<m:MaterialRow> 
-					<m:MaterialColumn><m:MaterialButton text="OK" type="RAISED"/></m:MaterialColumn>
-					<m:MaterialColumn><m:MaterialButton text="CANCEL" type="RAISED"/></m:MaterialColumn>
+					<m:MaterialColumn><m:MaterialButton ui:field="okBtn" text="OK" type="RAISED"/></m:MaterialColumn>
+					<m:MaterialColumn><m:MaterialButton ui:field="cancelBtn" text="CANCEL" type="RAISED"/></m:MaterialColumn>
 				</m:MaterialRow>
-				</m:MaterialCardAction>
-			</m:MaterialCard>
+				</m:MaterialModalContent>
+		</m:MaterialModal>		
 	</g:HTMLPanel>
 </ui:UiBinder> 

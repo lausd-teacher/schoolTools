@@ -22,6 +22,7 @@ import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialNavBrand;
 import gwt.material.design.client.ui.MaterialSideNav;
+import net.videmantay.roster.assignment.GradedWorkMain;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.seatingchart.json.ClassTimeJson;
 import net.videmantay.roster.student.RosterStudentMain;
@@ -46,11 +47,36 @@ public class ClassroomMain extends Composite{
 	@UiField
 	MaterialNavBrand rosterTitle;
 	
+	
+	
+	@UiField
+	MaterialSideNav sideNav;
+	//side nav links here ///////
 	@UiField
 	MaterialLink studentLink;
 	
 	@UiField
-	MaterialSideNav sideNav;
+	MaterialLink dashboardLink;
+	
+	@UiField
+	MaterialLink assignmentLink;
+	
+	@UiField
+	MaterialLink incidentLink;
+	
+	@UiField
+	MaterialLink goalLink;
+	
+	@UiField
+	MaterialLink classTimeLink;
+	
+	@UiField
+	MaterialLink lessonPlanLink;
+	
+	@UiField
+	MaterialLink jobLink;
+	
+	//end side nav links/////////
 		
 	private  RosterJson classRoster;
 	
@@ -60,6 +86,16 @@ public class ClassroomMain extends Composite{
 		this.initWidget(uiBinder.createAndBindUi(this));
 		//classroom.setId("classroom");
 			$this = this;
+			//set side nav links/////////
+			dashboardLink.addClickHandler(new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event) {
+					History.newItem("roster/" + classRoster.getId());
+					sideNav.hide();
+				}
+				
+			});
 			studentLink.addClickHandler(new ClickHandler(){
 
 			@Override
@@ -69,6 +105,16 @@ public class ClassroomMain extends Composite{
 				sideNav.hide();
 				
 			}});
+			
+			assignmentLink.addClickHandler( new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event) {
+					History.newItem("roster/" + classRoster.getId() +"/assignments");
+					sideNav.hide();
+					
+				}});
+		// End set up Side nav Links///////////////////
 			
 			$(body).on("setclasstime", new Function(){
 						@Override
@@ -116,7 +162,7 @@ public class ClassroomMain extends Composite{
 							 path.addAll(token.subList(2, token.size()));
 
 							 setView(path);
-							}else{homeView();}
+							}else{dashboardView();}
 						
 					}
 			});}else{
@@ -131,7 +177,7 @@ public class ClassroomMain extends Composite{
 					 //classtime may have been set
 					 
 					 setView(path);
-					}else{homeView();}
+					}else{dashboardView();}
 						}// end else roster will be here
 	}
 	
@@ -140,12 +186,23 @@ public class ClassroomMain extends Composite{
 		switch(path.get(0)){
 		case "students":studentView(path); break;
 		case "groups": groupView(path);break;
-		//case "assignments":assignmentView(path); break;
+		case "assignments":assignmentView(path); break;
 		case "behaviors":behaviorView(path); break;
 		case "jobs": jobView(path);break;
 		case "goals":goalView(path); break;
-		default: homeView();
+		default: dashboardView();
 		}
+	}
+	
+	private void dashboardView(){
+		console.log("classmain dashboard called");
+		if(mainPanel.getWidget(0) instanceof RosterDashboardPanel){
+			console.log("Main panel had instance of roster dashboard already");
+			return;
+		}
+		mainPanel.clear();
+		mainPanel.add(new RosterDashboardPanel());
+		sideNav.hide();
 	}
 	private void studentView(final List<String>path){
 		
@@ -171,6 +228,24 @@ public class ClassroomMain extends Composite{
 			}});
 		
 	}
+	private void assignmentView(List<String> path){
+		GWT.runAsync(new RunAsyncCallback(){
+
+			@Override
+			public void onFailure(Throwable reason) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess() {
+				mainPanel.clear();
+				mainPanel.add(new GradedWorkMain());
+				
+			}
+			
+		});
+	}
 	
 	private void groupView(List<String> path){
 		
@@ -190,12 +265,7 @@ public class ClassroomMain extends Composite{
 	private void goalView(List<String> path){
 	
 }
-	private void homeView(){
-		console.log("classmain homeView called");
-		mainPanel.clear();
-		RosterDashboardPanel panel = new RosterDashboardPanel();
-		mainPanel.add(panel);
-	}
+
 	
 	private void setClasstime(ClassTimeJson classTime){
 		window.setPropertyJSO("classtime", classTime);

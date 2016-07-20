@@ -1,0 +1,22 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<m:MaterialModal ui:field="classtimeModal">
+	<m:MaterialModalContent>
+		<m:MaterialTitle title="Class Time" />
+	<g:FormPanel ui:field="classtimeForm">
+	<g:HTMLPanel>
+	<p>Class Time is a protocol for helping student transition from one taks to the next.<br/>
+	<i>'Carpet Time' or 'I.W.T'.</i> </p><hr/>
+			<m:MaterialTextBox ui:field="title" placeholder="Title" />
+			<m:MaterialTextArea ui:field="description" placeholder="Description" />
+			<br/>		
+	</g:HTMLPanel>
+	</g:FormPanel>
+	</m:MaterialModalContent>
+	<m:MaterialModalFooter>
+		<m:MaterialButton ui:field="submitBtn" text="Submit" /> <m:MaterialButton ui:field="cancelBtn" text="Cancel" />
+	</m:MaterialModalFooter>
+	</m:MaterialModal>
+</ui:UiBinder> 

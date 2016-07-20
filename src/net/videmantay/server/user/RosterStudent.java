@@ -56,6 +56,7 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 	
 	public String studentFolderId;
 	public String studentCalId;
+	public String recordUrl;
 	public String studentTasksId;
 	
 	public RosterStudent(){
@@ -166,6 +167,14 @@ public class RosterStudent extends DBObj implements  Serializable,Comparator<Ros
 	}
 	public String getStudentTasksId() {
 		return studentTasksId;
+	}
+	
+	public String getRecordUrl(){
+		return this.recordUrl;
+	}
+	
+	public void setRecordUrl(String url){
+		this.recordUrl = url;
 	}
 	public void setStudentTasksId(String studentTasksId) {
 		this.studentTasksId = studentTasksId;

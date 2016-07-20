@@ -2,12 +2,18 @@ package net.videmantay.server.entity;
 
 import java.io.Serializable;
 
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Id;
+
+@Entity
 public class Incident implements Serializable {
 	
+	@Id
 	public Long id;
 	public String description;
 	public String iconUrl;
-	public Integer value;
+	public Double value;
+	
 	public Long getId() {
 		return id;
 	}
@@ -26,10 +32,10 @@ public class Incident implements Serializable {
 	public void setIconUrl(String iconUrl) {
 		this.iconUrl = iconUrl;
 	}
-	public Integer getValue() {
+	public Double getValue() {
 		return value;
 	}
-	public void setValue(Integer value) {
+	public void setValue(Double value) {
 		this.value = value;
 	}
 }

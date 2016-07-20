@@ -1,9 +1,7 @@
 package net.videmantay.server;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +9,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,11 +24,8 @@ import net.videmantay.server.user.AppUser;
 import net.videmantay.server.user.DB;
 import net.videmantay.server.user.Roster;
 import net.videmantay.server.user.RosterDetail;
-import net.videmantay.server.user.RosterSetting;
 import net.videmantay.server.user.RosterStudent;
-import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.StuffType;
-import net.videmantay.shared.SubjectType;
 import net.videmantay.shared.UserRoles;
 import static net.videmantay.server.GoogleUtils.*;
 import static net.videmantay.server.user.DB.*;
@@ -40,47 +37,24 @@ import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.GenericUrl;
 import com.google.api.client.util.Preconditions;
 import com.google.api.services.calendar.model.*;
-import com.google.api.services.calendar.model.AclRule.Scope;
 import com.google.api.services.calendar.model.Event.ExtendedProperties;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.Permission;
-import com.google.api.services.tasks.Tasks;
-import com.google.api.services.tasks.model.TaskList;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.appengine.labs.repackaged.com.google.common.base.CharMatcher;
-import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterators;
-import com.google.common.primitives.Doubles;
-import com.google.common.primitives.Ints;
 import com.google.common.primitives.Longs;
-import com.google.gdata.client.contacts.ContactsService;
-import com.google.gdata.client.sites.SitesService;
-import com.google.gdata.client.spreadsheet.CellQuery;
-import com.google.gdata.client.spreadsheet.ListQuery;
-import com.google.gdata.client.spreadsheet.SpreadsheetService;
-import com.google.gdata.client.spreadsheet.WorksheetQuery;
-import com.google.gdata.data.PlainTextConstruct;
-import com.google.gdata.data.spreadsheet.Cell;
-import com.google.gdata.data.spreadsheet.CellEntry;
-import com.google.gdata.data.spreadsheet.CellFeed;
-import com.google.gdata.data.spreadsheet.CustomElementCollection;
-import com.google.gdata.data.spreadsheet.ListEntry;
-import com.google.gdata.data.spreadsheet.ListFeed;
-import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
-import com.google.gdata.data.spreadsheet.SpreadsheetFeed;
-import com.google.gdata.data.spreadsheet.WorksheetEntry;
-import com.google.gdata.data.spreadsheet.WorksheetFeed;
 import com.google.gdata.util.ServiceException;
 import com.google.gson.Gson;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.VoidWork;
+import com.googlecode.objectify.cmd.Query;
+import com.googlecode.objectify.ObjectifyService;
 
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -88,10 +62,6 @@ import freemarker.template.TemplateException;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.taskqueue.TaskOptions;
-import com.google.appengine.api.urlfetch.FetchOptions;
-import com.google.appengine.api.urlfetch.HTTPRequest;
-import com.google.appengine.api.urlfetch.URLFetchService;
-import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 
 
 @SuppressWarnings("serial")
@@ -152,6 +122,8 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		case RosterUrl.UPDATE_STUDENT:updateRosterStudent(req,res);break;
 		case RosterUrl.DELETE_STUDENT: deleteRosterStudent(req,res);break;
 		
+		case RosterUrl.CREATE_ASSIGNMENT:saveGradedWork(req,res);break;
+		
 		case RosterUrl.GET_SEATINGCHART:getSeatingChart(req,res);break;
 		case RosterUrl.CREATE_SEATINGCHART:createSeatingChart(req,res);break;
 		case RosterUrl.UPDATE_SEATINGCHART:updateSeatingChart(req,res);break;
@@ -190,10 +162,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	if(this.getUserId(req).equals(acct.getUserId())){
 		System.out.println("user id are equal");
 	
-		Credential cred = authFlow(acct.getUserId()).loadCredential(acct.getUserId());
-		if(cred.getExpiresInSeconds() <1800){
-			cred.refreshToken();
-		}
+		Credential cred = cred(acct.getUserId());
 		user.setAuthToken(cred.getAccessToken());
 		
 	}
@@ -225,16 +194,7 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		final DB<Roster> rosterDB = new DB<Roster>(Roster.class);
 		Credential cred = null;
 		
-		/*Drive drive;
-		Calendar calendar;
-		Tasks tasks;
-		ContactsService contactService;
-		SitesService sitesService;
-		SpreadsheetService spreadsheetService;
-	
 		
-		
-		RosterSetting settings;*/
 		final Roster roster;
 		final UserService us =UserServiceFactory.getUserService();
 		final User user = us.getCurrentUser();
@@ -308,122 +268,6 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		}else{//this is a first save set up docs,calendar,etc
 				log.log(Level.INFO, "first save callded");
 		
-		
-		// System.out.println( "This is what the cred looks like: " + gson.toJson(cred));
-		 //check for roster setting in the db 
-				/* settings = db().load().type(RosterSetting.class).filter("acctId",user.getEmail()).first().now();
-		 if(settings == null){
-			 log.log(Level.INFO, "settings was null create new settings");
-			 settings = new RosterSetting().defaultSetting();
-		 }
-		 
-		 
-		drive = GoogleUtils.drive(cred);
-		 
-		 			//first check if main drive folder has been set
-		 		if(appUser.getMainDriveFolder()==null || appUser.getMainDriveFolder().isEmpty()){
-		 			//assign a main folder
-		 			File kimchiFile = GoogleUtils.folder("Kimchi");
-		 			kimchiFile = drive.files().create(kimchiFile).execute();
-		 			appUser.setMainDriveFolder(kimchiFile.getId());
-		 			db().save().entity(appUser);
-		 			
-		 		}
-		 		try{
-		 			//This is here to test existence of the file
-		 			File kimchiFile = drive.files().get(appUser.getMainDriveFolder()).execute();
-		 		}catch(GoogleJsonResponseException gjre){
-		 			File kimchiFile = GoogleUtils.folder("Kimchi");
-		 			kimchiFile = drive.files().create(kimchiFile).execute();
-		 			appUser.setMainDriveFolder(kimchiFile.getId());
-		 			db().save().entity(appUser);
-		 		}
-				File rosterFolder = GoogleUtils.folder(roster.getTitle());
-				rosterFolder.setDescription(roster.getDescription());
-				
-				//Get Kimchi folder as parent for roster////
-				rosterFolder.setParents(ImmutableList.of(appUser.getMainDriveFolder()));
-				rosterFolder = drive.files().create(rosterFolder).execute();
-				roster.setRosterFolderId(rosterFolder.getId());
-				
-				
-				//set roster folder as parent for all other folders
-				List<String> listOfP = ImmutableList.of(roster.getRosterFolderId());
-			File studentFolder = folder("Students");
-			studentFolder.setParents(listOfP);
-			roster.setStudentFolderId(drive.files().create(studentFolder).execute().getId());
-			
-			File rollBook = spreadsheet("RollBook");
-				rollBook.setParents(listOfP);
-				File gradeBook = spreadsheet("GradeBook");
-				gradeBook.setParents(listOfP);
-			File behaviorReport = spreadsheet("BehaviorReport");
-				behaviorReport.setParents(listOfP);
-				File goalBook = spreadsheet("GoalBook");
-				goalBook.setParents(listOfP);
-				
-				
-				rollBook = drive.files().create(rollBook).execute();
-				gradeBook = drive.files().create(gradeBook).execute();
-				behaviorReport = drive.files().create(behaviorReport).execute();
-				goalBook = drive.files().create(goalBook).execute();
-				
-				roster.setGradeBook(gradeBook.getId());
-				System.out.println("gradeBook id is: " + gradeBook.getId());
-				roster.setRollBook(rollBook.getId());
-				roster.setBehaviorReport(behaviorReport.getId());
-				
-				//set up the spreadsheet here
-				Queue queue = QueueFactory.getDefaultQueue();
-				
-				GradeBookSetup setUp = new GradeBookSetup(gradeBook.getId(), cred.getAccessToken());
-				queue.add(TaskOptions.Builder.withPayload(setUp));
-				
-				RollBookSetup rollSet = new RollBookSetup(rollBook.getId(), cred.getAccessToken());
-				queue.add(TaskOptions.Builder.withPayload(rollSet));
-				
-				GoalBookSetup goalSet = new GoalBookSetup(goalBook.getId(), cred.getAccessToken());
-				queue.add(TaskOptions.Builder.withPayload(goalSet));
-				
-				BehaviorReportSetup behaviorSetup = new BehaviorReportSetup(behaviorReport.getId(), cred.getAccessToken());
-				queue.add(TaskOptions.Builder.withPayload(behaviorSetup));
-				
-				
-				
-				//optional folders use settings
-				//only if there are any
-				
-			
-					
-			//Set up Gradedwork Calendar and class events
-			calendar = GoogleUtils.calendar(cred);
-			com.google.api.services.calendar.model.Calendar cal = new com.google.api.services.calendar.model.Calendar();
-			cal.setSummary(roster.getTitle());
-			cal.setDescription(roster.getDescription());
-			cal = calendar.calendars().insert(cal).execute();
-			GoogleService rosterCal = new GoogleService();
-			rosterCal.setTitle(cal.getSummary());
-			rosterCal.setDescription(cal.getDescription());
-			rosterCal.setType("calendar");
-			rosterCal.setId(cal.getId());
-			
-			//adding more calendars happens client side///
-			roster.getGoogleCalendars().add(rosterCal);
-			
-			//Create a roster task list
-			tasks = GoogleUtils.task(cred);
-			TaskList taskList = new TaskList();
-			taskList.setTitle(roster.getTitle());
-			taskList = tasks.tasklists().insert(taskList).execute();
-			
-			GoogleService rosterTask = new GoogleService();
-			rosterTask.setId(taskList.getId());
-			rosterTask.setTitle(taskList.getTitle());
-			rosterTask.setDescription("");
-			
-			roster.getGoogleTasks().add(rosterTask);*/
-			
-			//save the owner on the server side
 			roster.setOwnerId(user.getEmail());
 			
 			
@@ -444,7 +288,9 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 			roster.getClassTimes().add(classTime);
 			roster.setId(rosterKey.getId());
 			db().save().entity(roster).now();
-			//send roster detail
+			
+			
+			//setup necessary files like parent folder gradebook,goalbook, and the like
 			Queue queue = QueueFactory.getDefaultQueue();
 			TaskOptions to = TaskOptions.Builder.withUrl("/rostersetup")
 					.param("rosterId", rosterKey.getId()+"")
@@ -605,6 +451,10 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		roster.getStudentKeys().add(key);
 		db().save().entity(roster);
 		
+		//populate the gradedwork, goals and spreadsheets with this student 
+		//then place a reords sheet in his folder
+		
+		
 		res.getWriter().write(gson.toJson(student));
 		res.flushBuffer();
 		return;
@@ -653,173 +503,207 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 	//GRADEDWORK CRUD
 	
 	private void deleteGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException, ServiceException{
-		Credential cred = this.getCredential();
-		SpreadsheetService sheets = sheets(cred);
 		
 		String gwCheck = Preconditions.checkNotNull(req.getParameter("assignement"));
-		String gradebook = req.getParameter("gradebook");
 		GradedWork gradedWork = gson.fromJson(gwCheck, GradedWork.class);
-		
+		if(!AppValid.rosterCheck(gradedWork.rosterId)){
+			//throw exception
+		}
+
+		Key<GradedWork> parentKey = Key.create(GradedWork.class,gradedWork.id);
+		//delete the record from all students records spreadsheet
+		List<Key<Object>> keys = db().load().ancestor(parentKey).keys().list();
+		db().delete().keys(keys);
+	
 		//delete row from gradebook///
 		
-		//Not a DB takes some working to get what you want 
-		//so query id col for the id should only be one. 
-		//the row number corresponds to the col in gradebook
-		//delete the col in gradebook
-		WorksheetEntry worksheet = null;
-		CellQuery cQuery = new CellQuery(worksheet.getCellFeedUrl());
-		cQuery.setRange("A2:A");
-		cQuery.setStringCustomParameter("id", gradedWork.getId().toString());
-		cQuery.setMaxResults(1);
-		CellEntry cellEntry = sheets.getFeed(cQuery, CellFeed.class).getEntries().get(0);
-		Cell cell = cellEntry.getCell();
-		//now get rid of record in gradedWork	
-		ListQuery lQuery = new ListQuery(worksheet.getListFeedUrl());
-		lQuery.setStringCustomParameter("id", gradedWork.getId().toString());
-		ListEntry entry = sheets.getFeed(lQuery, ListFeed.class).getEntries().get(0);
-		//if gradedwork deleted then all related student work should be deleted too.
-		
-		
-		//get the spreadsheet//
-		SpreadsheetEntry spreadsheet = sheets.getFeed(spreadsheetURL(), SpreadsheetFeed.class).getEntries().get(0);
-		for(String s: gradedWork.getAssignedTo()){
-			WorksheetQuery wQuery = new WorksheetQuery(spreadsheet.getWorksheetFeedUrl());
-			wQuery.setTitleQuery(s);
-			WorksheetEntry studentWorksheet = sheets.getFeed(wQuery, WorksheetFeed.class).getEntries().get(0);
-			
-			ListQuery slQuery = new ListQuery(studentWorksheet.getListFeedUrl());
-			slQuery.setStringCustomParameter("gradedworkId",gradedWork.getId().toString());
-			ListEntry sEntry = sheets.getFeed(slQuery, ListFeed.class).getEntries().get(0);
-			sEntry.delete();
-		}
-		
-		entry.delete();
-		//grive some boolean
+	//send success message
+		return;
 		
 	}
 	
+	private void createGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException, ServiceException{
+		UserService us = UserServiceFactory.getUserService();
+		User user = us.getCurrentUser();
+		
+		Credential cred = cred(user.getUserId());
+		Boolean firstSave = false;
+		Calendar calendar = GoogleUtils.calendar(cred);
+		
+		String gwCheck = Preconditions.checkNotNull(req.getParameter("assignment"));
+	}
+	
 	private void saveGradedWork(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException, ServiceException{
-		Credential cred = this.getCredential();
-		SpreadsheetService sheets = sheets(cred);
+		UserService us = UserServiceFactory.getUserService();
+		User user = us.getCurrentUser();
+		
+		Credential cred = cred(user.getUserId());
 		Boolean firstSave = false;
 		Calendar calendar = GoogleUtils.calendar(cred);
 		
 		String gwCheck = Preconditions.checkNotNull(req.getParameter("assignment"));
 		String calId = Preconditions.checkNotNull("calendarId");
-		String gradebook = Preconditions.checkNotNull(req.getParameter("gradebook"));
 		
 		GradedWork gradedWork = gson.fromJson(gwCheck, GradedWork.class);
-		Event event = gradedWork.getEvent();
+		log.log(Level.INFO, "Graded work event to Json is :" + gson.toJson(gradedWork.getEvent()) );
+		if(!AppValid.rosterCheck(gradedWork.rosterId)){
+			//TODO:throw an error
+		}
+		
+		Event event = new Event();
 		//if the id is null or zero then this is a first save/////
-		if(gradedWork.getId() == null || gradedWork.getId() ==  0){
+		if(gradedWork.getId() == null || gradedWork.getId().isEmpty()){
 			//this is a firstSave
 			firstSave = true;
 			//assign id from uuid
-			Long id = new Date().getTime();
-			gradedWork.setId(id);
+			gradedWork.setId(UUID.randomUUID().toString());
 			} //id assigned
 		
 		//lets stuff json obj in description
 		//this way we get list from google and have access to our object
 		//essentially using google as the db  ... obviously bad practice
-		String descript = event.getDescription()+ "\n\n-* Kimchi-Assignment *-";
+		String descript = gradedWork.getDescription()+ "\n\n-* " + gradedWork.rosterId +"-Assignment *-";
+		descript+= " " + gradedWork.type.toString();
 		event.setDescription(descript);
 	
 		Event.ExtendedProperties exProps = new Event.ExtendedProperties();
-		Map<String, String> arg = ImmutableMap.of("gradedWork", gradedWork.getId().toString());
+		Map<String, String> arg = ImmutableMap.of("assignment", gradedWork.getId());
 		exProps.setPrivate(arg);
 		event.setExtendedProperties(exProps);
 		if(firstSave){
 		event = calendar.events().insert(calId, event).execute();
+		gradedWork.setEventId(event.getId());
 		}else{
 			event = calendar.events().update(calId, event.getId(), event).execute();
 		}
-		gradedWork.setEventId(event.getId());
-		SpreadsheetFeed ssf = sheets.getFeed(spreadsheetURL(), SpreadsheetFeed.class);
-		SpreadsheetEntry spreadsheet = ssf.getEntries().get(0);
-	
-		WorksheetQuery wQ = new WorksheetQuery(spreadsheet.getWorksheetFeedUrl());
-		wQ.setTitleExact(true);
-		wQ.setTitleQuery("GradedWork");
-		WorksheetFeed wsf = sheets.getFeed(wQ,WorksheetFeed.class);
-		WorksheetEntry worksheet = wsf.getEntries().get(0);
 		
-		ListFeed lf = sheets.getFeed(worksheet.getListFeedUrl(), ListFeed.class);
-		ListEntry entry = null;
-		if(firstSave){
-		 entry = new ListEntry();
+		
+		//get roster student to make sure you can only assign work to them
+		List<RosterStudent> rosterStudents = db().load().type(RosterStudent.class)
+				.ancestor(Key.create(Roster.class, gradedWork.rosterId)).list();
+		List<Long>studentIds  = new ArrayList<Long>();
+		
+		for(RosterStudent s: rosterStudents){
+			studentIds.add(s.id);
 		}
-		else{
-			List<ListEntry> rowList = lf.getEntries();
-			for(ListEntry row:rowList){
-				if(row.getTitle().getPlainText().equalsIgnoreCase(gradedWork.getId().toString())){
-					entry = row;
-				}
+		
+		Long[] unassign = gson.fromJson(req.getParameter("unassign"), Long[].class);
+		Long[] assign = gson.fromJson(req.getParameter("assign"), Long[].class);
+		
+		//first make sure that assign and unassign don't have matching ids
+		for(Long id: unassign){
+			if(Arrays.asList(assign).contains(id)){
+				//throw an exception
+				log.log(Level.WARNING, "unassign and assign have matching ids : contradiction");
 			}
 		}
-		entry.setTitle(new PlainTextConstruct(gradedWork.getId().toString()));
-		CustomElementCollection cols  = entry.getCustomElements();
-		cols.setValueLocal("id", gradedWork.getId().toString());
-		cols.setValueLocal("title", gradedWork.getTitle());
-		cols.setValueLocal("description", gradedWork.getDescription());
-		cols.setValueLocal("pointsPossible", gradedWork.getPointsPossible().toString());
-		cols.setValueLocal("eventId", gradedWork.getEventId());
-		cols.setValueLocal("type", gradedWork.getGradedWorkType().name());
-		cols.setValueLocal("finishedGrading", gradedWork.isFinishedGrading().toString());
-		cols.setValueLocal("subject", gradedWork.getSubject().name());
-		cols.setValueLocal("dateAssigned", gradedWork.getAssignedDate());
-		cols.setValueLocal("assignedTo", 
-				CharMatcher.anyOf("[]").removeFrom(Iterators.toString(gradedWork.getStandards().iterator())));
-		cols.setValueLocal("standards", 
-		CharMatcher.anyOf("[]").removeFrom(Iterators.toString(gradedWork.getStandards().iterator())));
-		if(firstSave){
-		//insert entry
-		sheets.insert(worksheet.getListFeedUrl(), entry);
-	
-		}else{  ////////////UPDATE the GW /////////////////////
-			//check that everything is kosher/////
-			
-			entry.update();
+		//now make sure all unassing are students
+		for(Long id: unassign){
+			if(!studentIds.contains(id)){
+				//throw an error
+				log.log(Level.WARNING, "Student is not in Roster");
+			}
 		}
 		
-		//send the entry and event backacross the wire;
+		// make studentwork list for assigned 
+		ArrayList<StudentWork> studentWorks = new ArrayList<>();
 		
+		//now make sure all assigned are students
+		for(int i= 0; i< assign.length; i++){
+			if(!studentIds.contains(assign[i])){
+				//throw an error
+				log.log(Level.WARNING, "Student is not in Roster");
+			}else{
+				studentWorks.add(new StudentWork(gradedWork,assign[i] ));
+			}
+		}
+		Key<GradedWork>parentKey = Key.create(GradedWork.class, gradedWork.id);
+		//so for unassign cycle through the gradedwork
+		for(Long remove: unassign){
+			gradedWork.getAssignedTo().remove(remove);
+			for(StudentWork stuW:gradedWork.studentWorks){
+				if(stuW.rosterStudentId.equals(remove)){
+					Key<StudentWork> stuKey = Key.create(parentKey, StudentWork.class, stuW.id);
+					db().delete().key(stuKey).now();
+					gradedWork.studentWorks.remove(stuW);
+					break;
+				}//end if
+			}//end inner for
+		}//end for
+		
+		
+	
+		gradedWork.setStudentWorkKeys(db().save().entities(studentWorks).now().keySet());
+		db().save().entity(gradedWork);
+		res.getWriter().write(gson.toJson(gradedWork));
+		res.flushBuffer();
 		
 	}
 	
-	private void listGradedWorks(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+	private void listGradedWorksFromCal(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+		User acct = UserServiceFactory.getUserService().getCurrentUser();
+		
+	
+		
 		//return google cal events
 		String calId = Preconditions.checkNotNull(req.getParameter("calendar"));
-		String pageToken  = Preconditions.checkNotNull("cursor");
-		
-		
-		Credential cred = this.getCredential();
-		Calendar cal = GoogleUtils.calendar(cred);
-		Events events = cal.events().list(calId).setQ("-* Kimchi-Assignment *-")
-		.setFields("summary,description,start,end,attachements").setMaxResults(50).setPageToken(pageToken).execute();
-	}
-	
-	private void listGradedWorksFromSheet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServiceException{
-		Credential cred = this.getCredential();
-		SpreadsheetService sheets = sheets(cred);
-		String spreadsheetId = Preconditions.checkNotNull(req.getParameter("gradebook"));
-		String cursor = Preconditions.checkNotNull(req.getParameter("cursor"));
-		
-		
-		
-		WorksheetEntry gradedWorkSheet = null;
-		
-		ListQuery lQuery = new ListQuery(gradedWorkSheet.getListFeedUrl());
-		lQuery.setReverse(true);
-		lQuery.setStartIndex(Ints.tryParse(cursor));
-		
-		List<ListEntry> gradedWorkList = sheets.getFeed(lQuery, ListFeed.class).getEntries();
-		List<GradedWork> gwList = new ArrayList<GradedWork>();
-		for(ListEntry l: gradedWorkList){
-			gwList.add(this.recordToGradedWork(l));
+		String rosterId = Preconditions.checkNotNull(req.getParameter("roster"));
+		String pageToken  = Preconditions.checkNotNull(req.getParameter("cursor"));
+		String criteria = Preconditions.checkNotNull(req.getParameter("criteria"));
+		Long roster = Longs.tryParse(rosterId);
+		if(!AppValid.rosterCheck(roster)){
+			//TODO:throw exception
 		}
 		
-		//return the gwtList
+		
+		Credential cred = cred(acct.getUserId());
+		Calendar cal = GoogleUtils.calendar(cred);
+		String Q = "-* " + rosterId+"-Assignment *-";
+		if(!criteria.isEmpty()){
+			Q+= " "+ criteria;
+		}
+		Events events = cal.events().list(calId).setQ(Q)
+		.setFields("summary,description,start,end,attachements").setMaxResults(50).setPageToken(pageToken).execute();
+		res.getWriter().write(gson.toJson(events));
+		res.flushBuffer();
+	}
+	
+	private void listGradedWorksFromDB(HttpServletRequest req, HttpServletResponse res) throws IOException, ServiceException{
+		
+		String rosterCheck = Preconditions.checkNotNull(req.getParameter("roster"));
+		Long rosterId = Longs.tryParse(rosterCheck);
+		if(!AppValid.rosterCheck(rosterId)){
+			
+			return;
+		}
+		String q = req.getParameter("query");
+
+		Query<GradedWork> query = db().load().type(GradedWork.class).filter("rosterId", rosterId).order("dueDate").limit(50);
+		if(q != null && !q.isEmpty()){
+			
+			AppQuery appQuery = gson.fromJson(q, AppQuery.class);
+			//scrub name for valid categories
+			
+			//scrub value for appropriate values
+			
+			//add filter
+			query.filter(appQuery.name, appQuery.value);
+		}
+		List<GradedWork> gradedWorks;
+		String cursor = req.getHeader("cursor");
+		if(cursor ==  null || cursor.isEmpty()){
+			gradedWorks = query.list();
+		}else{
+			gradedWorks = query.startAt(Cursor.fromWebSafeString(cursor)).list();
+			cursor = query.iterator().getCursor().toWebSafeString();
+		}
+		
+		
+		
+		
+		res.addHeader("Cursor", cursor);
+		res.getWriter().write(gson.toJson(gradedWorks));
+		res.flushBuffer();
 	}
 	
 	
@@ -828,131 +712,42 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		//event should include gw id and return this gw and all related student works
 		//param id of gradedwork roster Id and current user
 		
-		String gradebook = Preconditions.checkNotNull(req.getParameter("gradebook"));
-		String assignmentId = Preconditions.checkNotNull(req.getParameter("assignment"));
-	
-		Credential cred = this.getCredential();
-		WorksheetEntry gradedWorkSheet = null;
-		ListQuery lQuery = new ListQuery(gradedWorkSheet.getListFeedUrl());
-		lQuery.setMaxResults(1);
-		lQuery.setStringCustomParameter("id", assignmentId);
-		ListEntry gradedWork = sheets(cred).getFeed(lQuery, ListFeed.class).getEntries().get(0);
+		String assignmentCheck = Preconditions.checkNotNull(req.getParameter("assignmentId"));
+		String rosterCheck = Preconditions.checkNotNull("rosterId");
+		Long rosterId = Longs.tryParse("rosterCheck");
+		if(!AppValid.rosterCheck(rosterId)){
+			//return error
 			
-	}
-	
-	private void manageStudentWork(HttpServletRequest req, HttpServletResponse res) throws MalformedURLException, IOException, ServiceException{
-		String gradebook = Preconditions.checkNotNull(req.getParameter("gradebook"));
-		String assignCheck = Preconditions.checkNotNull(req.getParameter("assign"));
-		String unassignCheck = Preconditions.checkNotNull(req.getParameter("unassign"));
-
-		StudentWork[] assign  = gson.fromJson(assignCheck, StudentWork[].class);
-		StudentWork[] unassign  = gson.fromJson(unassignCheck, StudentWork[].class);
-		
-		//update the gradedWork
-		Credential cred = this.getCredential();
-		SpreadsheetService sheets = sheets(cred);
-		
-	}
-	
-	private void unassignStudentWork(StudentWork[] studentWork,String gradebook) throws MalformedURLException, IOException, ServiceException{
-	
-		Credential cred = this.getCredential();
-		SpreadsheetService sheets = sheets(cred);
-		SpreadsheetEntry spreadsheet = sheets.getFeed(spreadsheetURL(), SpreadsheetFeed.class).getEntries().get(0);
-		WorksheetQuery wQuery = new WorksheetQuery(spreadsheet.getWorksheetFeedUrl());
-		for(StudentWork sw : studentWork){
-			wQuery.setTitleExact(true);
-			wQuery.setTitleQuery(sw.getRosterStudentId().toString());
-			WorksheetEntry worksheet = sheets.getFeed(wQuery, WorksheetFeed.class).getEntries().get(0);
-			
-			ListQuery lQuery = new ListQuery(worksheet.getListFeedUrl());
-			lQuery.setStringCustomParameter("id", sw.getId().toString());
-			ListEntry entry = sheets.getFeed(lQuery, ListFeed.class).getEntries().get(0);
-			//do some checking
-			entry.delete();
-		}
-			
-	}
-	
-
-		private void assignStudentWork(StudentWork[] studentWork,String gradebook) throws IOException, ServiceException, IllegalArgumentException, IllegalAccessException{
-		
-			List<StudentWork> updateList = new ArrayList<StudentWork>();
-			for(int i = 0; i< studentWork.length; i++){
-				if(studentWork[i].getId()!= null && studentWork[i].getId() != 0){
-					updateList.add(Arrays.asList(studentWork).remove(i));
-				}
-
-			}
-			/////////////update studentWowrk/////
-			Boolean updateUpdated = false;
-			if(updateList.size()> 0){
-			updateUpdated = updateStudentWork(updateList,gradebook);
-			}
-			
-			Boolean savedUpdated = false;
-			
-			if(studentWork.length > 0){
-				savedUpdated = insertStudentWork(studentWork, gradebook);
-			}
-			
-			//if both are saved send them back as one array
-			if(savedUpdated && updateUpdated){
-			updateList.addAll(Arrays.asList(studentWork));
-			}else{
-				//send an error//
-			}
-			
-			
-			
-			
+			return;
 		}
 		
-		private Boolean insertStudentWork(StudentWork[] sw, String sheetId) throws IOException, ServiceException, IllegalArgumentException, IllegalAccessException{
-			Credential cred = this.getCredential();
-			SpreadsheetService sheets = sheets(cred);
-			
-		
-			URL	url = spreadsheetURL();
-			
-			SpreadsheetEntry spreadsheet = sheets.getEntry(url, SpreadsheetEntry.class);
-			URL wsUrl = spreadsheet.getWorksheetFeedUrl();
-			WorksheetQuery wQuery = new WorksheetQuery(wsUrl);
-			//iterate the list and get studentwork for all the sheets
-			for(StudentWork s: sw){
-				s.setId(new Date().getTime());
-				wQuery.setTitleQuery(s.getRosterStudentId().toString());
-				WorksheetEntry worksheet = sheets.getFeed(wQuery, WorksheetFeed.class).getEntries().get(0);
-				ListEntry listEntry = studentWorkToRecord(s);
-				sheets.insert(worksheet.getListFeedUrl(), listEntry);
-			}	
-			
-			return true;
+		GradedWork gradedWork = db().load().key(Key.create(GradedWork.class, Longs.tryParse(assignmentCheck))).now();
+		if(gradedWork.rosterId != rosterId){
+			//throw error
+			return;
 		}
 		
-		private Boolean updateStudentWork(List<StudentWork> studentWork,String sheetId) throws IOException, ServiceException, IllegalArgumentException, IllegalAccessException{
-			Credential cred = this.getCredential();
-			SpreadsheetService sheets = sheets(cred);
-			URL url = spreadsheetURL();
-			SpreadsheetEntry spreadsheet = sheets.getEntry(url, SpreadsheetEntry.class);
-			URL wsUrl = spreadsheet.getWorksheetFeedUrl();
-			WorksheetQuery wQuery = new WorksheetQuery(wsUrl);
-			for(StudentWork s: studentWork){
-				wQuery.setTitleQuery(s.getRosterStudentId().toString());
-				WorksheetEntry worksheet = sheets.getFeed(wQuery, WorksheetFeed.class).getEntries().get(0);
-				ListQuery lQuery = new ListQuery(worksheet.getListFeedUrl());
-				lQuery.setStringCustomParameter("id", s.getId().toString());
-				lQuery.setMaxResults(1);
-				ListFeed lFeed = sheets.getFeed(lQuery, ListFeed.class);
-				ListEntry entry = lFeed.getEntries().get(0);
-					for(Field f:s.getClass().getDeclaredFields()){
-					f.setAccessible(true);
-					entry.getCustomElements().setValueLocal(f.getName(), f.get(s).toString());
-				}//inner for
-				entry.update();	
-			}//outer for
+		res.getWriter().write(gson.toJson(gradedWork));
+	}
+	
+	/*
+	 * StudentWork must be able to be assigned and unassigned on a whim
+	 * so during a selection process in the ui there are two list an unassigned and assign list
+	 * students can't be both but can be neither
+	 */
+	
+	
+		
+		private void updateStudentWork(HttpServletRequest req, HttpServletResponse res) throws IOException, ServiceException, IllegalArgumentException, IllegalAccessException{
+			String stuWorkCheck = Preconditions.checkNotNull(req.getParameter("studentWorks"));
+			StudentWork[] studentWorks = gson.fromJson(stuWorkCheck, StudentWork[].class);
 			
-			return true;
+			//do somekind of verification here
+			
+			//now persist
+			db().save().entities(studentWorks);
+			
+			//send success message
 		}
 		
 	//SEATING CHART CRUD/////////
@@ -1061,7 +856,22 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 				res.getWriter().write("Delete Successful");
 			
 		}
+		//CRUD INCIDENTS////
+		
+		public void saveIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+			
+		}
+		
+		public void deleteIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+			
+		}
+		public void updateIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+	
+		}
 
+		public void listIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
+	
+		}
 	////////////////////////	
 	///STUDENT INCIDENT CRUD
 	private void updateStudentIncident(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
@@ -1135,65 +945,5 @@ public class RosterService extends AbstractAppEngineAuthorizationCodeServlet  {
 		
 	
 	
-	private GradedWork recordToGradedWork(ListEntry l){
-		
-		GradedWork gw = new GradedWork();
-		gw.setTitle(l.getCustomElements().getValue("title"));
-		gw.setDescription(l.getCustomElements().getValue("description"));
-		gw.setEventId(l.getCustomElements().getValue("eventId"));
-		gw.setFinishedGrading(Boolean.valueOf(l.getCustomElements().getValue("finishedGrading")));
-		gw.setGradedWorkType(GradedWorkType.valueOf(l.getCustomElements().getValue("type").toUpperCase()));
-		gw.setId(Long.valueOf(l.getCustomElements().getValue("id")));
-		gw.setPointsPossible(Double.valueOf(l.getCustomElements().getValue("pointsPossible")));
-		gw.setSubject(SubjectType.valueOf(l.getCustomElements().getValue("subject").toUpperCase()));
-		gw.setMediaUrl(l.getCustomElements().getValue("mediaURL"));
-		List<String>assignedTo = Splitter.on(',').splitToList(l.getCustomElements().getValue("assignedTo"));
-		gw.getAssignedTo().addAll(assignedTo);
-		List<String>standards = Splitter.on(',').splitToList(l.getCustomElements().getValue("standards"));
-		gw.getStandards().addAll(standards);
-		
-		return gw;
-		
-	}
-	private ListEntry gradedWorkToRecord(GradedWork gradedWork){
-		ListEntry entry = new ListEntry();
-		entry.setTitle(new PlainTextConstruct(gradedWork.getId().toString()));
-		CustomElementCollection cols  = entry.getCustomElements();
-		cols.setValueLocal("id", gradedWork!=null?gradedWork.getId().toString():Long.toString(new Date().getTime()));
-		cols.setValueLocal("title", gradedWork.getTitle());
-		cols.setValueLocal("description", gradedWork.getDescription());
-		cols.setValueLocal("pointsPossible", gradedWork.getPointsPossible().toString());
-		cols.setValueLocal("eventId", gradedWork.getEventId());
-		cols.setValueLocal("type", gradedWork.getGradedWorkType().name());
-		cols.setValueLocal("finishedGrading", gradedWork.isFinishedGrading().toString());
-		cols.setValueLocal("subject", gradedWork.getSubject().name());
-		cols.setValueLocal("dateAssigned", gradedWork.getAssignedDate());
-		cols.setValueLocal("assignedTo", 
-		CharMatcher.anyOf("[]").removeFrom(Iterators.toString(gradedWork.getAssignedTo().iterator())));
-		cols.setValueLocal("standards", 
-		CharMatcher.anyOf("[]").removeFrom(Iterators.toString(gradedWork.getStandards().iterator())));
-		return entry;
-	}
 	
-	private StudentWork recordToStudentWork(ListEntry l){
-		StudentWork sw = new StudentWork();
-		sw.setId(Longs.tryParse(l.getCustomElements().getValue("id")));
-		sw.setMediaUrl(l.getCustomElements().getValue("studentUrl"));
-		sw.setMessage(l.getCustomElements().getValue("message"));
-		sw.setRosterStudentId(Longs.tryParse(l.getCustomElements().getValue("studentId")));
-		sw.setDateTaken(l.getCustomElements().getValue("dateTaken"));
-		sw.setPointsEarned(Doubles.tryParse(l.getCustomElements().getValue("pointsEarned")));
-		sw.setStudentWorkStatus(l.getCustomElements().getValue("status"));
-		
-		return sw;	
-	}
-	
-	private ListEntry studentWorkToRecord(StudentWork sw) throws IllegalArgumentException, IllegalAccessException{
-		ListEntry listEntry = new ListEntry();
-		for(Field f: StudentWork.class.getDeclaredFields()){
-			f.setAccessible(true);
-			listEntry.getCustomElements().setValueLocal(f.getName(), f.get(sw).toString());
-		}
-		return listEntry;
-	}
 }

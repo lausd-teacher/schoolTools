@@ -1,0 +1,22 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+		<m:MaterialRow>
+			<m:MaterialColumn ui:field="studentContent">
+			<g:HTMLPanel ui:field="emptyStudentList">
+				<h3>You List Appears To Be Empty...</h3>
+				<div>It appears that you have no registered students
+				or maybe you have just registered one. In case of the latter just 
+				refresh your screen , otherwise use the bottom button to begin
+				registering student for this class.</div>
+			</g:HTMLPanel>
+				<m:MaterialCollection ui:field="studentCollection" />
+			</m:MaterialColumn>	
+		</m:MaterialRow>
+	</g:HTMLPanel>
+</ui:UiBinder> 

@@ -1,15 +1,22 @@
 package net.videmantay.server.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.Language;
 
+import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
-import com.google.gdata.data.DateTime;
+import com.googlecode.objectify.Key;
+import com.googlecode.objectify.annotation.Entity;
+import com.googlecode.objectify.annotation.Ignore;
+import com.googlecode.objectify.annotation.Index;
 
+@Entity
 public class GradedWork extends Assignment implements Serializable{
 	
 	
@@ -21,21 +28,29 @@ public class GradedWork extends Assignment implements Serializable{
 	
 	public Double pointsPossible = 0.0;
 	
-	public String assignedDate = DateTime.now().toString();
+	public String assignedDate = new DateTime(new Date()).toString();
 	
-	public String dueDate = DateTime.now().toString();
+	@Index
+	public String dueDate = new DateTime(new Date()).toString();
 	
 	public Boolean finishedGrading = false;
 	
 	public Long rubric;
 	
-	private Event event = null;
+	@Ignore
+	public Event event = null;
+	
+	@Ignore 
+	public List<StudentWork> studentWorks;
+	
+	public transient Set<Key<StudentWork>> studentWorkKeys;
+	
 	
 	/*list of students the assignemt is assigned to */
 	/* key word 'ALL' case insensitive for all */
 	/*otherwise csv of students remove [] */
 	/*consider moving to assignment */
-	public Set<String> assignedTo =new HashSet<String>();
+	public Set<Long> assignedTo =new HashSet<Long>();
 	
 	
 	public String getEventId() {
@@ -110,12 +125,12 @@ public class GradedWork extends Assignment implements Serializable{
 	}
 
 
-	public Set<String> getAssignedTo() {
+	public Set<Long> getAssignedTo() {
 		return assignedTo;
 	}
 
 
-	public void setAssignedTo(Set<String> assignedTo) {
+	public void setAssignedTo(Set<Long> assignedTo) {
 		this.assignedTo = assignedTo;
 	}
 	
@@ -125,6 +140,14 @@ public class GradedWork extends Assignment implements Serializable{
 	
 	public void setRubric(Long rubric){
 		this.rubric = rubric;
+	}
+	
+	public void setStudentWorkKeys(Set<Key<StudentWork>> studentWorks){
+		this.studentWorkKeys = studentWorks;
+	}
+	
+	public Set<Key<StudentWork>> getStudentWorkKeys(){
+		return this.studentWorkKeys;
 	}
 	
 	public String getGradedbookCol(){

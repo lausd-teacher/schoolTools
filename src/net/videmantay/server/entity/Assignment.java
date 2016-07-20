@@ -16,12 +16,13 @@ import com.googlecode.objectify.annotation.Index;
 
 public class Assignment implements Serializable {
 	
-	
-	public Long id;
+	@Id
+	public String id;
 	
 	public String title;
 	
-
+	public Long rosterId;
+	
 	public Set<String>standards = new HashSet<String>();
 	
 	public Set<GradeLevel> gradeLevels;
@@ -35,11 +36,11 @@ public class Assignment implements Serializable {
 	private Set<EducationalLink> links;
 	
 
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -89,6 +90,14 @@ public class Assignment implements Serializable {
 
 	public void setSubject(SubjectType subject) {
 		this.subject = subject;
+	}
+	
+	public Long getRosterId(){
+		return rosterId;
+	}
+	
+	public void setRosterId(Long id){
+		this.rosterId  = id;
 	}
 
 	public Set<EducationalLink> getLinks() {

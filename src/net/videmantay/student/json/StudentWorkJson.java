@@ -1,11 +1,6 @@
 package net.videmantay.student.json;
 
-import java.util.List;
-
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
-
-import net.videmantay.server.entity.StandardReview;
 import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.StudentWorkStatus;
 import net.videmantay.shared.SubjectType;

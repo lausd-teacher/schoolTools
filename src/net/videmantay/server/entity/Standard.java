@@ -9,13 +9,14 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
 
-
+@Entity
 public class Standard implements Serializable {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 9179699746226642563L;
+	@Id
 	public Long id;
 	public String standardCode;
 	public String definition;

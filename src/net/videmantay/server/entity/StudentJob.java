@@ -9,12 +9,14 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Parent;
 
+@Entity
 public class StudentJob implements Serializable{
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8098272788361413932L;
+	@Id
 	public Long id;
 	public String iconUrl;
 	public String title;

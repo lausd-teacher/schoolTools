@@ -1,8 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui"
-	xmlns:f="urn:import:org.gwtbootstrap3.extras.fullcalendar.client.ui">
+	xmlns:m="urn:import:gwt.material.design.client.ui">
 	<ui:style>
 	
 	</ui:style>

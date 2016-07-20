@@ -21,6 +21,8 @@ import com.google.api.client.util.Preconditions;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
+import com.google.api.services.sheets.v4.Sheets;
+import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.model.TaskList;
 import com.google.appengine.api.taskqueue.Queue;
@@ -123,33 +125,22 @@ File behaviorReport = spreadsheet("BehaviorReport");
 	File goalBook = spreadsheet("GoalBook");
 	goalBook.setParents(listOfP);
 	
-	
+	//rollbook cover attendance and hw
 	rollBook = drive.files().create(rollBook).execute();
+	
+	//anything with a grade (including graded hw)
 	gradeBook = drive.files().create(gradeBook).execute();
+	
 	behaviorReport = drive.files().create(behaviorReport).execute();
 	goalBook = drive.files().create(goalBook).execute();
 	
 	roster.setGradeBook(gradeBook.getId());
-	System.out.println("gradeBook id is: " + gradeBook.getId());
 	roster.setRollBook(rollBook.getId());
 	roster.setBehaviorReport(behaviorReport.getId());
 	
-	//set up the spreadsheet here
-	Queue queue = QueueFactory.getDefaultQueue();
+	Sheets sheets = GoogleUtils.sheets(cred);
 	
-	GradeBookSetup setUp = new GradeBookSetup(gradeBook.getId(), cred.getAccessToken());
-	queue.add(TaskOptions.Builder.withPayload(setUp));
-	
-	RollBookSetup rollSet = new RollBookSetup(rollBook.getId(), cred.getAccessToken());
-	queue.add(TaskOptions.Builder.withPayload(rollSet));
-	
-	GoalBookSetup goalSet = new GoalBookSetup(goalBook.getId(), cred.getAccessToken());
-	queue.add(TaskOptions.Builder.withPayload(goalSet));
-	
-	BehaviorReportSetup behaviorSetup = new BehaviorReportSetup(behaviorReport.getId(), cred.getAccessToken());
-	queue.add(TaskOptions.Builder.withPayload(behaviorSetup));
-	
-	
+
 	
 /*	//optional folders use settings
 	//only if there are any

@@ -141,5 +141,10 @@ public final static native FurnitureJson create()/*-{
 			left:"0px"};
 	
 }-*/;
+
+public final  native void nullify()/*-{
+	var $this  = this;
+	$this = null;
+	}-*/;
 	
 }

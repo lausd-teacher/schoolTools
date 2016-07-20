@@ -10,7 +10,7 @@ import com.googlecode.objectify.annotation.Index;
 
 import net.videmantay.shared.BehaviorType;
 
-
+@Entity
 public class StudentIncident implements Serializable {
 
 	/**
@@ -18,6 +18,7 @@ public class StudentIncident implements Serializable {
 	 */
 	private static final long serialVersionUID = -8576611663190914147L;
 	
+	@Id
 	public Long id;
 	
 	public Long studentId;

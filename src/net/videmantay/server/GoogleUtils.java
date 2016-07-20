@@ -22,10 +22,10 @@ import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.tasks.Tasks;
 import com.google.api.services.tasks.TasksScopes;
+import com.google.api.services.sheets.v4.Sheets;
+import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.gdata.client.contacts.ContactsService;
-import com.google.gdata.client.spreadsheet.SpreadsheetService;
-import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
-import com.google.gdata.data.spreadsheet.SpreadsheetFeed;
+
 
 public class GoogleUtils {
 	private GoogleUtils(){}
@@ -38,7 +38,6 @@ public class GoogleUtils {
 	public final static AppEngineDataStoreFactory dataStoreFactory = AppEngineDataStoreFactory.getDefaultInstance();
 	
 	public final static String ContactsScope = "https://www.google.com/m8/feeds";
-	public final static String SheetsScope = "https://spreadsheets.google.com/feeds";
 	public final static String UserScope ="https://www.googleapis.com/auth/userinfo.email";
 	public final static String PhotoScope ="https://www.googleapis.com/auth/photos";
 	public final static String PhotoUploadScope ="https://www.googleapis.com/auth/photos.upload";
@@ -52,7 +51,7 @@ public class GoogleUtils {
 		scopes.add(CalendarScopes.CALENDAR);
 		scopes.add(TasksScopes.TASKS);
 		scopes.add(ContactsScope);
-		scopes.add(SheetsScope);
+		scopes.add(SheetsScopes.SPREADSHEETS);
 		scopes.add(UserScope);
 		scopes.add(PhotoScope);
 		scopes.add(PhotoUploadScope);
@@ -68,6 +67,14 @@ public class GoogleUtils {
 		return flow;	
 	}
 	
+	public static Credential cred(String userId) throws IOException{
+		final Credential credential = authFlow(userId).loadCredential(userId);
+		if(credential.getExpiresInSeconds() < 1800){
+			credential.refreshToken();
+		}
+		return credential;
+	}
+	
 	public static Drive drive(Credential cred){
 		return new Drive.Builder(transport , jsonFactory, cred).setApplicationName(applicationName).build();
 	}
@@ -80,10 +87,9 @@ public class GoogleUtils {
 		return new Calendar.Builder(transport , jsonFactory, cred).setApplicationName(applicationName).build();
 	}
 	
-	public static SpreadsheetService sheets(Credential cred){
-		SpreadsheetService sheets = new SpreadsheetService(applicationName);
-		sheets.setOAuth2Credentials(cred);
-		return sheets;
+	public static Sheets sheets(Credential cred){
+		return new Sheets.Builder(transport, jsonFactory, cred).setApplicationName(applicationName).build();
+		
 	}
 	
 	public static ContactsService contacts(Credential cred){
@@ -100,31 +106,11 @@ public class GoogleUtils {
 	}
 	
 	
-	
 	public static File spreadsheet(String title){
-		File folder = new File().setMimeType("application/vnd.google-apps.spreadsheet").setName(title);
-		return folder;
+		File spreadsheet = new File().setMimeType("application/vnd.google-apps.spreadsheet").setName(title);
+		return spreadsheet;
 	}
 	
-
-	
-	public static SpreadsheetEntry spreadsheetById(SpreadsheetFeed feed, String sheetId){
-		List<SpreadsheetEntry> list = feed.getEntries();
-		for(SpreadsheetEntry s: list){
-			if(s.getKey().equals(sheetId)){
-				return s;
-				
-			}
-		}
-		return null;
-		
-	}
-	
-
-	
-	public static URL spreadsheetURL() throws MalformedURLException{
-		return new URL(SheetsScope +"/spreadsheets/private/full/");	
-	}
 	public static String redirectUri(HttpServletRequest req) {
 	    GenericUrl url = new GenericUrl(req.getRequestURL().toString());
 	    url.setRawPath("/oauth2callback");

@@ -6,19 +6,32 @@ import com.google.gwt.core.client.JsArrayString;
 
 import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.Language;
-import net.videmantay.student.json.EventJson;
+import net.videmantay.shared.json.EventJson;
 
 public class GradedWorkJson extends AssignmentJson {
 
-	protected GradedWorkJson(){}
+	protected GradedWorkJson(){
+		JsArrayString assignTo = JsArrayString.createArray().cast();
+		assignTo.push("ALL");
+		this.setAssignedTo(assignTo);
+	}
 	
+	public final native Long getRosterId()/*-{
+			return this.rosterId;
+		}-*/;
+	
+	public final native GradedWorkJson setRosterId(Long rosterId)/*-{
+			this.rosterId = rosterId;
+			return this;
+	}-*/;
 	public final native String  getEventId()/*-{
 		return this.eventId;
 	}-*/;
 
 
-	public final native void setEventId(String googleCalEventId)/*-{
+	public final native GradedWorkJson setEventId(String googleCalEventId)/*-{
 		this.eventId = googleCalEventId;
+		return this;
 	}-*/;
 
 
@@ -27,16 +40,18 @@ public class GradedWorkJson extends AssignmentJson {
 	}-*/;
 
 
-	public final native void setGradedWorkType(GradedWorkType gradedWorkType) /*-{
+	public final native GradedWorkJson setGradedWorkType(GradedWorkType gradedWorkType) /*-{
 		this.gradedWorkType = gradedWorkType;
+		return this;
 	}-*/;
 	
 	public final native Double getPointsPossible()/*-{
 		return this.pointsPossible;
 	}-*/;
 	
-	public final native void setPointsPossible(Double pointsPossible)/*-{
+	public final native GradedWorkJson setPointsPossible(Double pointsPossible)/*-{
 		this.pointsPossible = pointsPossible;
+		return this;
 	}-*/;
 
 
@@ -45,8 +60,9 @@ public class GradedWorkJson extends AssignmentJson {
 	}-*/;
 
 
-	public final native void setLang(Language lang) /*-{
+	public final native GradedWorkJson setLang(Language lang) /*-{
 		this.lang = lang;
+		return this;
 	}-*/;
 
 

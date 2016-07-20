@@ -18,9 +18,6 @@ import net.videmantay.admin.json.AppUserJson;
 
 import static com.google.gwt.query.client.GQuery.*;
 
-import org.gwtbootstrap3.extras.animate.client.ui.Animate;
-import org.gwtbootstrap3.extras.animate.client.ui.constants.Animation;
-
 import com.google.gwt.query.client.*;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 
@@ -88,8 +85,7 @@ public class AdminMain extends Composite {
 			@Override
 			public void f(){
 				if(form.hasErrors()){
-					Animate.animate(form, Animation.SHAKE);
-					Animate.removeAnimationOnEnd(form, "shake");
+					//TODO: show errores
 				}else{
 					String user = JsonUtils.stringify(form.submit());
 					
