@@ -3,14 +3,14 @@ package net.videmantay.server.entity;
 import java.io.Serializable;
 
 public class Occupant implements Serializable {
-	
+
 	public String firstName;
 	public String lastName;
 	public String pic;
 	public String id;
 	public String seatId;
 	public OccupantType type;
-	
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -59,6 +59,8 @@ public class Occupant implements Serializable {
 		this.type = type;
 	}
 
-	enum OccupantType{STUDENT, FACULTY};
+	enum OccupantType {
+		STUDENT, FACULTY
+	};
 
 }
