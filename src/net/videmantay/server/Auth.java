@@ -1,8 +1,7 @@
 package net.videmantay.server;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,63 +10,53 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.appengine.auth.oauth2.AbstractAppEngineAuthorizationCodeServlet;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.http.GenericUrl;
-import com.google.api.services.drive.DriveScopes;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.gson.Gson;
-
-import freemarker.template.TemplateException;
-import net.videmantay.server.user.AppUser;
 
 public class Auth extends AbstractAppEngineAuthorizationCodeServlet {
+
+	private final Logger log = Logger.getLogger(Auth.class.getName());
+
 	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse res)throws IOException, ServletException{
-		User user = UserServiceFactory.getUserService().getCurrentUser();
-		if(user == null || !UserServiceFactory.getUserService().isUserLoggedIn()){
-			UserServiceFactory.getUserService().createLoginURL("/test");
-		}
-		
-		AuthorizationCodeFlow auth =  initializeFlow();
-		Credential cred = 	auth.loadCredential(UserServiceFactory.getUserService().getCurrentUser().getUserId());
-		if(cred == null || !cred.refreshToken()){
-			res.sendRedirect(auth.newAuthorizationUrl().build());
-		}
-		
-		Gson gson = new Gson();
-		
-		
-		AppUser appUser = new AppUser();
-		appUser.setAcctId(UserServiceFactory.getUserService().getCurrentUser().getEmail());
-		try{
-		appUser.setAuthToken(cred.getAccessToken());
-		}catch(NullPointerException npe){
-			res.sendRedirect(auth.newAuthorizationUrl().build());
-		}
-		HashMap<String , Object> root =new HashMap<String, Object>();
-		root.put("appUser",gson.toJson(appUser) );
-		try {
-			TemplateGen.config().getTemplate("/WEB-INF/html/roster.html").process(root, res.getWriter());
-		} catch (TemplateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+		checkCreds(req, res);
+		log.info("supposed to checking creds...");
 	}
 
 	@Override
-	protected String getRedirectUri(HttpServletRequest req)
-			throws ServletException, IOException {
-		  GenericUrl url = new GenericUrl(req.getRequestURL().toString());
-		    url.setRawPath("/oauth2callback");
-		    return url.build();
+	public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+		checkCreds(req, res);
+		log.info("supposed to checking creds...");
+	}
+
+	private void checkCreds(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+		log.info("Checking creds...");
+		User user = UserServiceFactory.getUserService().getCurrentUser();
+
+		if (user == null) {
+			res.sendRedirect("/login");
+			return;
+		}
+		Credential cred = GoogleUtils.cred(user.getUserId());
+		if (cred == null || cred.getExpiresInSeconds() < 1800) {
+			log.info("initializing the auth flow");
+			initializeFlow();
+		} else {
+			res.sendRedirect(req.getRequestURI());
+			return;
+		}
 	}
 
 	@Override
-	protected AuthorizationCodeFlow initializeFlow() throws ServletException,
-			IOException {
+	protected String getRedirectUri(HttpServletRequest req) throws ServletException, IOException {
+		return GoogleUtils.redirectUri(req);
+	}
+
+	@Override
+	protected AuthorizationCodeFlow initializeFlow() throws ServletException, IOException {
 		User user = UserServiceFactory.getUserService().getCurrentUser();
-		return GoogleUtils.authFlow(user.getUserId());	}
+		String userId = user.getUserId();
+		return GoogleUtils.authFlow(userId);
+	}
 
 }

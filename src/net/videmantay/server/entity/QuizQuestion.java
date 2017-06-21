@@ -4,20 +4,17 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import com.google.appengine.api.datastore.Key;
-import com.googlecode.objectify.Ref;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
-
 @Entity
-public abstract class QuizQuestion implements Serializable{
-	
+public abstract class QuizQuestion implements Serializable {
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5659584459936842149L;
-	
+
 	public Date createOn;
 	public String createdBy;
 	public Date lastUpdate;
@@ -31,8 +28,10 @@ public abstract class QuizQuestion implements Serializable{
 	public String explanation;
 	public String correctAnswer;
 	public String testerResponse;
-	
-	enum QuestionType{MULTIPLE_ANSWER, SINGLE_ANSWER, TRUE_FALSE, TEXT_ANSWER,MATCHING }
+
+	enum QuestionType {
+		MULTIPLE_ANSWER, SINGLE_ANSWER, TRUE_FALSE, TEXT_ANSWER, MATCHING
+	}
 
 	public Date getCreateOn() {
 		return createOn;
@@ -117,5 +116,5 @@ public abstract class QuizQuestion implements Serializable{
 	public void setAnswerKey(String correctAnswer) {
 		this.correctAnswer = correctAnswer;
 	};
-	
+
 }

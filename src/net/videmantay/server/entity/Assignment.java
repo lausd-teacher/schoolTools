@@ -4,43 +4,44 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.videmantay.server.user.DBObj;
-import net.videmantay.shared.GradeLevel;
-import net.videmantay.shared.SubjectType;
+import org.hibernate.validator.constraints.SafeHtml;
 
-import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
-
+import net.videmantay.server.constant.GradeLevel;
+import net.videmantay.server.constant.SubjectType;
 
 public class Assignment implements Serializable {
-	
-	@Id
-	public String id;
-	
-	public String title;
-	
-	public Long rosterId;
-	
-	public Set<String>standards = new HashSet<String>();
-	
-	public Set<GradeLevel> gradeLevels;
-	
-	public String mediaUrl;
-	
-	public String description;
-	
-	public SubjectType subject;
-	
-	private Set<EducationalLink> links;
-	
 
-	public String getId() {
+	@Id
+	public Long id;
+
+	@SafeHtml
+	public String title;
+
+	@Index
+	public Long rosterId;
+
+	public Set<String> standards = new HashSet<String>();
+
+	public Set<GradeLevel> gradeLevels;
+
+	@SafeHtml
+	public String mediaUrl;
+
+	@SafeHtml
+	public String description;
+
+	public SubjectType subject;
+
+	private Set<EducationalLink> links;
+
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -91,13 +92,13 @@ public class Assignment implements Serializable {
 	public void setSubject(SubjectType subject) {
 		this.subject = subject;
 	}
-	
-	public Long getRosterId(){
+
+	public Long getRosterId() {
 		return rosterId;
 	}
-	
-	public void setRosterId(Long id){
-		this.rosterId  = id;
+
+	public void setRosterId(Long id) {
+		this.rosterId = id;
 	}
 
 	public Set<EducationalLink> getLinks() {
@@ -107,5 +108,5 @@ public class Assignment implements Serializable {
 	public void setLinks(Set<EducationalLink> links) {
 		this.links = links;
 	}
-	
+
 }

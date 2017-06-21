@@ -9,10 +9,8 @@ import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 import com.googlecode.objectify.annotation.Parent;
 
-import net.videmantay.server.user.Roster;
-
-@Entity 
-public class Showcase implements Serializable{
+@Entity
+public class Showcase implements Serializable {
 
 	/**
 	 * 
@@ -21,25 +19,25 @@ public class Showcase implements Serializable{
 
 	@Id
 	private Long id;
-	
+
 	@Parent
 	Key<Roster> rosterKey;
-	
+
 	@Index
 	private String studentId;
-	
+
 	private String url;
-	
+
 	private String description;
-	
+
 	private String iconUrl;
-	
+
 	@Index
 	private Date createdOn;
-	
+
 	@Index
 	private String showcaseGroup;
-	
+
 	private String title;
 
 	public Key<Roster> getRosterKey() {
@@ -109,5 +107,5 @@ public class Showcase implements Serializable{
 	public Long getId() {
 		return id;
 	}
-	
+
 }

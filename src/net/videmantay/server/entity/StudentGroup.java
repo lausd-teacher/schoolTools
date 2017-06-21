@@ -3,34 +3,25 @@ package net.videmantay.server.entity;
 import java.io.Serializable;
 import java.util.Set;
 
-import com.google.api.services.tasks.model.Tasks;
-import com.googlecode.objectify.Key;
-import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Ignore;
-import com.googlecode.objectify.annotation.Parent;
+import net.videmantay.server.constant.GroupingType;
 
-import net.videmantay.shared.GroupingType;
+public class StudentGroup implements Serializable {
 
-
-
-public class StudentGroup implements Serializable{
-	
-	
 	public Long id;
-	
+
 	public String title;
-	
+
 	public String objective;
-	
+
 	public GroupingType type;
-	
+
 	public String backGroundColor;
-	
+
 	public String textColor;
-	
+
 	public String borderColor;
-	
-	public Set<String> students;
+
+	public Set<String> studentIds;
 
 	public Long getId() {
 		return id;
@@ -89,11 +80,11 @@ public class StudentGroup implements Serializable{
 	}
 
 	public Set<String> getStudents() {
-		return students;
+		return studentIds;
 	}
 
 	public void setStudents(Set<String> students) {
-		this.students = students;
+		this.studentIds = students;
 	}
-	
+
 }

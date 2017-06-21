@@ -12,6 +12,5 @@ public class QuizResult implements Serializable {
 	public int incorrectAnswers;
 	public int attempt;
 	public String date;
-	
-	
+
 }
