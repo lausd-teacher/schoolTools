@@ -3,12 +3,16 @@ package net.videmantay.roster;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 
+import gwt.material.design.client.constants.ButtonSize;
+import gwt.material.design.client.constants.ButtonType;
+import gwt.material.design.client.constants.Color;
+import gwt.material.design.client.constants.IconType;
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialColumn;
-import gwt.material.design.client.ui.MaterialLink;
+import gwt.material.design.client.ui.MaterialFAB;
+import gwt.material.design.client.ui.MaterialFABList;
 import gwt.material.design.client.ui.MaterialPanel;
 import gwt.material.design.client.ui.MaterialRow;
-import gwt.material.design.client.ui.MaterialSideNav;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.student.FistNameCompare;
 import net.videmantay.roster.student.LastNameCompare;
@@ -19,22 +23,27 @@ import static com.google.gwt.query.client.GQuery.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import com.google.gwt.core.client.JsArray;
-import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.query.client.Function;
-import com.google.gwt.uibinder.client.UiField;
 
 
 public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 
 	
 	private final MaterialPanel mainPanel = new MaterialPanel();
-	private final RosterJson roster = window.getPropertyJSO("roster").cast();
-	private final JsArray<RosterStudentJson> students = roster.getRosterStudents();
+	private final RosterJson roster;
+	private final JsArray<RosterStudentJson> students;
 	private final ArrayList<RosterStudentJson> studentList = new ArrayList<RosterStudentJson>();
 	private boolean sortByFirst=true;
+	//create fab
+	MaterialFAB fab = new MaterialFAB();
+	MaterialAnchorButton fabBtn = new MaterialAnchorButton();
+	MaterialFABList fabList = new MaterialFABList();
+	MaterialAnchorButton addStudentBtn = new MaterialAnchorButton();
+	MaterialAnchorButton addAssignmentBtn = new MaterialAnchorButton();
 	
-	public ClassroomGrid(){
+	public ClassroomGrid(RosterJson ros){
+		roster = ros;
+		students = roster.getRosterStudents();
+		
 		this.initWidget(mainPanel);
 		if(students.length() <= 0){
 			showEmpty();
@@ -44,6 +53,29 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 		}
 		drawGrid(sortByFirst);
 		}//end if else	
+		//do fab
+		fabBtn.setIconType(IconType.ADD);
+		fabBtn.setIconColor(Color.WHITE);
+		fabBtn.setBackgroundColor(Color.RED_DARKEN_4);
+		fabBtn.setSize(ButtonSize.LARGE);
+		fabBtn.setType(ButtonType.FLOATING);
+		
+		addStudentBtn.setIconType(IconType.SCHOOL);
+		addStudentBtn.setSize(ButtonSize.MEDIUM);
+		addStudentBtn.setType(ButtonType.FLOATING);
+		addStudentBtn.setIconColor(Color.WHITE);
+		
+		addAssignmentBtn.setIconColor(Color.WHITE);
+		addAssignmentBtn.setIconType(IconType.ASSIGNMENT);
+		addAssignmentBtn.setSize(ButtonSize.MEDIUM);
+		addAssignmentBtn.setType(ButtonType.FLOATING);
+		
+		
+		fab.add(fabBtn);
+		fab.add(fabList);
+		fabList.add(addStudentBtn);
+		fabList.add(addAssignmentBtn);
+		mainPanel.add(fab);
 	}
 	
 	@Override

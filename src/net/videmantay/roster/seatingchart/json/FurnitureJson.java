@@ -3,7 +3,6 @@ package net.videmantay.roster.seatingchart.json;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
-import net.videmantay.roster.seatingchart.FurnitureType;
 import net.videmantay.shared.DeskKind;
 
 public class FurnitureJson extends JavaScriptObject {

@@ -4,38 +4,67 @@
 	xmlns:m="urn:import:gwt.material.design.client.ui"
 	xmlns:p="urn:import:com.floreysoft.gwt.picker.client.domain">
 	<ui:style>
-	
+		.centered{
+			margin-left:47.5% !important;
+			margin-right:50% !important;
+			position:relative !important;
+	}
 	</ui:style>
 	<g:HTMLPanel>
-	<m:MaterialModal ui:field="modal">
-		<m:MaterialModalContent ui:field="modalContent">
-		<g:FormPanel ui:field="form">
+	<m:MaterialModal ui:field="studentFormPanel" >
+		<m:MaterialModalContent ui:field="modalContent" height="90%">
+			<g:FormPanel ui:field="form">
 			<g:HTMLPanel>
-			<m:MaterialRow>
-				<m:MaterialColumn>
-					<m:MaterialImage ui:field="studentImg" type="CIRCLE"/>
-					<m:html.Br/>
-					<m:MaterialLabel ui:field="imgUrl" />
-				</m:MaterialColumn>
-				<m:MaterialColumn>
-					<m:MaterialButton ui:field="pickerButton" text="Upload"/>
+			<m:MaterialTab>
+				<m:MaterialTabItem><m:MaterialLink href="#studentFormProfTab" text="Profile" /></m:MaterialTabItem>
+				<m:MaterialTabItem><m:MaterialLink href="#studentFormSummaryTab" text="Summary"/></m:MaterialTabItem>
+				<m:MaterialTabItem><m:MaterialLink href="#studentFormDetailTab" text="Details"/></m:MaterialTabItem>
+				<m:MaterialTabItem><m:MaterialLink href="#studentFormIEPTab" text="IEP"/></m:MaterialTabItem>
+			</m:MaterialTab>
+			<div id="studentFormProfTab">
+			<m:MaterialRow marginTop="10">
+				<m:MaterialColumn grid="s12" padding="5" addStyleNames="${style.centered}">
+					<m:MaterialCard>
+					<m:MaterialCardContent>
+					<m:MaterialImage  ui:field="studentImg" type="CIRCLE"  width="150px" height="150px" addStyleNames="${style.centered}"
+					url="https://image.freepik.com/free-icon/user-image-with-black-background_318-34564.jpg"/>
+					</m:MaterialCardContent>
+					</m:MaterialCard>
+					<m:MaterialButton ui:field="pickerButton" marginTop="5"  marginLeft="5" type="FLOATING" iconType="PHOTO_CAMERA"/>
 				</m:MaterialColumn>
 			</m:MaterialRow>
-				<m:MaterialRow>
-					<m:MaterialTextBox ui:field="schoolEmail" placeholder="school email"></m:MaterialTextBox>
-				</m:MaterialRow>
-				<m:MaterialRow>
-					<m:MaterialTextBox ui:field="firstName" placeholder="First Name"></m:MaterialTextBox>
-				</m:MaterialRow>
-				<m:MaterialRow>
-					<m:MaterialTextBox ui:field="lastName" placeholder="Last Name"></m:MaterialTextBox>
-				</m:MaterialRow>
-				<m:MaterialRow>
-					<m:MaterialTextBox ui:field="extName" placeholder ="Extended Name"></m:MaterialTextBox>
-				</m:MaterialRow>
-				<m:MaterialRow>
+			<m:MaterialRow marginTop="3" padding="5">
+					<m:MaterialTextBox ui:field="schoolEmail" label="school email"></m:MaterialTextBox>
+				
+					<m:MaterialTextBox ui:field="firstName" label="First Name"></m:MaterialTextBox>
+				
+					<m:MaterialTextBox ui:field="lastName" label="Last Name"></m:MaterialTextBox>
+				
 					<m:MaterialDatePicker ui:field="DOB" placeholder="D.O.B"></m:MaterialDatePicker>
+					<m:MaterialButton iconType="PERSON" type="FLAT" ui:field="inactive"  text="Active" textColor="GREY_DARKEN_1"/>
 				</m:MaterialRow>
+				</div>
+				<div id="studentFormSummaryTab">
+					<m:MaterialTextArea ui:field="currentSummary" label="Student Summary"></m:MaterialTextArea>
+				</div>
+				<div id="studentFormDetailTab">
+						<m:MaterialDatePicker placeholder="Date entered" ui:field="eDate"></m:MaterialDatePicker>
+						<m:MaterialCheckBox text="Wears glasses" ui:field="glasses"/>
+						<m:MaterialTextBox label="Home Language" ui:field="homeLang" />
+						<m:MaterialTextBox label="Reading Level" ui:field="readingLevel"/>
+						<m:MaterialTextBox label="ELD Level" ui:field="eldLevel" />
+				</div>
+				<div id="studentFormIEPTab">
+					<m:MaterialCheckBox ui:field="iep" text="Has IEP" />
+					<div ui:field="modificationPanel">
+					<m:MaterialLabel text="Modifications:" />
+					<m:MaterialCollection ui:field="modifications"/>
+					</div>
+					<div ui:field="emptyMods" style="padding:3em">
+						<span>There are no modifications in place for this student.</span>
+					</div>
+					<m:MaterialButton  ui:field="addModBtn" type="FLOATING" iconType="ADD" backgroundColor="GREY"  addStyleNames="${style.centered}"/>
+				</div>
 				</g:HTMLPanel>
 			</g:FormPanel>
 		</m:MaterialModalContent>

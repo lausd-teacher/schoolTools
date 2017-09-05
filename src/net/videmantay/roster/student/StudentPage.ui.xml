@@ -1,56 +1,88 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui">
 	<g:HTMLPanel>
-		<m:MaterialPanel>
-			<m:MaterialRow>
-				<m:MaterialColumn><m:MaterialLabel text="RemoveStudent" /><m:MaterialIcon iconType="REMOVE"/></m:MaterialColumn>
-				<m:MaterialColumn><m:MaterialLabel ui:field="studentViewLabel" text="View as Student" /></m:MaterialColumn>
-			</m:MaterialRow>
-		</m:MaterialPanel>
 		<m:MaterialRow>
 			<m:MaterialColumn>
-				<m:MaterialPanel ui:field="studentProfPanel">
-					<g:HTMLPanel>
-						<m:MaterialIcon ui:field="studentEditIcon" iconType="EDIT"/>
-						<table>
-							<tbody>
-								<tr><th><m:MaterialImage ui:field="stuImage" /></th></tr>
-								<tr><td><div>
-										<span ui:field="firstName"></span><br/>
-										<span ui:field="lastName"/><br/>
-										<span ui:field="extName"/><br/>
-										<span ui:field="DOB" /><br/>
-								</div></td></tr>
-							</tbody>
-						</table>
-					</g:HTMLPanel>
-				</m:MaterialPanel>
+				<m:MaterialCard>
+					<m:MaterialCardContent>
+						<g:HTMLPanel>
+							<m:MaterialCard ui:field="studentProfPanel"> 
+								<m:MaterialCardContent>
+									<g:HTMLPanel >
+										<m:MaterialAnchorButton type="FLAT"
+											activates="studentmore" ui:field="studentEditIcon" iconType="MORE_VERT" />
+										<m:MaterialDropDown activator="studentmore">
+											<m:MaterialLink text="Edit" iconType="EDIT" />
+											<m:MaterialLink text="Delte" iconType="REMOVE" />
+											<m:MaterialLink ui:field="activeStudentLink" />
+										</m:MaterialDropDown>
+										<m:html.Hr />
+										<table>
+											<tbody>
+												<tr>
+													<th>
+														<m:MaterialImage ui:field="stuImage" />
+													</th>
+												</tr>
+												<tr>
+													<td>
+														<div>
+															<span ui:field="firstName"></span>
+															<br />
+															<span ui:field="lastName" />
+															<br />
+															<span ui:field="extName" />
+															<br />
+															<span ui:field="DOB" />
+															<br />
+														</div>
+													</td>
+												</tr>
+												<tr><!-- summary -->
+													<td> 
+														<div ui:field="studentSummaryPanel"> 
+															<m:MaterialLabel text="Summary"/>
+															<span ui:field="summary"></span>
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										<m:html.Hr />
+									</g:HTMLPanel>
+								</m:MaterialCardContent>
+							</m:MaterialCard>
+							<br />
+								
+						</g:HTMLPanel>
+					</m:MaterialCardContent>
+				</m:MaterialCard>
 			</m:MaterialColumn>
 			<m:MaterialColumn>
-			<!-- Alphabetize the row for easy  -->
-			<m:MaterialRow ui:field="assignmentRow">
+				<!-- Alphabetize the row for easy -->
+				<m:MaterialRow ui:field="assignmentRow">
 					<m:MaterialPanel>
 						<m:MaterialCard>
-							<m:MaterialCardTitle text="Assignments"></m:MaterialCardTitle>
+							<m:MaterialCardTitle text="Assignments" iconType="ASSIGNMENT"></m:MaterialCardTitle>
 							<m:MaterialCardContent></m:MaterialCardContent>
 						</m:MaterialCard>
 					</m:MaterialPanel>
 				</m:MaterialRow>
-			<m:MaterialRow ui:field="attendanceRow">
+				<m:MaterialRow ui:field="attendanceRow">
 					<m:MaterialPanel>
 						<m:MaterialCard>
-							<m:MaterialCardTitle text="Attendance" iconType="EVENT">
+							<m:MaterialCardTitle text="Attendance"
+								iconType="ASSIGNMENT_IND">
 							</m:MaterialCardTitle>
 							<m:MaterialCardContent></m:MaterialCardContent>
 						</m:MaterialCard>
 					</m:MaterialPanel>
 				</m:MaterialRow>
-				<m:MaterialRow ui:field="behaviorRow">
+				<m:MaterialRow ui:field="incidentRow">
 					<m:MaterialPanel>
 						<m:MaterialCard>
-							<m:MaterialCardTitle text="Behavior Report"></m:MaterialCardTitle>
+							<m:MaterialCardTitle text="Incidents" iconType="FEEDBACK"></m:MaterialCardTitle>
 							<m:MaterialCardContent></m:MaterialCardContent>
 						</m:MaterialCard>
 					</m:MaterialPanel>
@@ -58,7 +90,7 @@
 				<m:MaterialRow ui:field="goalRow">
 					<m:MaterialPanel>
 						<m:MaterialCard>
-							<m:MaterialCardTitle text="Goals"></m:MaterialCardTitle>
+							<m:MaterialCardTitle text="Goals" iconType="TRENDING_UP"></m:MaterialCardTitle>
 							<m:MaterialCardContent></m:MaterialCardContent>
 						</m:MaterialCard>
 					</m:MaterialPanel>
@@ -75,7 +107,7 @@
 				<m:MaterialRow ui:field="jobRow">
 					<m:MaterialPanel>
 						<m:MaterialCard>
-							<m:MaterialCardTitle text="Jobs"></m:MaterialCardTitle>
+							<m:MaterialCardTitle text="Jobs" iconType="BUSINESS_CENTER"></m:MaterialCardTitle>
 							<m:MaterialCardContent></m:MaterialCardContent>
 						</m:MaterialCard>
 					</m:MaterialPanel>

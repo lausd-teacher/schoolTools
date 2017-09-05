@@ -35,33 +35,24 @@ public class StudentPage extends Composite {
 	@UiField
 	MaterialImage stuImage;
 	
-	private  StudentPage $this;
 	
 	private  RosterStudentJson student;
 	
 	public StudentPage() {
 		initWidget(uiBinder.createAndBindUi(this));
-		$this = this;
 	}
 	
 	public StudentPage(Long id){
 		this();
-		this.setStudent(id);
 	}
 	
 	public void setStudent(Long id){
-		JsArray<RosterStudentJson> stu = ((RosterJson)window.getPropertyJSO("roster")).getRosterStudents();
-		for(int i =0; i< stu.length(); i++){
-			if(stu.get(i).getId() == id){
-				student = stu.get(i);
-				break;
-			}
-		}
+		
 	}
 	
 	@Override
 	public void onUnload(){
-		$this = null;
+
 	}
 
 }

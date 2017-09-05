@@ -144,7 +144,8 @@ public class Selectable extends UiWidget<Selectable, Selectable.Options> {
    */
   private static class SelectablePlugin implements UiPlugin<Selectable> {
 
-    public Selectable init(Ui ui, WidgetOptions<?> options) {
+    @Override
+	public Selectable init(Ui ui, WidgetOptions<?> options) {
       return new Selectable(ui, (Selectable.Options) options.cast());
     }
 

@@ -1,19 +1,12 @@
 package net.videmantay.roster;
 
-import com.google.common.primitives.Ints;
-import com.google.common.primitives.Longs;
+
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArray;
-import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
-import com.google.gwt.query.client.Function;
-import com.google.gwt.query.client.Properties;
-import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
@@ -23,10 +16,7 @@ import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialNavBrand;
 import gwt.material.design.client.ui.MaterialSideNav;
 import net.videmantay.roster.assignment.GradedWorkMain;
-import net.videmantay.roster.json.RosterJson;
-import net.videmantay.roster.seatingchart.json.ClassTimeJson;
 import net.videmantay.roster.student.RosterStudentMain;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.gwt.query.client.GQuery.*;
@@ -68,7 +58,7 @@ public class ClassroomMain extends Composite{
 	MaterialLink goalLink;
 	
 	@UiField
-	MaterialLink classTimeLink;
+	MaterialLink routineLink;
 	
 	@UiField
 	MaterialLink lessonPlanLink;
@@ -78,11 +68,12 @@ public class ClassroomMain extends Composite{
 	
 	//end side nav links/////////
 		
-	private  RosterJson classRoster;
+	private final Factory factory;
 	
 	
-	
-	public ClassroomMain() {
+	public ClassroomMain(Factory fac) {
+		this.factory = fac;
+		
 		this.initWidget(uiBinder.createAndBindUi(this));
 		//classroom.setId("classroom");
 			$this = this;
@@ -91,7 +82,7 @@ public class ClassroomMain extends Composite{
 
 				@Override
 				public void onClick(ClickEvent event) {
-					History.newItem("roster/" + classRoster.getId());
+					History.newItem("classroom/");
 					sideNav.hide();
 				}
 				
@@ -101,7 +92,8 @@ public class ClassroomMain extends Composite{
 			@Override
 			public void onClick(ClickEvent event) {
 				
-				History.newItem("roster/" + classRoster.getId() +"/students");
+				History.newItem("classroom/students");
+				studentView();
 				sideNav.hide();
 				
 			}});
@@ -110,101 +102,25 @@ public class ClassroomMain extends Composite{
 
 				@Override
 				public void onClick(ClickEvent event) {
-					History.newItem("roster/" + classRoster.getId() +"/assignments");
+					History.newItem("roster/assignments");
 					sideNav.hide();
 					
 				}});
 		// End set up Side nav Links///////////////////
 			
-			$(body).on("setclasstime", new Function(){
-						@Override
-						public  boolean f(Event e, Object... o){
-							Properties p= (Properties) o[0];
-							int index = Ints.tryParse(p.getStr("data-index"));
-							RosterJson  roster = window.getPropertyJSO("roster").cast();
-							ClassTimeJson 	classTime = roster.getClassTimes().get(index);
-							$this.setClasstime(classTime);
-							
-							
-							return true;
-						}
-			});
+			
 		
 	}
 	
 
-	
-	public void setClassroom(final ArrayList<String> token){
-		console.log("set classroom called");
-		//need this to hold path
-		final ArrayList<String> path = new ArrayList<String>();
-		//parse the path to get the roster id
-		Long id = Longs.tryParse(token.get(1));
-		console.log("The roster's id is " + id);
-		if(id == null){
-			History.back();
-		}
-		
-		if($this.getRosterId() == null ||id != $this.getRosterId()){
-			console.log("Roster ajax called made from classroom main");
-			//Asyncall to get my roster with id of id
-			//setView must be called after roster is set
-			Ajax.post(RosterUrl.GET_ROSTER, $$("roster:" + id))
-			.done( new Function(){
-					@Override
-					public void f(){
-						classRoster = JsonUtils.safeEval((String) this.arguments(0)).cast();
-						rosterTitle.setText(classRoster.getTitle());
-						window.setPropertyJSO("roster", classRoster);
-						setClasstime(classRoster.getClassTimes().get(0));
-						
-							if(token.size()>= 3){
-							 path.addAll(token.subList(2, token.size()));
-
-							 setView(path);
-							}else{dashboardView();}
-						
-					}
-			});}else{
-					//no need to wait for id to load view just doit
-					//need to check that classtime is set if not get default
-				if(window.getPropertyJSO("classtime") == null){
-					console.log("classTime was null is called");
-					window.setPropertyJSO("classtime", classRoster.getClassTimes().get(0));
-				}
-						if(token.size()>= 3){
-					 path.addAll(token.subList(2, token.size()));
-					 //classtime may have been set
-					 
-					 setView(path);
-					}else{dashboardView();}
-						}// end else roster will be here
-	}
-	
-	private void setView(List<String> path){
-		
-		switch(path.get(0)){
-		case "students":studentView(path); break;
-		case "groups": groupView(path);break;
-		case "assignments":assignmentView(path); break;
-		case "behaviors":behaviorView(path); break;
-		case "jobs": jobView(path);break;
-		case "goals":goalView(path); break;
-		default: dashboardView();
-		}
-	}
 	
 	private void dashboardView(){
 		console.log("classmain dashboard called");
-		if(mainPanel.getWidget(0) instanceof RosterDashboardPanel){
-			console.log("Main panel had instance of roster dashboard already");
-			return;
-		}
 		mainPanel.clear();
-		mainPanel.add(new RosterDashboardPanel());
+		mainPanel.add(new DashboardPanel(factory.roster));
 		sideNav.hide();
 	}
-	private void studentView(final List<String>path){
+	private void studentView(){
 		
 		GWT.runAsync(new RunAsyncCallback(){
 
@@ -216,15 +132,9 @@ public class ClassroomMain extends Composite{
 
 			@Override
 			public void onSuccess() {
-				RosterStudentMain studentMain = new RosterStudentMain();
-				switch(path.size()){
-				case 1: mainPanel.clear();mainPanel.add(studentMain); break;
-				
-				//rosterStudent main must handle the view of students
-				case 2: mainPanel.clear();
-				mainPanel.add(studentMain.setStudent(Longs.tryParse(path.get(1))));break;
-				}
-				
+				RosterStudentMain studentMain = new RosterStudentMain(factory.roster.getRosterStudents());
+				mainPanel.clear();mainPanel.add(studentMain); 
+				//use the path to get student id and have that student selected
 			}});
 		
 	}
@@ -265,19 +175,11 @@ public class ClassroomMain extends Composite{
 	private void goalView(List<String> path){
 	
 }
+	
+	@Override
+	public void onLoad(){
+		//TODO: history control
+		dashboardView();
+	}
 
-	
-	private void setClasstime(ClassTimeJson classTime){
-		window.setPropertyJSO("classtime", classTime);
-		
-	}
-	
-	public Long getRosterId(){
-		if(classRoster == null){
-			return null;
-		}
-			return classRoster.getId();
-			
-		
-	}
 }

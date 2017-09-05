@@ -246,7 +246,8 @@ public final class PickerBuilder extends JavaScriptObject {
    *             {@link PickerBuilder#addCallback(com.floreysoft.gwt.picker.client.callback.AbstractPickerCallback)}
    *             instead
    */
-  public PickerBuilder setCallback(final PickerCallback callback) {
+  @Deprecated
+public PickerBuilder setCallback(final PickerCallback callback) {
     addCallback(new AbstractPickerCallback() {
       @Override
       public void onPicked(ViewToken viewToken, BaseResult baseResult) {

@@ -4,7 +4,6 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.query.client.Function;
-import com.google.gwt.query.client.GQuery;
 
 /**
  * An abstract base class for all JQuery UI widgets.

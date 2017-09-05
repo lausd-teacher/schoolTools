@@ -24,4 +24,5 @@ import com.floreysoft.gwt.picker.client.domain.result.ImageSearchResult;
  * ViewId: IMAGE_SEARCH
  * @deprecated Use or extend {@link AbstractPickerCallback}
  */
+@Deprecated
 public abstract class PickedImageSearchCallback extends PickerCallback<ImageSearchResult> {}

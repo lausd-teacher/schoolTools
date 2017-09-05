@@ -1,7 +1,5 @@
 package net.videmantay.student.json;
 
-import java.util.List;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArrayString;
 

@@ -1,24 +1,24 @@
 package net.videmantay.roster.student;
 
 import com.floreysoft.gwt.picker.client.callback.AbstractPickerCallback;
-import com.floreysoft.gwt.picker.client.domain.Feature;
 import com.floreysoft.gwt.picker.client.domain.Picker;
 import com.floreysoft.gwt.picker.client.domain.PickerBuilder;
 import com.floreysoft.gwt.picker.client.domain.ViewId;
 import com.floreysoft.gwt.picker.client.domain.result.BaseResult;
 import com.floreysoft.gwt.picker.client.domain.result.PhotoResult;
 import com.floreysoft.gwt.picker.client.domain.result.ViewToken;
-import com.floreysoft.gwt.picker.client.utils.PickerLoader;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.query.client.Function;
-import com.google.gwt.query.client.Properties;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -26,18 +26,19 @@ import com.google.gwt.user.client.ui.Widget;
 import static com.google.gwt.query.client.GQuery.*;
 
 import gwt.material.design.client.constants.Display;
+import gwt.material.design.client.constants.IconType;
 import gwt.material.design.client.ui.MaterialButton;
-import gwt.material.design.client.ui.MaterialCard;
+import gwt.material.design.client.ui.MaterialCheckBox;
+import gwt.material.design.client.ui.MaterialCollection;
 import gwt.material.design.client.ui.MaterialDatePicker;
 import gwt.material.design.client.ui.MaterialImage;
-import gwt.material.design.client.ui.MaterialLabel;
 import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialModalContent;
+import gwt.material.design.client.ui.MaterialTextArea;
 import gwt.material.design.client.ui.MaterialTextBox;
 import net.videmantay.roster.RosterEvent;
 import net.videmantay.roster.RosterUrl;
-import net.videmantay.roster.json.RosterJson;
 import net.videmantay.shared.LoginInfo;
 import net.videmantay.student.json.RosterStudentJson;
 
@@ -53,8 +54,7 @@ public class CreateStudentForm extends Composite{
 	@UiField
 	MaterialImage studentImg;
 	
-	@UiField
-	MaterialLabel imgUrl;
+	
 	
 	@UiField
 	MaterialButton pickerButton;
@@ -78,20 +78,42 @@ public class CreateStudentForm extends Composite{
 	MaterialTextBox lastName;
 	
 	@UiField
-	MaterialTextBox extName;
-	
+	MaterialButton inactive;
+
 	@UiField
 	MaterialDatePicker DOB;
 	
 	@UiField
-	MaterialModal modal;
+	MaterialTextArea currentSummary;
+	
+	@UiField
+	MaterialCheckBox glasses;
+	
+	@UiField
+	MaterialDatePicker eDate;
+	
+	@UiField
+	MaterialTextBox homeLang;
+	
+	@UiField
+	MaterialTextBox readingLevel;
+	
+	@UiField
+	MaterialTextBox eldLevel;
+	
+	@UiField
+	MaterialCheckBox iep;
+
+	@UiField
+	MaterialModal studentFormPanel;
 	
 	@UiField
 	MaterialModalContent modalContent;
 	
-	private  RosterStudentJson student = RosterStudentJson.createObject().cast();
+	@UiField
+	MaterialCollection modifications;
 	
-	private final RosterJson roster  = window.getPropertyJSO("roster").cast();
+	private  RosterStudentJson student = RosterStudentJson.createObject().cast();
 	
 	private DateTimeFormat df = DateTimeFormat.getFormat("yyyy-MM-dd");
 	
@@ -100,17 +122,16 @@ public class CreateStudentForm extends Composite{
         @Override
         public void onCanceled() {
           picker.setVisible(false);
-          modal.openModal();
+          studentFormPanel.open();
         }
 
 		@Override
 		public void onPicked(ViewToken viewToken, BaseResult result) {
-			modal.openModal();
+			studentFormPanel.open();
 			PhotoResult pr = result.cast();
 			student.setThumbnails(pr.getDocs().get(0).getThumbnails());
 			String url = pr.getDocs().get(0).getThumbnails().get(pr.getDocs().get(0).getThumbnails().length() -1).getUrl();
 			studentImg.setUrl(url);
-			imgUrl.setText(url);
 			picker.setVisible(false);
 			
 		}
@@ -119,18 +140,32 @@ public class CreateStudentForm extends Composite{
       private ClickHandler handler = new ClickHandler(){
 		@Override
 		public void onClick(ClickEvent event) {
-			modal.closeModal();
+			studentFormPanel.close();
 			picker.setVisible(true);
 		}};
+		
+		private ClickHandler inactiveHandler = new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				if(inactive.getText().equalsIgnoreCase("active")){
+					inactive.setText("inactive");
+					inactive.setIconType(IconType.PERSON_OUTLINE);
+				}else{
+					inactive.setText("active");
+					inactive.setIconType(IconType.PERSON);
+				}
+				
+			}};
 	
 	private ClickHandler okHandler = new ClickHandler(){
 
 		@Override
 		public void onClick(ClickEvent event) {
 			event.stopPropagation();
-			getFormData();
+			
 			form.reset();
-			modal.closeModal();
+			studentFormPanel.close();
 			MaterialLoader.showLoading(true);
 			Ajax.post(RosterUrl.CREATE_STUDENT,$$("student:" + JsonUtils.stringify(student)))
 			.done(new Function(){
@@ -138,8 +173,6 @@ public class CreateStudentForm extends Composite{
 				public void f(){
 					console.log("create student form done return : " +  this.getArgument(0));
 					RosterStudentJson rosStu = JsonUtils.safeEval((String)this.getArgument(0));
-					RosterJson  roster = window.getPropertyJSO("roster").cast();
-					roster.getRosterStudents().push(rosStu);
 					$(body).trigger(RosterEvent.STUDENT_LIST_UPDATED);
 					MaterialLoader.showLoading(false);
 				}
@@ -151,58 +184,134 @@ public class CreateStudentForm extends Composite{
 
 		@Override
 		public void onClick(ClickEvent event) {
-			student = RosterStudentJson.createObject().cast();
+			student = JavaScriptObject.createObject().cast();
 			form.reset();
-			modal.closeModal();
+			studentFormPanel.close();
 			
 		}};
 	
 	
-	private Picker picker;
+	private  Picker picker;
 	private final LoginInfo info = LoginInfo.create();
 	
 	
 ///Constructor Here , Almost lost it//////////////////////////////////////////////
 	public CreateStudentForm() {
 		initWidget(uiBinder.createAndBindUi(this));
-		console.log("info to string authToken" + info.getAuthToken());
 		//give form a size
 		//set up the picker
 		modalContent.setDisplay(Display.BLOCK);
+		console.log("just before load picker" );
+		picker = PickerBuilder.create()
+				.addView(ViewId.PHOTOS)
+				.setOAuthToken(info.getAuthToken())
+				.setDeveloperKey("AIzaSyBBRsdOOp28mnHr0i6ANJgxrB5yCd0YVU4")
+				.setSize(900, 600)
+				.addCallback(callback)
+				.build();
+		picker.setVisible(false);
+		
+		//handle removemod
+		$(body).on("removemod", student, new Function(){
+			@Override
+			public boolean f(Event e, Object... o){
+				int index = (int) o[0];
 				
-						picker = PickerBuilder.create()
-								.addView(ViewId.PHOTOS)
-								.setDeveloperKey("AIzaSyAuQ-J6_5P8UnbHLN9KHj91zAMf8Ouj6tI")
-								.setOAuthToken(info.getAuthToken())
-								.setSize(900, 600)
-								.addCallback(callback)
-								.build();
-						picker.setVisible(false);
+				JsArrayString newMods = JsArrayString.createArray().cast();
+				for(int i = 0; i< student.getModifications().length(); i++){
+					if(i == index){
+						continue;
+					}else{
+						newMods.push(student.getModifications().get(i));
+					}
+					student.setModifications(newMods);
+				}
+				
+				return true;
+			}
+		});
+		
+				
+						
 	}
 	///////////////////END CONSTR////////////////////////////////////////////////
 	
 	public void show(){
-		modal.openModal();
+		studentFormPanel.open();
 	}
 	
 	public void hide(){
-		modal.closeModal();
+		studentFormPanel.close();
 		form.reset();
 		student = null;
 	}
 	
-	private RosterStudentJson getFormData(){
+	public RosterStudentJson getStudent(){
 		
-		student.setAcctId(schoolEmail.getValue());
+		student.setAcct(schoolEmail.getValue());
 		student.setFirstName(firstName.getValue());
 		student.setLastName(lastName.getValue());
-		student.setExtName(extName.getValue());
 		student.setDOB(df.format(DOB.getDate()));
-		student.setRoster(roster.getId());
+		student.setCurrentSummary(currentSummary.getValue());
+		student.setEDate(df.format(eDate.getValue()).toString());
+		student.setHomeLang(homeLang.getValue());
+		student.setAcct(schoolEmail.getValue());
+		student.setEldLevel(eldLevel.getValue());
+		student.setReadingLevel(readingLevel.getValue());
+		student.setInactive(inactive.getText().equalsIgnoreCase("inactive"));
+		student.setGlasses(glasses.getValue());
+		student.setIEP(iep.getValue());
+		//student mods are set when immediately
+		
+		
 		return student;
 	}
 	
+	public void setStudent(RosterStudentJson stud){
+		this.student = stud;
+		//redraw the fields
+		//profilePage
+		schoolEmail.setValue(student.getAcct());
+		firstName.setValue(student.getFirstName());
+		lastName.setValue(student.getLastName());
+		String url = student.getThumbnails().get(student.getThumbnails().length() -1).getUrl();
+		studentImg.setUrl(url);
+		DOB.setValue(df.parse(student.getDOB()));
+		//Summary
+		currentSummary.setValue(student.getCurrentSummary());
+		//Detail
+		eDate.setValue(df.parse(student.getEDate()));
+		glasses.setValue(student.getGlasses());
+		eldLevel.setValue(student.getEldLevel());
+		readingLevel.setValue(student.getReadingLevel());
+		iep.setValue(student.getIEP());
+		if(student.getModifications() != null && student.getModifications().length() >0){
+		for(int i = 0; i < student.getModifications().length(); i++){
+			modifications.add(new ModificationItem(i, student.getModifications().get(i)));
+		}
+		}else{
+			
+		}
+		
+	}
 	
+	public void submit(){
+		 Ajax.ajax(Ajax.createSettings()
+				.setContentType("application/json")
+				.setDataType("json")
+				.setData(student)
+				.setType("POST")
+				.setUrl("/roster/student/"+ student.getAcct())
+				)
+		 .then(new Function(){
+			 @Override
+			 public void f(){
+				 MaterialLoader.showLoading(true);
+				 RosterStudentJson response = (RosterStudentJson)JsonUtils.safeEval((String)this.arguments(0)).cast();
+				 $(body).trigger("studentsaved", response);
+			 }
+		 });
+	}
 	
 	@Override
 	public void onLoad(){
@@ -211,7 +320,8 @@ public class CreateStudentForm extends Composite{
 				pickerButton.addClickHandler(handler);
 				okBtn.addClickHandler(okHandler);
 				cancelBtn.addClickHandler(cancelHandler);
-				student = RosterStudentJson.createObject().cast();
+				student = JavaScriptObject.createObject().cast();
+				inactive.addClickHandler(inactiveHandler);
 				
 	}
 	

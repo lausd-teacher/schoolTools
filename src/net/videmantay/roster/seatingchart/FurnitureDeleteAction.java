@@ -1,7 +1,5 @@
 package net.videmantay.roster.seatingchart;
 
-import net.videmantay.shared.Action;
-
 public class FurnitureDeleteAction extends FurnitureAction {
 
 	@Override

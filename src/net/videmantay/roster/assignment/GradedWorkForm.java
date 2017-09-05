@@ -1,7 +1,7 @@
 package net.videmantay.roster.assignment;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JsArrayNumber;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -26,18 +26,15 @@ import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialTextArea;
 import gwt.material.design.client.ui.MaterialTextBox;
-import net.videmantay.roster.Roster;
 import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.json.GradedWorkJson;
 import net.videmantay.roster.json.RosterJson;
-import net.videmantay.shared.json.EventJson;
-import net.videmantay.shared.json.TimeJson;
 
 public class GradedWorkForm extends Composite {
 
 	private static GradedWorkFormUiBinder uiBinder = GWT.create(GradedWorkFormUiBinder.class);
 	private final GradedWorkForm $this = this;
-	private JsArrayNumber studentList = JsArrayNumber.createArray().cast();
+	private JsArrayString studentList = JsArrayString.createArray().cast();
 	private GradedWorkJson data;
 	private String url = "";
 	
@@ -107,21 +104,21 @@ public class GradedWorkForm extends Composite {
 	}
 	
 	public void show(){
-		modal.openModal();
+		modal.open();
 	}
 	
 	public void hide(){
 		form.reset();
 		data = null;
-		modal.closeModal();
+		modal.close();
 	}
 	public void reset(){
 		form.reset();
-		data = GradedWorkJson.createObject().cast();
+		data = JavaScriptObject.createObject().cast();
 	}
 	
 	public void submit(){
-		data = GradedWorkJson.createObject().cast();
+		data = JavaScriptObject.createObject().cast();
 		
 		data.setTitle(title.getValue());
 		;
@@ -138,7 +135,7 @@ public class GradedWorkForm extends Composite {
 		
 		if(selectAllBox.getValue()){
 			for(int i = 0; i <roster.getRosterStudents().length(); i++){
-				studentList.push(roster.getRosterStudents().get(i).getId());
+				studentList.push(roster.getRosterStudents().get(i).getAcct());
 			}
 		}
 		MaterialLoader.showLoading(true);

@@ -1,7 +1,6 @@
 package net.videmantay.shared;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Visibility;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -16,12 +15,10 @@ import gwt.material.design.client.ui.MaterialLink;
 public class UserProfilePanel extends Composite {
 
 	private static UserProfilePanelUiBinder uiBinder = GWT.create(UserProfilePanelUiBinder.class);
-	private final LoginInfo profile = window.getPropertyJSO("loginInfo").cast();
+	private final LoginInfo profile = window.getPropertyJSO("info").cast();
 	interface UserProfilePanelUiBinder extends UiBinder<Widget, UserProfilePanel> {
 	}
 
-	@UiField
-	MaterialLink acctId;
 	@UiField
 	MaterialLabel name;
 	@UiField
@@ -29,11 +26,10 @@ public class UserProfilePanel extends Composite {
 	
 	public UserProfilePanel() {
 		initWidget(uiBinder.createAndBindUi(this));
-		this.acctId.setText(profile.getAcctId());
 		name.setText(profile.getFirstName() + " " + profile.getLastName());
 		
-		if(profile.getPicUrl()!=null && !profile.getPicUrl().isEmpty()){
-			img.setUrl(profile.getPicUrl());
+		if(profile.getImg()!=null && !profile.getImg().isEmpty()){
+			img.setUrl(profile.getImg());
 		}else{
 			img.setVisibility(Visibility.HIDDEN);
 			

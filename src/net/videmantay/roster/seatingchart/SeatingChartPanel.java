@@ -2,11 +2,10 @@ package net.videmantay.roster.seatingchart;
 
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.client.ScriptInjector;
-import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 import static com.google.gwt.query.client.GQuery.*;
@@ -15,14 +14,12 @@ import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.ui.MaterialCollection;
 import gwt.material.design.client.ui.MaterialCollectionItem;
-import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialPanel;
 import gwt.material.design.client.ui.html.Div;
@@ -40,7 +37,6 @@ import java.util.Stack;
 
 import static gwtquery.plugins.ui.Ui.Ui;
 import net.videmantay.roster.HasRosterDashboardView;
-import net.videmantay.roster.RosterEvent;
 import net.videmantay.roster.RosterStudentPanel;
 import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.json.RosterJson;
@@ -79,7 +75,6 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	@UiField
 	Span emptyFurnitureLabel;
 	
-	private ClassTimeForm classtimeForm = new ClassTimeForm();
 	
 	//Pull roster from window//
 	private final RosterJson roster;
@@ -136,8 +131,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 					//load from class time
 					if(classTime == null || classTime.getId() == null){
 						console.log("If classtime id is null called");
-						//get create classtime form/////////
-					classtimeForm.classtimeModal.openModal();
+					
 						
 					}else{
 						console.log("seating chart should make a network call here");
@@ -156,8 +150,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 					}//end else
 				}else{
 					drawChart();
-				}
-		seatingChart.add(classtimeForm);	
+				}	
 		
 	}//end onLoad
 	
@@ -172,8 +165,8 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	}
 	
 	private SeatingChartJson copySeatingChart( SeatingChartJson original){
-		SeatingChartJson copy = SeatingChartJson.createObject().cast();
-		copy = SeatingChartJson.createObject().cast();
+		SeatingChartJson copy = JavaScriptObject.createObject().cast();
+		copy = JavaScriptObject.createObject().cast();
 		copy.setDescript(original.getDescript());
 		copy.setFurniture(original.getFurniture());
 		copy.setId(original.getId());
@@ -245,7 +238,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		}// end for i///	
 		
 		}else{// furniture array is null so make a new one
-			JsArray<FurnitureJson> furniture = JsArray.createArray().cast();
+			JsArray<FurnitureJson> furniture = JavaScriptObject.createArray().cast();
 			data.setFurniture(furniture);
 		}//end else
 			//the rest of students panel go in the sideNav
@@ -372,6 +365,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		
 	}
 	
+	@Override
 	public  void arrangeStudents(){
 		unHome();
 		//make copy of orignial just in case of cancel
@@ -439,7 +433,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 						if($parent.hasClass("seat")){
 							StudentSeatJson sSeat = 	$parent.data("seat", StudentSeatJson.class);
 							if(sSeat == null){
-								sSeat = StudentSeatJson.createObject().cast();
+								sSeat = JavaScriptObject.createObject().cast();
 									if($parent.hasClass("pos2")){
 										sSeat.setSeatNum(2);
 									}else{
@@ -489,6 +483,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		
 	};
 	
+	@Override
 	public void doneArrangeStudents(){
 		MaterialLoader.showLoading(true, floorPlan);
 		$(studentTools).css("display","none");
@@ -521,6 +516,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	
 	
 	
+	@Override
 	public  void arrangeFurniture(){
 		unHome();
 		originalData = copySeatingChart(data);
@@ -655,8 +651,9 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 											return true;}});
 	}
 	
+	@Override
 	public void doneArrangeFurniture(){
-		JsArray<FurnitureJson> finalList = JsArray.createArray().cast();
+		JsArray<FurnitureJson> finalList = JavaScriptObject.createArray().cast();
 		$(".desk-wrapper",floorPlan).as(Ui).draggable().destroy();
 		$(".furnitureIcon").as(Ui).draggable().destroy();
 		$(".desk", floorPlan).as(Ui).rotatable().destroy();

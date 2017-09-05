@@ -46,7 +46,8 @@ public enum Feature implements JavaScriptEnum<String> {
     this.value = value;
   }
 
-  public String getValue() {
+  @Override
+public String getValue() {
     return JavaScriptUtils.enumValue("Feature", value);
   }
 }

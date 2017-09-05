@@ -1,0 +1,18 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+		<m:MaterialCard>
+			<m:MaterialCardAction>
+				<m:MaterialIcon ui:field="removeIcon" iconType="REMOVE" />
+			</m:MaterialCardAction>
+			<m:MaterialCardContent>
+				<m:MaterialTextArea ui:field="modification"/>
+			</m:MaterialCardContent>
+		</m:MaterialCard>
+	</g:HTMLPanel>
+</ui:UiBinder> 

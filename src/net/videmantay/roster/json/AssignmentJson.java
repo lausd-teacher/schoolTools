@@ -4,8 +4,6 @@ import java.util.Set;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArrayString;
-
-import net.videmantay.server.entity.EducationalLink;
 import net.videmantay.shared.GradeLevel;
 import net.videmantay.shared.SubjectType;
 

@@ -4,6 +4,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 
 import static com.google.gwt.query.client.GQuery.*;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
 import net.videmantay.roster.seatingchart.json.FurnitureJson;
@@ -18,7 +19,7 @@ public class FurnitureAddAction extends FurnitureAction {
 		this.furnitureDiv = furnitureDiv;
 		
 		furnitureList = tempFurnitureList;
-		FurnitureJson json = FurnitureJson.createObject().cast();
+		FurnitureJson json = JavaScriptObject.createObject().cast();
 		json.setType((String) $(furnitureDiv).data("type"));
 		json.setKind((String) $(furnitureDiv).data("kind"));
 		$(furnitureDiv).data("furniture", json);

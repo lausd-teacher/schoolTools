@@ -1,6 +1,5 @@
 package net.videmantay.roster;
 
-import com.google.common.primitives.Longs;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -9,7 +8,6 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
-import gwt.material.design.client.ui.MaterialImage;
 import gwt.material.design.client.ui.html.Span;
 import net.videmantay.student.json.RosterStudentJson;
 

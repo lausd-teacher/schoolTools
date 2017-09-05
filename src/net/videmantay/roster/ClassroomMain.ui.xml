@@ -6,25 +6,23 @@
 	xmlns:v="urn:import:net.videmantay.shared"
 	xmlns:vr="urn:import:net.videmantay.roster">
 	<g:HTMLPanel styleName="classroom" ui:field="classroom">
-			<m:MaterialNavBar activates="sideNav" backgroundColor="green">
+			<m:MaterialNavBar activates="sideNav">
 			
 			<m:MaterialNavBrand  ui:field="rosterTitle" textAlign="CENTER"/>
 			</m:MaterialNavBar>
 
-			<m:MaterialSideNav type="CLIP" m:id="sideNav" ui:field="sideNav">
+			<m:MaterialSideNavDrawer  m:id="sideNav" ui:field="sideNav">
 				<v:UserProfilePanel></v:UserProfilePanel>
-				<m:MaterialLink ui:field="dashboardLink" iconType="DASHBOARD" text="Dashboard" textColor="grey darken-4"/>
-				<m:MaterialLink ui:field="studentLink" addStyleNames="studentLink classLink" text="Students" textColor="green" iconType="SCHOOL" />
-				<m:MaterialLink ui:field="classTimeLink" text="Class Time" textColor="green" iconType="SCHEDULE" />
-				<m:MaterialLink ui:field="assignmentLink" text="Assignments" textColor="orange" iconType="ASSIGNMENT" />
-				<m:MaterialLink ui:field="lessonPlanLink" text="Lesson Plans" textColor="amber darken-4"
-					iconType="LIBRARY_BOOKS" />
-				<m:MaterialLink ui:field="incidentLink" text="Incidents" textColor="green"
-					iconType="FEEDBACK" />
-				<m:MaterialLink ui:field="goalLink" text="Goals" textColor="green" iconType="MOOD" />
-				<m:MaterialLink ui:field="jobLink" text="Jobs" textColor="green" iconType="BUSINESS_CENTER" />
+				<m:MaterialLink ui:field="dashboardLink" iconType="DASHBOARD" text="Dashboard" />
+				<m:MaterialLink ui:field="studentLink" addStyleNames="studentLink classLink" text="Students" iconType="SCHOOL" />
+				<m:MaterialLink ui:field="routineLink" text="Routines" iconType="SCHEDULE" />
+				<m:MaterialLink ui:field="assignmentLink" text="Assignments" iconType="ASSIGNMENT" />
+				<m:MaterialLink ui:field="lessonPlanLink" text="Lesson Plans" iconType="LIBRARY_BOOKS" />
+				<m:MaterialLink ui:field="incidentLink" text="Incidents" iconType="FEEDBACK" />
+				<m:MaterialLink ui:field="goalLink" text="Goals" iconType="TRENDING_UP" />
+				<m:MaterialLink ui:field="jobLink" text="Jobs" iconType="BUSINESS_CENTER" />
 				<m:MaterialLink></m:MaterialLink>
-			</m:MaterialSideNav>
+			</m:MaterialSideNavDrawer>
 		<m:MaterialContainer  ui:field="mainPanel" width="100%" height="100%" >
 		</m:MaterialContainer>
 	</g:HTMLPanel>

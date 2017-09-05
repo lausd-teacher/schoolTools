@@ -1,7 +1,6 @@
 package net.videmantay.roster.json;
 
-import java.util.Set;
-
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArrayString;
 
 import net.videmantay.shared.GradedWorkType;
@@ -11,9 +10,14 @@ import net.videmantay.shared.json.EventJson;
 public class GradedWorkJson extends AssignmentJson {
 
 	protected GradedWorkJson(){
-		JsArrayString assignTo = JsArrayString.createArray().cast();
+	}
+	
+	public static GradedWorkJson create(){
+		GradedWorkJson work = GradedWorkJson.createObject().cast();
+		JsArrayString assignTo = JavaScriptObject.createArray().cast();
 		assignTo.push("ALL");
-		this.setAssignedTo(assignTo);
+		work.setAssignedTo(assignTo);
+		return work;
 	}
 	
 	public final native Long getRosterId()/*-{

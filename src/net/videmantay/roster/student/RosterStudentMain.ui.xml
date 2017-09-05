@@ -7,6 +7,17 @@
 	
 	</ui:style>
 	<g:HTMLPanel>
+	<div ui:field="emptyStudentPage" style="padding:5em">
+		<h2> It appears that you haven't registered any students yet</h2>
+		<h6>To add students to your roster press the button in the bottom.</h6>
+	</div>
+	<div ui:field="studentDashboard">
+		<m:MaterialRow>
+			<m:MaterialColumn grid="s3">
+			<m:MaterialCollection height="100%" ui:field="studentCollection" marginTop="5" />
+			</m:MaterialColumn>
+			<m:MaterialColumn grid="s9">
+	<g:HTMLPanel>
 	<m:MaterialTab>
 		<m:MaterialTabItem> <m:MaterialLink text="Students" href="#stuHomeTab" /></m:MaterialTabItem>
 		<m:MaterialTabItem> <m:MaterialLink text="Calendar" href="#stuCalTab" /></m:MaterialTabItem>
@@ -14,17 +25,19 @@
 	</m:MaterialTab>
 	<div id="stuHomeTab">
 		<div ui:field="rosterStudentMain" >
-			<v:RosterStudentCollection ui:field="studentCollection" />
 			<v:StudentPage ui:field="studentPage" />
 		</div>
 	</div>
 	<div id="stuCalTab"></div>
 	<div id="studReportTab"></div>
-		<!-- FAB -->
+	</g:HTMLPanel>
+	</m:MaterialColumn>
+	</m:MaterialRow>
+	</div>
+	<!-- FAB -->
 		<m:MaterialFAB>
 			<m:MaterialTooltip text="New Student" position="LEFT">
-				<m:MaterialButton ui:field="fab" type="FLOATING"
-					backgroundColor="green darken-4" iconType="ADD" size="LARGE" />
+				<m:MaterialButton ui:field="fab" type="FLOATING" iconType="SCHOOL" size="LARGE" />
 			</m:MaterialTooltip>
 		</m:MaterialFAB>
 		<v:CreateStudentForm ui:field="stuForm"></v:CreateStudentForm>

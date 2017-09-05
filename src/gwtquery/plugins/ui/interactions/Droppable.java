@@ -4,12 +4,9 @@ import gwtquery.plugins.ui.Ui;
 import gwtquery.plugins.ui.UiPlugin;
 import gwtquery.plugins.ui.UiWidget;
 import gwtquery.plugins.ui.WidgetOptions;
-import gwtquery.plugins.ui.interactions.Draggable.Event;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NodeList;
-import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
 
 /**
@@ -156,7 +153,8 @@ public class Droppable extends UiWidget<Droppable, Droppable.Options> {
    */
   private static class DroppablePlugin implements UiPlugin<Droppable> {
 
-    public Droppable init(Ui ui, WidgetOptions<?> options) {
+    @Override
+	public Droppable init(Ui ui, WidgetOptions<?> options) {
       return new Droppable(ui, (Droppable.Options) options.cast());
     }
 

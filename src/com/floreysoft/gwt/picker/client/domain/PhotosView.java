@@ -72,7 +72,8 @@ public final class PhotosView extends JavaScriptObject {
       this.value = value;
     }
 
-    public String getValue() {
+    @Override
+	public String getValue() {
       return JavaScriptUtils.enumValue("PhotosView", "Type", value);
     }
   }

@@ -1,11 +1,7 @@
 package net.videmantay.student.json;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.googlecode.objectify.Key;
 
-import net.videmantay.server.entity.TeacherInfo;
-import net.videmantay.server.user.Roster;
-import net.videmantay.server.user.RosterDetail;
 import net.videmantay.shared.GradeLevel;
 
 public class RosterDetailJson extends JavaScriptObject{

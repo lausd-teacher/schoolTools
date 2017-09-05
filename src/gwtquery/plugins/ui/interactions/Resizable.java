@@ -35,7 +35,8 @@ public class Resizable extends UiWidget<Resizable, Resizable.Options> {
    */
   private static class ResizablePlugin implements UiPlugin<Resizable> {
 
-    public Resizable init(Ui ui, WidgetOptions<?> options) {
+    @Override
+	public Resizable init(Ui ui, WidgetOptions<?> options) {
       return new Resizable(ui, (Resizable.Options) options.cast());
     }
 

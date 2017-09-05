@@ -4,8 +4,6 @@ import gwtquery.plugins.ui.Ui;
 import gwtquery.plugins.ui.UiPlugin;
 import gwtquery.plugins.ui.UiWidget;
 import gwtquery.plugins.ui.WidgetOptions;
-import gwtquery.plugins.ui.interactions.Rotatable.Options;
-
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArrayInteger;
 import com.google.gwt.dom.client.Element;
@@ -433,7 +431,8 @@ public class Draggable extends UiWidget<Draggable, Draggable.Options> {
    */
   private static class DraggablePlugin implements UiPlugin<Draggable> {
 
-    public Draggable init(Ui ui, WidgetOptions<?> options) {
+    @Override
+	public Draggable init(Ui ui, WidgetOptions<?> options) {
       return new Draggable(ui, (Draggable.Options) options.cast());
     }
 

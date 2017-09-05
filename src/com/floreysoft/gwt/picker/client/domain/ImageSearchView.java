@@ -116,7 +116,8 @@ public final class ImageSearchView extends JavaScriptObject {
       this.value = value;
     }
 
-    public String getValue() {
+    @Override
+	public String getValue() {
       return JavaScriptUtils.enumValue("ImageSearchView", "License", value);
     }
   }
@@ -213,7 +214,8 @@ public final class ImageSearchView extends JavaScriptObject {
       this.value = value;
     }
 
-    public String getValue() {
+    @Override
+	public String getValue() {
       return JavaScriptUtils.enumValue("ImageSearchView", "Size", value);
     }
   }

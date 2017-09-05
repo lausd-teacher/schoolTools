@@ -1,8 +1,11 @@
 package net.videmantay.shared;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
+import com.google.gwt.core.client.JsArray;
+import com.google.gwt.core.client.JsArrayString;
 
 public class RosterFolderNames {
 
@@ -14,7 +17,9 @@ public class RosterFolderNames {
 	public static final String PUBLIC = "Public";
 	
 	public static List<String> getNames(){
-		return ImmutableList.of(STUDENTS, SHARED, SHARED_ASSIGNMENTS,SHARED_SHOWCASE,FORMS,PUBLIC);
+		String[] names = {STUDENTS, SHARED, SHARED_ASSIGNMENTS,SHARED_SHOWCASE,FORMS,PUBLIC};
+		
+		return Arrays.asList(names);
 	}
 	
 	private RosterFolderNames(){}

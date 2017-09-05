@@ -24,4 +24,5 @@ import com.floreysoft.gwt.picker.client.domain.result.DocumentResult;
  * ViewId: DOCS, DOCUMENTS, SPREADSHEETS, FORMS, PRESENTATIONS, FOLDERS, PDFS
  * @deprecated Use or extend {@link AbstractPickerCallback}
  */
+@Deprecated
 public abstract class PickedDocumentCallback extends PickerCallback<DocumentResult> {}

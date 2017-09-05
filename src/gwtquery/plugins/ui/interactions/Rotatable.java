@@ -3,7 +3,6 @@ package gwtquery.plugins.ui.interactions;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.query.client.Function;
 
-import gwtquery.plugins.ui.RotatableUi;
 import gwtquery.plugins.ui.UiPlugin;
 import gwtquery.plugins.ui.UiWidget;
 import gwtquery.plugins.ui.WidgetOptions;

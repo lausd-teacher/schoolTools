@@ -22,7 +22,6 @@ import com.floreysoft.gwt.picker.client.domain.Action;
 import com.floreysoft.gwt.picker.client.domain.result.BaseResult;
 import com.floreysoft.gwt.picker.client.domain.result.ViewToken;
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.user.client.Window;
 
 /**
  * Dispatches the callback to the receiver.
@@ -42,7 +41,8 @@ public class PickerCallbackDispatcher {
    *          The type of the callback result
    * @deprecated
    */
-  public static <T extends JavaScriptObject> void dispatch(
+  @Deprecated
+public static <T extends JavaScriptObject> void dispatch(
       PickerCallback<T> callback, T result) {
     final BaseResult baseResult = result.cast();
     final ViewToken viewToken = baseResult.getViewToken();

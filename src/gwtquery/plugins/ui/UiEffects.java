@@ -1,6 +1,5 @@
 package gwtquery.plugins.ui;
 
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.plugins.Effects;
 import com.google.gwt.query.client.plugins.Plugin;
@@ -15,7 +14,8 @@ public class UiEffects extends Effects {
 
     public static final Class<UiEffects> UiEffects = GQuery.registerPlugin(
             UiEffects.class, new Plugin<UiEffects>() {
-        public UiEffects init(GQuery gq) {
+        @Override
+		public UiEffects init(GQuery gq) {
             return new UiEffects(gq);
         }
     });

@@ -1,21 +1,76 @@
 package net.videmantay.student.json;
 
+
 import com.floreysoft.gwt.picker.client.domain.result.Thumbnail;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayInteger;
+import com.google.gwt.core.client.JsArrayString;
+
+import net.videmantay.shared.json.RosterInfoJson;
 
 
 public class RosterStudentJson extends JavaScriptObject{
 
 	protected RosterStudentJson(){}
 	
-	public final native Long getRoster() /*-{
-		return this.roster;
-	}-*/;
-	public final native RosterStudentJson setRoster(Long roster) /*-{
-		this.roster = roster;
+	
+	public final native  String getEDate()/*-{
+	return this.eDate;
+}-*/;
+	public final native RosterStudentJson setEDate(String date)/*-{
+		this.edate = date;
 		return this;
+	}-*/;
+	public final native  String getReadingLevel()/*-{
+	return this.readingLevel;
+}-*/;
+	public final native  String getHomeLang()/*-{
+	return this.homeLang;
+}-*/;
+	public final native RosterStudentJson setHomeLang(String lang)/*-{
+		this.homeLang = lang;
+		return this;
+	}-*/;
+	public final native  JsArrayString getModifications ()/*-{
+	return this.modifications;
+}-*/;
+	public final native RosterStudentJson setModifications(JsArrayString mods)/*-{
+		this.modifications = mods;
+		return this;
+	}-*/;
+	public final native  Boolean getIEP()/*-{
+	return this.IEP;
+}-*/;
+	
+	public final native RosterStudentJson setIEP(Boolean iep)/*-{
+	this.IEP = iep;
+	return this;
+	}-*/;
+	public final native  String getCurrentSummary()/*-{
+	return this.currentSummary;
+}-*/;
+	public final native RosterStudentJson setCurrentSummary(String summary)/*-{
+		this.currentSummary = summary;
+	}-*/;
+	
+	public final native RosterStudentJson setReadingLevel(String level)/*-{
+		this.readingLevel = level;
+		return this;
+	}-*/;
+	public final native  String driveFolder()/*-{
+	return this.modifications;
+}-*/;
+	public final native RosterStudentJson setDriveFolder(String folder)/*-{
+		this.driveFolder = folder;
+	}-*/;
+	
+	public final native Long getRosterId() /*-{
+		return this.rosterId;
+	}-*/;
+	
+	public final native RosterStudentJson setRosterId(Long id)/*-{
+		this.rosterId = id;
 	}-*/;
 	public final native String getFirstName() /*-{
 		return this.firstName;
@@ -53,13 +108,7 @@ public class RosterStudentJson extends JavaScriptObject{
 		this.lastName = lastName;
 		return this;
 	}-*/;
-	public final native String getExtName()/*-{
-		return this.extName;
-	}-*/;
-	public final native RosterStudentJson setExtName(String extName)/*-{
-		this.extName = extName;
-		return this;
-	}-*/;
+	
 	public final native JsArray<Thumbnail> getThumbnails() /*-{
 		return this.thumbnails;
 	}-*/;
@@ -74,68 +123,44 @@ public class RosterStudentJson extends JavaScriptObject{
 		this.DOB = dOB;
 		return this;
 	}-*/;
-	public final native String getAcctId() /*-{
-		return this.acctId;
+	public final native String getAcct() /*-{
+		return this.acct;
 	}-*/;
-	public final native RosterStudentJson setAcctId(String acctId) /*-{
-		this.acctId = acctId;
-		return this;
-	}-*/;
-	
-	
-	public final native JsArray<BadgeJson> getBadges() /*-{
-		return this.badges;
-	}-*/;
-	public final native RosterStudentJson setBadges(JsArray<BadgeJson> badges) /*-{
-		this.badges = badges;
+	public final native RosterStudentJson setAcct(String acctId) /*-{
+		this.acct = acctId;
 		return this;
 	}-*/;
 	public final native Long getId()/*-{
 		return this.id;
 	}-*/;
-	public final native RosterDetailJson getRosterDetail()/*-{
-		return this.rosterDetail;
+	public final native RosterInfoJson getRosterInfo()/*-{
+		return this.rosterInfo;
 	}-*/;
 	
-	public final native RosterStudentJson setRostserDetail(RosterDetailJson rosDe)/*-{
-		this.rosterDetail = rosDe;
-		return this;
-	}-*/;
-	public final native RosterStudentJson setId(Long id) /*-{
-		this.id = id;
-	}-*/;
-	
-	public final native String getStudentFolderId() /*-{
-		return this.studentFolderId;
-	}-*/;
-	public final native RosterStudentJson setStudentFolderId(String studentFolderId) /*-{
-		this.studentFolderId = studentFolderId;
+	public final native RosterStudentJson setRosterInfoJson(RosterInfoJson rosDe)/*-{
+		this.rosterInfo = rosDe;
 		return this;
 	}-*/;
 	
-	public final native JsArrayInteger getPoints()/*-{
-		return this.points;
+	
+	public final native JsArrayInteger getPosPoints()/*-{
+		return this.posPoints;
 	}-*/;
 	
-	public final native RosterStudentJson setPoints(JsArrayInteger points)/*-{
-		this.points = points;
+	public final native RosterStudentJson setPosPoints(JsArrayInteger points)/*-{
+		this.posPoints = points;
 	return this;
 }-*/;
 	
-	public final native String getStudentCalId() /*-{
-		return this.studentCalId;
-	}-*/;
-	public final native RosterStudentJson setStudentCalId(String studentCalId) /*-{
-		this.studentCalId = studentCalId;
-		return this;
-	}-*/;
-	public final native String getStudentTasksId() /*-{
-		return this.studentTasksId;
-	}-*/;
-	public final native RosterStudentJson setStudentTasksId(String studentTasksId) /*-{
-		this.studentTasksId = studentTasksId;
-		return this;
-	}-*/;
+	public final native JsArrayInteger getNegPoints()/*-{
+	return this.negPoints;
+}-*/;
+
+public final native RosterStudentJson setNegPoints(JsArrayInteger points)/*-{
+	this.negPoints =points;
+return this;
+}-*/;
+	
 	public final native Boolean getInactive() /*-{
 		return this.inactive;
 	}-*/;

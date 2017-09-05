@@ -4,7 +4,9 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
 import net.videmantay.roster.seatingchart.json.ClassTimeJson;
+import net.videmantay.roster.seatingchart.json.SeatingChartJson;
 import net.videmantay.shared.GradeLevel;
+import net.videmantay.shared.json.RosterInfoJson;
 import net.videmantay.student.json.RosterStudentJson;
 import net.videmantay.student.json.StudentGroupJson;
 import net.videmantay.student.json.StudentJobJson;
@@ -37,77 +39,6 @@ public class RosterJson extends JavaScriptObject {
 		return this;
 	}-*/;
 
-	public final native String getStartDate()/*-{
-		return this.startDate;
-	}-*/;
-
-	public final native RosterJson setStartDate(String startDate)/*-{
-		this.startDate = startDate;
-		return this;
-	}-*/;
-
-	public final native String getEndDate()/*-{
-		return this.endDate;
-	}-*/;
-
-	public final native RosterJson setEndDate(String endDate)/*-{
-		this.endDate = endDate;
-		return this;
-	}-*/;
-
-	public final native String getTitle()/*-{
-		return this.title;
-	}-*/;
-
-	public final native RosterJson setTitle(String title)/*-{
-		this.title = title;
-		return this;
-	}-*/;
-
-	public final native String getDescription()/*-{
-		return this.description;
-	}-*/;
-
-	public final native RosterJson setDescription(String description)/*-{
-		this.description = description;
-		return this;
-	}-*/;
-
-	public final native  String getRoomNum()/*-{
-		return this.roomNum;
-	}-*/;
-
-	public final native RosterJson setRoomNum(String roomNum)/*-{
-		this.roomNum = roomNum;
-		return this;
-	}-*/;
-
-	public final native TeacherInfoJson getTeacherInfo()/*-{
-		return this.teacherInfo;
-	}-*/;
-
-	public final native RosterJson setTeacherInfo(TeacherInfoJson teacherInfo)/*-{
-		this.teacherInfo = teacherInfo;
-		return this;
-	}-*/;
-
-	public final native JsArray<StudentGroupJson> getStudentGroups()/*-{
-		return this.studentGroups;
-	}-*/;
-
-	public final native RosterJson setStudentGroups(JsArray<StudentGroupJson> studentGroups)/*-{
-		this.studentGroups = studentGroups;
-		return this;
-	}-*/;
-	
-	public final native GradeLevel getGradeLevel()/*-{
-		return this.gradeLevel;
-	}-*/;
-	
-	public final native RosterJson setGradeLevel(GradeLevel grdLvl)/*-{
-		this.gradeLevel = grdLvl;
-		return this;
-	}-*/;
 	
 	public final native JsArray<GoogleServiceJson> getGoogleCalendars()/*-{
 		return this.googleCalendars;
@@ -136,71 +67,28 @@ public class RosterJson extends JavaScriptObject {
 		return this;
 	}-*/;
 	
-	public final native String getStudentFolderId()/*-{
-		return this.studentFolderId;
-	}-*/;
-	
-	public final native void setStudentFolderId(String studentFolder)/*-{
-		this.studentFolderId = studentFolder;
-	}-*/;
-	
 	public final native JsArray<RosterStudentJson> getRosterStudents()/*-{
-		return this.rosterStudents;
+		return this.students;
 	}-*/;
 
 	public final native RosterJson setRosterStudents(JsArray<RosterStudentJson> rosterStudents)/*-{
-		this.rosterStudents = rosterStudents;
+		this.students = rosterStudents;
 		return this;
 	}-*/;
 
-	public final native String getRollBook()/*-{
-		return this.rollBook;
-	}-*/;
+	public final native RoutineConfigJson getRoutineConfig()/*-{}-*/;
+	
+	public final native RosterJson setRosterConfig(RoutineConfigJson config)/*-{}-*/;
 
-	public final native RosterJson setRollBook(String rollBook)/*-{
-		this.rollBook = rollBook;
-		return this;
+	public final native JsArray<RoutineJson> getRoutines()/*-{
+			return this.routines;
 	}-*/;
 	
-	public final native String getGradeBook()/*-{
-		return this.gradeBook;
-	}-*/;
-
-	public final native RosterJson setGradeBook(String gradeBook)/*-{
-		this.gradeBook = gradeBook;
-		return this;
-	}-*/;
-
-	public final native String getBehaviorReport()/*-{
-		return this.behaviorReport;
-	}-*/;
-
-	public final native RosterJson setBehaviorReport(String behaviorReport)/*-{
-		this.behaviorReport = behaviorReport;
-		return this;
-	}-*/;
-	
-	public final native JsArray<ClassTimeJson> getClassTimes()/*-{
-			return this.classTimes;
-	}-*/;
-	
-	public final native RosterJson setClassTimes(JsArray<ClassTimeJson> classTimes)/*-{
+	public final native RosterJson setRoutines(JsArray<RoutineJson> classTimes)/*-{
 						this.classTimes = classTimes;
 	}-*/;
 	
-	public final native JsArray<ClassTimeJson> addSeatingChart(ClassTimeJson seatingChart)/*-{
-				this.seatingCharts.push(seatingChart);
-	}-*/;
 	
-	public final native JsArray<ClassTimeJson> removeSeatingChart(ClassTimeJson seatingChart)/*-{
-							for(var i = 0; i< this.seatingCharts.length; i++){
-							    if(seatingCharts[i].id == seatingChart.id){
-							    seatingCharts.splice(i,1);	
-							    }	
-							}
-							
-							return this.seatingCharts;
-	}-*/;
 	
 	
 }

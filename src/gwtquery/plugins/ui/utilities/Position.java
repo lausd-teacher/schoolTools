@@ -110,7 +110,8 @@ public class Position extends UiWidget<Position, Position.Options> {
    */
   private static class PositionPlugin implements UiPlugin<Position> {
 
-    public Position init(Ui ui, WidgetOptions<?> options) {
+    @Override
+	public Position init(Ui ui, WidgetOptions<?> options) {
       return new Position(ui, (Position.Options) options.cast());
     }
 

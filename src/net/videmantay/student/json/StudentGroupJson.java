@@ -1,12 +1,7 @@
 package net.videmantay.student.json;
 
-import java.util.Set;
-
 import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayNumber;
-import com.google.gwt.core.client.JsArrayString;
-
 import net.videmantay.shared.GroupingType;
 
 public class StudentGroupJson extends JavaScriptObject {

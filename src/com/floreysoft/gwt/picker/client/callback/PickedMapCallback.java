@@ -24,4 +24,5 @@ import com.floreysoft.gwt.picker.client.domain.result.MapResult;
  * ViewId: MAPS
  * @deprecated Use or extend {@link AbstractPickerCallback}
  */
+@Deprecated
 public abstract class PickedMapCallback extends PickerCallback<MapResult> {}

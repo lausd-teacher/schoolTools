@@ -35,7 +35,8 @@ public class Sortable extends UiWidget<Sortable, Sortable.Options> {
    */
   private static class SortablePlugin implements UiPlugin<Sortable> {
 
-    public Sortable init(Ui ui, WidgetOptions<?> options) {
+    @Override
+	public Sortable init(Ui ui, WidgetOptions<?> options) {
       return new Sortable(ui, (Sortable.Options) options.cast());
     }
 

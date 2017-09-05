@@ -24,4 +24,5 @@ import com.floreysoft.gwt.picker.client.domain.result.PhotoResult;
  * ViewId: PHOTOS, PHOTO_UPLOAD
  * @deprecated Use or extend {@link AbstractPickerCallback}
  */
+@Deprecated
 public abstract class PickedPhotoCallback extends PickerCallback<PhotoResult> {}
