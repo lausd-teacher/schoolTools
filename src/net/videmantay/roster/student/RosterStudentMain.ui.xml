@@ -7,22 +7,22 @@
 	
 	</ui:style>
 	<g:HTMLPanel>
-	<div ui:field="emptyStudentPage" style="padding:5em">
+	<div ui:field="emptyStudentPage" style="padding:5em; width:85%;height:100%;margin:0 auto">
 		<h2> It appears that you haven't registered any students yet</h2>
 		<h6>To add students to your roster press the button in the bottom.</h6>
 	</div>
 	<div ui:field="studentDashboard">
-		<m:MaterialRow>
-			<m:MaterialColumn grid="s3">
-			<m:MaterialCollection height="100%" ui:field="studentCollection" marginTop="5" />
-			</m:MaterialColumn>
-			<m:MaterialColumn grid="s9">
 	<g:HTMLPanel>
 	<m:MaterialTab>
 		<m:MaterialTabItem> <m:MaterialLink text="Students" href="#stuHomeTab" /></m:MaterialTabItem>
 		<m:MaterialTabItem> <m:MaterialLink text="Calendar" href="#stuCalTab" /></m:MaterialTabItem>
 		<m:MaterialTabItem> <m:MaterialLink text="Reports" href="#stuReportTab" /></m:MaterialTabItem>	
 	</m:MaterialTab>
+	<div id="studentMainWrapper">
+	<div style="width:15%; height:100%; float:left; padding:0.5em;position:relative">
+		<m:MaterialPanel ui:field="studentCollection" width="100%" height="100%" />
+	</div>
+	<div id="studentTabContentWrapper" style="width:85%; height:100%;float:right">
 	<div id="stuHomeTab">
 		<div ui:field="rosterStudentMain" >
 			<v:StudentPage ui:field="studentPage" />
@@ -30,9 +30,9 @@
 	</div>
 	<div id="stuCalTab"></div>
 	<div id="studReportTab"></div>
+	</div>
+	</div>
 	</g:HTMLPanel>
-	</m:MaterialColumn>
-	</m:MaterialRow>
 	</div>
 	<!-- FAB -->
 		<m:MaterialFAB>

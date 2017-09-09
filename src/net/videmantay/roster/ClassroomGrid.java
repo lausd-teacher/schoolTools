@@ -14,8 +14,8 @@ import gwt.material.design.client.ui.MaterialFABList;
 import gwt.material.design.client.ui.MaterialPanel;
 import gwt.material.design.client.ui.MaterialRow;
 import net.videmantay.roster.json.RosterJson;
-import net.videmantay.roster.student.FistNameCompare;
-import net.videmantay.roster.student.LastNameCompare;
+import net.videmantay.roster.student.FistNameComparator;
+import net.videmantay.roster.student.LastNameComparator;
 import net.videmantay.student.json.RosterStudentJson;
 
 import static com.google.gwt.query.client.GQuery.*;
@@ -100,9 +100,9 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 		RosterStudentPanel rsp;
 		
 		if(sortByFirst){
-			Collections.sort(studentList, new FistNameCompare());
+			Collections.sort(studentList, new FistNameComparator());
 		}else{
-			Collections.sort(studentList, new LastNameCompare());
+			Collections.sort(studentList, new LastNameComparator());
 		}
 		
 		console.log(studentList);

@@ -1,20 +1,25 @@
 package net.videmantay.roster.student;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.UListElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 
+import gwt.material.design.client.constants.Position;
+import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialImage;
+import gwt.material.design.client.ui.MaterialTooltip;
 import gwt.material.design.client.ui.html.Span;
 
 import static com.google.gwt.query.client.GQuery.*;
 
-import net.videmantay.roster.json.RosterJson;
 import net.videmantay.student.json.RosterStudentJson;
 
 public class RosterStudentItem extends Composite {
@@ -26,29 +31,35 @@ public class RosterStudentItem extends Composite {
 
 	@UiField
 	MaterialImage studentImg;
-	
 	@UiField
-	Span firstName;
+	MaterialTooltip tooltip;
 	
-	@UiField
-	Span lastName;
+	
+	
 	
 	private final RosterStudentJson student;
 	
 	public RosterStudentItem(RosterStudentJson rs) {
-		initWidget(uiBinder.createAndBindUi(this));
 		student = rs;
-		
-		String url = (student.getThumbnails() == null)? "/img/user.svg": student.getThumbnails().get(1).getUrl();
+		console.log("RosterSTudentItem -Constructor studnet is:");
+		console.log(student);
+		initWidget(uiBinder.createAndBindUi(this));
+		String url = (student.getThumbnails() == null)? "../img/user.svg": student.getThumbnails().get(2).getUrl();
 		studentImg.setUrl(url);
-		firstName.setText(student.getFirstName());
-		lastName.setText(student.getLastName());
-		$(this).id(rs.getId() +"");
+		tooltip.setText(student.getFirstName() + " " + student.getLastName());
+		tooltip.setDelayMs(100);
 	}
+	
+
 	
 	
 	@Override
 	public void onLoad(){
+		console.log("Student RosterStudentItem-onLoad");
+		console.log(student);
+	
+		
+		$(this).id(student.getId()+"");
 		this.addDomHandler(new ClickHandler(){
 
 			@Override
@@ -57,19 +68,10 @@ public class RosterStudentItem extends Composite {
 					$(".studentItem").filter(".selectedStudentItem").removeClass(".selectedStudentItem");
 					$(this).addClass(".selectedStudentItem");
 					}
-					//This is handled by Roster(Entry point)
-					//roster is a window object
-					RosterJson roster = window.getPropertyJSO("roster").cast();
-					if(roster == null || roster.getId() == null){
-						//what todo?
-					}
-					History.newItem("roster/" + roster.getId()+
-							"/students/" + student.getId());
-				
+					//if history is changed consider using thaat as trigger
+					//History.newItem("roster/students/" + student.getId());
+					$(body).trigger("studentselected", student);
 			}}, ClickEvent.getType());
-	}
-	
-	public void showStudentPage(){
 		
 	}
 

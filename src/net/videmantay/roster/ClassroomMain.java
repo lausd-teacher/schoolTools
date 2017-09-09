@@ -16,6 +16,7 @@ import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialNavBrand;
 import gwt.material.design.client.ui.MaterialSideNav;
 import net.videmantay.roster.assignment.GradedWorkMain;
+import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.student.RosterStudentMain;
 import java.util.List;
 
@@ -66,14 +67,14 @@ public class ClassroomMain extends Composite{
 	@UiField
 	MaterialLink jobLink;
 	
+	private final RosterJson roster;
+	
 	//end side nav links/////////
 		
-	private final Factory factory;
 	
 	
-	public ClassroomMain(Factory fac) {
-		this.factory = fac;
-		
+	public ClassroomMain() {
+		roster = window.getPropertyJSO("roster").cast();
 		this.initWidget(uiBinder.createAndBindUi(this));
 		//classroom.setId("classroom");
 			$this = this;
@@ -117,7 +118,7 @@ public class ClassroomMain extends Composite{
 	private void dashboardView(){
 		console.log("classmain dashboard called");
 		mainPanel.clear();
-		mainPanel.add(new DashboardPanel(factory.roster));
+		mainPanel.add(new DashboardPanel(roster));
 		sideNav.hide();
 	}
 	private void studentView(){
@@ -132,7 +133,7 @@ public class ClassroomMain extends Composite{
 
 			@Override
 			public void onSuccess() {
-				RosterStudentMain studentMain = new RosterStudentMain(factory.roster.getRosterStudents());
+				RosterStudentMain studentMain = new RosterStudentMain(roster.getRosterStudents());
 				mainPanel.clear();mainPanel.add(studentMain); 
 				//use the path to get student id and have that student selected
 			}});

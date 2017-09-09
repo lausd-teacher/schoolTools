@@ -6,9 +6,13 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
+import gwt.material.design.client.ui.MaterialCollection;
 import gwt.material.design.client.ui.MaterialImage;
+import gwt.material.design.client.ui.MaterialLabel;
+import gwt.material.design.client.ui.html.Span;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.student.json.RosterStudentJson;
 
@@ -21,19 +25,53 @@ public class StudentPage extends Composite {
 	}
 
 	@UiField
-	SpanElement firstName;
+	MaterialLabel name;
+		
+	@UiField
+	MaterialLabel DOB;
 	
 	@UiField
-	SpanElement lastName;
-	
-	@UiField
-	SpanElement extName;
-	
-	@UiField
-	SpanElement DOB;
+	Span summary;
 	
 	@UiField
 	MaterialImage stuImage;
+	
+	@UiField
+	HTMLPanel emptyAssignment;
+	
+	@UiField
+	HTMLPanel emptyAttendance;
+	
+	@UiField
+	HTMLPanel emptyIncident;
+	
+	@UiField
+	HTMLPanel emptyJob;
+	
+	@UiField
+	HTMLPanel emptyGoal;
+	
+	@UiField
+	HTMLPanel emptyGroup;
+	
+	@UiField
+	MaterialCollection assignmentCollection;
+	
+	@UiField
+	MaterialCollection attendanceCollection;
+	
+	@UiField
+	MaterialCollection incidentCollection;
+	
+	@UiField
+	MaterialCollection jobCollection;
+	
+	@UiField
+	MaterialCollection goalCollection;
+	
+	@UiField
+	MaterialCollection groupCollection;
+	
 	
 	
 	private  RosterStudentJson student;
@@ -42,11 +80,14 @@ public class StudentPage extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
-	public StudentPage(Long id){
-		this();
-	}
 	
-	public void setStudent(Long id){
+	public void setStudent(RosterStudentJson stu){
+		this.student = stu;
+		name.setText(student.getFirstName()+" "+ student.getLastName());
+		stuImage.setUrl(student.getThumbnails().get(3).getUrl());
+		summary.setText(student.getCurrentSummary());
+		
+		
 		
 	}
 	

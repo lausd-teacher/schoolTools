@@ -19,7 +19,7 @@ public class RosterStudentJson extends JavaScriptObject{
 	return this.eDate;
 }-*/;
 	public final native RosterStudentJson setEDate(String date)/*-{
-		this.edate = date;
+		this.eDate = date;
 		return this;
 	}-*/;
 	public final native  String getReadingLevel()/*-{
@@ -101,6 +101,14 @@ public class RosterStudentJson extends JavaScriptObject{
 		this.jobs = jobs;
 		return this;
 	}-*/;
+	public final native JsArray<StudentGroupJson> getGroups() /*-{
+	return this.jobs;
+}-*/;
+public final native RosterStudentJson setGroups(JsArray<StudentGroupJson> groups) /*-{
+	this.jobs = jobs;
+	return this;
+}-*/;
+	
 	public final native String getLastName() /*-{
 		return this.lastName;
 	}-*/;

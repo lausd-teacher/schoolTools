@@ -9,7 +9,6 @@ import static com.google.gwt.query.client.GQuery.*;
 import com.google.gwt.query.client.Function;
 
 public class Roster implements EntryPoint {
-	private final Factory factory = Factory.get();
 	
 	public Roster(){
 		
@@ -20,10 +19,8 @@ public class Roster implements EntryPoint {
 		Ajax.get("/roster").done(new Function(){
 			public void f(){
 				$("div#loader").remove();
-				factory.roster = JsonUtils.safeEval((String)this.arguments(0));
-				ClassroomMain classroom = new ClassroomMain(factory);
-				console.log("roster is ");
-				console.log(factory.roster);
+				window.setPropertyJSO("roster",JsonUtils.safeEval((String)this.arguments(0)));
+				ClassroomMain classroom = new ClassroomMain();
 				RootPanel.get().add(classroom);
 			}
 		});

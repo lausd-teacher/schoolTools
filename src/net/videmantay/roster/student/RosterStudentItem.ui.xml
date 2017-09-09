@@ -5,18 +5,7 @@
 	<ui:style>
 	
 	</ui:style>
-	<m:MaterialRow ui:field="studentItem">
-		<m:MaterialColumn grid="s12 m3 l3">
-			<m:MaterialImage ui:field="studentImg" width="64px" height="64px" hideOn="HIDE_ON_SMALL_DOWN"/>
-			<m:MaterialTooltip ui:field="studentItemTooltip" showOn="HIDE_ON_MEDIUM_UP">
-			<m:MaterialImage ui:field="tooltipStudentImg" width="64px" height="64px"/>
-			</m:MaterialTooltip>
-		</m:MaterialColumn>
-		<m:MaterialColumn hideOn="HIDE_ON_SMALL_DOWN">
-			<m:html.Div>
-				<m:html.Span ui:field="firstName" /><m:html.Span ui:field="lastName" />
-			</m:html.Div>
-		</m:MaterialColumn>
-		<m:MaterialColumn></m:MaterialColumn>
-	</m:MaterialRow>
+		
+			<m:MaterialImage ui:field="studentImg" type="CIRCLE" addStyleNames="studentItem"/>
+			
 </ui:UiBinder> 

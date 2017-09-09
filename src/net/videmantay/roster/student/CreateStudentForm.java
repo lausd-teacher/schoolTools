@@ -9,6 +9,7 @@ import com.floreysoft.gwt.picker.client.domain.result.PhotoResult;
 import com.floreysoft.gwt.picker.client.domain.result.ViewToken;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -41,6 +42,8 @@ import net.videmantay.roster.RosterEvent;
 import net.videmantay.roster.RosterUrl;
 import net.videmantay.shared.LoginInfo;
 import net.videmantay.student.json.RosterStudentJson;
+
+import java.util.Date;
 
 
 public class CreateStudentForm extends Composite{
@@ -113,6 +116,8 @@ public class CreateStudentForm extends Composite{
 	@UiField
 	MaterialCollection modifications;
 	
+	private final String IMG_URL="https://image.freepik.com/free-icon/user-image-with-black-background_318-34564.jpg";
+	
 	private  RosterStudentJson student = RosterStudentJson.createObject().cast();
 	
 	private DateTimeFormat df = DateTimeFormat.getFormat("yyyy-MM-dd");
@@ -163,18 +168,25 @@ public class CreateStudentForm extends Composite{
 		@Override
 		public void onClick(ClickEvent event) {
 			event.stopPropagation();
-			
-			form.reset();
 			studentFormPanel.close();
 			MaterialLoader.showLoading(true);
-			Ajax.post(RosterUrl.CREATE_STUDENT,$$("student:" + JsonUtils.stringify(student)))
+			console.log("here is the student just before ajax");
+			console.log(getStudent());
+			Ajax.ajax(Ajax.createSettings()
+					.setUrl("/roster/student")
+					.setContentType("application/json")
+					.setType("POST")
+					.setData(getStudent())
+					.setDataType("json")
+					)
 			.done(new Function(){
 				@Override
 				public void f(){
 					console.log("create student form done return : " +  this.getArgument(0));
 					RosterStudentJson rosStu = JsonUtils.safeEval((String)this.getArgument(0));
-					$(body).trigger(RosterEvent.STUDENT_LIST_UPDATED);
+					$(body).trigger("studentsave", rosStu);
 					MaterialLoader.showLoading(false);
+					reset();
 				}
 			});
 			
@@ -185,7 +197,7 @@ public class CreateStudentForm extends Composite{
 		@Override
 		public void onClick(ClickEvent event) {
 			student = JavaScriptObject.createObject().cast();
-			form.reset();
+			reset();
 			studentFormPanel.close();
 			
 		}};
@@ -290,28 +302,19 @@ public class CreateStudentForm extends Composite{
 			modifications.add(new ModificationItem(i, student.getModifications().get(i)));
 		}
 		}else{
-			
+			student.setModifications((JsArrayString)JsArray.createArray().cast());
 		}
 		
 	}
 	
-	public void submit(){
-		 Ajax.ajax(Ajax.createSettings()
-				.setContentType("application/json")
-				.setDataType("json")
-				.setData(student)
-				.setType("POST")
-				.setUrl("/roster/student/"+ student.getAcct())
-				)
-		 .then(new Function(){
-			 @Override
-			 public void f(){
-				 MaterialLoader.showLoading(true);
-				 RosterStudentJson response = (RosterStudentJson)JsonUtils.safeEval((String)this.arguments(0)).cast();
-				 $(body).trigger("studentsaved", response);
-			 }
-		 });
+	public void reset(){
+		form.reset();
+		inactive.setText("active");
+		inactive.setIconType(IconType.PERSON);
+		studentImg.setUrl(IMG_URL);
 	}
+	
+	
 	
 	@Override
 	public void onLoad(){
@@ -320,9 +323,28 @@ public class CreateStudentForm extends Composite{
 				pickerButton.addClickHandler(handler);
 				okBtn.addClickHandler(okHandler);
 				cancelBtn.addClickHandler(cancelHandler);
-				student = JavaScriptObject.createObject().cast();
 				inactive.addClickHandler(inactiveHandler);
 				
+				//init form
+				initForm();
+				
+	}
+	
+	private void initForm(){
+			schoolEmail.setValue("");
+			firstName.setValue("");
+			lastName.setValue("");
+			studentImg.setUrl("");
+			DOB.setValue(new Date());
+			//Summary
+			currentSummary.setValue("");
+			//Detail
+			eDate.setValue(new Date());
+			glasses.setValue(false);
+			eldLevel.setValue("");
+			readingLevel.setValue("");
+			iep.setValue(false);
+
 	}
 	
 

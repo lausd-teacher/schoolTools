@@ -3,114 +3,130 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui">
 	<g:HTMLPanel>
 		<m:MaterialRow>
-			<m:MaterialColumn>
+			<m:MaterialColumn grid="s12 m6 l6">
 				<m:MaterialCard>
 					<m:MaterialCardContent>
 						<g:HTMLPanel>
 							<m:MaterialCard ui:field="studentProfPanel"> 
 								<m:MaterialCardContent>
 									<g:HTMLPanel >
-										<m:MaterialAnchorButton type="FLAT"
-											activates="studentmore" ui:field="studentEditIcon" iconType="MORE_VERT" />
+										<m:MaterialRow>
+										<m:MaterialAnchorButton type="FLAT" width="100%"
+											activates="studentmore" ui:field="studentEditIcon" iconType="MORE_VERT"  iconPosition="RIGHT"/>
 										<m:MaterialDropDown activator="studentmore">
 											<m:MaterialLink text="Edit" iconType="EDIT" />
-											<m:MaterialLink text="Delte" iconType="REMOVE" />
-											<m:MaterialLink ui:field="activeStudentLink" />
+											<m:MaterialLink text="Delete" iconType="DELETE" />
+											<m:MaterialLink ui:field="activeStudentLink" text="Suspend"/>
 										</m:MaterialDropDown>
-										<m:html.Hr />
-										<table>
-											<tbody>
-												<tr>
-													<th>
-														<m:MaterialImage ui:field="stuImage" />
-													</th>
-												</tr>
-												<tr>
-													<td>
-														<div>
-															<span ui:field="firstName"></span>
-															<br />
-															<span ui:field="lastName" />
-															<br />
-															<span ui:field="extName" />
-															<br />
-															<span ui:field="DOB" />
-															<br />
-														</div>
-													</td>
-												</tr>
-												<tr><!-- summary -->
-													<td> 
-														<div ui:field="studentSummaryPanel"> 
-															<m:MaterialLabel text="Summary"/>
-															<span ui:field="summary"></span>
-														</div>
-													</td>
-												</tr>
-											</tbody>
-										</table>
-										<m:html.Hr />
+										</m:MaterialRow>
+											<m:html.Hr />
+										<m:MaterialRow>
+											<m:MaterialColumn grid="s6" >
+										
+														<m:MaterialImage ui:field="stuImage"  width="100%"/>
+													
+											</m:MaterialColumn>
+											<m:MaterialColumn grid="s6">		
+															<m:MaterialLabel fontSize="1.5em" textColor="RED_DARKEN_2" ui:field="name" />
+															<m:MaterialLabel ui:field="DOB" />
+											</m:MaterialColumn>
+											</m:MaterialRow>
+											<m:MaterialRow>	
+														<m:html.Div ui:field="studentSummaryPanel"> 
+															<m:MaterialLabel text="Summary:"/>
+															<m:html.Span ui:field="summary"></m:html.Span>
+														</m:html.Div>
+										</m:MaterialRow>
 									</g:HTMLPanel>
 								</m:MaterialCardContent>
 							</m:MaterialCard>
 							<br />
-								
 						</g:HTMLPanel>
+						<m:MaterialCollapsible>
+							<m:MaterialCollapsibleHeader>
+								<m:MaterialLabel text="See more..."  ui:field="studentMoreInfoPanel"/>
+							</m:MaterialCollapsibleHeader>
+							<m:MaterialCollapsibleBody>
+								<g:HTMLPanel> 
+									<div><!--  -->
+										<span></span>
+									</div>
+								</g:HTMLPanel>
+							</m:MaterialCollapsibleBody>
+						</m:MaterialCollapsible>
 					</m:MaterialCardContent>
 				</m:MaterialCard>
 			</m:MaterialColumn>
-			<m:MaterialColumn>
+			<m:MaterialColumn grid="s12 m6 l6">
 				<!-- Alphabetize the row for easy -->
-				<m:MaterialRow ui:field="assignmentRow">
-					<m:MaterialPanel>
+				<m:MaterialRow ui:field="assignmentRow" padding="5">
 						<m:MaterialCard>
 							<m:MaterialCardTitle text="Assignments" iconType="ASSIGNMENT"></m:MaterialCardTitle>
-							<m:MaterialCardContent></m:MaterialCardContent>
+							<m:MaterialCardContent>
+								<g:HTMLPanel ui:field="emptyAssignment">
+									<h5>There are no recorded assignments yet.</h5>
+								</g:HTMLPanel>
+								<m:MaterialCollection ui:field="assignmentCollection" />
+							</m:MaterialCardContent>
 						</m:MaterialCard>
-					</m:MaterialPanel>
 				</m:MaterialRow>
-				<m:MaterialRow ui:field="attendanceRow">
-					<m:MaterialPanel>
+				<m:MaterialRow ui:field="attendanceRow" padding="5">
 						<m:MaterialCard>
 							<m:MaterialCardTitle text="Attendance"
 								iconType="ASSIGNMENT_IND">
 							</m:MaterialCardTitle>
-							<m:MaterialCardContent></m:MaterialCardContent>
+							<m:MaterialCardContent>
+								<g:HTMLPanel ui:field="emptyAttendance">
+									<h5>There are no recorded attendance yet.</h5>
+								</g:HTMLPanel>
+								<m:MaterialCollection ui:field="attendanceCollection" />
+							</m:MaterialCardContent>
 						</m:MaterialCard>
-					</m:MaterialPanel>
 				</m:MaterialRow>
-				<m:MaterialRow ui:field="incidentRow">
-					<m:MaterialPanel>
+				<m:MaterialRow ui:field="incidentRow" padding="5">
 						<m:MaterialCard>
 							<m:MaterialCardTitle text="Incidents" iconType="FEEDBACK"></m:MaterialCardTitle>
-							<m:MaterialCardContent></m:MaterialCardContent>
+							<m:MaterialCardContent>
+								<g:HTMLPanel ui:field="emptyIncident">
+									<h5>There are no recorded incidents yet.</h5>
+								</g:HTMLPanel>
+								<m:MaterialCollection ui:field="incidentCollection" />
+							</m:MaterialCardContent>
 						</m:MaterialCard>
-					</m:MaterialPanel>
 				</m:MaterialRow>
-				<m:MaterialRow ui:field="goalRow">
-					<m:MaterialPanel>
+				<m:MaterialRow ui:field="goalRow" padding="5">
 						<m:MaterialCard>
 							<m:MaterialCardTitle text="Goals" iconType="TRENDING_UP"></m:MaterialCardTitle>
-							<m:MaterialCardContent></m:MaterialCardContent>
+							<m:MaterialCardContent>
+								<g:HTMLPanel ui:field="emptyGoal">
+									<h5>There are no recorded goals yet.</h5>
+								</g:HTMLPanel>
+								<m:MaterialCollection ui:field="goalCollection" />
+							</m:MaterialCardContent>
 						</m:MaterialCard>
-					</m:MaterialPanel>
 				</m:MaterialRow>
-				<m:MaterialRow ui:field="groupRow">
-					<m:MaterialPanel>
+				<m:MaterialRow ui:field="groupRow" padding="5">
 						<m:MaterialCard>
 							<m:MaterialCardTitle text="Groups" iconType="GROUP">
 							</m:MaterialCardTitle>
-							<m:MaterialCardContent></m:MaterialCardContent>
+							<m:MaterialCardContent>
+								<g:HTMLPanel ui:field="emptyGroup">
+									<h5>There are no recorded groups yet.</h5>
+								</g:HTMLPanel>
+								<m:MaterialCollection ui:field="groupCollection" />
+							</m:MaterialCardContent>
 						</m:MaterialCard>
-					</m:MaterialPanel>
 				</m:MaterialRow>
-				<m:MaterialRow ui:field="jobRow">
-					<m:MaterialPanel>
+				<m:MaterialRow ui:field="jobRow" padding="5">
 						<m:MaterialCard>
 							<m:MaterialCardTitle text="Jobs" iconType="BUSINESS_CENTER"></m:MaterialCardTitle>
-							<m:MaterialCardContent></m:MaterialCardContent>
+							<m:MaterialCardContent>
+								<g:HTMLPanel ui:field="emptyJob">
+									<h5>There are no recorded jobs yet.</h5>
+								</g:HTMLPanel>
+								<m:MaterialCollection ui:field="jobCollection" />
+							</m:MaterialCardContent>
 						</m:MaterialCard>
-					</m:MaterialPanel>
 				</m:MaterialRow>
 			</m:MaterialColumn>
 		</m:MaterialRow>
