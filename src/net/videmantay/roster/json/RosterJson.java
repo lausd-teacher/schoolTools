@@ -3,14 +3,8 @@ package net.videmantay.roster.json;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
-import net.videmantay.roster.seatingchart.json.ClassTimeJson;
-import net.videmantay.roster.seatingchart.json.SeatingChartJson;
-import net.videmantay.shared.GradeLevel;
-import net.videmantay.shared.json.RosterInfoJson;
 import net.videmantay.student.json.RosterStudentJson;
-import net.videmantay.student.json.StudentGroupJson;
 import net.videmantay.student.json.StudentJobJson;
-import net.videmantay.student.json.TeacherInfoJson;
 
 public class RosterJson extends JavaScriptObject {
 

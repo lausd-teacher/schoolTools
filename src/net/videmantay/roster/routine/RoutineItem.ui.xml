@@ -1,0 +1,81 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:h="urn:import:gwt.material.design.client.ui.html"
+	xmlns:a="urn:import:gwt.material.design.addins.client.emptystate"
+	xmlns:e="urn:import:gwt.material.design.addins.client.richeditor"
+	>
+	<g:HTMLPanel ui:field="routineItem">
+				<m:MaterialTab ui:field="routineTabs"> 
+					<m:MaterialTabItem> 
+						<m:MaterialAnchorButton type="FLAT" iconType="LIST" text="procedures" href="#procContent" />
+					</m:MaterialTabItem>
+					<m:MaterialTabItem> 
+						<m:MaterialAnchorButton type="FLAT" iconType="GROUP_WORK" text="groups" href="#groupContent" />
+					</m:MaterialTabItem>
+					<m:MaterialTabItem> 
+						<m:MaterialAnchorButton type="FLAT" iconType="WIDGETS" text="stations" href="#stationContent" />
+					</m:MaterialTabItem>
+					<m:MaterialTabItem> 
+						<m:MaterialAnchorButton type="FLAT" iconType="EVENT_SEAT" text="layout" href="#layoutContent" />
+					</m:MaterialTabItem>
+				</m:MaterialTab>
+				<div id="procContent"><h4 style="text-align:center; margin:0.25em; padding:0.25em;"><u>Procedures</u></h4>
+					<h:UnorderedList ui:field="procList"></h:UnorderedList>
+						<m:MaterialAnchorButton ui:field="procCreateBtn" type="FLOATING"  iconType="LIST"></m:MaterialAnchorButton>
+				</div>
+				<div id="groupContent"><h4 style="text-align:center; margin:0.25em; padding:0.25em;"><u>Groups</u></h4>
+					<m:MaterialPanel ui:field="smallGroupPanel">
+						<m:MaterialRow>
+							<m:MaterialColumn ui:field="studentChoiceCol"> 
+								<m:MaterialRow ui:field='studentChoiceGrid'> 
+								<!-- add student avatars here s12 m6 l4  so there are three  -->
+								
+								</m:MaterialRow>
+							</m:MaterialColumn>
+							<m:MaterialColumn ui:field="groupWrapper"> 
+							<m:MaterialSlider ui:field="groupSlider">
+								<m:MaterialSlideItem ui:field="emptyGroup">
+								<m:MaterialTextBox ui:field="groupName" placeholder="Group Name"></m:MaterialTextBox>
+								<m:MaterialTextBox ui:field="description" placeholder="Group Objective"></m:MaterialTextBox>
+									<a:MaterialEmptyState ui:field="emptyGroupContent">
+									</a:MaterialEmptyState>
+								</m:MaterialSlideItem>
+							</m:MaterialSlider>
+							<m:MaterialRow ui:field="groupGrid"> 
+								<!-- just a div with the most basic panel to show which gird -->
+								<!-- no student avator just a count of how many are  in that particular group -->
+							</m:MaterialRow>
+							<m:MaterialAnchorButton ui:field="createGroup" iconType="GROUP_WORK" size="LARGE"></m:MaterialAnchorButton>
+							</m:MaterialColumn>
+						</m:MaterialRow>
+					</m:MaterialPanel>
+				</div>
+				<div id="stationContent"><h1>Stations</h1>
+				<!-- station rely on the number of groups -->
+				<m:MaterialRow ui:field="stationWrapper"> 
+					<!--  slot line up vertically and depended the first row is for the label -->
+					<m:MaterialColumn ui:field="slotCol">
+						<m:MaterialRow ui:field="slotListRow"> 
+						<!-- add div's here -->
+						
+						</m:MaterialRow>
+						<m:MaterialRow ui:field="slotAddBtnRow"> 
+							<m:MaterialButton ui:field="addSlotBtn" type="FLOATING" />
+						</m:MaterialRow>
+					</m:MaterialColumn>
+					<!--  station line horizontally -->
+					<m:MaterialColumn ui:field="stationCol">
+						<m:MaterialRow ui:field="stationHeaderRow" > 
+							<h:Div> <!-- add other div here float left with size --></h:Div>
+						</m:MaterialRow>
+						<m:MaterialRow ui:field="stationGroupGrid" > 
+							<!--  group slot rows added here row will have div floated left to align with stations -->
+						</m:MaterialRow>
+					</m:MaterialColumn>
+				</m:MaterialRow>
+				</div>
+				<div id="layoutContent"><h1>Layout</h1></div>
+	</g:HTMLPanel>
+</ui:UiBinder> 

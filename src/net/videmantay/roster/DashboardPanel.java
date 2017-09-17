@@ -1,8 +1,6 @@
 package net.videmantay.roster;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.JavaScriptObject;
-import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -14,7 +12,6 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 import static com.google.gwt.query.client.GQuery.*;
 
@@ -28,10 +25,8 @@ import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialSwitch;
 import net.videmantay.roster.json.RosterJson;
-import net.videmantay.roster.seatingchart.SeatingChartPanel;
-import net.videmantay.roster.seatingchart.json.ClassTimeJson;
 
-public class DashboardPanel extends Composite implements ClassroomMain.HasUpdateClassTime {
+public class DashboardPanel extends Composite {
 
 	private static DashboardPanelUiBinder uiBinder = GWT.create(DashboardPanelUiBinder.class);
 
@@ -116,7 +111,6 @@ public class DashboardPanel extends Composite implements ClassroomMain.HasUpdate
 
 		@Override
 		public void onSuccess() {
-			display = new SeatingChartPanel();
 			tab1Main.clear();
 			tab1Main.add(display);
 		}};
@@ -301,22 +295,11 @@ public class DashboardPanel extends Composite implements ClassroomMain.HasUpdate
 	private void showDisplay(){
 		display = new ClassroomGrid(roster);
 		tab1Main.clear();
-		tab1Main.add(display); 
+		//tab1Main.add(display); 
 		seatingChartEditIcon.setVisible(false);
 	}
 
-	@Override
-	public void updateClassTime() {
-		switch(state){
-		//most likely case is dashboard so should be default
-		//classtime only affects groups and which assignments are 
-		//listed by default and which seating chart is shown
-		case GROUP:display.groups(); break;
-		case HW: display.checkHW();break;
-		default: display.home(); break;
-		}
-		
-	}
+	
 	
 	@Override
 	public void onLoad(){

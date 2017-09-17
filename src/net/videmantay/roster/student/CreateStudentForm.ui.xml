@@ -64,12 +64,10 @@
 				</g:HTMLPanel>
 			</g:FormPanel>
 		</m:MaterialModalContent>
-		<m:MaterialFooter backgroundColor="GREY_LIGHTEN_2" addStyleNames="bottomFooter">
-			<m:MaterialRow>
-				<m:MaterialColumn><m:MaterialButton ui:field="okBtn" text="Ok" backgroundColor="GREEN"/></m:MaterialColumn>
-				<m:MaterialColumn><m:MaterialButton ui:field="cancelBtn" text="Cancel" backgroundColor="RED"/></m:MaterialColumn>
-			</m:MaterialRow>
-		</m:MaterialFooter>
+		<m:MaterialModalFooter backgroundColor="GREY_LIGHTEN_2" addStyleNames="bottomFooter">
+				<m:MaterialButton ui:field="cancelBtn" text="Cancel" backgroundColor="RED" float="RIGHT"/>
+				<m:MaterialButton ui:field="okBtn" text="Ok" backgroundColor="GREEN" marginRight="5.0" marginLeft="10.0"/>
+		</m:MaterialModalFooter>
 	</m:MaterialModal>
 	</g:HTMLPanel>
 </ui:UiBinder> 

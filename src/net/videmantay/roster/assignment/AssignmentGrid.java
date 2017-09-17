@@ -16,6 +16,10 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SingleSelectionModel;
 
+import gwt.material.design.addins.client.emptystate.MaterialEmptyState;
+import gwt.material.design.client.constants.Color;
+import gwt.material.design.client.constants.IconType;
+
 import static com.google.gwt.query.client.GQuery.*;
 
 import net.videmantay.roster.json.GradedWorkJson;
@@ -145,6 +149,13 @@ public class AssignmentGrid extends DataGrid<GradedWorkJson> {
 		this.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 		this.setKeyboardPagingPolicy(KeyboardPagingPolicy.INCREASE_RANGE);
 		this.setFocus(true);
-		this.setEmptyTableWidget(new EmptyAssignmentGrid());
+		MaterialEmptyState empty = new MaterialEmptyState();
+		empty.setBackgroundColor(Color.GREY_LIGHTEN_2);
+		empty.setSize("90vw", "50vh");
+		empty.setIconType(IconType.ASSIGNMENT);
+		empty.setIconColor(Color.GREY);
+		empty.setTitle("No Assignments");
+		empty.setDescription("You haven't created any assignments yet. To get started hit the button at the bottom of your screen");
+		this.setEmptyTableWidget(empty);
 	}
 }

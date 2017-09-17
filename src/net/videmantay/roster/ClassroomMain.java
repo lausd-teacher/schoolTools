@@ -15,8 +15,10 @@ import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialNavBrand;
 import gwt.material.design.client.ui.MaterialSideNav;
+import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.roster.assignment.GradedWorkMain;
 import net.videmantay.roster.json.RosterJson;
+import net.videmantay.roster.routine.RoutineMain;
 import net.videmantay.roster.student.RosterStudentMain;
 import java.util.List;
 
@@ -104,6 +106,16 @@ public class ClassroomMain extends Composite{
 				@Override
 				public void onClick(ClickEvent event) {
 					History.newItem("roster/assignments");
+					assignmentView();
+					sideNav.hide();
+					
+				}});
+			routineLink.addClickHandler(new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event) {
+					History.newItem("classroom/routines");
+					routineView();
 					sideNav.hide();
 					
 				}});
@@ -138,6 +150,40 @@ public class ClassroomMain extends Composite{
 				//use the path to get student id and have that student selected
 			}});
 		
+	}
+	
+	private void assignmentView(){
+		GWT.runAsync(new RunAsyncCallback(){
+
+			@Override
+			public void onFailure(Throwable reason) {
+				// TODO Auto-generated method stub
+				MaterialToast.fireToast("unable to reach assignements");
+				History.back();
+			}
+
+			@Override
+			public void onSuccess() {
+				mainPanel.clear();
+				mainPanel.add(new GradedWorkMain());
+			}});
+	}
+	
+	private  void routineView(){
+		GWT.runAsync(new RunAsyncCallback(){
+
+			@Override
+			public void onFailure(Throwable reason) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void onSuccess() {
+				mainPanel.clear();
+				mainPanel.add(new RoutineMain());
+				
+			}});
 	}
 	private void assignmentView(List<String> path){
 		GWT.runAsync(new RunAsyncCallback(){

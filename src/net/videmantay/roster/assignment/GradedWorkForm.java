@@ -10,12 +10,14 @@ import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Widget;
 import static com.google.gwt.query.client.GQuery.*;
 import com.google.gwt.query.client.Function;
 
+import gwt.material.design.addins.client.richeditor.MaterialRichEditor;
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCheckBox;
 import gwt.material.design.client.ui.MaterialDatePicker;
@@ -48,10 +50,7 @@ public class GradedWorkForm extends Composite {
 	MaterialTextBox  title;
 	
 	@UiField
-	MaterialTextArea description;
-	
-	@UiField
-	MaterialListBox lang;
+	MaterialRichEditor description;
 	
 	@UiField
 	MaterialListBox subject;
@@ -70,6 +69,15 @@ public class GradedWorkForm extends Composite {
 	
 	@UiField
 	MaterialCheckBox selectAllBox;
+	
+	@UiHandler("selectAllBox")
+	public void showAssignTo(ClickEvent event){
+		if(selectAllBox.getValue()){
+			assignToGrid.setVisible(false);
+		}else{
+			assignToGrid.setVisible(true);
+		}
+	}
 	
 	@UiField
 	MaterialRow assignToGrid;
@@ -130,13 +138,27 @@ public class GradedWorkForm extends Composite {
 		
 		data.setAssignedTo(studentList);
 		data.setMediaUrl(url);
-		RosterJson roster = window.getPropertyJSO("roster").cast();
+		final RosterJson roster = window.getPropertyJSO("roster").cast();
 		data.setRosterId(roster.getId());
 		
 		if(selectAllBox.getValue()){
 			for(int i = 0; i <roster.getRosterStudents().length(); i++){
 				studentList.push(roster.getRosterStudents().get(i).getAcct());
 			}
+		}else{
+			//TODO:load students by data-student-id
+			$(".student .selected").each(new Function(){
+				@Override
+				public void f(){
+				String studentId =	$(this).attr("data-student-id");
+				for(int i = 0; i <roster.getRosterStudents().length(); i++){
+					if(studentId.equalsIgnoreCase(roster.getRosterStudents().get(i).getAcct())){
+					studentList.push(roster.getRosterStudents().get(i).getAcct());
+					break;
+					}
+					}
+				}
+			});
 		}
 		MaterialLoader.showLoading(true);
 		Ajax.post(RosterUrl.CREATE_ASSIGNMENT, $$("assignment:" + JsonUtils.stringify(data)))

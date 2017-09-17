@@ -1,38 +1,60 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:m="urn:import:gwt.material.design.client.ui">
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:o="urn:import:gwt.material.design.addins.client.overlay"
+	xmlns:e="urn:import:gwt.material.design.addins.client.richeditor">
 	<ui:style>
 	
 	</ui:style>
-	<g:HTMLPanel>
-		<m:MaterialModal ui:field="modal">
-			<m:MaterialModalContent>
+					<m:MaterialModal ui:field="modal" type="FIXED_FOOTER">
+					<m:MaterialModalContent>
 					<g:FormPanel ui:field="form">
 						<g:HTMLPanel>
 							<m:MaterialTextBox ui:field="title" placeholder="Title" />
-							<m:MaterialTextArea ui:field="description" placeholder="Description" />
+							<e:MaterialRichEditor ui:field="description" placeholder="Description" airMode="true" />
 							<m:MaterialListBox ui:field="subject" placeholder="Subject" />
 							<m:MaterialListBox ui:field="type" placeholder="Type" />
-							<m:MaterialListBox ui:field="lang" placeholder="Language" />
 							<m:MaterialDoubleBox  ui:field="pointsPossible" placeholder="Points possible" />
-							<m:MaterialDatePicker ui:field="assignedDate" placeholder="assigned date"/>
-							<m:MaterialDatePicker ui:field="dueDate" placeholder="due date"/>
+							<m:MaterialDatePicker ui:field="assignedDate"  autoClose="true" 
+													detectOrientation="true" placeholder="assigned date"/>
+							<m:MaterialDatePicker ui:field="dueDate" autoClose="true" 
+										detectOrientation="true" placeholder="due date"/>
 							<m:MaterialAnchorButton ui:field="fileUpload" type="FLAT" text="attachment" iconType="ATTACHMENT" /><br/><br/>
 								<m:MaterialPanel>
 								<m:MaterialRow>
 											<m:MaterialLabel grid="s2 m1 l1" float="LEFT" text="Assign to: " />
 											<m:MaterialCheckBox grid="s1" offset="s5" value="true" text="All" type="FILLED" ui:field="selectAllBox" />
 								</m:MaterialRow>
-								<m:MaterialRow ui:field="assignToGrid" grid="s4 m2 l1"/>
+								<m:MaterialRow ui:field="assignToGrid" visible="false"> 
+									<m:MaterialTab> 
+										<m:MaterialTabItem > 
+											<m:MaterialAnchorButton text="Students" href="#assignmentStudentContent" />
+										</m:MaterialTabItem>
+										<m:MaterialTabItem> 
+											<m:MaterialAnchorButton text="Groups" href="#assignmentGroupContent"  />
+										</m:MaterialTabItem>
+									</m:MaterialTab>
+									<m:html.Div m:id="assignmentStudentContent">
+									<m:MaterialRow m:id="assignmentStudentGrid" grid="" ui:field="assignmentStudentGrid" />
+									</m:html.Div>
+									<m:html.Div m:id="assignmentGroupContent">
+									<m:MaterialLabel text="Current Groups" />
+									<m:MaterialRow m:id="assignmentGroupGrid" grid="" ui:field="assignmentGroupGrid" >
+									</m:MaterialRow>
+									<m:MaterialRow ui:field="moreGroupGrid" grid=""></m:MaterialRow>
+									<m:MaterialLink text=" Show More Groups" ui:field="moreGroupsLabel" />
+									</m:html.Div>
+								</m:MaterialRow>
 							</m:MaterialPanel>	
 						</g:HTMLPanel>
 					</g:FormPanel>
+				</m:MaterialModalContent>
+				<m:MaterialModalFooter>
 				<m:MaterialRow> 
 					<m:MaterialColumn><m:MaterialButton ui:field="okBtn" text="OK" type="RAISED"/></m:MaterialColumn>
 					<m:MaterialColumn><m:MaterialButton ui:field="cancelBtn" text="CANCEL" type="RAISED"/></m:MaterialColumn>
 				</m:MaterialRow>
-				</m:MaterialModalContent>
-		</m:MaterialModal>		
-	</g:HTMLPanel>
+				</m:MaterialModalFooter>	
+	</m:MaterialModal>
 </ui:UiBinder> 
