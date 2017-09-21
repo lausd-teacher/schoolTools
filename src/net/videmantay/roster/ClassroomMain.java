@@ -16,10 +16,12 @@ import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialNavBrand;
 import gwt.material.design.client.ui.MaterialSideNav;
 import gwt.material.design.client.ui.MaterialToast;
-import net.videmantay.roster.assignment.GradedWorkMain;
+import net.videmantay.roster.incident.IncidentMain;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.routine.RoutineMain;
 import net.videmantay.roster.student.RosterStudentMain;
+import net.videmantay.roster.work.WorkMain;
+
 import java.util.List;
 
 import static com.google.gwt.query.client.GQuery.*;
@@ -86,6 +88,7 @@ public class ClassroomMain extends Composite{
 				@Override
 				public void onClick(ClickEvent event) {
 					History.newItem("classroom/");
+					dashboardView();
 					sideNav.hide();
 				}
 				
@@ -116,6 +119,15 @@ public class ClassroomMain extends Composite{
 				public void onClick(ClickEvent event) {
 					History.newItem("classroom/routines");
 					routineView();
+					sideNav.hide();
+					
+				}});
+			
+			incidentLink.addClickHandler(new ClickHandler(){
+
+				@Override
+				public void onClick(ClickEvent event) {
+					incidentView();
 					sideNav.hide();
 					
 				}});
@@ -165,7 +177,7 @@ public class ClassroomMain extends Composite{
 			@Override
 			public void onSuccess() {
 				mainPanel.clear();
-				mainPanel.add(new GradedWorkMain());
+				mainPanel.add(new WorkMain());
 			}});
 	}
 	
@@ -185,7 +197,8 @@ public class ClassroomMain extends Composite{
 				
 			}});
 	}
-	private void assignmentView(List<String> path){
+	
+	private void incidentView(){
 		GWT.runAsync(new RunAsyncCallback(){
 
 			@Override
@@ -196,25 +209,10 @@ public class ClassroomMain extends Composite{
 
 			@Override
 			public void onSuccess() {
-				mainPanel.clear();
-				mainPanel.add(new GradedWorkMain());
+					mainPanel.clear();
+					mainPanel.add(new IncidentMain());
 				
-			}
-			
-		});
-	}
-	
-	private void groupView(List<String> path){
-		
-	}
-	/*private void assignmentView(List<String> path){
-		switch(path.size()){
-		case 1:  ; break;//do assignmentList;
-		case 2:  ; break;//show assignment page by id;//TODO:we could do more subdivision on other versions
-		}
-	}*/
-	private void behaviorView(List<String> path){
-		
+			}});
 }
 	private void jobView(List<String> path){
 		

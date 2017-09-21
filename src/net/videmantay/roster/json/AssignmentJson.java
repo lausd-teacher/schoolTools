@@ -6,6 +6,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArrayString;
 import net.videmantay.shared.GradeLevel;
 import net.videmantay.shared.SubjectType;
+import net.videmantay.student.json.RubricJson;
 
 public class AssignmentJson extends JavaScriptObject {
 
@@ -59,14 +60,21 @@ public class AssignmentJson extends JavaScriptObject {
 		this.description = description;
 	}-*/;
 
-	public final native SubjectType getSubject()/*-{
+	public final native String getSubject()/*-{
 		return this.subject;
 	}-*/;
 
-	public final native void setSubject(SubjectType subject)/*-{
+	public final native void setSubject(String string)/*-{
 		this.subject = subject;
 	}-*/;
 
+	public final native RubricJson getRubric()/*-{
+		return this.rubric;
+	}-*/;
+	
+	public final native void SetRubric(RubricJson rubric)/*-{
+		this.rubric = rubric;
+	}-*/;
 //	public final native Set<EducationalLink> getLinks()/*-{
 //		return this.links;
 //	}-*/; 

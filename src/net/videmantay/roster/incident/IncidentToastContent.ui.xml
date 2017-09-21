@@ -1,0 +1,28 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:a="urn:import:com.google.gwt.dom.client">
+	<ui:style>
+		.toastContent{
+		margin-left:auto;
+		margin-right:auto;
+
+		}
+	</ui:style>
+	<g:HTMLPanel ui:field="toastContent" addStyleNames="{style.toastContent}">
+		<m:MaterialRow>
+			<m:MaterialColumn grid="s12 m3 l2" textAlign="CENTER">
+				<m:MaterialImage ui:field="studentImage" width="128px"
+					height="128px" />
+			</m:MaterialColumn>
+			<m:MaterialColumn grid="s12 m3 l2" textAlign="CENTER">
+				<m:MaterialLabel ui:field="summary" fontSize="2em"
+					fontWeight="BOLD" />
+			</m:MaterialColumn>
+			<m:MaterialColumn grid="s12 m3 l2" textAlign="CENTER">
+				<g:HTMLPanel ui:field="incidentImage" />
+			</m:MaterialColumn>
+		</m:MaterialRow>
+		<audio ui:field="audio" />
+	</g:HTMLPanel>
+</ui:UiBinder> 

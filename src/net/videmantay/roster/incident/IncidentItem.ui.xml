@@ -1,0 +1,27 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui">
+
+	<m:MaterialCard width=" 200xp" height="275px"
+		textAlign="CENTER" backgroundColor="GREY_LIGHTEN_3" margin="5"
+		padding="5" addStyleNames="incidentItem">
+			<m:MaterialRow>
+			<m:MaterialColumn grid="s6" paddingRight="20" paddingLeft="20">
+			<m:MaterialAnchorButton ui:field="deleteIncidentBtn" type="FLAT" iconType="DELETE"></m:MaterialAnchorButton>
+			</m:MaterialColumn>
+			<m:MaterialColumn grid="s6" paddingRight="20" paddingLeft="20">
+			<m:MaterialAnchorButton ui:field="editIncidentBtn" type="FLAT"  iconType="EDIT"></m:MaterialAnchorButton>
+			</m:MaterialColumn>
+			</m:MaterialRow>
+			<m:html.Hr/>
+	<m:MaterialCardContent>
+		<g:HTMLPanel>
+			<div ui:field="svgImage" 
+			style="width:150px; height175px; border:1px solid Silver; border-radius:10%; padding:0.25em;margin-bottom:0.25em" />
+			<m:MaterialLabel ui:field="name" marginBottom="5" />
+			<m:MaterialChip ui:field="value" 
+				textColor="WHITE" fontSize="2em" circle="true"/>
+		</g:HTMLPanel>
+		</m:MaterialCardContent>
+	</m:MaterialCard>
+</ui:UiBinder>  

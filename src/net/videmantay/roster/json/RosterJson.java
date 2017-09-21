@@ -3,6 +3,7 @@ package net.videmantay.roster.json;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
+import net.videmantay.student.json.IncidentJson;
 import net.videmantay.student.json.RosterStudentJson;
 import net.videmantay.student.json.StudentJobJson;
 
@@ -72,7 +73,7 @@ public class RosterJson extends JavaScriptObject {
 
 	public final native RoutineConfigJson getRoutineConfig()/*-{}-*/;
 	
-	public final native RosterJson setRosterConfig(RoutineConfigJson config)/*-{}-*/;
+	public final native RosterJson setRoutineConfig(RoutineConfigJson config)/*-{}-*/;
 
 	public final native JsArray<RoutineJson> getRoutines()/*-{
 			return this.routines;
@@ -80,6 +81,23 @@ public class RosterJson extends JavaScriptObject {
 	
 	public final native RosterJson setRoutines(JsArray<RoutineJson> classTimes)/*-{
 						this.classTimes = classTimes;
+	}-*/;
+	
+	public final native JsArray<IncidentJson> getIncidents()/*-{
+		return this.incidents;
+	}-*/;
+	
+	public final native RosterJson setIncidents(JsArray<IncidentJson> incidents)/*-{
+		this.incidents = incidents;
+		return this;
+	}-*/;
+	
+	public final native void addIncident(IncidentJson incident)/*-{
+		this.incidents.push(incident);
+	}-*/;
+	
+	public final native void removeIncident(int index)/*-{
+			this.incidents.splice(index,1);
 	}-*/;
 	
 	

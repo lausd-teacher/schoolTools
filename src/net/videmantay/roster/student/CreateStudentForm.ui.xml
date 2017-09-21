@@ -36,7 +36,8 @@
 				
 					<m:MaterialTextBox ui:field="lastName" label="Last Name" ></m:MaterialTextBox>
 				
-					<m:MaterialDatePicker ui:field="DOB" placeholder="D.O.B"></m:MaterialDatePicker>
+					<m:MaterialDatePicker ui:field="DOB" placeholder="D.O.B" autoClose="true" 
+					selectionType="YEAR" yearsToDisplay="11" ></m:MaterialDatePicker>
 					<m:MaterialButton iconType="PERSON" type="FLAT" ui:field="inactive"  text="Active" textColor="GREY_DARKEN_1"/>
 				</m:MaterialRow>
 				</div>
@@ -44,7 +45,7 @@
 					<m:MaterialTextArea ui:field="currentSummary" label="Student Summary"></m:MaterialTextArea>
 				</div>
 				<div id="studentFormDetailTab">
-						<m:MaterialDatePicker placeholder="Date entered" ui:field="eDate"></m:MaterialDatePicker>
+						<m:MaterialDatePicker placeholder="Date entered" ui:field="eDate" autoClose="true"></m:MaterialDatePicker>
 						<m:MaterialCheckBox text="Wears glasses" ui:field="glasses"/>
 						<m:MaterialTextBox label="Home Language" ui:field="homeLang" />
 						<m:MaterialTextBox label="Reading Level" ui:field="readingLevel"/>

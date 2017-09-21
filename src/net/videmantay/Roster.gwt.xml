@@ -5,6 +5,7 @@
 	<inherits name="gwtquery.plugins.Ui"/>
 	 <inherits name="com.floreysoft.gwt.picker.Picker"/>
 	<inherits name="gwt.material.design.GwtMaterialDesignBasic" />
+	<inherits name="gwt.material.design.GwtMaterialTableBasic" />
 	<inherits name="gwt.material.design.themes.ThemeRed" />
 	<inherits name="gwt.material.design.addins.GwtMaterialAddins"/>
 	<source path="roster" />

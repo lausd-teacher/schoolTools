@@ -1,0 +1,60 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:v="urn:import:net.videmantay.roster">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+		<m:MaterialTab textColor="RED" height="2.5em">
+			<m:MaterialTabItem addStyleNames="myTab">
+				<m:MaterialAnchorButton type="FLAT"
+					href="#assingmnet-tab1" text="Assignments" waves="RED" />
+			</m:MaterialTabItem>
+			<m:MaterialTabItem addStyleNames="myTab">
+				<m:MaterialAnchorButton type="FLAT"
+					href="#assignment-tab2" text="Calendar" waves="RED" />
+			</m:MaterialTabItem>
+			<m:MaterialTabItem addStyleNames="myTab">
+				<m:MaterialAnchorButton type="FLAT"
+					href="#assignement-tab3" text="Reports" waves="RED" />
+			</m:MaterialTabItem>
+		</m:MaterialTab>
+		<div id="assignment-tab1">
+			<g:HTMLPanel ui:field="tab1Content">
+				<m:MaterialRow height="3em" backgroundColor="YELLOW_DARKEN_1"
+					textColor="RED_DARKEN_3" paddingLeft="10" centerOn="CENTER_ON_SMALL">
+					<m:MaterialColumn float="LEFT" grid="s6" height="3em">
+						<m:MaterialSwitch ui:field="gradebookSwitch" onLabel="Gradebook" offLabel="Data Table" />
+					</m:MaterialColumn>
+					<m:MaterialColumn float="RIGHT" grid="s6">
+						<m:MaterialRow>
+							<m:MaterialColumn grid="s1">
+								<m:MaterialIcon float="LEFT" iconType="SEARCH"
+									iconSize="SMALL" iconColor="GREY" />
+							</m:MaterialColumn>
+							<m:MaterialColumn grid="s8">
+								<m:MaterialInput type="TEXT" height="2.5em" />
+							</m:MaterialColumn>
+						</m:MaterialRow>
+					</m:MaterialColumn>
+				</m:MaterialRow>
+				<g:HTMLPanel ui:field="assignmentsTabContent">
+				</g:HTMLPanel>
+			</g:HTMLPanel>
+		</div>
+		<div id="assignment-tab2">
+			<g:HTMLPanel>
+			</g:HTMLPanel>
+		</div>
+		<div id="assignment-tab3">
+			<g:HTMLPanel>
+			</g:HTMLPanel>
+		</div>
+		<m:MaterialFAB>
+			<m:MaterialAnchorButton ui:field="fabBtn"
+				size="LARGE" type="FLOATING" backgroundColor="DEEP_ORANGE" iconType="ADD" />
+		</m:MaterialFAB>
+	</g:HTMLPanel>
+</ui:UiBinder> 

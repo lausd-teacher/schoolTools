@@ -1,0 +1,40 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:v="urn:import:net.videmantay.roster.incident">
+	<m:MaterialModal ui:field="modal" type="FIXED_FOOTER">
+		<m:MaterialModalContent>
+		<g:FormPanel ui:field="form">
+			<g:HTMLPanel ui:field="formContainer">
+
+				<m:MaterialLabel text="Icon:" />
+				<m:MaterialTextBox visible="false" ui:field="imageName" value="doctor"></m:MaterialTextBox>
+				<m:MaterialButton ui:field="incidentImageBtn" height="150px" width="125px" type="RAISED" backgroundColor="GREY_LIGHTEN_3" activates="incident-grid" >
+				</m:MaterialButton>
+				<v:IncidentIconGrid ui:field="incidentGrid"></v:IncidentIconGrid>
+				<m:MaterialLabel text="Name:" />
+				<m:MaterialTextBox ui:field="nameInput"/>
+
+				<m:html.Label styleName="errorLabel" text="You must include a name"
+					textColor="RED_LIGHTEN_1" />
+
+				<m:MaterialChip ui:field="valueLabel" text="Points:" />
+				<m:MaterialIntegerBox ui:field="valueInput" />
+				<m:html.Label styleName="errorLabel" text="You must include points"
+					textColor="RED_LIGHTEN_2" />
+			</g:HTMLPanel>
+			</g:FormPanel>
+		</m:MaterialModalContent>
+		<m:MaterialModalFooter>
+			<m:MaterialRow ui:field="doneCancelRow">
+				<m:MaterialColumn>
+					<m:MaterialButton ui:field="doneBtn" text="ADD" />
+				</m:MaterialColumn>
+				<m:MaterialColumn>
+					<m:MaterialButton ui:field="cancelBtn" text="CANCEL" />
+				</m:MaterialColumn>
+			</m:MaterialRow>
+		</m:MaterialModalFooter>
+	</m:MaterialModal>
+</ui:UiBinder> 

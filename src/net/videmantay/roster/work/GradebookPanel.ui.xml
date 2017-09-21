@@ -1,0 +1,734 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+
+	</ui:style>
+	<g:HTMLPanel height="75em">
+		<section  id="gradebookSection" style="position: absolute; width:100%; height:75em;top:0; left:0;overflow-y:scroll">
+		<div
+			style="position: fixed; background-color: LightGray; height: 15em; width: 100%; z-index: 200"></div>
+		<div class="row">
+			<div id="studentCol" class="col s3" style="padding-top: 14em">
+				<div
+					style="border: 1px solid Grey; z-index: 500; background-color: White; padding: 0.25em; position: absolute">Student</div>
+				<ul class="collection">
+					<li class="collection-item">Ryan Kenney</li>
+					<li class="collection-item">Walter Weiland</li>
+					<li class="collection-item">David Choi</li>
+					<li class="collection-item">Lee ViDemantay</li>
+					<li class="collection-item">Student 5</li>
+					<li class="collection-item">Ryan Kenney</li>
+					<li class="collection-item">Walter Weiland</li>
+					<li class="collection-item">David Choi</li>
+					<li class="collection-item">Lee ViDemantay</li>
+					<li class="collection-item">Student 5</li>
+					<li class="collection-item">Ryan Kenney</li>
+					<li class="collection-item">Walter Weiland</li>
+					<li class="collection-item">David Choi</li>
+					<li class="collection-item">Lee ViDemantay</li>
+					<li class="collection-item">Student 5</li>
+					<li class="collection-item">Ryan Kenney</li>
+					<li class="collection-item">Walter Weiland</li>
+					<li class="collection-item">David Choi</li>
+					<li class="collection-item">Lee ViDemantay</li>
+					<li class="collection-item">Student 5</li>
+					<li class="collection-item">Ryan Kenney</li>
+					<li class="collection-item">Walter Weiland</li>
+					<li class="collection-item">David Choi</li>
+					<li class="collection-item">Lee ViDemantay</li>
+					<li class="collection-item">Student 5</li>
+					<li class="collection-item">Ryan Kenney</li>
+					<li class="collection-item">Walter Weiland</li>
+					<li class="collection-item">David Choi</li>
+					<li class="collection-item">Lee ViDemantay</li>
+					<li class="collection-item">Student 5</li>
+				</ul>
+			</div>
+			<div id="studentGradesCol" class="col s8 m8 l8"
+				style="overflow-x: scroll; overflow-y: visible; padding-top: 14em">
+				<div id="gradebook-item-wrapper" style="position: relative; width: 2000px;">
+					<div class="gradebook-item" style="background-color:WhiteSmoke">
+						<div class="assignment-title">
+							<span class="assignment-title-text">This is the title of
+								the assignment</span>
+						</div>
+						<ul class="collection">
+							<li class="collection-item"><input type="text" value="99" /></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This is the title of the
+							assignment</div>
+						<ul class="collection" style="background-color: White">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item" style="background-color:WhiteSmoke">
+						<div class="assignment-title">This is the assignment</div>
+						<ul class="collection">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This is t doggie</div>
+						<ul class="collection" >
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">Ttitle of the assignment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This assignment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This is the title of the
+							assignment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This is Mommy nment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This is the title of the
+							assignment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This is the title of the
+							assignment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This is the title of the
+							assignment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This is the title of the
+							assignment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This is the title of the
+							assignment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This is the title of the
+							assignment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This is the title of the
+							assignment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This is the title of the
+							assignment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This is the title of the
+							assignment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This is the title of the
+							assignment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This is the title of the
+							assignment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This i9384729847298signment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div class="assignment-title">This is the title of the
+							assignment</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+					<div class="gradebook-item">
+						<div style="border-bottom: 1px solid Silver"
+							class="assignment-title">Finish</div>
+						<ul class="collection" style="background-color: Gray">
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+							<li class="collection-item"><div class="student-grade">45</div></li>
+							<li class="collection-item"><div class="student-grade">66</div></li>
+							<li class="collection-item"><div class="student-grade">55</div></li>
+							<li class="collection-item"><div class="student-grade">75</div></li>
+							<li class="collection-item"><div class="student-grade">60</div></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	</g:HTMLPanel>
+</ui:UiBinder> 

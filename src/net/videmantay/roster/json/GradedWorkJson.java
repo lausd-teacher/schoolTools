@@ -31,20 +31,20 @@ public class GradedWorkJson extends AssignmentJson {
 	public final native String  getEventId()/*-{
 		return this.eventId;
 	}-*/;
-
-
+	
+	
 	public final native GradedWorkJson setEventId(String googleCalEventId)/*-{
 		this.eventId = googleCalEventId;
 		return this;
 	}-*/;
 
 
-	public final native GradedWorkType getGradedWorkType()/*-{
+	public final native String getGradedWorkType()/*-{
 		return this.gradedWorkType;
 	}-*/;
 
 
-	public final native GradedWorkJson setGradedWorkType(GradedWorkType gradedWorkType) /*-{
+	public final native GradedWorkJson setGradedWorkType(String string) /*-{
 		this.gradedWorkType = gradedWorkType;
 		return this;
 	}-*/;
@@ -57,18 +57,6 @@ public class GradedWorkJson extends AssignmentJson {
 		this.pointsPossible = pointsPossible;
 		return this;
 	}-*/;
-
-
-	public final native Language getLang() /*-{
-		return this.lang;
-	}-*/;
-
-
-	public final native GradedWorkJson setLang(Language lang) /*-{
-		this.lang = lang;
-		return this;
-	}-*/;
-
 
 	public final native String getAssignedDate() /*-{
 		return this.assignedDate;
