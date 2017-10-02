@@ -1,0 +1,120 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
+	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:ma="urn:import:gwt.material.design.addins.client">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+		<m:MaterialHeader top="0" height="7.5em">
+			<!-- NavBar -->
+			<m:MaterialNavBar activates="sideNav" ui:field="navBar"
+				backgroundColor="AMBER_DARKEN_1" height="100%">
+
+				<m:MaterialNavBrand ui:field="navBrand">
+					<m:MaterialImage url="/img/sammyLeeLogo.png" />
+				</m:MaterialNavBrand>
+				<m:MaterialNavSection float="RIGHT">
+					<m:MaterialTooltip text="Events" position="BOTTOM">
+						<m:MaterialLink iconType="EVENT" iconPosition="NONE" />
+					</m:MaterialTooltip>
+					<m:MaterialTooltip text="Notifications" position="BOTTOM">
+						<m:MaterialLink activates="sideNav" iconType="NOTIFICATIONS"
+							iconPosition="NONE" />
+					</m:MaterialTooltip>
+					<m:MaterialTooltip text="Showcase" position="BOTTOM">
+						<m:MaterialLink iconType="WHATSHOT" iconPosition="NONE" />
+					</m:MaterialTooltip>
+				</m:MaterialNavSection>
+			</m:MaterialNavBar>
+		</m:MaterialHeader>
+		<m:MaterialContainer fontSize="0.8em" paddingTop="10">
+			<m:MaterialRow>
+				<m:MaterialColumn grid="m6 l6" hideOn="HIDE_ON_SMALL_DOWN">
+					<g:HTMLPanel>
+						<div id="studentHeader"
+							style="width:100%;margin-left:37.5%">
+							<m:MaterialLabel ui:field="studentName" fontSize="3.5em"
+								text="Jeremy Lopez" textColor="RED_DARKEN_1" />
+							<m:MaterialImage circle="true" ui:field="studentImg"
+								url="/img/user.svg" width="150px" />
+						</div>
+						<div class="grey lighten-2" ui:field="studentSummary"
+							style="border-radius:5px;padding:1.5em;">
+							<p>Jeremy is constantly working delegently and completes all
+								homework.
+								He is a class leader and all the students respect him. He is a
+								pleasure to have in class</p>
+						</div>
+					</g:HTMLPanel>
+				</m:MaterialColumn>
+				<m:MaterialColumn grid="s12 m6 l6" float="RIGHT">
+					<g:HTMLPanel>
+						<m:MaterialCard ui:field="hwCalendar">
+							<m:MaterialCardContent>
+
+							</m:MaterialCardContent>
+						</m:MaterialCard>
+						<m:MaterialCard ui:field="studentWorkCard" backgroundColor="RED_DARKEN_3">
+							<m:MaterialCardTitle text="Grades" iconType="ASSIGNMENT" top="0" 
+									textColor="WHITE" iconPosition="RIGHT" 
+									width="100%" padding="3.5"/>
+							<m:MaterialCardContent backgroundColor="WHITE" height="150px">
+								
+									</m:MaterialCardContent>
+						</m:MaterialCard>
+						<m:MaterialCard ui:field="goalCard" backgroundColor="RED_DARKEN_1">
+							<m:MaterialCardTitle text="Goals" iconType="TRENDING_UP"  
+									textColor="WHITE" iconPosition="RIGHT" 
+									top="0" width="100%" padding="3.5"></m:MaterialCardTitle>
+							<m:MaterialCardContent backgroundColor="WHITE" height="150px">
+								
+							</m:MaterialCardContent>
+						</m:MaterialCard>
+						<m:MaterialCard ui:field="incidentCard" backgroundColor="AMBER_DARKEN_1">
+						<m:MaterialCardTitle text="Incidents"
+									iconType="FEEDBACK" textColor="WHITE" iconPosition="RIGHT"
+									 top="0" width="100%" padding="3.5"/>
+							<m:MaterialCardContent backgroundColor="WHITE" height="150px">
+								
+							</m:MaterialCardContent>
+						</m:MaterialCard>
+						<m:MaterialCard ui:field="attendanceCard" backgroundColor="YELLOW_DARKEN_3" >
+						<m:MaterialCardTitle text="Attendance"
+									iconType="ASSIGNMENT_IND" textColor="WHITE" iconPosition="RIGHT"
+									top="0" width="100%" padding="3.5"/>
+							<m:MaterialCardContent backgroundColor="WHITE" height="150px">
+								
+							</m:MaterialCardContent>
+						</m:MaterialCard>
+						<m:MaterialCard ui:field="jobCard" backgroundColor="ORANGE_DARKEN_1">
+						<m:MaterialCardTitle text="Jobs" iconType="BUSINESS_CENTER"
+									textColor="WHITE" iconPosition="RIGHT"  
+									top="0" width="100%" padding="3.5"/>
+							<m:MaterialCardContent backgroundColor="WHITE" height="150px">
+								
+
+							</m:MaterialCardContent>
+						</m:MaterialCard>
+						
+						
+						<m:MaterialCard ui:field="showcaseCard" backgroundColor="DEEP_ORANGE_DARKEN_1">
+						<m:MaterialCardTitle text="News" textColor="WHITE"
+									iconType="WHATSHOT" iconPosition="RIGHT" 
+									top="0" width="100%" padding="3.5" />
+							<m:MaterialCardContent backgroundColor="WHITE" height="150px">
+								
+							</m:MaterialCardContent>
+						</m:MaterialCard>
+					</g:HTMLPanel>
+				</m:MaterialColumn>
+			</m:MaterialRow>
+		</m:MaterialContainer>
+		<!-- Footer -->
+		<m:MaterialFooter backgroundColor="RED_DARKEN_2">
+			<m:MaterialFooterCopyright>
+				<m:MaterialLabel text="Mr. ViDemantay 2017" />
+			</m:MaterialFooterCopyright>
+		</m:MaterialFooter>
+	</g:HTMLPanel>
+</ui:UiBinder>

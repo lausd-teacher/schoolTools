@@ -1,20 +1,27 @@
 package net.videmantay.student.json;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import net.videmantay.shared.GradedWorkType;
-import net.videmantay.shared.StudentWorkStatus;
-import net.videmantay.shared.SubjectType;
+import com.google.gwt.core.client.JsArrayString;
+
 
 public class StudentWorkJson extends JavaScriptObject {
 	
 	protected StudentWorkJson(){}
 	
-	public final native Long getRosterStudentId() /*-{
-		return this.rosterStudentId;
+	public final native String getRosterStudentId() /*-{
+		return this.studentId;
 	}-*/;
 
-	public final native void setRosterStudentId(Long rosterStudent) /*-{
-		this.rosterStudentId = rosterStudent;
+	public final native void setStudentId(String rosterStudent) /*-{
+		this.studentId = rosterStudent;
+	}-*/;
+	
+	public final native Long getGradedWorkId()/*-{
+		return this.gradedWorkId;
+	}-*/;
+	
+	public final native void setGradedWorkId(Long id)/*-{
+			this.gradedWorkId = id;
 	}-*/;
 
 	public final native String getDateTaken() /*-{
@@ -25,16 +32,21 @@ public class StudentWorkJson extends JavaScriptObject {
 		this.dateTaken = dateTaken;
 	}-*/;
 
-	public final native SubjectType getSubject() /*-{
+	public final native String getSubject() /*-{
 		return this.subject;
 	}-*/;
 
-	public final native void setSubject(SubjectType subject) /*-{
+	public final native void setSubject(String subject) /*-{
 		this.subject = subject;
 	}-*/;
 
 	public final native void setId(Long id) /*-{
 		this.id = id;
+	}-*/;
+	
+
+	public final native Long getId() /*-{
+		return this.id;
 	}-*/;
 
 	public final native Double getPercentage() /*-{
@@ -54,11 +66,11 @@ public class StudentWorkJson extends JavaScriptObject {
 	}-*/;
 	
 
-	public final native GradedWorkType getType() /*-{
+	public final native String getType() /*-{
 		return this.type;
 	}-*/;
 
-	public final native void setType(GradedWorkType type) /*-{
+	public final native void setType(String type) /*-{
 		this.type = type;
 	}-*/;
 
@@ -70,18 +82,14 @@ public class StudentWorkJson extends JavaScriptObject {
 		this.message = message;
 	}-*/;
 
-	public final native String getMediaUrl() /*-{
-		return this.mediaUrl;
+	public final native JsArrayString getAttachment() /*-{
+		return this.attachments;
 	}-*/;
 
-	public final native void setMediaUrl(String mediaUrl) /*-{
-		this.mediaUrl = mediaUrl;
+	public final native void setMediaUrl(JsArrayString attachments) /*-{
+		this.attachments = attachments;
 	}-*/;
 
-
-	public final native Long getId() /*-{
-		return this.id;
-	}-*/;
 
 	public final native Double getPointsEarned() /*-{
 		return this.pointsEarned;
@@ -91,16 +99,13 @@ public class StudentWorkJson extends JavaScriptObject {
 		this.pointsEarned = pointsEarned;
 	}-*/;
 	
-	public final native StudentWorkStatus getStudentWorkStatus() /*-{
-		return this.studentWorkStatus;
+	public final native String getStudentWorkStatus() /*-{
+		return this.status;
 	}-*/;
 
-	public final native void setStudentWorkStatus(StudentWorkStatus studentWorkStatus) /*-{
-		this.studentWorkStatus = studentWorkStatus;
+	public final native void setStudentWorkStatus(String studentWorkStatus) /*-{
+		this.status = studentWorkStatus;
 	}-*/;
-	public final native void setStudentWorkStatus(String value)/*-{
-		value.trim();
-		this.studentWorkStatus = StudentWorkStatus.valueOf(value.toUpperCase());
-	}-*/;
+
 
 }

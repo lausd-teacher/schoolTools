@@ -6,6 +6,7 @@ import com.google.gwt.core.client.JsArrayString;
 import net.videmantay.shared.GradedWorkType;
 import net.videmantay.shared.Language;
 import net.videmantay.shared.json.EventJson;
+import net.videmantay.student.json.RubricJson;
 
 public class GradedWorkJson extends AssignmentJson {
 
@@ -20,32 +21,13 @@ public class GradedWorkJson extends AssignmentJson {
 		return work;
 	}
 	
-	public final native Long getRosterId()/*-{
-			return this.rosterId;
-		}-*/;
-	
-	public final native GradedWorkJson setRosterId(Long rosterId)/*-{
-			this.rosterId = rosterId;
-			return this;
-	}-*/;
-	public final native String  getEventId()/*-{
-		return this.eventId;
-	}-*/;
-	
-	
-	public final native GradedWorkJson setEventId(String googleCalEventId)/*-{
-		this.eventId = googleCalEventId;
-		return this;
-	}-*/;
-
-
 	public final native String getGradedWorkType()/*-{
-		return this.gradedWorkType;
+		return this.type;
 	}-*/;
 
 
 	public final native GradedWorkJson setGradedWorkType(String string) /*-{
-		this.gradedWorkType = gradedWorkType;
+		this.type = gradedWorkType;
 		return this;
 	}-*/;
 	
@@ -83,17 +65,6 @@ public class GradedWorkJson extends AssignmentJson {
 		this.finishedGrading = status;
 	}-*/;
 
-
-	public final native EventJson getEvent() /*-{
-		return this.event;
-	}-*/;
-
-
-	public final native void setEvent(EventJson event) /*-{
-		this.event = event;
-	}-*/;
-
-
 	public final native JsArrayString getAssignedTo() /*-{
 		return this.assignedTo;
 	}-*/;
@@ -102,4 +73,14 @@ public class GradedWorkJson extends AssignmentJson {
 	public final native void setAssignedTo(JsArrayString assignedTo) /*-{
 		this.assignedTo = assignedTo;
 	}-*/;
+	
+	public final native void setRubricId(Long rubricId) /*-{
+	this.rubricId = rubricId;
+}-*/;
+	
+	public final native Long getRubricId( ) /*-{
+	return this.rubricId;
+}-*/;
+	
+
 }

@@ -2,59 +2,72 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m="urn:import:gwt.material.design.client.ui"
-	xmlns:v="urn:import:net.videmantay.roster">
-	<ui:style>
-	
-	</ui:style>
-	<g:HTMLPanel>
-		<m:MaterialTab textColor="RED" height="2.5em">
-			<m:MaterialTabItem addStyleNames="myTab">
-				<m:MaterialAnchorButton type="FLAT"
-					href="#assingmnet-tab1" text="Assignments" waves="RED" />
-			</m:MaterialTabItem>
-			<m:MaterialTabItem addStyleNames="myTab">
-				<m:MaterialAnchorButton type="FLAT"
-					href="#assignment-tab2" text="Calendar" waves="RED" />
-			</m:MaterialTabItem>
-			<m:MaterialTabItem addStyleNames="myTab">
-				<m:MaterialAnchorButton type="FLAT"
-					href="#assignement-tab3" text="Reports" waves="RED" />
-			</m:MaterialTabItem>
-		</m:MaterialTab>
-		<div id="assignment-tab1">
-			<g:HTMLPanel ui:field="tab1Content">
-				<m:MaterialRow height="3em" backgroundColor="YELLOW_DARKEN_1"
-					textColor="RED_DARKEN_3" paddingLeft="10" centerOn="CENTER_ON_SMALL">
-					<m:MaterialColumn float="LEFT" grid="s6" height="3em">
-						<m:MaterialSwitch ui:field="gradebookSwitch" onLabel="Gradebook" offLabel="Data Table" />
-					</m:MaterialColumn>
-					<m:MaterialColumn float="RIGHT" grid="s6">
-						<m:MaterialRow>
-							<m:MaterialColumn grid="s1">
-								<m:MaterialIcon float="LEFT" iconType="SEARCH"
-									iconSize="SMALL" iconColor="GREY" />
-							</m:MaterialColumn>
-							<m:MaterialColumn grid="s8">
-								<m:MaterialInput type="TEXT" height="2.5em" />
-							</m:MaterialColumn>
-						</m:MaterialRow>
-					</m:MaterialColumn>
-				</m:MaterialRow>
-				<g:HTMLPanel ui:field="assignmentsTabContent">
-				</g:HTMLPanel>
-			</g:HTMLPanel>
-		</div>
-		<div id="assignment-tab2">
-			<g:HTMLPanel>
-			</g:HTMLPanel>
-		</div>
-		<div id="assignment-tab3">
-			<g:HTMLPanel>
-			</g:HTMLPanel>
-		</div>
+	xmlns:o="urn:import:gwt.material.design.addins.client.overlay"
+	xmlns:e="urn:import:gwt.material.design.addins.client.emptystate" xmlns:c="urn:import:com.google.common.collect">
+	<g:HTMLPanel   width="100%" height="100%">
+	<div ui:field="assignmentPageWrpaper" style="display:none">
+	<m:MaterialTab> 
+		<m:MaterialTabItem > 
+			<m:MaterialAnchorButton href="#assignmentMainTab" text="Assignments" textColor="WHITE"></m:MaterialAnchorButton>
+		</m:MaterialTabItem>
+		<m:MaterialTabItem > 
+			<m:MaterialAnchorButton href="#assignmentCalTab" text="Assignments Calendar" textColor="WHITE"></m:MaterialAnchorButton>
+		</m:MaterialTabItem>
+		<m:MaterialTabItem > 
+			<m:MaterialAnchorButton href="#assignmentReportTab" text="Assignments Report" textColor="WHITE"></m:MaterialAnchorButton>
+		</m:MaterialTabItem>
+	</m:MaterialTab>
+	<div id="assignmentMainTab">
+		<h3>Assignments</h3>
+		<div id="assignmentGridWrapper" style="width:100%">
+			<table style="margin-right:auto; margin-left:auto; width:95%">
+			<tbody>
+			<tr>
+			<td style="max-width:10em; min-width:7.5em">
+			<m:MaterialLink ui:field="titleCategory" textColor="GREY" text="title" truncate="true"  />
+			</td>
+			<td  style="max-width:7.5em;min-width:5em">
+			<m:MaterialLink ui:field="dueDateCategory"  textColor="GREY" text="due date"  truncate="true"/>
+			</td>
+			<td class="work-grid-header-col" style="max-width:7.5em;min-width:5em">
+			<m:MaterialLink ui:field="assingedDateCategory"    textColor="GREY" text="assigned date"  truncate="true" />
+			</td>
+			<td style="max-width:7.5em;min-width:5em">
+			<m:MaterialLink ui:field="subjectCategory"  textColor="GREY"  text="subject"  truncate="true"/>
+			</td>
+			<td style="max-width:7.5em;min-width:5em">
+			<m:MaterialLink ui:field="typeCategory" textColor="GREY"  text="type"  truncate="true" />
+			</td>
+			<td class="work-grid-header-col">
+			<m:MaterialLink ui:field="pointsPossibleCategory" textColor="GREY" text="points possible"  truncate="true"/>
+			</td>
+			<td>
+			<m:MaterialLink ui:field="isGradedCategory"  textColor="GREY"  text="finished grading"  truncate="true"/>
+			</td>
+			</tr>
+			</tbody>
+		</table>
+		<m:MaterialCollapsible ui:field="assignmentCollapsible"> 
+		</m:MaterialCollapsible>
 		<m:MaterialFAB>
-			<m:MaterialAnchorButton ui:field="fabBtn"
-				size="LARGE" type="FLOATING" backgroundColor="DEEP_ORANGE" iconType="ADD" />
+		<m:MaterialAnchorButton ui:field="assignmentMainBtn" type="FLOATING" iconType="ASSIGNMENT" iconColor="WHITE"></m:MaterialAnchorButton>
 		</m:MaterialFAB>
+		</div>
+	</div>
+	<div id="assignmentCalTab">
+		<h3>Assignments Calendar</h3>
+		<m:MaterialAnchorButton ui:field="assignmentCalBtn"></m:MaterialAnchorButton>
+	</div>
+	<div id="assignmentReportTab">
+		<h3>Reports</h3>
+	</div>
+	</div>
+	<div id="emptyAssignmentPage" style="display:none">
+	<e:MaterialEmptyState ui:field="emptyState" iconType="ASSIGNMENT" visible="false"
+	title="You haven't created any assignments yet" 
+	description="To get started just press the button on the bottom" 
+	backgroundColor="GREY_LIGHTEN_2"></e:MaterialEmptyState>
+		<m:MaterialAnchorButton ui:field="empytPageBtn" type="FLOATING" ></m:MaterialAnchorButton>
+	</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

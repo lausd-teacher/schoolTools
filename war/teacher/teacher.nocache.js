@@ -335,7 +335,7 @@ function teacher(){
     }
     var strongName;
     try {
-      strongName = 'A10E9D64DBE6979558C0A16BE667845F';
+      strongName = 'E209552A463EAE7FFED2AD9117F5DF91';
       var idx = strongName.indexOf(':');
       if (idx != -1) {
         softPermutationId = parseInt(strongName.substring(idx + 1), 10);

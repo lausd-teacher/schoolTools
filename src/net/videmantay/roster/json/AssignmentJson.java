@@ -36,22 +36,6 @@ public class AssignmentJson extends JavaScriptObject {
 		this.standards = standards;
 	}-*/;
 
-	public final native Set<GradeLevel> getGradeLevels()/*-{
-		return this.gradeLevels;
-	}-*/;
-
-	public final native void setGradeLevels(Set<GradeLevel> gradeLevels)/*-{
-		this.gradeLevels = gradeLevels;
-	}-*/;
-
-	public final native String getMediaUrl()/*-{
-		return this.mediaUrl;
-	}-*/;
-
-	public final native void setMediaUrl(String mediaUrl)/*-{
-		this.mediaUrl = mediaUrl;
-	}-*/;
-
 	public final native String getDescription()/*-{
 		return this.description;
 	}-*/;
@@ -65,7 +49,7 @@ public class AssignmentJson extends JavaScriptObject {
 	}-*/;
 
 	public final native void setSubject(String string)/*-{
-		this.subject = subject;
+		this.subject = string;
 	}-*/;
 
 	public final native RubricJson getRubric()/*-{
