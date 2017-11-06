@@ -34,22 +34,16 @@ public class RosterStudentPanel extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 
-
-
-	public RosterStudentPanel(RosterStudentJson student) {
-		this();
-		setData(student);
-	}
 	
 	public void setData(RosterStudentJson student){
 		//set the id of the panel to student id 
 		//this is so we can query and hide it when necessary
-		this.getElement().setId(student.getId() +"");
+		this.getElement().setId(student.getAcct() );
 		//studentImg.setUrl(student.getThumbnails().get(0).getUrl());
 		firstName.setText(student.getFirstName());
 		lastName.setText(student.getLastName());
 		String url= student.getThumbnails() == null||student.getThumbnails().get(1).getUrl() == null ||student.getThumbnails().get(1).getUrl() == ""? "../img/user.svg":student.getThumbnails().get(1).getUrl();
-		studentImg.getStyle().setBackgroundImage("url('" + url +"')");
+		studentImg.getStyle().setBackgroundImage("url("+url +")");
 	}
 
 }

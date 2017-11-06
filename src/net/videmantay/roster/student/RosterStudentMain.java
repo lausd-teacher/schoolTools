@@ -53,8 +53,6 @@ public class RosterStudentMain extends Composite{
 	@UiField
 	DivElement studentDashboard;
 	
-	private boolean firstNameSort = true;
-	
 	private  JsArray<RosterStudentJson> students;
 	
 	
@@ -97,8 +95,8 @@ public class RosterStudentMain extends Composite{
 	private void drawStudentList(){
 		console.log("RosterStudentMain-drawList: Here is students");
 		console.log(this.students);
-		if(firstNameSort){students = NameOrder.byFirstName(students);}
-		else{students = NameOrder.byLastName(students);}
+		/*if(firstNameSort){students = NameOrder.byFirstName(students);}
+		else{students = NameOrder.byLastName(students);}*/
 		
 		
 		for(int i= 0; i < students.length(); i++){
@@ -121,6 +119,14 @@ public class RosterStudentMain extends Composite{
 			drawStudentList();
 			studentPage.setStudent(students.get(0));
 			}
+		$(body).on("studentselected", new Function(){
+					@Override
+					public boolean  f(Event e , Object...studs){
+						RosterStudentJson student = (RosterStudentJson) studs[0];
+						setStudent(student);
+						return true; 
+					}
+		});
 	}
 	
 	

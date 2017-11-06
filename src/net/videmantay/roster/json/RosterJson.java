@@ -71,9 +71,15 @@ public class RosterJson extends JavaScriptObject {
 		return this;
 	}-*/;
 
-	public final native RoutineConfigJson getRoutineConfig()/*-{}-*/;
+	public final native RoutineConfigJson getRoutineConfig()/*-{
+			return this.defaultRoutine;
+	}-*/;
 	
-	public final native RosterJson setRoutineConfig(RoutineConfigJson config)/*-{}-*/;
+	public final native RosterJson setRoutineConfig(RoutineConfigJson config)/*-{
+	
+			this.defaultRoutine = config;
+			return this;
+	}-*/;
 
 	public final native JsArray<RoutineJson> getRoutines()/*-{
 			return this.routines;

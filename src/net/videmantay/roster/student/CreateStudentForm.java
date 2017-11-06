@@ -169,7 +169,7 @@ public class CreateStudentForm extends Composite{
 		public void onClick(ClickEvent event) {
 			event.stopPropagation();
 			studentFormPanel.close();
-			MaterialLoader.showLoading(true);
+			MaterialLoader.loading(true);
 			console.log("here is the student just before ajax");
 			console.log(getStudent());
 			Ajax.ajax(Ajax.createSettings()
@@ -185,7 +185,7 @@ public class CreateStudentForm extends Composite{
 					console.log("create student form done return : " +  this.getArgument(0));
 					RosterStudentJson rosStu = JsonUtils.safeEval((String)this.getArgument(0));
 					$(body).trigger("studentsave", rosStu);
-					MaterialLoader.showLoading(false);
+					MaterialLoader.loading(false);
 					reset();
 				}
 			});

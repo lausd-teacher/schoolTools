@@ -1,0 +1,88 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+	<m:MaterialModal type="FIXED_FOOTER" ui:field="modal">
+			<m:MaterialModalContent>
+				<g:HTMLPanel>
+					<m:MaterialRow><!-- -->
+						<m:MaterialColumn grid="s6">
+							<m:MaterialRow>
+								<m:MaterialColumn> 
+									<m:MaterialImage ui:field="studentActionImage" circle="true"/>
+								</m:MaterialColumn>
+								<m:MaterialColumn> 
+								<m:MaterialLabel ui:field="studentName" text="Student's name here" />
+								</m:MaterialColumn>
+							</m:MaterialRow>
+							</m:MaterialColumn>
+						<m:MaterialColumn grid="s6">
+							<m:MaterialIcon ui:field="gotoStudentPageIcon" iconType="SEND" iconPosition="RIGHT" />
+							<m:MaterialAnchorButton type="RAISED" text="COMPARE" ui:field="compareBtn"  visible="false"/>
+						</m:MaterialColumn>
+					</m:MaterialRow>
+					<m:html.Hr />
+					<div ui:field="incidentActionPanel">
+					<m:MaterialTab>
+						<m:MaterialTabItem waves="YELLOW" grid="l4">
+							<m:MaterialLink text="Superb Decision" href="#taba"
+								textColor="WHITE" />
+						</m:MaterialTabItem>
+						<m:MaterialTabItem waves="YELLOW" grid="l4">
+							<m:MaterialLink text="Poor Judgement" href="#tabb"
+								textColor="WHITE" />
+						</m:MaterialTabItem>
+					</m:MaterialTab>
+					<m:MaterialPanel m:id="taba" >
+						<m:MaterialRow ui:field="posIncidents">
+						</m:MaterialRow>
+					</m:MaterialPanel>
+					<m:MaterialPanel m:id="tabb" >
+						<m:MaterialRow ui:field="negIncidents"></m:MaterialRow>
+					</m:MaterialPanel>
+					</div>
+					<div ui:field="noteActionPanel"></div>
+				<div ui:field="assignmentActionPanel"></div>
+				<div ui:field="formActionPanel"></div>
+				</g:HTMLPanel>
+			</m:MaterialModalContent>
+			<m:MaterialModalFooter>
+				<m:MaterialRow marginBottom="0" paddingLeft="50">
+					<m:MaterialColumn grid="s2 m2 l2">
+						
+						<m:MaterialAnchorButton type="FLAT"
+							textColor="ORANGE_DARKEN_4" iconType="ASSIGNMENT" ui:field="assignmentQuickLink"></m:MaterialAnchorButton>
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="s2 m2 l2">
+						<m:MaterialAnchorButton type="FLAT"
+							textColor="AMBER_DARKEN_4" iconType="MOOD" ui:field="goalQuickLink"></m:MaterialAnchorButton>
+					</m:MaterialColumn> 
+					<m:MaterialColumn grid="s2 m2 l2">
+					
+						<m:MaterialAnchorButton type="FLAT"
+							textColor="DEEP_ORANGE_DARKEN_4" iconType="INBOX" ui:field="formQuickLink"></m:MaterialAnchorButton>
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="s2 m2 l2">
+					
+						<m:MaterialAnchorButton type="FLAT"
+							textColor="DEEP_ORANGE_DARKEN_2" iconType="NOTE" ui:field="noteQuickLink" />
+					</m:MaterialColumn>
+					
+					<m:MaterialColumn grid="s2 m2 l2">
+						
+						<m:MaterialAnchorButton type="FLAT"
+							textColor="RED_DARKEN_4" iconType="FEEDBACK" ui:field="incidentQuickLink"></m:MaterialAnchorButton>
+					</m:MaterialColumn>
+					<m:MaterialColumn> 
+						<m:MaterialAnchorButton type="FLAT" float="RIGHT"
+							textColor="RED_DARKEN_2" text="CANCEL" ui:field="cancelStudentActionBtn"></m:MaterialAnchorButton>
+					</m:MaterialColumn>
+				</m:MaterialRow>
+			</m:MaterialModalFooter>
+		</m:MaterialModal>
+	</g:HTMLPanel>
+</ui:UiBinder> 

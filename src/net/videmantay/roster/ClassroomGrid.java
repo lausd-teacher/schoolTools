@@ -23,6 +23,8 @@ import static com.google.gwt.query.client.GQuery.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import com.google.gwt.core.client.JsArray;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 
 
 public class ClassroomGrid extends Composite implements HasRosterDashboardView{
@@ -33,6 +35,16 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 	private final JsArray<RosterStudentJson> students;
 	private final ArrayList<RosterStudentJson> studentList = new ArrayList<RosterStudentJson>();
 	private boolean sortByFirst=true;
+	
+	private final ClickHandler studentHandler = new ClickHandler(){
+
+		@Override
+		public void onClick(ClickEvent event) {
+		String stuAcct = $(event.getNativeEvent().getEventTarget()).id();
+		$(body).trigger("studentAction", stuAcct);
+		console.log("student " + stuAcct + " was clicked for action modal");
+			
+		}};
 	//create fab
 	MaterialFAB fab = new MaterialFAB();
 	MaterialAnchorButton fabBtn = new MaterialAnchorButton();
@@ -45,6 +57,7 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 		students = roster.getRosterStudents();
 		
 		this.initWidget(mainPanel);
+		mainPanel.setWidth("100%");
 		if(students.length() <= 0){
 			showEmpty();
 		}else{
@@ -111,11 +124,14 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 			console.log(studentList.get(0));
 				do{
 					 c = new MaterialColumn();
-					 rsp = new RosterStudentPanel(studentList.get(i));
+					 c.setGrid("s12 m4 l3");
+					 rsp = new RosterStudentPanel();
+					 rsp.setData(studentList.get(i));
 					 rsp.addStyleName("grid");
 					 c.add(rsp);
-					 ++i;
 					 row.add(c);
+					 rsp.addDomHandler(studentHandler, ClickEvent.getType());
+					 ++i;
 				}while(i < studentList.size());
 			
 		
@@ -136,7 +152,8 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 		int i = 0;
 		do{
 			 c = new MaterialColumn();
-			 rsp = new RosterStudentPanel(studentList.get(i));
+			 rsp = new RosterStudentPanel();
+			 rsp.setData(studentList.get(i));
 			 c.add(rsp);
 			 ++i;
 			 if(i%6==0){

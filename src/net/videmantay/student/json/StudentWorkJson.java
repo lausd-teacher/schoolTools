@@ -3,6 +3,8 @@ package net.videmantay.student.json;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArrayString;
 
+import net.videmantay.roster.json.GradedWorkJson;
+
 
 public class StudentWorkJson extends JavaScriptObject {
 	
@@ -106,6 +108,16 @@ public class StudentWorkJson extends JavaScriptObject {
 	public final native void setStudentWorkStatus(String studentWorkStatus) /*-{
 		this.status = studentWorkStatus;
 	}-*/;
+	
+	public final native String getTitle()/*-{
+			return this.title;
+	}-*/;
+	
+	public final native void setTitle(String title)/*-{
+		this.title =title;
+	}-*/; 
+	
+
 
 
 }

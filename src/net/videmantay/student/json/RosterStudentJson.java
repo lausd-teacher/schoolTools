@@ -138,9 +138,7 @@ public final native RosterStudentJson setGroups(JsArray<StudentGroupJson> groups
 		this.acct = acctId;
 		return this;
 	}-*/;
-	public final native Long getId()/*-{
-		return this.id;
-	}-*/;
+	
 	public final native RosterInfoJson getRosterInfo()/*-{
 		return this.rosterInfo;
 	}-*/;

@@ -9,8 +9,10 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.query.client.Function;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import static com.google.gwt.query.client.GQuery.*;
@@ -93,6 +95,8 @@ public class DashboardPanel extends Composite {
 	@UiField
 	MaterialButton smUndoBtn;
 	
+	private final StudentActionModal studentActionModal = new StudentActionModal();
+	
 	private final RosterJson roster;
 
 	
@@ -112,6 +116,7 @@ public class DashboardPanel extends Composite {
 		@Override
 		public void onSuccess() {
 			tab1Main.clear();
+			display = new SeatingChartPanel(roster);
 			tab1Main.add(display);
 		}};
 	//enum for state
@@ -295,7 +300,7 @@ public class DashboardPanel extends Composite {
 	private void showDisplay(){
 		display = new ClassroomGrid(roster);
 		tab1Main.clear();
-		//tab1Main.add(display); 
+		tab1Main.add(display); 
 		seatingChartEditIcon.setVisible(false);
 	}
 
@@ -303,10 +308,30 @@ public class DashboardPanel extends Composite {
 	
 	@Override
 	public void onLoad(){
+		this.tab1Main.add(studentActionModal);
 		//load the classTimedrop
 		console.log("dashboard loaded");
+		$(body).on("studentAction", new Function(){
+			public boolean f(Event e, Object...student){
+				String studentId = (String) student[0];
+				showStudentAction(studentId);
+				return true;
+			}
+		});
 		
 		
+	}//end onLoad
+	
+	private void showStudentAction(String studentId){
+		console.log("Student actiona modal should be open");
+		for(int i = 0; i < this.roster.getRosterStudents().length(); i++){
+			if(studentId.equalsIgnoreCase(roster.getRosterStudents().get(i).getAcct())){
+				studentActionModal.setData(roster.getRosterStudents().get(i));
+				break;
+			}
+		}//end for
+		
+		studentActionModal.modal.open();
 	}
 
 }

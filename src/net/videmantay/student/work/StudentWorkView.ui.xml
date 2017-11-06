@@ -1,0 +1,40 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:m="urn:import:gwt.material.design.client.ui"
+	xmlns:t="urn:import:gwt.material.design.client.ui.table">
+	<ui:style>
+	
+	</ui:style>
+	<g:HTMLPanel>
+	<div style="height:2.5em">
+		<m:MaterialIcon  iconType="DONE" float="RIGHT"/>
+	</div>
+	<m:MaterialTab> 
+		<m:MaterialTabItem > 
+			<m:MaterialLink text="Assignments" href="#workTab"
+			iconPosition="RIGHT" iconType="ASSIGNMENT"/>
+		</m:MaterialTabItem>
+		<m:MaterialTabItem > 
+			<m:MaterialLink text="Calendar" href="#cal-workTab" 
+			iconPosition="RIGHT" iconType="EVENT" />
+		</m:MaterialTabItem>
+		<m:MaterialTabItem> 
+			<m:MaterialLink text="Reports"  href="#report-workTab"
+			iconType="PIE_CHART" iconPosition="RIGHT" />
+		</m:MaterialTabItem>
+		</m:MaterialTab>
+		<div id="workTab"> 
+			<t:MaterialDataTable ui:field="table" height="100%" width="100%"
+				useLoadOverlay="true" useStickyHeader="true" useRowExpansion="true" selectionType="SINGLE"/>
+		</div>
+		<div id="cal-workTab"> 
+			<!-- calendar -->
+			<g:Frame />
+		</div>
+		<div id="report-workTab"> 
+				<!-- Reports -->
+		</div>
+
+	</g:HTMLPanel>
+</ui:UiBinder> 

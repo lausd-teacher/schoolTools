@@ -84,8 +84,11 @@ public class StudentPage extends Composite {
 	public void setStudent(RosterStudentJson stu){
 		this.student = stu;
 		name.setText(student.getFirstName()+" "+ student.getLastName());
-		stuImage.setUrl(student.getThumbnails().get(3).getUrl());
-		summary.setText(student.getCurrentSummary());
+		
+		
+		String url = student.getThumbnails() != null?student.getThumbnails().get(3).getUrl():"/image/";
+		stuImage.setUrl(url);
+		summary.setText(student.getCurrentSummary()!= null?student.getCurrentSummary():"");
 		
 		
 		

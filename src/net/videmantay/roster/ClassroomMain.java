@@ -71,6 +71,7 @@ public class ClassroomMain extends Composite{
 	@UiField
 	MaterialLink jobLink;
 	
+	
 	private final RosterJson roster;
 	
 	//end side nav links/////////

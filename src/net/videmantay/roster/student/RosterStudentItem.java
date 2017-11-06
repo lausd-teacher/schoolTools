@@ -31,8 +31,8 @@ public class RosterStudentItem extends Composite {
 
 	@UiField
 	MaterialImage studentImg;
-	@UiField
-	MaterialTooltip tooltip;
+
+	MaterialTooltip tooltip = new MaterialTooltip();
 	
 	
 	
@@ -59,7 +59,7 @@ public class RosterStudentItem extends Composite {
 		console.log(student);
 	
 		
-		$(this).id(student.getId()+"");
+		$(this).id(student.getAcct());
 		this.addDomHandler(new ClickHandler(){
 
 			@Override

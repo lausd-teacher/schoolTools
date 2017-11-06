@@ -1,12 +1,14 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui='urn:ui:com.google.gwt.uibinder'
 	xmlns:g='urn:import:com.google.gwt.user.client.ui' xmlns:m="urn:import:gwt.material.design.client.ui"
-	xmlns:ma="urn:import:gwt.material.design.addins.client">
+	xmlns:o="urn:import:gwt.material.design.addins.client.overlay">
 	<ui:style>
 	
 	</ui:style>
 	<g:HTMLPanel>
-		<m:MaterialHeader top="0" height="7.5em">
+	<o:MaterialOverlay ui:field="overlay"> 
+		</o:MaterialOverlay>
+		<m:MaterialHeader ui:field="header" top="0" height="7.5em">
 			<!-- NavBar -->
 			<m:MaterialNavBar activates="sideNav" ui:field="navBar"
 				backgroundColor="AMBER_DARKEN_1" height="100%">
@@ -28,14 +30,19 @@
 				</m:MaterialNavSection>
 			</m:MaterialNavBar>
 		</m:MaterialHeader>
+		<m:MaterialRow ui:field="studentHeaderRow"> 
+				<m:MaterialImage circle="true" height="75px" url="/img/user.svg"/>
+				<m:MaterialLabel text="Jeremy Lopez" textColor="RED_DARKEN_2" marginLeft="5.0"/>
+		</m:MaterialRow>
 		<m:MaterialContainer fontSize="0.8em" paddingTop="10">
 			<m:MaterialRow>
+				
 				<m:MaterialColumn grid="m6 l6" hideOn="HIDE_ON_SMALL_DOWN">
 					<g:HTMLPanel>
 						<div id="studentHeader"
 							style="width:100%;margin-left:37.5%">
 							<m:MaterialLabel ui:field="studentName" fontSize="3.5em"
-								text="Jeremy Lopez" textColor="RED_DARKEN_1" />
+								text="Jeremy Lopez" textColor="RED_DARKEN_2" />
 							<m:MaterialImage circle="true" ui:field="studentImg"
 								url="/img/user.svg" width="150px" />
 						</div>
@@ -48,7 +55,7 @@
 						</div>
 					</g:HTMLPanel>
 				</m:MaterialColumn>
-				<m:MaterialColumn grid="s12 m6 l6" float="RIGHT">
+				<m:MaterialColumn ui:field="chartCol" grid="s12 m6 l6" float="RIGHT">
 					<g:HTMLPanel>
 						<m:MaterialCard ui:field="hwCalendar">
 							<m:MaterialCardContent>
