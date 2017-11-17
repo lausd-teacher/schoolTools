@@ -35,11 +35,11 @@
 	</g:HTMLPanel>
 	</div>
 	<!-- FAB -->
-		<m:MaterialFAB>
+		<!-- <m:MaterialFAB>
 			<m:MaterialTooltip text="New Student" position="LEFT">
 				<m:MaterialButton ui:field="fab" type="FLOATING" iconType="SCHOOL" size="LARGE" />
 			</m:MaterialTooltip>
-		</m:MaterialFAB>
+		</m:MaterialFAB> -->
 		<v:CreateStudentForm ui:field="stuForm"></v:CreateStudentForm>
 	</g:HTMLPanel>
 </ui:UiBinder> 

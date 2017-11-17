@@ -16,7 +16,7 @@ public class Roster implements EntryPoint {
 	@Override
 	public void onModuleLoad() {
 		//laod the object
-		Ajax.get("/roster").done(new Function(){
+		Ajax.get("/roster").done(new Function(){			
 			public void f(){
 				$("div#loader").remove();
 				window.setPropertyJSO("roster",JsonUtils.safeEval((String)this.arguments(0)));
@@ -25,7 +25,7 @@ public class Roster implements EntryPoint {
 			}
 		});
 		
-
+		
 	}
 
 }

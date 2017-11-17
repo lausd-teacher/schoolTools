@@ -31,9 +31,9 @@ public class RosterStudentMain extends Composite{
 	interface RosterStudentMainUiBinder extends UiBinder<Widget, RosterStudentMain> {
 	}
 	
-	
+/*	
 	@UiField
-	MaterialButton fab;
+	MaterialButton fab;*/
 	
 	@UiField
 	CreateStudentForm stuForm;
@@ -68,13 +68,13 @@ public class RosterStudentMain extends Composite{
 		}
 	};
 	
-	ClickHandler clickHandler = new ClickHandler(){
+	/*ClickHandler clickHandler = new ClickHandler(){
 
 		@Override 
 		public void onClick(ClickEvent event) {
 			stuForm.show();
 		}};
-		
+		*/
 	
 	
 	public RosterStudentMain(JsArray<RosterStudentJson> stus) {
@@ -109,7 +109,7 @@ public class RosterStudentMain extends Composite{
 	@Override
 	public void onLoad(){
 
-		fab.addClickHandler(clickHandler);
+		//fab.addClickHandler(clickHandler);
 		if(students.length() <= 0){
 			studentDashboard.getStyle().setDisplay(Display.NONE);
 			emptyStudentPage.getStyle().setDisplay(Display.BLOCK);

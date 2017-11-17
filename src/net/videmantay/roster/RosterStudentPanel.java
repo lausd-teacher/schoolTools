@@ -29,6 +29,8 @@ public class RosterStudentPanel extends Composite {
 	
 	@UiField
 	Span lastName;
+	
+	private  RosterStudentJson student;
 
 	public RosterStudentPanel() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -36,14 +38,19 @@ public class RosterStudentPanel extends Composite {
 
 	
 	public void setData(RosterStudentJson student){
+		this.student = student;
 		//set the id of the panel to student id 
 		//this is so we can query and hide it when necessary
 		this.getElement().setId(student.getAcct() );
 		//studentImg.setUrl(student.getThumbnails().get(0).getUrl());
 		firstName.setText(student.getFirstName());
 		lastName.setText(student.getLastName());
-		String url= student.getThumbnails() == null||student.getThumbnails().get(1).getUrl() == null ||student.getThumbnails().get(1).getUrl() == ""? "../img/user.svg":student.getThumbnails().get(1).getUrl();
+		String url= student.getThumbnails() == null || student.getThumbnails().length() <1 ? "../img/user.svg":student.getThumbnails().get(1).getUrl();
 		studentImg.getStyle().setBackgroundImage("url("+url +")");
+	}
+	
+	public RosterStudentJson getData(){
+		return this.student;
 	}
 
 }

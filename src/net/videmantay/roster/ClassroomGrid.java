@@ -40,17 +40,19 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 
 		@Override
 		public void onClick(ClickEvent event) {
-		String stuAcct = $(event.getNativeEvent().getEventTarget()).id();
-		$(body).trigger("studentAction", stuAcct);
-		console.log("student " + stuAcct + " was clicked for action modal");
+			event.stopPropagation();
+			event.preventDefault();
+		RosterStudentPanel rosPanel = $(event.getNativeEvent().getCurrentEventTarget()).widgets(RosterStudentPanel.class).get(0);
+		$(body).trigger("studentAction", rosPanel.getData());
+		console.log("student " + rosPanel.getElement().getId() + " was clicked for action modal");
 			
 		}};
-	//create fab
+	/*//create fab
 	MaterialFAB fab = new MaterialFAB();
 	MaterialAnchorButton fabBtn = new MaterialAnchorButton();
 	MaterialFABList fabList = new MaterialFABList();
 	MaterialAnchorButton addStudentBtn = new MaterialAnchorButton();
-	MaterialAnchorButton addAssignmentBtn = new MaterialAnchorButton();
+	MaterialAnchorButton addAssignmentBtn = new MaterialAnchorButton();*/
 	
 	public ClassroomGrid(RosterJson ros){
 		roster = ros;
@@ -67,7 +69,7 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 		drawGrid(sortByFirst);
 		}//end if else	
 		//do fab
-		fabBtn.setIconType(IconType.ADD);
+		/*fabBtn.setIconType(IconType.ADD);
 		fabBtn.setIconColor(Color.WHITE);
 		fabBtn.setBackgroundColor(Color.RED_DARKEN_4);
 		fabBtn.setSize(ButtonSize.LARGE);
@@ -88,7 +90,7 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 		fab.add(fabList);
 		fabList.add(addStudentBtn);
 		fabList.add(addAssignmentBtn);
-		mainPanel.add(fab);
+		mainPanel.add(fab);*/
 	}
 	
 	@Override
@@ -108,6 +110,7 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 	public void drawGrid(){
 		mainPanel.clear();
 		MaterialRow row = new MaterialRow();
+		row.setPadding(5.0);
 		mainPanel.add(row);
 		MaterialColumn c;
 		RosterStudentPanel rsp;
@@ -118,11 +121,8 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 			Collections.sort(studentList, new LastNameComparator());
 		}
 		
-		console.log(studentList);
-			int i = 0;
-			console.log("student 0 is:");
-			console.log(studentList.get(0));
-				do{
+		
+			for(int i = 0; i < studentList.size(); i++){
 					 c = new MaterialColumn();
 					 c.setGrid("s12 m4 l3");
 					 rsp = new RosterStudentPanel();
@@ -131,8 +131,7 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 					 c.add(rsp);
 					 row.add(c);
 					 rsp.addDomHandler(studentHandler, ClickEvent.getType());
-					 ++i;
-				}while(i < studentList.size());
+				}
 			
 		
 	}

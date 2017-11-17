@@ -18,7 +18,7 @@
 				<m:MaterialDropDown activator="routinelist" ui:field="routineDrop">
 					<m:MaterialLink addStyleNames="manageClassTimeLink" text="Manage..." />
 				</m:MaterialDropDown>
-			<m:MaterialColumn  grid="l3" hideOn="HIDE_ON_MED_DOWN" float="LEFT" centerOn="CENTER_ON_SMALL">
+			<m:MaterialColumn   height="2.5em" grid="l3" hideOn="HIDE_ON_MED_DOWN" float="LEFT" centerOn="CENTER_ON_SMALL">
 				<m:MaterialRow>
 					<m:MaterialColumn grid="l1">
 					<m:MaterialIcon iconType="APPS" iconSize="SMALL" paddingRight="3.0"/>
@@ -76,15 +76,15 @@
 				</m:MaterialColumn>
 				<!-- This starts selects tools -->
 				<m:MaterialColumn grid="s1"><m:MaterialLabel text="Select:"></m:MaterialLabel></m:MaterialColumn>
-				<m:MaterialColumn grid="s1">
-					<m:MaterialPanel marginLeft="10" padding="2" ><!--  -->
+				<!-- <m:MaterialColumn grid="s1">
+					<m:MaterialPanel marginLeft="10" padding="2" >
 						<g:HTMLPanel>
 						<m:MaterialTooltip text="Multiple">
 							<m:MaterialIcon ui:field="multipleIcon" iconType="GROUP_ADD" iconSize="SMALL"/>
 							</m:MaterialTooltip>
 						</g:HTMLPanel>
 					</m:MaterialPanel>
-				</m:MaterialColumn>
+				</m:MaterialColumn> -->
 				<m:MaterialColumn grid="s1">
 					<m:MaterialPanel padding="2" ><!--  -->
 						<g:HTMLPanel> 
@@ -94,15 +94,15 @@
 						</g:HTMLPanel>
 					</m:MaterialPanel>
 			</m:MaterialColumn>
-				<m:MaterialColumn grid="s1">
-					<m:MaterialPanel padding="2" ><!--  -->
+				<!-- <m:MaterialColumn grid="s1">
+					<m:MaterialPanel padding="2" >
 						<g:HTMLPanel>
 						<m:MaterialTooltip text="All">
 							<m:MaterialIcon ui:field="selectAllIcon" iconType="SELECT_ALL" iconSize="SMALL"/>
 							</m:MaterialTooltip>
 						</g:HTMLPanel>
 					</m:MaterialPanel>
-				</m:MaterialColumn>
+				</m:MaterialColumn> -->
 				</m:MaterialColumn>
 			</m:MaterialRow>
 			<m:MaterialRow ui:field="doneToolbar" > 

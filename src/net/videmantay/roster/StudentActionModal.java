@@ -9,7 +9,12 @@ import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.logical.shared.CloseEvent;
+import com.google.gwt.event.logical.shared.CloseHandler;
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Properties;
 import com.google.gwt.query.client.js.JsUtils;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
@@ -19,14 +24,18 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 
 import static com.google.gwt.query.client.GQuery.*;
+
+import gwt.material.design.client.base.MaterialWidget;
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialColumn;
 import gwt.material.design.client.ui.MaterialIcon;
+import gwt.material.design.client.ui.MaterialImage;
 import gwt.material.design.client.ui.MaterialLabel;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.roster.incident.IncidentValueCompare;
+import net.videmantay.roster.json.RosterJson;
 import net.videmantay.student.json.IncidentJson;
 import net.videmantay.student.json.RosterStudentJson;
 import net.videmantay.student.json.StudentIncidentJson;
@@ -38,9 +47,13 @@ public class StudentActionModal extends Composite {
 	interface StudentActionModalUiBinder extends UiBinder<Widget, StudentActionModal> {
 	}
 	
+	private final RosterJson roster ;
 	private RosterStudentJson student;
 	@UiField
 	MaterialLabel studentName;
+	
+	@UiField
+	MaterialImage studentActionImage;
 	
 	@UiField
 	public MaterialIcon gotoStudentPageIcon;
@@ -85,8 +98,18 @@ public class StudentActionModal extends Composite {
 	
 	
 	public StudentActionModal() {
-		
+		roster = window.getPropertyJSO("roster").cast();
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		//add close handler to modal to clean up overlays
+		modal.addCloseHandler(new CloseHandler<MaterialModal>(){
+
+			@Override
+			public void onClose(CloseEvent<MaterialModal> event) {
+				$("div.lean-overlay").remove();
+				
+			}});
+		//add click to cancelbtn
 		cancelStudentActionBtn.addClickHandler(new ClickHandler(){
 
 			@Override
@@ -94,14 +117,20 @@ public class StudentActionModal extends Composite {
 				modal.close();
 			}});
 		
-		
+		drawIncidentGrid(roster.getIncidents());
 	}
 	
 	public void setData(RosterStudentJson student){
-		
+		studentName.setFontSize("1.5em");
 		this.student = student;
-		console.log("Single student mode: StudentActionPanel");
-		singleStudent();
+		if(student.getFirstName()== null || student.getFirstName().isEmpty()){
+			studentName.setText(student.getAcct());
+		}else{
+		studentName.setText(student.getFirstName() + " " + student.getLastName());
+		}
+		
+		String url= student.getThumbnails() == null || student.getThumbnails().length() < 1 ? "../img/user.svg":student.getThumbnails().get(1).getUrl();
+		studentActionImage.setUrl(url);
 		
 		
 	}
@@ -124,11 +153,13 @@ public class StudentActionModal extends Composite {
 				public void onClick(ClickEvent event) {
 					//create student incident based on studnt chosen
 					
-						StudentIncidentJson stuInc = StudentIncidentJson.create(student.getAcct(), item.getData());
+					StudentIncidentJson stuInc = StudentIncidentJson.create(student.getAcct(), item.getData());
 					
 					console.log(stuInc);
 					Ajax.ajax(Ajax.createSettings().setContentType("json/application").setDataType("json")
-							.setData(stuInc).setType("POST").setUrl("/roster/batch/student/incident")).done(new Function(){
+							.setData(stuInc).setType("POST")
+							.setUrl("/roster/"+roster.getId()+"/student/"+student.getAcct()+"/incident"))
+							.done(new Function(){
 								@Override
 								public void f(){
 								JsArray<StudentIncidentJson> stuIncs = this.arguments(0);
@@ -151,15 +182,6 @@ public class StudentActionModal extends Composite {
 			}
 		}
 	}
-	
-	private void singleStudent(){
-		if(student.getFirstName()== null || student.getFirstName().isEmpty()){
-			studentName.setText(student.getAcct());
-		}else{
-		studentName.setText(student.getFirstName() + " " + student.getLastName());
-		}
-	}
-	
 	
 
 }

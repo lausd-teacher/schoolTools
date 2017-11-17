@@ -10,13 +10,14 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.GQuery;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.Widget;
 import static com.google.gwt.query.client.GQuery.*;
-
 
 import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialButton;
@@ -27,6 +28,7 @@ import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialSwitch;
 import net.videmantay.roster.json.RosterJson;
+import net.videmantay.student.json.RosterStudentJson;
 
 public class DashboardPanel extends Composite {
 
@@ -47,8 +49,8 @@ public class DashboardPanel extends Composite {
 	@UiField
 	MaterialIcon rollIcon;
 	
-	@UiField
-	MaterialIcon multipleIcon;
+	/*@UiField
+	MaterialIcon multipleIcon;*/
 	
 	@UiField
 	MaterialIcon randomIcon;
@@ -95,7 +97,7 @@ public class DashboardPanel extends Composite {
 	@UiField
 	MaterialButton smUndoBtn;
 	
-	private final StudentActionModal studentActionModal = new StudentActionModal();
+	private  final StudentActionModal studentActionModal = new StudentActionModal();
 	
 	private final RosterJson roster;
 
@@ -169,7 +171,13 @@ public class DashboardPanel extends Composite {
 			}});
 		/////////////////seatingChartEditLinks events
 	
-		
+		seatingChartEditIcon.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				((SeatingChartPanel)display).edit();
+				toolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
+			}});
 		////// toolbar buttons events//////////////////////
 		hwIcon.addClickHandler( new ClickHandler(){
 
@@ -203,14 +211,14 @@ public class DashboardPanel extends Composite {
 				state = State.RANDOM;
 				showDoneBar();
 			}});
-		multipleIcon.addClickHandler(new ClickHandler(){
+		/*multipleIcon.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
 				display.multipleSelect();
 				state = State.MULTIPLE_SELECT;
 				showDoneBar();
-			}});
+			}});*/
 		////////////
 		doneBtn.addClickHandler(new ClickHandler(){
 
@@ -308,30 +316,40 @@ public class DashboardPanel extends Composite {
 	
 	@Override
 	public void onLoad(){
-		this.tab1Main.add(studentActionModal);
+		
 		//load the classTimedrop
 		console.log("dashboard loaded");
 		$(body).on("studentAction", new Function(){
-			public boolean f(Event e, Object...student){
-				String studentId = (String) student[0];
-				showStudentAction(studentId);
+			public boolean f(Event e, Object...studen){
+				RosterStudentJson student = (RosterStudentJson) studen[0];
+				showStudentAction(student);
 				return true;
 			}
 		});
 		
-		
+		RootPanel.get().add(studentActionModal);
 	}//end onLoad
 	
-	private void showStudentAction(String studentId){
-		console.log("Student actiona modal should be open");
-		for(int i = 0; i < this.roster.getRosterStudents().length(); i++){
-			if(studentId.equalsIgnoreCase(roster.getRosterStudents().get(i).getAcct())){
-				studentActionModal.setData(roster.getRosterStudents().get(i));
-				break;
-			}
-		}//end for
+	@Override
+	public void onUnload(){
+		RootPanel.get().remove(studentActionModal);
+	}
+	
+	private void showStudentAction(RosterStudentJson student){
+		console.log("Student action modal should be open");
+		console.log("student id  is: " + student.getAcct());
+	
+			studentActionModal.setData(student);
 		
 		studentActionModal.modal.open();
+		GQuery $overlay = $("div.lean-overlay");
+		if($overlay.size() > 1){
+			int i = $overlay.size();
+			while( i > 1){
+				$overlay.get(i).removeFromParent();
+				--i;
+			}// end while
+		}
 	}
 
 }

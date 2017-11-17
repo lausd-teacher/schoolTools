@@ -44,7 +44,7 @@ public class RosterStudentItem extends Composite {
 		console.log("RosterSTudentItem -Constructor studnet is:");
 		console.log(student);
 		initWidget(uiBinder.createAndBindUi(this));
-		String url = (student.getThumbnails() == null)? "../img/user.svg": student.getThumbnails().get(2).getUrl();
+		String url = (student.getThumbnails() == null)|| student.getThumbnails().length() < 1? "../img/user.svg": student.getThumbnails().get(2).getUrl();
 		studentImg.setUrl(url);
 		tooltip.setText(student.getFirstName() + " " + student.getLastName());
 		tooltip.setDelayMs(100);

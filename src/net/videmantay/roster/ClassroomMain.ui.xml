@@ -16,11 +16,11 @@
 				<m:MaterialLink ui:field="dashboardLink" iconType="DASHBOARD" text="Dashboard" />
 				<m:MaterialLink ui:field="studentLink" addStyleNames="studentLink classLink" text="Students" iconType="SCHOOL" />
 				<m:MaterialLink ui:field="routineLink" text="Routines" iconType="SCHEDULE" />
-				<m:MaterialLink ui:field="assignmentLink" text="Assignments" iconType="ASSIGNMENT" />
-				<m:MaterialLink ui:field="lessonPlanLink" text="Lesson Plans" iconType="LIBRARY_BOOKS" />
 				<m:MaterialLink ui:field="incidentLink" text="Incidents" iconType="FEEDBACK" />
 				<m:MaterialLink ui:field="goalLink" text="Goals" iconType="TRENDING_UP" />
 				<m:MaterialLink ui:field="jobLink" text="Jobs" iconType="BUSINESS_CENTER" />
+				<m:MaterialLink ui:field="assignmentLink" text="Assignments" iconType="ASSIGNMENT" />
+				<m:MaterialLink ui:field="lessonPlanLink" text="Lesson Plans" iconType="LIBRARY_BOOKS" />
 				<m:MaterialLink></m:MaterialLink>
 			</m:MaterialSideNavDrawer>
 		<m:MaterialContainer  ui:field="mainPanel" width="100%" height="100%" >

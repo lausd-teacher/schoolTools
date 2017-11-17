@@ -5,22 +5,15 @@
 	<ui:style>
 	
 	</ui:style>
-	<g:HTMLPanel>
-	<m:MaterialModal type="FIXED_FOOTER" ui:field="modal">
+	<m:MaterialModal type="FIXED_FOOTER" ui:field="modal" m:id="studentActionModal">
 			<m:MaterialModalContent>
 				<g:HTMLPanel>
 					<m:MaterialRow><!-- -->
-						<m:MaterialColumn grid="s6">
-							<m:MaterialRow>
-								<m:MaterialColumn> 
-									<m:MaterialImage ui:field="studentActionImage" circle="true"/>
-								</m:MaterialColumn>
-								<m:MaterialColumn> 
-								<m:MaterialLabel ui:field="studentName" text="Student's name here" />
-								</m:MaterialColumn>
-							</m:MaterialRow>
+						<m:MaterialColumn grid="s9">
+									<m:MaterialImage ui:field="studentActionImage" height="95px" float="LEFT" circle="true"/>
+								<m:MaterialLabel ui:field="studentName" text="Student's name here" textColor="RED_DARKEN_2" />
 							</m:MaterialColumn>
-						<m:MaterialColumn grid="s6">
+						<m:MaterialColumn grid="s3">
 							<m:MaterialIcon ui:field="gotoStudentPageIcon" iconType="SEND" iconPosition="RIGHT" />
 							<m:MaterialAnchorButton type="RAISED" text="COMPARE" ui:field="compareBtn"  visible="false"/>
 						</m:MaterialColumn>
@@ -28,11 +21,11 @@
 					<m:html.Hr />
 					<div ui:field="incidentActionPanel">
 					<m:MaterialTab>
-						<m:MaterialTabItem waves="YELLOW" grid="l4">
+						<m:MaterialTabItem waves="YELLOW" grid="l4" backgroundColor="GREEN">
 							<m:MaterialLink text="Superb Decision" href="#taba"
 								textColor="WHITE" />
 						</m:MaterialTabItem>
-						<m:MaterialTabItem waves="YELLOW" grid="l4">
+						<m:MaterialTabItem waves="YELLOW" grid="l4" backgroundColor="RED">
 							<m:MaterialLink text="Poor Judgement" href="#tabb"
 								textColor="WHITE" />
 						</m:MaterialTabItem>
@@ -77,12 +70,11 @@
 						<m:MaterialAnchorButton type="FLAT"
 							textColor="RED_DARKEN_4" iconType="FEEDBACK" ui:field="incidentQuickLink"></m:MaterialAnchorButton>
 					</m:MaterialColumn>
-					<m:MaterialColumn> 
+					<m:MaterialColumn grid="s2 m2 l2"> 
 						<m:MaterialAnchorButton type="FLAT" float="RIGHT"
 							textColor="RED_DARKEN_2" text="CANCEL" ui:field="cancelStudentActionBtn"></m:MaterialAnchorButton>
 					</m:MaterialColumn>
 				</m:MaterialRow>
 			</m:MaterialModalFooter>
 		</m:MaterialModal>
-	</g:HTMLPanel>
 </ui:UiBinder> 

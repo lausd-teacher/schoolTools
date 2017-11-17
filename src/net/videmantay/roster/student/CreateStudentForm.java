@@ -40,6 +40,7 @@ import gwt.material.design.client.ui.MaterialTextArea;
 import gwt.material.design.client.ui.MaterialTextBox;
 import net.videmantay.roster.RosterEvent;
 import net.videmantay.roster.RosterUrl;
+import net.videmantay.roster.json.RosterJson;
 import net.videmantay.shared.LoginInfo;
 import net.videmantay.student.json.RosterStudentJson;
 
@@ -119,6 +120,7 @@ public class CreateStudentForm extends Composite{
 	private final String IMG_URL="https://image.freepik.com/free-icon/user-image-with-black-background_318-34564.jpg";
 	
 	private  RosterStudentJson student = RosterStudentJson.createObject().cast();
+	private Long rosterId = ((RosterJson)window.getPropertyJSO("roster").cast()).getId();
 	
 	private DateTimeFormat df = DateTimeFormat.getFormat("yyyy-MM-dd");
 	
@@ -173,7 +175,7 @@ public class CreateStudentForm extends Composite{
 			console.log("here is the student just before ajax");
 			console.log(getStudent());
 			Ajax.ajax(Ajax.createSettings()
-					.setUrl("/roster/student")
+					.setUrl("/roster/"+ rosterId +  "/student/")
 					.setContentType("application/json")
 					.setType("POST")
 					.setData(getStudent())
