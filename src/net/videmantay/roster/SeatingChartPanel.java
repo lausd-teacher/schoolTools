@@ -67,7 +67,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	private ArrayList<FurnitureJson> tempFurnitureList;
 	//save draggableParent for reference
 	private GQuery $dragParent;
-	private enum State{DASHBOARD, STUDENT_EDIT,FURNITURE_EDIT,STATION_EDIT,GROUP_EDIT};
+	private enum State{DASHBOARD,ROLL,CHECK_HW, STUDENT_EDIT,FURNITURE_EDIT,STATION_EDIT,GROUP_EDIT};
 	
 	State state = State.DASHBOARD;
 	
@@ -95,29 +95,14 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	@UiField
 	DivElement editTools;
 	
-	@UiField
-	MaterialCollapsible editCollapsible;
+
 	
 	@UiField
 	HTMLPanel editStudentEmptyMessage;
-	
-	@UiField
-	MaterialCollapsibleItem studentCollapseItem;
-	
-	@UiField
-	MaterialCollapsibleBody studentCollapseBody;
-	
-	@UiField
-	MaterialCollapsibleItem groupCollapseItem;
-	
-	@UiField
-	MaterialCollapsibleItem furnitureCollapseItem;
+
 	
 	@UiField
 	DivElement stationLayer;
-	
-	@UiField
-	MaterialCollapsibleItem stationCollapseItem;
 	
 	private final RosterJson roster;
 
@@ -137,46 +122,15 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 			default:home();
 			}
 			switch(text){
-			case "Students": arrangeStudents(); editCollapsible.setActive(2);break;
-			case "Groups": groups();editCollapsible.setActive(3);break;
-			case "Stations": manageStations();editCollapsible.setActive(4);break;
-			default:arrangeFurniture() ;editCollapsible.setActive(1);
+			case "Students": arrangeStudents();break;
+			case "Groups": groups();break;
+			case "Stations": manageStations();break;
+			default:arrangeFurniture();
 			}
 			
 		}};
 		
-	ClickHandler clickHandler = new ClickHandler(){
-		@Override
-		public void onClick(ClickEvent event) {
-			done();
-		new Timer(){
-			@Override 
-			public void run(){
-				String id = $(".active", editCollapsible).id();
-				if(id == null || id.isEmpty()){
-					return;
-				}
-				switch(state){
-				case FURNITURE_EDIT: doneArrangeFurniture();break;
-				case STUDENT_EDIT: doneArrangeStudents();break;
-				case STATION_EDIT: doneManageStations();break;
-				case GROUP_EDIT: break;
-				default:home();
-				}
-				switch(id){
-				case"studentCollapseItem": stateSelectBtn.setText("Students");
-				stateSelectBtn.setIconType(IconType.SCHOOL);arrangeStudents();break;
-				case"groupCollapseItem":stateSelectBtn.setText("Groups");
-				stateSelectBtn.setIconType(IconType.GROUP_WORK);groups();break;
-				case"furnitureCollapseItem":stateSelectBtn.setText("Furniture"); 
-				stateSelectBtn.setIconType(IconType.EVENT_SEAT); arrangeFurniture();break;
-				case"stationCollapseItem":stateSelectBtn.setText("Stations");
-				stateSelectBtn.setIconType(IconType.WIDGETS);manageStations();break;
-				}
-			}
-		}.schedule(300);
-		
-		}};	
+	
 	public SeatingChartPanel(RosterJson ros) {
 		this.roster = ros;
 		console.log("on seating chart const roster is");
@@ -201,7 +155,6 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	@Override
 	public void onLoad(){
 		scDropDown.addSelectionHandler(handler);
-		editCollapsible.addDomHandler(clickHandler, ClickEvent.getType());
 		
 	}//end onLoad
 	
@@ -229,15 +182,9 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 			sp.setData(roster.getRosterStudents().get(i));
 			stuPanels.add(sp);
 		}
-		console.log("We've cycled through students here is array of panels ");
-		console.log(stuPanels);
-		// go through list of furniture and place them on floorPlan
-		console.log("Here is the furniture json ");
-		console.log(data.getFurniture());
+		
 		if(data.getFurniture() != null && data.getFurniture().length() > 0){
 		for(int i =0; i< data.getFurniture().length(); i++){
-			console.log("draw(): furniture kind is ");
-			console.log(data.getFurniture().get(i).getKind());
 			//Gquery only operates on DOM so make and place 
 			HTMLPanel furniturePanel = FurnitureUtils.byKind(data.getFurniture().get(i).getKind());
 			floorPlan.appendChild(furniturePanel.getElement());
@@ -268,7 +215,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 							if(rsp.getElement().getId().equalsIgnoreCase(studentSeats.get(j).getRosterStudent())){
 								console.log("studentId is equals rosterstudent seat called ");
 									$(furniturePanel).find("tr>td>div.seat.pos"+(j+1))
-										.append(rsp.toString()).find(".counterRotate").css("transform", "rotate("+ (-furniture.getRotate()) +"rad)");
+										.append(rsp.getElement()).find(".counterRotate").css("transform", "rotate("+ (-furniture.getRotate()) +"rad)");
 									stuPanels.remove(rsp);
 							}// end if
 						}//end for iterate panel and hide ones that seats	
@@ -282,19 +229,15 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 			data.setFurniture(furniture);
 		}//end else
 			//the rest of students panel go in the sideNav
-			console.log("We finished with drawn seats and mathcing student id's lis of array is ");
-			console.log(stuPanels);
 			if(stuPanels.size() > 0){
 				//place the rest in side
 				for(RosterStudentPanel rsp : stuPanels){
 				MaterialCollectionItem mci =new MaterialCollectionItem();
 			
 				mci.add(rsp);
-				mci.setPadding(5);
+				mci.setPadding(10);
 				studentList.add(mci);
 				}//end for
-				console.log("Here is the student collection ");
-				console.log(studentList);
 			}//end if
 	
 		//everything should be in place now add home state
@@ -320,7 +263,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		
 	}
 	
-	//this is two show stations not edit
+	//this is to show stations not edit them
 		public void stations(){
 			
 		}
@@ -354,7 +297,9 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 			public void f(){
 				// get the student id and populate the 
 				//dialog
-				$(body).trigger("manageStudentDialog", $(this).id());
+				RosterStudentPanel rsp =(RosterStudentPanel) $(this).widget();
+				console.log("Student " + rsp.getData().getAcct() + " in seating chart should trigger student action dialog");
+				$(body).trigger("studentAction",rsp.getData() );
 			}
 		});
 		if(studentList.getElement().getChildCount() > 0){
@@ -447,8 +392,6 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		this.setIsEditing(true);
 		if(studentList.getWidgetCount() >= 1){
 			studentList.removeFromParent();
-			studentCollapseBody.clear();
-			studentCollapseBody.add(studentList);
 		}
 		
 		arrangeFurniture();
@@ -471,6 +414,9 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	public  void arrangeStudents(){
 		//set state to student edit
 		state = State.STUDENT_EDIT;
+		
+		//show the student editPanel
+		
 		//make students draggable
 		//constraint to seatingchart
 		Draggable.Options dragOpts = Draggable.Options.create();
@@ -571,10 +517,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 							});
 						}
 					}
-						
-					
-					
-					
+	
 					//now detach and append to new seat
 					$draggable.css("opacity","1");
 				
@@ -671,6 +614,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 			//we should have a furniture object here////////
 			final FurnitureJson desk = FurnitureJson.create();
 			desk.setSeats(iconId);
+			console.log("just dropped a furniture here is the object: " );
 			console.log(desk);
 			
 			String left =  (e.getClientX() - floorPlan.getAbsoluteLeft() + document.getScrollLeft())  +"px";
@@ -854,8 +798,24 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void manageGroups(){
+		
+	}
+	
+	public void doneManageGroups(){
+		
+	}
 
-
+	public void manageState(State state){
+		switch(state){
+		case FURNITURE_EDIT: doneArrangeFurniture();break;
+		case STUDENT_EDIT: doneArrangeStudents();break;
+		case STATION_EDIT: doneManageStations();break;
+		case GROUP_EDIT: doneManageGroups();break;
+		default:unHome();
+		}
+	}
 	public State getState() {
 		return this.state;
 	}
