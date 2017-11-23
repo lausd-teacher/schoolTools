@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.dom.client.DivElement;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -26,6 +27,7 @@ import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
 
 import gwt.material.design.client.constants.IconType;
+import gwt.material.design.client.ui.MaterialAnchorButton;
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCollapsible;
 import gwt.material.design.client.ui.MaterialCollapsibleBody;
@@ -33,6 +35,7 @@ import gwt.material.design.client.ui.MaterialCollapsibleItem;
 import gwt.material.design.client.ui.MaterialCollection;
 import gwt.material.design.client.ui.MaterialCollectionItem;
 import gwt.material.design.client.ui.MaterialDropDown;
+import gwt.material.design.client.ui.MaterialLabel;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialRow;
@@ -84,18 +87,37 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	MaterialRow seatingChartToolbar;
 	
 	@UiField
-	MaterialButton stateSelectBtn;
-	
-	@UiField
-	MaterialDropDown scDropDown;
-	
-	@UiField
 	DivElement homeTools;
 	
 	@UiField
 	DivElement editTools;
 	
+	@UiField
+	MaterialAnchorButton editStudentsBtn;
+	
+	@UiField
+	MaterialAnchorButton editFurnitureBtn;
+	
+	@UiField
+	MaterialAnchorButton editGroupsBtn;
+	
+	@UiField
+	MaterialAnchorButton editStationsBtn;
+	
+	@UiField
+	MaterialLabel editStateLabel;
+	
+	@UiField
+	DivElement editStudentsPanel;
+	
+	@UiField
+	DivElement editFurniturePanel;
 
+	@UiField
+	DivElement editGroupsPanel;
+	
+	@UiField
+	DivElement editStationsPanel;
 	
 	@UiField
 	HTMLPanel editStudentEmptyMessage;
@@ -106,25 +128,24 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	
 	private final RosterJson roster;
 
-	SelectionHandler<Widget> handler = new SelectionHandler<Widget>(){
+	ClickHandler handler = new ClickHandler(){
 
 		@Override
-		public void onSelection(SelectionEvent<Widget> event) {
-			String text = ((MaterialLink)event.getSelectedItem()).getText();
-			stateSelectBtn.setText(text);
-			stateSelectBtn.setIconType(((MaterialLink)event.getSelectedItem()).getIcon().getIconType());
+		public void onClick(ClickEvent event) {
+			String text = event.getRelativeElement().getId();
 			done();
 			switch(state){
 			case FURNITURE_EDIT: doneArrangeFurniture();break;
 			case STUDENT_EDIT: doneArrangeStudents();break;
 			case STATION_EDIT: doneManageStations();break;
-			case GROUP_EDIT: break;
+			case GROUP_EDIT: doneManageGroups();break;
 			default:home();
 			}
 			switch(text){
-			case "Students": arrangeStudents();break;
-			case "Groups": groups();break;
-			case "Stations": manageStations();break;
+			case "editStudentsBtn": arrangeStudents();break;
+			case "editGroupsBtn": groups();break;
+			case "editStationsBtn": manageStations();break;
+			case "editFurnitureBtn":arrangeFurniture();break;
 			default:arrangeFurniture();
 			}
 			
@@ -154,7 +175,8 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	
 	@Override
 	public void onLoad(){
-		scDropDown.addSelectionHandler(handler);
+		//add handler to edit btns
+		
 		
 	}//end onLoad
 	
@@ -414,7 +436,9 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	public  void arrangeStudents(){
 		//set state to student edit
 		state = State.STUDENT_EDIT;
-		
+		editStateLabel.setText("Students");
+		editStudentsBtn.setEnabled(false);
+		editStudentsPanel.getStyle().setDisplay(Style.Display.BLOCK);
 		//show the student editPanel
 		
 		//make students draggable
@@ -553,6 +577,8 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	};
 	
 	public void doneArrangeStudents(){
+		editStudentsBtn.setEnabled(true);
+		editStudentsPanel.getStyle().setDisplay(Style.Display.NONE);
 		MaterialLoader.loading(true);
 		SeatingChartJson seatingChart = window.getPropertyJSO("seatingChart").cast();
 		//iterate through the seats and update data
@@ -578,6 +604,9 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	
 	public  void arrangeFurniture(){
 		state = State.FURNITURE_EDIT;
+		editStateLabel.setText("Furniture");
+		editFurnitureBtn.setEnabled(false);
+		editFurniturePanel.getStyle().setDisplay(Style.Display.BLOCK);
 		tempFurnitureList = new ArrayList<FurnitureJson>();
 		if(data.getFurniture().length() > 0){
 		for(int i = 0; i < data.getFurniture().length(); i++){
@@ -713,6 +742,8 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	}
 	
 	public void doneArrangeFurniture(){
+		editFurniturePanel.getStyle().setDisplay(Style.Display.NONE);
+		editFurnitureBtn.setEnabled(true);
 		JsArray<FurnitureJson> finalList = JsArray.createArray().cast();
 		$(".desk-wrapper",floorPlan).as(Ui).draggable().destroy();
 		$(".furnitureIcon").as(Ui).draggable().destroy();

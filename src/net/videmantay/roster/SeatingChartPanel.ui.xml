@@ -3,21 +3,21 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:m="urn:import:gwt.material.design.client.ui"
 	xmlns:h="urn:import:gwt.material.design.client.ui.html" xmlns:o="urn:import:gwt.material.design.addins.client.overlay">
 	<ui:style>
-		.scStudentTools {
+	.scStudentTools {
 		overflow-x: hidden;
 		height: 100%;
 		width: 10em;
 		position: relative;
 		left: -2em;
-		}
-
-		.scStudentList {
+	}
+	
+	.scStudentList {
 		overflow-y: scroll;
 		height: 75%;
-		width:100%;
-		}
-
-		.seatingChart {
+		width: 100%;
+	}
+	
+	.seatingChart {
 		width: 1090px;
 		height: 650px;
 		display: block;
@@ -25,71 +25,60 @@
 		margin-left: auto;
 		margin-right: auto;
 		margin-bottom: 1em;
-		}
-		.stationLayer {
+	}
+	
+	.stationLayer {
 		height: 700px;
-		background-color:transparent;
+		background-color: transparent;
 		position: relative;
-		left:-0.75em;
-		margin-bottom:0.5em;
-		display:none;
-		}
-
-		.floorPlan {
+		left: -0.75em;
+		margin-bottom: 0.5em;
+		display: none;
+	}
+	
+	.floorPlan {
 		height: 700px;
 		background-image: url('../img/classFloor.svg');
-		background-color:White;
+		background-color: White;
 		border-radius: 5%;
 		border: 0.1em dotted Brown;
 		position: relative;
-		left:-0.75em;
-		margin-bottom:0.5em;
-		box-shadow:2px 2px
-		5px DimGray;
-		}
-
-		.seatingChartToolbar {
+		left: -0.75em;
+		margin-bottom: 0.5em;
+		box-shadow: 2px 2px 5px DimGray;
+	}
+	
+	.seatingChartToolbar {
 		display: none;
 		position: relative;
-		}
-
-		.editTools {
+	}
+	
+	.editTools {
 		display: none;
 		position: relative;
-		}
+	}
+	
+	.editingPanel {
+		display: none;
+		position: relative;
+	}
 	</ui:style>
 	<g:HTMLPanel ui:field="seatingChart" styleName="{style.seatingChart}">
 		<m:MaterialRow ui:field="seatingChartToolbar"
 			backgroundColor="RED_LIGHTEN_1" addStyleNames="{style.seatingChartToolbar}">
 			<m:MaterialColumn grid="s2">
-				<m:MaterialAnchorButton ui:field="undoBtn" text="UNDO"
-					iconType="REPLY" />
+				<m:MaterialAnchorButton ui:field="undoBtn"
+					text="UNDO" iconType="REPLY" />
 			</m:MaterialColumn>
 			<!-- This cancel button must be accessible to classroomdashboard -->
 			<m:MaterialColumn grid="s2">
-				<m:MaterialAnchorButton ui:field="cancelBtn" text="CANCEL"
-					iconType="CLOSE" />
+				<m:MaterialAnchorButton ui:field="cancelBtn"
+					text="CANCEL" iconType="CLOSE" />
 			</m:MaterialColumn>
 			<m:MaterialColumn grid="s2">
 				<!-- This done button must be accessible to classroomdashboard -->
-				<m:MaterialAnchorButton ui:field="doneBtn" text="DONE"
-					iconType="DONE" />
-			</m:MaterialColumn>
-			<m:MaterialColumn grid="s6" float="RIGHT" marginRight="10.0">
-				<m:MaterialButton text="Furniture" ui:field="stateSelectBtn" fontSize="1em"
-					activates="scStateSelect" iconType="EVENT_SEAT" iconPosition="RIGHT"
-					width="180px" />
-				<m:MaterialDropDown ui:field="scDropDown"
-					activator="scStateSelect">
-					<m:MaterialLink text="Students" iconType="SCHOOL"
-						iconPosition="RIGHT" />
-					<m:MaterialLink text="Groups" iconType="GROUP_WORK"
-						iconPosition="RIGHT" />
-					<m:MaterialLink text="Furniture" iconType="EVENT_SEAT"
-						iconPosition="RIGHT" />
-					<m:MaterialLink text="Stations" iconType="WIDGETS"
-						iconPosition="RIGHT" />
-				</m:MaterialDropDown>
+				<m:MaterialAnchorButton ui:field="doneBtn"
+					text="DONE" iconType="DONE" />
 			</m:MaterialColumn>
 		</m:MaterialRow>
 		<m:MaterialRow>
@@ -106,36 +95,57 @@
 						<m:MaterialCollection ui:field="studentList"
 							addStyleNames="scStudentList" />
 					</div>
-					<div ui:field="editTools" class="{style.editTools}">
-							<div ui:field="editFurniturePanel">
-									<m:MaterialCollection>
-										<m:MaterialCollectionItem>
-											<m:MaterialImage url="../img/doubleDesk.png"
-												addStyleNames="furnitureIcon" m:id="doubleDeskIcon" />
-										</m:MaterialCollectionItem>
-										<m:MaterialCollectionItem>
-											<m:MaterialImage url="../img/singleDesk.png"
-												addStyleNames="furnitureIcon" m:id="singleDeskIcon" />
-										</m:MaterialCollectionItem>
-									</m:MaterialCollection>
-								</div>
-								<div ui:field="editStudentsPanel">
-									<g:HTMLPanel ui:field="editStudentEmptyMessage">
-										<h5>No Students to show</h5>
-									</g:HTMLPanel>
-									<span ui:field="editStudentSpan" ></span>
-								</div>
-								<div ui:field="editGroupsPanel">
-									<g:HTMLPanel>
-										<h5>No groups created </h5>
-									</g:HTMLPanel>
-								</div>
-								<div ui:field="editStationPanel">
-									<g:HTMLPanel>
-										<h5>No stations created</h5>
-									</g:HTMLPanel>
-									<m:MaterialCollection></m:MaterialCollection>
-								</div>
+					<div ui:field="editTools" class="{style.editTools}"
+						backgroundColor="RED_DARKEN_2">
+						<m:MaterialPanel  m:id="editBtnBar">
+							
+							<m:MaterialAnchorButton  textColor="WHITE" ui:field="editFurnitureBtn" m:id="editFurnitureBtn" enabled="false"
+								iconType="EVENT_SEAT" iconPosition="RIGHT" />
+							
+							<m:MaterialAnchorButton  textColor="WHITE" ui:field="editStudentsBtn" m:id="editStudentsBtn"
+								iconType="SCHOOL" iconPosition="RIGHT" />
+							
+							<m:MaterialAnchorButton  textColor="WHITE" ui:field="editGroupsBtn"  m:id="editGroupsBtn"
+								iconType="GROUP_WORK" iconPosition="RIGHT"  />
+							
+							<m:MaterialAnchorButton  textColor="WHITE" ui:field="editStationsBtn" m:id="editStationsBtn" 
+								iconType="WIDGETS" iconPosition="RIGHT" />
+							
+						</m:MaterialPanel>
+						<m:html.Br/>
+						<m:MaterialLabel ui:field="editStateLabel" backgroundColor="RED_DARKEN_2" 
+							textColor="WHITE" text="Furniture" width="100%" />
+						<div ui:field="editFurniturePanel" class="{style.editingPanel}">
+							<m:MaterialCollection>
+								<m:MaterialCollectionItem padding="5.5"
+									marginBottom="5">
+									<m:MaterialImage url="../img/doubleDesk.png"
+										addStyleNames="furnitureIcon" m:id="doubleDeskIcon" />
+								</m:MaterialCollectionItem>
+								<m:MaterialCollectionItem padding="5.5"
+									marginBottom="5">
+									<m:MaterialImage url="../img/singleDesk.png"
+										addStyleNames="furnitureIcon" m:id="singleDeskIcon" />
+								</m:MaterialCollectionItem>
+							</m:MaterialCollection>
+						</div>
+						<div ui:field="editStudentsPanel" class="{style.editingPanel}">
+							<g:HTMLPanel ui:field="editStudentEmptyMessage">
+								<h5>No students to show</h5>
+							</g:HTMLPanel>
+							<span ui:field="editStudentSpan"></span>
+						</div>
+						<div ui:field="editGroupsPanel" class="{style.editingPanel}">
+							<g:HTMLPanel>
+								<h5>No groups created </h5>
+							</g:HTMLPanel>
+						</div>
+						<div ui:field="editStationsPanel" class="{style.editingPanel}">
+							<g:HTMLPanel>
+								<h5>No stations created</h5>
+							</g:HTMLPanel>
+							<m:MaterialCollection></m:MaterialCollection>
+						</div>
 					</div>
 				</g:HTMLPanel>
 			</m:MaterialColumn>
