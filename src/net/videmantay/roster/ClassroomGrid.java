@@ -1,5 +1,6 @@
 package net.videmantay.roster;
 
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 
@@ -25,6 +26,7 @@ import java.util.Collections;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.query.client.Function;
 
 
 public class ClassroomGrid extends Composite implements HasRosterDashboardView{
@@ -36,31 +38,36 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 	private final ArrayList<RosterStudentJson> studentList = new ArrayList<RosterStudentJson>();
 	private boolean sortByFirst=true;
 	
-	private final ClickHandler studentHandler = new ClickHandler(){
+	/*private final ClickHandler studentHandler = new ClickHandler(){
 
 		@Override
 		public void onClick(ClickEvent event) {
 			event.stopPropagation();
 			event.preventDefault();
 		RosterStudentPanel rosPanel = $(event.getNativeEvent().getCurrentEventTarget()).widgets(RosterStudentPanel.class).get(0);
-		$(body).trigger("studentAction", rosPanel.getData());
-		console.log("student " + rosPanel.getElement().getId() + " was clicked for action modal");
+		
 			
-		}};
-	/*//create fab
-	MaterialFAB fab = new MaterialFAB();
-	MaterialAnchorButton fabBtn = new MaterialAnchorButton();
-	MaterialFABList fabList = new MaterialFABList();
-	MaterialAnchorButton addStudentBtn = new MaterialAnchorButton();
-	MaterialAnchorButton addAssignmentBtn = new MaterialAnchorButton();*/
-	
+		}};*/
+		
+	private final Function studentClick = new Function(){
+		@Override 
+		public boolean f(Event e, Object...objects){
+			e.stopPropagation();
+			e.preventDefault();
+			RosterStudentPanel rosPanel = $(e.getCurrentEventTarget()).widgets(RosterStudentPanel.class).get(0);
+			$(body).trigger("studentAction", rosPanel.getData());
+			console.log("student " + rosPanel.getElement().getId() + " was clicked for action modal");
+			return true;
+		}
+	};
+
 	public ClassroomGrid(RosterJson ros){
 		roster = ros;
-		students = roster.getRosterStudents();
+		students = roster.getStudents();
 		
 		this.initWidget(mainPanel);
 		mainPanel.setWidth("100%");
-		if(students.length() <= 0){
+		if(students == null || students.length() <= 0){
 			showEmpty();
 		}else{
 		for(int i = 0; i < students.length(); i++){
@@ -68,34 +75,14 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 		}
 		drawGrid(sortByFirst);
 		}//end if else	
-		//do fab
-		/*fabBtn.setIconType(IconType.ADD);
-		fabBtn.setIconColor(Color.WHITE);
-		fabBtn.setBackgroundColor(Color.RED_DARKEN_4);
-		fabBtn.setSize(ButtonSize.LARGE);
-		fabBtn.setType(ButtonType.FLOATING);
 		
-		addStudentBtn.setIconType(IconType.SCHOOL);
-		addStudentBtn.setSize(ButtonSize.MEDIUM);
-		addStudentBtn.setType(ButtonType.FLOATING);
-		addStudentBtn.setIconColor(Color.WHITE);
-		
-		addAssignmentBtn.setIconColor(Color.WHITE);
-		addAssignmentBtn.setIconType(IconType.ASSIGNMENT);
-		addAssignmentBtn.setSize(ButtonSize.MEDIUM);
-		addAssignmentBtn.setType(ButtonType.FLOATING);
-		
-		
-		fab.add(fabBtn);
-		fab.add(fabList);
-		fabList.add(addStudentBtn);
-		fabList.add(addAssignmentBtn);
-		mainPanel.add(fab);*/
 	}
+	
+
 	
 	@Override
 	public void onLoad(){
-		
+		home();
 	}
 	
 	public void showEmpty(){
@@ -124,13 +111,12 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 		
 			for(int i = 0; i < studentList.size(); i++){
 					 c = new MaterialColumn();
-					 c.setGrid("s12 m4 l3");
+					 c.setGrid("s6 m3 l2");
 					 rsp = new RosterStudentPanel();
 					 rsp.setData(studentList.get(i));
 					 rsp.addStyleName("grid");
 					 c.add(rsp);
 					 row.add(c);
-					 rsp.addDomHandler(studentHandler, ClickEvent.getType());
 				}
 			
 		
@@ -161,6 +147,25 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 			 }
 			 row.add(c);
 		}while(i < studentList.size());
+		
+	}
+	
+	public void drawGroups(){
+		
+	}
+	public void showProcedures(){
+		
+	}
+	
+	public void hideProcedures(){
+		
+	}
+	
+	public void showStations(){
+		
+	}
+	
+	public void hideStations(){
 		
 	}
 
@@ -202,8 +207,15 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 
 	@Override
 	public void home() {
-		// TODO Auto-generated method stub
+		//here is where student panel is activated with
+		//click to activate student action modal.
+		//find all .rosterStudent panel and add click event;
+		$(".rosterStudent").click(studentClick);
 		
+	}
+	public void unHome(){
+		
+		$(".rosterStudent").off("click");
 	}
 
 	@Override
@@ -292,6 +304,38 @@ public class ClassroomGrid extends Composite implements HasRosterDashboardView{
 
 	@Override
 	public void cancel(final String state) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void procedures() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void doneProcedures() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void stations() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void doneStations() {
 		// TODO Auto-generated method stub
 		
 	}

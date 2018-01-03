@@ -48,5 +48,14 @@ public interface HasRosterDashboardView extends IsWidget {
 	
 	public void doneManageStations();
 	
+	public void procedures();
+	
+	public void doneProcedures();
+	
+	public void stations();
+	
+	public void doneStations();
+	
+	
 	
 }

@@ -68,13 +68,7 @@ public class RosterStudentMain extends Composite{
 		}
 	};
 	
-	/*ClickHandler clickHandler = new ClickHandler(){
-
-		@Override 
-		public void onClick(ClickEvent event) {
-			stuForm.show();
-		}};
-		*/
+	
 	
 	
 	public RosterStudentMain(JsArray<RosterStudentJson> stus) {

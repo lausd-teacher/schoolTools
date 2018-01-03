@@ -2,9 +2,12 @@ package net.videmantay.roster;
 
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
@@ -14,19 +17,20 @@ import com.google.gwt.user.client.ui.Widget;
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialNavBrand;
-import gwt.material.design.client.ui.MaterialSideNav;
+import gwt.material.design.client.ui.MaterialSideNavDrawer;
 import gwt.material.design.client.ui.MaterialToast;
 import net.videmantay.roster.incident.IncidentMain;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.roster.routine.RoutineMain;
 import net.videmantay.roster.student.RosterStudentMain;
 import net.videmantay.roster.work.WorkMain;
+import net.videmantay.shared.json.RosterInfoJson;
 
 import java.util.List;
 
 import static com.google.gwt.query.client.GQuery.*;
 
-public class ClassroomMain extends Composite{
+public class ClassroomMain extends  Composite{
 
 	private static ClassroomMainUiBinder uiBinder = GWT.create(ClassroomMainUiBinder.class);
 
@@ -45,7 +49,7 @@ public class ClassroomMain extends Composite{
 	
 	
 	@UiField
-	MaterialSideNav sideNav;
+	MaterialSideNavDrawer sideNav;
 	//side nav links here ///////
 	@UiField
 	MaterialLink studentLink;
@@ -71,15 +75,14 @@ public class ClassroomMain extends Composite{
 	@UiField
 	MaterialLink jobLink;
 	
-	
-	private final RosterJson roster;
+	private  RosterInfoJson rosterInfo;
+	private  RosterJson roster;
 	
 	//end side nav links/////////
 		
 	
 	
 	public ClassroomMain() {
-		roster = window.getPropertyJSO("roster").cast();
 		this.initWidget(uiBinder.createAndBindUi(this));
 		//classroom.setId("classroom");
 			$this = this;
@@ -88,8 +91,7 @@ public class ClassroomMain extends Composite{
 
 				@Override
 				public void onClick(ClickEvent event) {
-					History.newItem("classroom/");
-					dashboardView();
+					History.newItem("classroom");
 					sideNav.hide();
 				}
 				
@@ -100,7 +102,6 @@ public class ClassroomMain extends Composite{
 			public void onClick(ClickEvent event) {
 				
 				History.newItem("classroom/students");
-				studentView();
 				sideNav.hide();
 				
 			}});
@@ -109,8 +110,7 @@ public class ClassroomMain extends Composite{
 
 				@Override
 				public void onClick(ClickEvent event) {
-					History.newItem("roster/assignments");
-					assignmentView();
+					History.newItem("classroom/assignments");
 					sideNav.hide();
 					
 				}});
@@ -128,6 +128,7 @@ public class ClassroomMain extends Composite{
 
 				@Override
 				public void onClick(ClickEvent event) {
+					History.newItem("classroom/incidents");
 					incidentView();
 					sideNav.hide();
 					
@@ -140,13 +141,13 @@ public class ClassroomMain extends Composite{
 	
 
 	
-	private void dashboardView(){
+	public  void dashboardView(){
 		console.log("classmain dashboard called");
 		mainPanel.clear();
 		mainPanel.add(new DashboardPanel(roster));
 		sideNav.hide();
 	}
-	private void studentView(){
+	public void studentView(){
 		
 		GWT.runAsync(new RunAsyncCallback(){
 
@@ -158,14 +159,14 @@ public class ClassroomMain extends Composite{
 
 			@Override
 			public void onSuccess() {
-				RosterStudentMain studentMain = new RosterStudentMain(roster.getRosterStudents());
+				RosterStudentMain studentMain = new RosterStudentMain(roster.getStudents());
 				mainPanel.clear();mainPanel.add(studentMain); 
 				//use the path to get student id and have that student selected
 			}});
 		
 	}
 	
-	private void assignmentView(){
+	public void assignmentView(){
 		GWT.runAsync(new RunAsyncCallback(){
 
 			@Override
@@ -182,7 +183,7 @@ public class ClassroomMain extends Composite{
 			}});
 	}
 	
-	private  void routineView(){
+	public  void routineView(){
 		GWT.runAsync(new RunAsyncCallback(){
 
 			@Override
@@ -199,7 +200,7 @@ public class ClassroomMain extends Composite{
 			}});
 	}
 	
-	private void incidentView(){
+	public void incidentView(){
 		GWT.runAsync(new RunAsyncCallback(){
 
 			@Override
@@ -224,8 +225,23 @@ public class ClassroomMain extends Composite{
 	
 	@Override
 	public void onLoad(){
-		//TODO: history control
-		dashboardView();
+		rosterInfo =(RosterInfoJson) window.getPropertyJSO("currentRoster").cast();
+		console.log("RosterMain:  onLoad ... here is the current Roster Info");
+		console.log(rosterInfo);
+		
+		//Ajax get roster then dashboard
+		Ajax.ajax(Ajax.createSettings().setType("GET")
+				.setContentType("application/json")
+				.setUrl("/roster/"+ rosterInfo.getId())).done(new Function(){
+					@Override
+					public void f(){
+						String json =  (String)this.arguments(0);
+						console.log("ClassroomMain: onload ajax response is " +json);
+						window.setPropertyJSO("currentClassroom",(RosterJson)JsonUtils.safeEval(json).cast());
+						roster = window.getPropertyJSO("currentClassroom").cast();
+						dashboardView();
+					}
+				});
 	}
 
 }

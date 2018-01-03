@@ -98,7 +98,7 @@ public class StudentActionModal extends Composite {
 	
 	
 	public StudentActionModal() {
-		roster = window.getPropertyJSO("roster").cast();
+		roster = window.getPropertyJSO("currentClassroom").cast();
 		initWidget(uiBinder.createAndBindUi(this));
 		
 		//add close handler to modal to clean up overlays

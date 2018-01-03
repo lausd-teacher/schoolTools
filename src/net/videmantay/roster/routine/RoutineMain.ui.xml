@@ -14,5 +14,25 @@
 		'Carpet Time' , 'Science Lab', 'I.W.T' area all examples of routines</div>
 		</div>
 		<m:MaterialCollapsible ui:field="routineList" type="POPOUT" active="1" />
+		<m:MaterialModal type="FIXED_FOOTER" ui:field="routineForm"> 
+			<m:MaterialModalContent> 
+			<g:FormPanel ui:field="form"> 
+			<g:HTMLPanel>
+				<m:MaterialTextBox placeholder="Title" />
+				<m:MaterialTextArea placeholder="Description" />
+				<m:html.Div width="150px"><m:MaterialLabel width="60%" marginLeft="25" text="default" float="LEFT" />
+					<m:MaterialCheckBox ui:field="isDefaultBox"/>
+				</m:html.Div>
+			</g:HTMLPanel>
+			</g:FormPanel>
+			</m:MaterialModalContent>
+			<m:MaterialModalFooter> 
+				<m:MaterialAnchorButton ui:field="cancelBtn" text="Cancel" />
+				<m:MaterialAnchorButton ui:field="submitBtn" text="Submit" />
+			</m:MaterialModalFooter>
+		</m:MaterialModal>
+		<m:MaterialFAB ui:field="FAB">
+			<m:MaterialAnchorButton type="FLOATING" iconType="SCHEDULE" size="LARGE"/>
+		</m:MaterialFAB>
 	</g:HTMLPanel>
 </ui:UiBinder> 

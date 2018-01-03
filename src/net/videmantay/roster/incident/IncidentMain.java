@@ -6,12 +6,10 @@ import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.query.client.Function;
-import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.Promise;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -25,7 +23,6 @@ import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialTab;
 import gwt.material.design.client.ui.MaterialTabItem;
 import gwt.material.design.client.ui.MaterialToast;
-import net.videmantay.roster.RosterUrl;
 import net.videmantay.roster.json.RosterJson;
 import net.videmantay.student.json.IncidentJson;
 
@@ -137,7 +134,7 @@ public class IncidentMain extends Composite {
 		}};
 		
 	public IncidentMain(){
-		roster = window.getPropertyJSO("roster").cast();
+		roster = window.getPropertyJSO("currentClassroom").cast();
 		console.log("IncidentMain- roster is ");
 		console.log(roster);
 		incidentForm = new IncidentForm();

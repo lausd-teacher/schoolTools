@@ -1,6 +1,7 @@
 package net.videmantay.roster.routine;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.LIElement;
 import com.google.gwt.dom.client.OListElement;
@@ -54,9 +55,44 @@ public class RoutineItem extends Composite {
 	@UiField
 	MaterialAnchorButton procCreateBtn;
 	
+	@UiField
+	MaterialAnchorButton procTabBtn;
+	
+	@UiField
+	MaterialAnchorButton groupTabBtn;
+	
+	@UiField
+	MaterialAnchorButton stationTabBtn;
+	
+	@UiField
+	MaterialAnchorButton layoutTabBtn;
+	
+	@UiField
+	DivElement procContent;
+	
+	@UiField
+	DivElement groupContent;
+	
+	@UiField
+	DivElement stationContent;
+	
+	@UiField
+	DivElement layoutContent;
+	
 	public RoutineItem(RoutineConfigJson con) {
 		config = con;
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		//fix tabs and content to not conflict
+		procTabBtn.setHref(procTabBtn.getHref()+ config.getId());
+		groupTabBtn.setHref(groupTabBtn.getHref()+ config.getId());
+		stationTabBtn.setHref(stationTabBtn.getHref()+ config.getId());
+		layoutTabBtn.setHref(layoutTabBtn.getHref()+ config.getId());
+		
+		procContent.setId("procContent"+ config.getId());
+		groupContent.setId("groupContent"+ config.getId());
+		stationContent.setId("stationContent"+ config.getId());
+		layoutContent.setId("layoutContent"+ config.getId());
 	}
 	
 	@Override
@@ -70,6 +106,7 @@ public class RoutineItem extends Composite {
 		procCreateBtn.setSize(ButtonSize.LARGE);
 		//make the routineItem min-height
 		$(routineItem).css("min-height:10em; scroll-x:hidden;position:relative");
+		
 	}
 	
 	@UiHandler("procCreateBtn")

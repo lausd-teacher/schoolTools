@@ -12,61 +12,38 @@ public class RosterJson extends JavaScriptObject {
 	protected RosterJson(){}
 
 	
-	public final  native StudentJobJson[] getStudentJobs()/*-{
-		return this.studentJobs;
-	}-*/;
-
-	public final native RosterJson setStudentJobs(StudentJobJson[] studentJobs)/*-{
-		this.studentJobs = studentJobs;
-		return this;
-	}-*/;
 
 	public final native Long getId()/*-{
 		return this.id;
 	}-*/;
 
-	public final native String getOwnerId()/*-{
-		return this.ownerId;
+	public final native String getSid()/*-{
+		return this.sid;
 	}-*/;
+	
+	public final native String getTaskListId()/*-{
+	return this.taskListId;
+}-*/;
+	
+	public final native String getCalendarId()/*-{
+	return this.calendarId;
+}-*/;
 
-	public final native RosterJson setOwnerId(String ownerId)/*-{
-		this.ownerId = ownerId;
-		return this;
-	}-*/;
-
-	
-	public final native JsArray<GoogleServiceJson> getGoogleCalendars()/*-{
-		return this.googleCalendars;
-	}-*/;
-	
-	public final native RosterJson setGoogleCalendars(JsArray<GoogleServiceJson> googleCals)/*-{
-		this.googleCalendars = googleCals;
-		return this;
-	}-*/;
-	
-	public final native JsArray<GoogleServiceJson> getGoogleTasks()/*-{
-		return this.googleTasks;
-	}-*/;
-	
-	public final native RosterJson setGoogleTasks(JsArray<GoogleServiceJson> googleTasks)/*-{
-		this.googleTasks = googleTasks;
-		return this;
-	}-*/;
-	
+		
 	public final native String getRosterFolderId()/*-{
-		return this.rosterFolderId;
+		return this.teacherFolderId;
 	}-*/;
 
 	public final native RosterJson setRosterFolderId(String rosterFolderId)/*-{
-		this.rosterFolderId = rosterFolderId;
+		this.teacherFolderId = rosterFolderId;
 		return this;
 	}-*/;
 	
-	public final native JsArray<RosterStudentJson> getRosterStudents()/*-{
+	public final native JsArray<RosterStudentJson> getStudents()/*-{
 		return this.students;
 	}-*/;
 
-	public final native RosterJson setRosterStudents(JsArray<RosterStudentJson> rosterStudents)/*-{
+	public final native RosterJson setStudents(JsArray<RosterStudentJson> rosterStudents)/*-{
 		this.students = rosterStudents;
 		return this;
 	}-*/;
@@ -86,7 +63,7 @@ public class RosterJson extends JavaScriptObject {
 	}-*/;
 	
 	public final native RosterJson setRoutines(JsArray<RoutineJson> classTimes)/*-{
-						this.classTimes = classTimes;
+						this.routines = classTimes;
 	}-*/;
 	
 	public final native JsArray<IncidentJson> getIncidents()/*-{
@@ -98,15 +75,25 @@ public class RosterJson extends JavaScriptObject {
 		return this;
 	}-*/;
 	
-	public final native void addIncident(IncidentJson incident)/*-{
-		this.incidents.push(incident);
+	
+	public final native AttendanceJson getAttendance()/*-{
+	return this.attendance;
+}-*/;
+	
+	public final native RosterJson setAttendance(AttendanceJson attendance)/*-{
+		this.attendance = attendance;
+		return this;
 	}-*/;
 	
-	public final native void removeIncident(int index)/*-{
-			this.incidents.splice(index,1);
+	public final native ScheduleJson getSchedule()/*-{
+			return this.schedule;
+	}-*/;
+	
+	public final native RosterJson setSchedule(ScheduleJson schedule)/*-{
+			this.schedule = schedule;
+			return this;
 	}-*/;
 	
 	
-	
-	
+
 }

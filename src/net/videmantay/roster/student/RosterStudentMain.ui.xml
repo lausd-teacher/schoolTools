@@ -12,7 +12,6 @@
 		<h6>To add students to your roster press the button in the bottom.</h6>
 	</div>
 	<div ui:field="studentDashboard">
-	<g:HTMLPanel>
 	<m:MaterialTab>
 		<m:MaterialTabItem> <m:MaterialLink text="Students" href="#stuHomeTab" /></m:MaterialTabItem>
 		<m:MaterialTabItem> <m:MaterialLink text="Calendar" href="#stuCalTab" /></m:MaterialTabItem>
@@ -32,14 +31,13 @@
 	<div id="studReportTab"></div>
 	</div>
 	</div>
-	</g:HTMLPanel>
 	</div>
 	<!-- FAB -->
-		<!-- <m:MaterialFAB>
+		 <m:MaterialFAB>
 			<m:MaterialTooltip text="New Student" position="LEFT">
 				<m:MaterialButton ui:field="fab" type="FLOATING" iconType="SCHOOL" size="LARGE" />
 			</m:MaterialTooltip>
-		</m:MaterialFAB> -->
+		</m:MaterialFAB>
 		<v:CreateStudentForm ui:field="stuForm"></v:CreateStudentForm>
 	</g:HTMLPanel>
 </ui:UiBinder> 

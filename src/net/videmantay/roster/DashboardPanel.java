@@ -2,6 +2,7 @@ package net.videmantay.roster;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
+import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -37,20 +38,24 @@ public class DashboardPanel extends Composite {
 	interface DashboardPanelUiBinder extends UiBinder<Widget, DashboardPanel> {
 	}
 
+	
 	@UiField
 	MaterialSwitch gridSwitch;
 	
 	@UiField
-	MaterialIcon hwIcon;
+	MaterialIcon procIcon;
 	
 	@UiField
 	MaterialIcon groupsIcon;
 	
 	@UiField
+	MaterialIcon stationsIcon;
+	
+	@UiField
 	MaterialIcon rollIcon;
 	
-	/*@UiField
-	MaterialIcon multipleIcon;*/
+	@UiField
+	MaterialIcon multipleIcon;
 	
 	@UiField
 	MaterialIcon randomIcon;
@@ -121,10 +126,19 @@ public class DashboardPanel extends Composite {
 			display = new SeatingChartPanel(roster);
 			tab1Main.add(display);
 		}};
+		
+	private final Function doneEditFunc = new Function(){
+		@Override
+		public void f(){
+			showToolBar();
+		}
+	};
 	//enum for state
 	public enum View{GRID,CHART};
-	public enum State{DASHBOARD,ROLL, HW,GROUP, MULTIPLE_SELECT,RANDOM, FURNITURE_EDIT, STUDENT_EDIT, STATIONS_EDIT}
-	
+	public enum State{DASHBOARD,ROLL, HW, MULTIPLE_SELECT,RANDOM, FURNITURE_EDIT, STUDENT_EDIT, STATIONS_EDIT}
+	public boolean procView = false;
+	public boolean groupView = false;
+	public boolean stationView = false;
 	
 	
 	//constructor
@@ -179,14 +193,6 @@ public class DashboardPanel extends Composite {
 				toolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
 			}});
 		////// toolbar buttons events//////////////////////
-		hwIcon.addClickHandler( new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				display.checkHW();
-				state = State.HW;
-				showDoneBar();
-			}});
 		rollIcon.addClickHandler(new ClickHandler(){
 
 			@Override
@@ -195,13 +201,45 @@ public class DashboardPanel extends Composite {
 				state = State.ROLL;
 				showDoneBar();
 			}});
+		
+		procIcon.addClickHandler( new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				display.checkHW();
+				if(procView){
+					display.doneProcedures();
+					procView = false;
+				}else{
+					display.procedures();
+					procView = true;
+				}
+			}});
+		
 		groupsIcon.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
-				display.groups();
-				state = State.GROUP;
-				showDoneBar();
+				if(groupView){
+					display.doneGroups();
+				groupView = false;}
+				else{
+					display.groups();
+					groupView = true;
+				}
+			}});
+		stationsIcon.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				if(stationView){
+					stationView = false;
+					display.doneStations();
+				}else{
+					stationView = true;
+					display.stations();
+				}
+				
 			}});
 		randomIcon.addClickHandler(new ClickHandler(){
 
@@ -211,14 +249,14 @@ public class DashboardPanel extends Composite {
 				state = State.RANDOM;
 				showDoneBar();
 			}});
-		/*multipleIcon.addClickHandler(new ClickHandler(){
+		multipleIcon.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
 				display.multipleSelect();
 				state = State.MULTIPLE_SELECT;
 				showDoneBar();
-			}});*/
+			}});
 		////////////
 		doneBtn.addClickHandler(new ClickHandler(){
 
@@ -230,7 +268,6 @@ public class DashboardPanel extends Composite {
 				case STATIONS_EDIT: display.doneManageStations();break;
 				case HW: display.doneCheckHW();break;
 				case ROLL: display.doneTakeRoll();break;
-				case GROUP: display.doneGroups();break;
 				case RANDOM: display.donePickRandom(); break;
 				case MULTIPLE_SELECT: display.doneMultipleSelect(); break;
 				default: display.home();
@@ -248,7 +285,6 @@ public class DashboardPanel extends Composite {
 				case STATIONS_EDIT: display.doneManageStations();break;
 				case HW: display.doneCheckHW();break;
 				case ROLL: display.doneTakeRoll();break;
-				case GROUP: display.doneGroups();break;
 				case RANDOM: display.donePickRandom(); break;
 				case MULTIPLE_SELECT: display.doneMultipleSelect(); break;
 				default: display.home();
@@ -326,6 +362,8 @@ public class DashboardPanel extends Composite {
 				return true;
 			}
 		});
+		
+		$("#dashboard").on("doneEdit", doneEditFunc);
 		
 		RootPanel.get().add(studentActionModal);
 	}//end onLoad

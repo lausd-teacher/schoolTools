@@ -8,11 +8,11 @@
 	</ui:style>
 	<g:HTMLPanel height="100%" width="100%">
 		<m:MaterialTab ui:field="tab"  height="2.5em" >
-			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#roster-dashboard-tab" text="Dashboard" waves="ORANGE"/></m:MaterialTabItem>
+			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#dashboard" text="Dashboard" waves="ORANGE"/></m:MaterialTabItem>
 			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#roster-cal-tab" text="Calendar" waves="ORANGE"/></m:MaterialTabItem>
 			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#roster-report-tab" text="Reports" waves="ORANGE"/></m:MaterialTabItem>
 		</m:MaterialTab>
-		<div  id="roster-dashboard-tab">
+		<div  id="dashboard" >
 			<m:MaterialRow ui:field="toolbar" height="3em" padding="5" marginBottom="0" centerOn="CENTER_ON_SMALL" backgroundColor="AMBER_DARKEN_2">
 				<m:MaterialAnchorButton ui:field="routineBtn" hideOn="HIDE_ON_SMALL" addStyleNames="classTimeBtn" float="RIGHT" text="Class Time" fontSize="1.10em"  marginRight="5.0" textAlign="CENTER" iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT" activates="routinelist"/>
 				<m:MaterialDropDown activator="routinelist" ui:field="routineDrop">
@@ -40,29 +40,25 @@
 			</m:MaterialColumn>
 				<m:MaterialColumn grid="s1">
 					<m:MaterialPanel  padding="2">
-						<g:HTMLPanel>
 							<m:MaterialTooltip  text="Roll">
 							<m:MaterialIcon  ui:field="rollIcon" iconType="ASSIGNMENT_IND" iconSize="SMALL"/>
 							</m:MaterialTooltip>
-						</g:HTMLPanel>
 					</m:MaterialPanel>
 				</m:MaterialColumn>
 				<m:MaterialColumn grid="s1">
 				<m:MaterialPanel  padding="2"> 
 						<g:HTMLPanel> 
-						<m:MaterialTooltip text="Homework">
-							<m:MaterialIcon ui:field="hwIcon" iconType="ASSIGNMENT" iconSize="SMALL"/>
+						<m:MaterialTooltip text="Procedures">
+							<m:MaterialIcon ui:field="procIcon" iconType="LIST" iconSize="SMALL"/>
 							</m:MaterialTooltip>
 						</g:HTMLPanel>
 				</m:MaterialPanel>
 				</m:MaterialColumn >
 				<m:MaterialColumn grid="s1">
 					<m:MaterialPanel  padding="2"><!--  -->
-						<g:HTMLPanel> 
 						<m:MaterialTooltip text="Groups">
 							<m:MaterialIcon  ui:field="groupsIcon" iconType="GROUP_WORK" iconSize="SMALL"/>
-						</m:MaterialTooltip>	
-						</g:HTMLPanel>
+						</m:MaterialTooltip>
 					</m:MaterialPanel>
 				</m:MaterialColumn>
 				<m:MaterialColumn grid="s1">
@@ -76,7 +72,7 @@
 				</m:MaterialColumn>
 				<!-- This starts selects tools -->
 				<m:MaterialColumn grid="s1"><m:MaterialLabel text="Select:"></m:MaterialLabel></m:MaterialColumn>
-				<!-- <m:MaterialColumn grid="s1">
+				 <m:MaterialColumn grid="s1">
 					<m:MaterialPanel marginLeft="10" padding="2" >
 						<g:HTMLPanel>
 						<m:MaterialTooltip text="Multiple">
@@ -84,7 +80,7 @@
 							</m:MaterialTooltip>
 						</g:HTMLPanel>
 					</m:MaterialPanel>
-				</m:MaterialColumn> -->
+				</m:MaterialColumn>
 				<m:MaterialColumn grid="s1">
 					<m:MaterialPanel padding="2" ><!--  -->
 						<g:HTMLPanel> 
@@ -146,7 +142,7 @@
 			<g:Frame url="../cal.html" width="100%" height="100%"></g:Frame>
 		</div>
 		<div  id="roster-report-tab">
-			<h2>TAB 3</h2>
+			<h2>Reports</h2>
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

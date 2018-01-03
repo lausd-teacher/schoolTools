@@ -9,23 +9,23 @@
 	<g:HTMLPanel ui:field="routineItem">
 				<m:MaterialTab ui:field="routineTabs"> 
 					<m:MaterialTabItem> 
-						<m:MaterialAnchorButton type="FLAT" iconType="LIST" text="procedures" href="#procContent" />
+						<m:MaterialAnchorButton ui:field="procTabBtn" type="FLAT" iconType="LIST" text="procedures" href="#procContent" />
 					</m:MaterialTabItem>
 					<m:MaterialTabItem> 
-						<m:MaterialAnchorButton type="FLAT" iconType="GROUP_WORK" text="groups" href="#groupContent" />
+						<m:MaterialAnchorButton ui:field="groupTabBtn" type="FLAT" iconType="GROUP_WORK" text="groups" href="#groupContent" />
 					</m:MaterialTabItem>
 					<m:MaterialTabItem> 
-						<m:MaterialAnchorButton type="FLAT" iconType="WIDGETS" text="stations" href="#stationContent" />
+						<m:MaterialAnchorButton ui:field="stationTabBtn" type="FLAT" iconType="WIDGETS" text="stations" href="#stationContent" />
 					</m:MaterialTabItem>
 					<m:MaterialTabItem> 
-						<m:MaterialAnchorButton type="FLAT" iconType="EVENT_SEAT" text="layout" href="#layoutContent" />
+						<m:MaterialAnchorButton ui:field="layoutTabBtn" type="FLAT" iconType="EVENT_SEAT" text="layout" href="#layoutContent" />
 					</m:MaterialTabItem>
 				</m:MaterialTab>
-				<div id="procContent"><h4 style="text-align:center; margin:0.25em; padding:0.25em;"><u>Procedures</u></h4>
+				<div ui:field="procContent"><h4 style="text-align:center; margin:0.25em; padding:0.25em;"><u>Procedures</u></h4>
 					<h:UnorderedList ui:field="procList"></h:UnorderedList>
 						<m:MaterialAnchorButton ui:field="procCreateBtn" type="FLOATING"  iconType="LIST"></m:MaterialAnchorButton>
 				</div>
-				<div id="groupContent"><h4 style="text-align:center; margin:0.25em; padding:0.25em;"><u>Groups</u></h4>
+				<div ui:field="groupContent"><h4 style="text-align:center; margin:0.25em; padding:0.25em;"><u>Groups</u></h4>
 					<m:MaterialPanel ui:field="smallGroupPanel">
 						<m:MaterialRow>
 							<m:MaterialColumn ui:field="studentChoiceCol"> 
@@ -52,7 +52,7 @@
 						</m:MaterialRow>
 					</m:MaterialPanel>
 				</div>
-				<div id="stationContent"><h1>Stations</h1>
+				<div ui:field="stationContent"><h1>Stations</h1>
 				<!-- station rely on the number of groups -->
 				<m:MaterialRow ui:field="stationWrapper"> 
 					<!--  slot line up vertically and depended the first row is for the label -->
@@ -76,6 +76,6 @@
 					</m:MaterialColumn>
 				</m:MaterialRow>
 				</div>
-				<div id="layoutContent"><h1>Layout</h1></div>
+				<div ui:field="layoutContent"><h1>Layout</h1></div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

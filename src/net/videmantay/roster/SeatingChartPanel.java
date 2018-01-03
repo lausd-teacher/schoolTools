@@ -35,7 +35,6 @@ import gwt.material.design.client.ui.MaterialCollapsibleItem;
 import gwt.material.design.client.ui.MaterialCollection;
 import gwt.material.design.client.ui.MaterialCollectionItem;
 import gwt.material.design.client.ui.MaterialDropDown;
-import gwt.material.design.client.ui.MaterialLabel;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialLoader;
 import gwt.material.design.client.ui.MaterialRow;
@@ -70,7 +69,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	private ArrayList<FurnitureJson> tempFurnitureList;
 	//save draggableParent for reference
 	private GQuery $dragParent;
-	private enum State{DASHBOARD,ROLL,CHECK_HW, STUDENT_EDIT,FURNITURE_EDIT,STATION_EDIT,GROUP_EDIT};
+	private enum State{DASHBOARD, STUDENT_EDIT,FURNITURE_EDIT,STATION_EDIT,GROUP_EDIT};
 	
 	State state = State.DASHBOARD;
 	
@@ -87,71 +86,127 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	MaterialRow seatingChartToolbar;
 	
 	@UiField
+	MaterialButton stateSelectBtn;
+	
+	@UiField
+	MaterialDropDown scDropDown;
+	
+	@UiField
+	MaterialAnchorButton doneBtn;
+	
+	@UiField
+	MaterialAnchorButton cancelBtn;
+	
+	@UiField
 	DivElement homeTools;
 	
 	@UiField
 	DivElement editTools;
 	
 	@UiField
-	MaterialAnchorButton editStudentsBtn;
-	
-	@UiField
-	MaterialAnchorButton editFurnitureBtn;
-	
-	@UiField
-	MaterialAnchorButton editGroupsBtn;
-	
-	@UiField
-	MaterialAnchorButton editStationsBtn;
-	
-	@UiField
-	MaterialLabel editStateLabel;
-	
-	@UiField
-	DivElement editStudentsPanel;
-	
-	@UiField
-	DivElement editFurniturePanel;
-
-	@UiField
-	DivElement editGroupsPanel;
-	
-	@UiField
-	DivElement editStationsPanel;
+	MaterialCollapsible editCollapsible;
 	
 	@UiField
 	HTMLPanel editStudentEmptyMessage;
-
+	
+	@UiField
+	MaterialCollapsibleItem studentCollapseItem;
+	
+	@UiField
+	MaterialCollapsibleBody studentCollapseBody;
+	
+	@UiField
+	MaterialCollapsibleItem groupCollapseItem;
+	
+	@UiField
+	MaterialCollapsibleItem furnitureCollapseItem;
 	
 	@UiField
 	DivElement stationLayer;
 	
+	@UiField
+	MaterialCollapsibleItem stationCollapseItem;
+	
 	private final RosterJson roster;
 
-	ClickHandler handler = new ClickHandler(){
+	SelectionHandler<Widget> handler = new SelectionHandler<Widget>(){
 
 		@Override
-		public void onClick(ClickEvent event) {
-			String text = event.getRelativeElement().getId();
-			done();
-			switch(state){
-			case FURNITURE_EDIT: doneArrangeFurniture();break;
-			case STUDENT_EDIT: doneArrangeStudents();break;
-			case STATION_EDIT: doneManageStations();break;
-			case GROUP_EDIT: doneManageGroups();break;
-			default:home();
-			}
+		public void onSelection(SelectionEvent<Widget> event) {
+			String text = ((MaterialLink)event.getSelectedItem()).getText();
+			stateSelectBtn.setText(text);
+			stateSelectBtn.setIconType(((MaterialLink)event.getSelectedItem()).getIcon().getIconType());
+			stateChange();
 			switch(text){
-			case "editStudentsBtn": arrangeStudents();break;
-			case "editGroupsBtn": groups();break;
-			case "editStationsBtn": manageStations();break;
-			case "editFurnitureBtn":arrangeFurniture();break;
-			default:arrangeFurniture();
+			case "Students": arrangeStudents(); editCollapsible.setActive(2);break;
+			case "Groups": groups();editCollapsible.setActive(3);break;
+			case "Stations": manageStations();editCollapsible.setActive(4);break;
+			default:arrangeFurniture() ;editCollapsible.setActive(1);
 			}
 			
 		}};
 		
-	
+	ClickHandler clickHandler = new ClickHandler(){
+		@Override
+		public void onClick(ClickEvent event) {
+			
+		new Timer(){
+			@Override 
+			public void run(){
+				
+				String id = $(".active", editCollapsible).id();
+				if(id == null || id.isEmpty()){
+					return;
+				}
+				
+				stateChange();
+				
+				switch(id){
+				case"studentCollapseItem": stateSelectBtn.setText("Students");
+				stateSelectBtn.setIconType(IconType.SCHOOL);arrangeStudents();break;
+				case"groupCollapseItem":stateSelectBtn.setText("Groups");
+				stateSelectBtn.setIconType(IconType.GROUP_WORK);groups();break;
+				case"stationCollapseItem":stateSelectBtn.setText("Stations");
+				stateSelectBtn.setIconType(IconType.WIDGETS);manageStations();break;
+				default: stateSelectBtn.setText("Furniture"); 
+				stateSelectBtn.setIconType(IconType.EVENT_SEAT); arrangeFurniture();break;
+				}
+			}
+		}.schedule(300);
+		
+		}};	
+		
+	ClickHandler doneHandler = new ClickHandler(){
+
+		@Override
+		public void onClick(ClickEvent event) {
+			event.stopPropagation();
+			event.preventDefault();
+			confirmEdit();
+			
+		}};
+	ClickHandler cancelHandler = new ClickHandler(){
+
+		@Override
+		public void onClick(ClickEvent event) {
+			event.stopPropagation();
+			event.preventDefault();
+			cancelEdit();
+			
+		}};
+		private final Function studentClick = new Function(){
+			@Override 
+			public boolean f(Event e, Object...objects){
+				e.stopPropagation();
+				e.preventDefault();
+				RosterStudentPanel rosPanel = $(e.getCurrentEventTarget()).widgets(RosterStudentPanel.class).get(0);
+				$(body).trigger("studentAction", rosPanel.getData());
+				console.log("student " + rosPanel.getElement().getId() + " was clicked for action modal");
+				return true;
+			}
+		};
+		
+		//constructor////
 	public SeatingChartPanel(RosterJson ros) {
 		this.roster = ros;
 		console.log("on seating chart const roster is");
@@ -175,8 +230,11 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	
 	@Override
 	public void onLoad(){
-		//add handler to edit btns
-		
+		scDropDown.addSelectionHandler(handler);
+		editCollapsible.addDomHandler(clickHandler, ClickEvent.getType());
+		doneBtn.addClickHandler(doneHandler);
+		cancelBtn.addClickHandler(cancelHandler);
+		home();
 		
 	}//end onLoad
 	
@@ -187,6 +245,10 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	
 	public void setSeatingChart(SeatingChartJson seatingChart){
 		data = seatingChart;
+		oldData.setDescript(data.getDescript());
+		oldData.setFurniture(data.getFurniture());
+		oldData.setId(data.getId());
+		oldData.setTitle(data.getTitle());
 		drawGrid();
 	}
 	
@@ -198,15 +260,21 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		
 		//make a copy of the student list then pop as they are put in place
 		ArrayList<RosterStudentPanel> stuPanels = new ArrayList<RosterStudentPanel>();
-		for(int i =0; i < roster.getRosterStudents().length(); i++){
+		for(int i =0; i < roster.getStudents().length(); i++){
 			//might as well setup the studentList here too
 			RosterStudentPanel sp =new RosterStudentPanel();
-			sp.setData(roster.getRosterStudents().get(i));
+			sp.setData(roster.getStudents().get(i));
 			stuPanels.add(sp);
 		}
-		
-		if(data.getFurniture() != null && data.getFurniture().length() > 0){
+		console.log("We've cycled through students here is array of panels ");
+		console.log(stuPanels);
+		// go through list of furniture and place them on floorPlan
+		console.log("Here is the furniture json ");
+		console.log(data.getFurniture());
+		if(data.getFurniture() == null || data.getFurniture().length() <= 0){
 		for(int i =0; i< data.getFurniture().length(); i++){
+			console.log("draw(): furniture kind is ");
+			console.log(data.getFurniture().get(i).getKind());
 			//Gquery only operates on DOM so make and place 
 			HTMLPanel furniturePanel = FurnitureUtils.byKind(data.getFurniture().get(i).getKind());
 			floorPlan.appendChild(furniturePanel.getElement());
@@ -237,7 +305,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 							if(rsp.getElement().getId().equalsIgnoreCase(studentSeats.get(j).getRosterStudent())){
 								console.log("studentId is equals rosterstudent seat called ");
 									$(furniturePanel).find("tr>td>div.seat.pos"+(j+1))
-										.append(rsp.getElement()).find(".counterRotate").css("transform", "rotate("+ (-furniture.getRotate()) +"rad)");
+										.append(rsp.toString()).find(".counterRotate").css("transform", "rotate("+ (-furniture.getRotate()) +"rad)");
 									stuPanels.remove(rsp);
 							}// end if
 						}//end for iterate panel and hide ones that seats	
@@ -251,24 +319,32 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 			data.setFurniture(furniture);
 		}//end else
 			//the rest of students panel go in the sideNav
+			console.log("We finished with drawn seats and mathcing student id's lis of array is ");
+			console.log(stuPanels);
 			if(stuPanels.size() > 0){
 				//place the rest in side
 				for(RosterStudentPanel rsp : stuPanels){
 				MaterialCollectionItem mci =new MaterialCollectionItem();
 			
 				mci.add(rsp);
-				mci.setPadding(10);
+				mci.setPadding(5);
 				studentList.add(mci);
 				}//end for
+				console.log("Here is the student collection ");
+				console.log(studentList);
 			}//end if
 	
 		//everything should be in place now add home state
 		home();
 	}	
 	
-	public void done(){
+	public void stateChange(){
 		switch(state){
-		default: break;
+		case FURNITURE_EDIT: doneArrangeFurniture();break;
+		case STUDENT_EDIT: doneArrangeStudents();break;
+		case STATION_EDIT: doneManageStations();break;
+		case GROUP_EDIT: break;
+		default:home();
 		}
 	}
 
@@ -285,7 +361,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		
 	}
 	
-	//this is to show stations not edit them
+	//this is two show stations not edit
 		public void stations(){
 			
 		}
@@ -314,20 +390,12 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		//right now home is for clicking on students
 		//and generating a dialog for behavior management or
 		// seeing more info on that student will calll it management dialog
-		$(".rosterStudent").click(new Function(){
-			@Override
-			public void f(){
-				// get the student id and populate the 
-				//dialog
-				RosterStudentPanel rsp =(RosterStudentPanel) $(this).widget();
-				console.log("Student " + rsp.getData().getAcct() + " in seating chart should trigger student action dialog");
-				$(body).trigger("studentAction",rsp.getData() );
-			}
-		});
+		state = State.DASHBOARD;
 		if(studentList.getElement().getChildCount() > 0){
 			$(studentList).show();
-			doneEditing();
 		}
+		
+		$(".rosterStudent").click(studentClick);
 	}
 	
 	
@@ -408,12 +476,15 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	
 
 	public void edit(){
+		unHome();
+		homeTools.getStyle().setDisplay(Style.Display.NONE);
 		seatingChartToolbar.getElement().getStyle().setDisplay(Display.BLOCK);
-		$(homeTools).css("display", "none");
 		editTools.getStyle().setDisplay(Display.BLOCK);
 		this.setIsEditing(true);
 		if(studentList.getWidgetCount() >= 1){
 			studentList.removeFromParent();
+			studentCollapseBody.clear();
+			studentCollapseBody.add(studentList);
 		}
 		
 		arrangeFurniture();
@@ -424,23 +495,41 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	}
 	
 	public void doneEditing(){
+		stateChange();
 		setIsEditing(false);
+		//hide the edit -tools
+		seatingChartToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
+		editTools.getStyle().setDisplay(Style.Display.NONE);
+		homeTools.getStyle().setDisplay(Style.Display.BLOCK);
+		$("#dashboard").trigger("doneEdit");
+	}
+	
+	public void confirmEdit(){
+		
+		doneEditing();
+		//persist the data 
+		
+		//oldData = data persist
+		
 	}
 
 	@Override
 	public void cancel(String state) {
-		// TODO Auto-generated method stub
+		//set data to old data.
+		//then finish editing.
 		
+		
+	}
+	
+	public void cancelEdit(){
+		doneEditing();
+		//data = oldData
+		//redraw
 	}
 
 	public  void arrangeStudents(){
 		//set state to student edit
 		state = State.STUDENT_EDIT;
-		editStateLabel.setText("Students");
-		editStudentsBtn.setEnabled(false);
-		editStudentsPanel.getStyle().setDisplay(Style.Display.BLOCK);
-		//show the student editPanel
-		
 		//make students draggable
 		//constraint to seatingchart
 		Draggable.Options dragOpts = Draggable.Options.create();
@@ -472,8 +561,6 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 			}
 		});
 		$(".rosterStudent").as(Ui).draggable(dragOpts);
-		
-		
 		//what happens once students are dropped
 		Droppable.Options dropOpts = Droppable.Options.create();
 		dropOpts.accept(".rosterStudent").greedy(true).hoverClass("seat-over");
@@ -541,7 +628,10 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 							});
 						}
 					}
-	
+						
+					
+					
+					
 					//now detach and append to new seat
 					$draggable.css("opacity","1");
 				
@@ -577,8 +667,6 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	};
 	
 	public void doneArrangeStudents(){
-		editStudentsBtn.setEnabled(true);
-		editStudentsPanel.getStyle().setDisplay(Style.Display.NONE);
 		MaterialLoader.loading(true);
 		SeatingChartJson seatingChart = window.getPropertyJSO("seatingChart").cast();
 		//iterate through the seats and update data
@@ -604,9 +692,6 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	
 	public  void arrangeFurniture(){
 		state = State.FURNITURE_EDIT;
-		editStateLabel.setText("Furniture");
-		editFurnitureBtn.setEnabled(false);
-		editFurniturePanel.getStyle().setDisplay(Style.Display.BLOCK);
 		tempFurnitureList = new ArrayList<FurnitureJson>();
 		if(data.getFurniture().length() > 0){
 		for(int i = 0; i < data.getFurniture().length(); i++){
@@ -643,7 +728,6 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 			//we should have a furniture object here////////
 			final FurnitureJson desk = FurnitureJson.create();
 			desk.setSeats(iconId);
-			console.log("just dropped a furniture here is the object: " );
 			console.log(desk);
 			
 			String left =  (e.getClientX() - floorPlan.getAbsoluteLeft() + document.getScrollLeft())  +"px";
@@ -742,8 +826,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	}
 	
 	public void doneArrangeFurniture(){
-		editFurniturePanel.getStyle().setDisplay(Style.Display.NONE);
-		editFurnitureBtn.setEnabled(true);
+		
 		JsArray<FurnitureJson> finalList = JsArray.createArray().cast();
 		$(".desk-wrapper",floorPlan).as(Ui).draggable().destroy();
 		$(".furnitureIcon").as(Ui).draggable().destroy();
@@ -752,7 +835,9 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		$(".deskDeleter").off("click").css("display", "none");
 		
 		//set the temp to permanent and redraw
-		//iterate throug templist exclude nulls 
+		//iterate through templist exclude nulls 
+		//may have no seats
+		if(tempFurnitureList.size() >0){
 		for(int i = 0; i < tempFurnitureList.size() ; i++){
 			if(tempFurnitureList.get(i) == null){
 				continue;
@@ -762,7 +847,8 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		}
 		data.setFurniture(finalList);
 		
-		drawGrid();
+		//drawGrid();
+		}
 	};
 	
 	
@@ -829,24 +915,8 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		// TODO Auto-generated method stub
 		
 	}
-	
-	public void manageGroups(){
-		
-	}
-	
-	public void doneManageGroups(){
-		
-	}
 
-	public void manageState(State state){
-		switch(state){
-		case FURNITURE_EDIT: doneArrangeFurniture();break;
-		case STUDENT_EDIT: doneArrangeStudents();break;
-		case STATION_EDIT: doneManageStations();break;
-		case GROUP_EDIT: doneManageGroups();break;
-		default:unHome();
-		}
-	}
+
 	public State getState() {
 		return this.state;
 	}
@@ -854,6 +924,18 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 
 	public void setState(State state) {
 		this.state = state;
+	}
+
+	@Override
+	public void doneProcedures() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void doneStations() {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
