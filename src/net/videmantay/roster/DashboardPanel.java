@@ -375,7 +375,7 @@ public class DashboardPanel extends Composite {
 	
 	private void showStudentAction(RosterStudentJson student){
 		console.log("Student action modal should be open");
-		console.log("student id  is: " + student.getAcct());
+		console.log("student id  is: " + student.getId());
 	
 			studentActionModal.setData(student);
 		

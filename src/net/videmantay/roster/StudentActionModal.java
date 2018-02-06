@@ -124,7 +124,7 @@ public class StudentActionModal extends Composite {
 		studentName.setFontSize("1.5em");
 		this.student = student;
 		if(student.getFirstName()== null || student.getFirstName().isEmpty()){
-			studentName.setText(student.getAcct());
+			studentName.setText(student.getId());
 		}else{
 		studentName.setText(student.getFirstName() + " " + student.getLastName());
 		}
@@ -153,12 +153,12 @@ public class StudentActionModal extends Composite {
 				public void onClick(ClickEvent event) {
 					//create student incident based on studnt chosen
 					
-					StudentIncidentJson stuInc = StudentIncidentJson.create(student.getAcct(), item.getData());
+					StudentIncidentJson stuInc = StudentIncidentJson.create(student.getId(), item.getData());
 					
 					console.log(stuInc);
 					Ajax.ajax(Ajax.createSettings().setContentType("json/application").setDataType("json")
 							.setData(stuInc).setType("POST")
-							.setUrl("/roster/"+roster.getId()+"/student/"+student.getAcct()+"/incident"))
+							.setUrl("/roster/"+roster.getId()+"/student/"+student.getId()+"/incident"))
 							.done(new Function(){
 								@Override
 								public void f(){

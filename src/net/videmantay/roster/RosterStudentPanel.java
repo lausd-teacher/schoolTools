@@ -41,12 +41,16 @@ public class RosterStudentPanel extends Composite {
 		this.student = student;
 		//set the id of the panel to student id 
 		//this is so we can query and hide it when necessary
-		this.getElement().setId(student.getAcct() );
+		this.getElement().setId(student.getId() );
 		//studentImg.setUrl(student.getThumbnails().get(0).getUrl());
 		firstName.setText(student.getFirstName());
 		lastName.setText(student.getLastName());
+		if(student.getUseThumbs()) {
 		String url= student.getThumbnails() == null || student.getThumbnails().length() <1 ? "../img/user.svg":student.getThumbnails().get(1).getUrl();
 		studentImg.getStyle().setBackgroundImage("url("+url +")");
+		}else {
+			studentImg.getStyle().setBackgroundImage("url("+student.getPicUrl()+")");
+		}
 	}
 	
 	public RosterStudentJson getData(){

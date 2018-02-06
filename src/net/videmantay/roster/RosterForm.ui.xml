@@ -1,0 +1,49 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:m="urn:import:gwt.material.design.client.ui" xmlns:h="urn:import:gwt.material.design.client.ui.html"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+	</ui:style>
+	<m:MaterialCard ui:field="card">
+		<m:MaterialCardContent>
+				<g:HTMLPanel ui:field="formContainer">
+					<m:MaterialLabel text="Color:" textColor="GREY_DARKEN_1"
+						fontSize="1.25em" />
+					<m:MaterialRow ui:field="colorRow">
+					</m:MaterialRow>
+					<m:MaterialTextBox ui:field="title" 
+						 placeholder="Title" />
+					<h:Label ui:field="titleError" styleName="errorLabel"
+						text="You must include a title" textColor="RED_LIGHTEN_1" />
+					<m:MaterialTextBox ui:field="description" 
+						 placeholder="description" />
+					<h:Label ui:field="descriptionError" styleName="errorLabel"
+						text="This field is required" textColor="RED_LIGHTEN_1" />
+					<m:MaterialTextBox ui:field="roomNum" 
+						 placeholder="room number" />
+					<h:Label ui:field="roomNumError" styleName="errorLabel"
+						text="This field is required" textColor="RED_LIGHTEN_1" />
+					<m:MaterialDatePicker ui:field="startDate"
+						placeholder="start date" />
+					<label id="errorStartDateLabel" class="red-text text-lighten-1">start date cannot empty
+						or after start date</label>
+					<m:MaterialDatePicker ui:field="endDate"
+						placeholder="end date" />
+					<label id="errorEndDateLabel" class="red-text text-lighten-1">end date cannot empty or
+						be before start date</label>
+				</g:HTMLPanel>
+		</m:MaterialCardContent>
+		<m:MaterialCardAction>
+			<m:MaterialRow>
+				<m:MaterialColumn>
+					<m:MaterialAnchorButton ui:field="submitBtn"
+						text="Submit" backgroundColor="GREEN" waves="LIGHT" />
+				</m:MaterialColumn>
+				<m:MaterialColumn>
+					<m:MaterialAnchorButton ui:field="cancelBtn"
+						text="Cancel" backgroundColor="RED" waves="LIGHT" />
+				</m:MaterialColumn>
+			</m:MaterialRow>
+		</m:MaterialCardAction>
+	</m:MaterialCard>
+</ui:UiBinder> 

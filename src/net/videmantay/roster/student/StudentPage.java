@@ -85,9 +85,12 @@ public class StudentPage extends Composite {
 		this.student = stu;
 		name.setText(student.getFirstName()+" "+ student.getLastName());
 		
-		
+		if(student.getUseThumbs()) {
 		String url = student.getThumbnails() == null || student.getThumbnails().length() <= 0?"/../img/user.svg":student.getThumbnails().get(3).getUrl();
 		stuImage.setUrl(url);
+		}else {
+			stuImage.setUrl(student.getPicUrl());
+		}
 		summary.setText(student.getCurrentSummary()!= null?student.getCurrentSummary():"");
 		
 		

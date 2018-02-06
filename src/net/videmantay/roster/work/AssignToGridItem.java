@@ -36,7 +36,7 @@ public class AssignToGridItem extends Composite {
 		String url = student.getThumbnails()== null? "img/user.svg": student.getThumbnails().get(1).getUrl();
 		studentImg.setUrl(url);
 		if(student.getFirstName() == null){
-			firstName.setText(student.getAcct());
+			firstName.setText(student.getId());
 		}else{
 			firstName.setText(student.getFirstName());
 			lastName.setText(student.getLastName());

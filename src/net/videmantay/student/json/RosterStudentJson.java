@@ -14,12 +14,15 @@ public class RosterStudentJson extends JavaScriptObject{
 
 	protected RosterStudentJson(){}
 	
-	
-	public final native  String getEDate()/*-{
-	return this.eDate;
+	public final native  String getId()/*-{
+	return this.id;
 }-*/;
-	public final native RosterStudentJson setEDate(String date)/*-{
-		this.eDate = date;
+	
+	public final native  boolean getUseThumbs()/*-{
+	return this.useThumbs;
+}-*/;
+	public final native RosterStudentJson setUseThumbs(boolean useThumbs)/*-{
+		this.useThumbs = useThumbs;
 		return this;
 	}-*/;
 	public final native  String getReadingLevel()/*-{
@@ -131,14 +134,14 @@ public final native RosterStudentJson setGroups(JsArray<StudentGroupJson> groups
 		this.DOB = dOB;
 		return this;
 	}-*/;
-	public final native String getAcct() /*-{
-		return this.acct;
-	}-*/;
-	public final native RosterStudentJson setAcct(String acctId) /*-{
-		this.acct = acctId;
-		return this;
-	}-*/;
 	
+	public final native String getPicUrl() /*-{
+	return this.picUrl;
+}-*/;
+public final native RosterStudentJson setPicUrl(String url) /*-{
+	this.picUrl = url;
+	return this;
+}-*/;
 	public final native RosterInfoJson getRosterInfo()/*-{
 		return this.rosterInfo;
 	}-*/;
@@ -174,4 +177,6 @@ return this;
 		this.inactive = inactive;
 		return this;
 	}-*/;
+	
+	
 }

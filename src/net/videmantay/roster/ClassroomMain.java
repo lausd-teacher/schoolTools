@@ -7,13 +7,15 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
-
+import gwt.material.design.client.events.SideNavOpenedEvent;
+import gwt.material.design.client.events.SideNavOpenedEvent.SideNavOpenedHandler;
 import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialNavBrand;
@@ -87,6 +89,25 @@ public class ClassroomMain extends  Composite{
 		//classroom.setId("classroom");
 			$this = this;
 			//set side nav links/////////
+			
+			//need to get rid of extra overlay
+			sideNav.addOpenedHandler(new SideNavOpenedHandler(){
+
+				@Override
+				public void onSideNavOpened(SideNavOpenedEvent event) {
+				
+					GQuery dragTarget = $(".drag-target");
+					if(dragTarget.length() > 1){
+						dragTarget.get(0).removeFromParent();
+					}
+					
+					GQuery sideNavOverlay = $("#sidenav-overlay");
+					if(sideNavOverlay.length() > 1){
+						sideNavOverlay.get(0).removeFromParent();
+					}
+					
+					
+				}});
 			dashboardLink.addClickHandler(new ClickHandler(){
 
 				@Override
@@ -228,6 +249,9 @@ public class ClassroomMain extends  Composite{
 		rosterInfo =(RosterInfoJson) window.getPropertyJSO("currentRoster").cast();
 		console.log("RosterMain:  onLoad ... here is the current Roster Info");
 		console.log(rosterInfo);
+		//get rid of any residual overlays from previous courses///
+		$(".drag-target").remove();
+		$("#sidenav-overlay").remove();
 		
 		//Ajax get roster then dashboard
 		Ajax.ajax(Ajax.createSettings().setType("GET")
@@ -243,5 +267,5 @@ public class ClassroomMain extends  Composite{
 					}
 				});
 	}
-
+	
 }

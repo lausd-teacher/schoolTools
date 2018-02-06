@@ -30,7 +30,6 @@
 				</m:MaterialColumn>
 			</m:MaterialRow>
 			<m:MaterialRow marginTop="3" padding="5">
-					<m:MaterialTextBox ui:field="schoolEmail" label="school email" ></m:MaterialTextBox>
 				
 					<m:MaterialTextBox ui:field="firstName" label="First Name" ></m:MaterialTextBox>
 				
@@ -45,7 +44,6 @@
 					<m:MaterialTextArea ui:field="currentSummary" label="Student Summary"></m:MaterialTextArea>
 				</div>
 				<div id="studentFormDetailTab">
-						<m:MaterialDatePicker placeholder="Date entered" ui:field="eDate" autoClose="true"></m:MaterialDatePicker>
 						<m:MaterialCheckBox text="Wears glasses" ui:field="glasses"/>
 						<m:MaterialTextBox label="Home Language" ui:field="homeLang" />
 						<m:MaterialTextBox label="Reading Level" ui:field="readingLevel"/>

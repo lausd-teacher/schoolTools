@@ -122,14 +122,13 @@ for(int i = 1; i <= numOfSeats; i++){
 }
 
 public final native StudentSeatJson getSeatByNum(int i)/*-{
-var seat = null;
+
 for(var s in this.seats){
 	if( s.getSeatNum() == i){
-		seat = s;
-		break;
+		return s;
 		}//end if
 	}//end for
-return seat;
+return null;
 }-*/;
 
 public final static native FurnitureJson create()/*-{
@@ -137,7 +136,8 @@ public final static native FurnitureJson create()/*-{
 			kind:"double",
 			type:"desk",
 			top:"0px",
-			left:"0px"};
+			left:"0px",
+			seats:[]};
 	
 }-*/;
 

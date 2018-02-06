@@ -4,18 +4,11 @@ public class TeacherInfoJson {
 
 	protected TeacherInfoJson(){}
 	
-	public final native String getTitle()/*-{
-		return this.title;
+	public final native String getName()/*-{
+		return this.name;
 	}-*/;
-	public final native TeacherInfoJson setTitle(String title)/*-{
-		this.title = title;
-		return this;
-	}-*/;
-	public final native String getLastName()/*-{
-		return this.lastName;
-	}-*/;
-	public final native TeacherInfoJson setLastName(String lastName)/*-{
-		this.lastName = lastName;
+	public final native TeacherInfoJson setLastName(String name)/*-{
+		this.name = name;
 		return this;
 	}-*/;
 	public final native String getPicUrl()/*-{

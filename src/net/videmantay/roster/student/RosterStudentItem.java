@@ -59,7 +59,7 @@ public class RosterStudentItem extends Composite {
 		console.log(student);
 	
 		
-		$(this).id(student.getAcct());
+		$(this).id(student.getId());
 		this.addDomHandler(new ClickHandler(){
 
 			@Override

@@ -1,4 +1,4 @@
-package net.videmantay.roster;
+ package net.videmantay.roster;
 
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;

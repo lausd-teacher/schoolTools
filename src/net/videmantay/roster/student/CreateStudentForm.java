@@ -71,9 +71,6 @@ public class CreateStudentForm extends Composite{
 	FormPanel form;
 	
 	@UiField
-	MaterialTextBox schoolEmail;
-	
-	@UiField
 	MaterialTextBox firstName;
 	
 	@UiField
@@ -90,9 +87,6 @@ public class CreateStudentForm extends Composite{
 	
 	@UiField
 	MaterialCheckBox glasses;
-	
-	@UiField
-	MaterialDatePicker eDate;
 	
 	@UiField
 	MaterialTextBox homeLang;
@@ -260,12 +254,10 @@ public class CreateStudentForm extends Composite{
 	
 	public RosterStudentJson getStudent(){
 		
-		student.setAcct(schoolEmail.getValue());
 		student.setFirstName(firstName.getValue());
 		student.setLastName(lastName.getValue());
 		student.setDOB(df.format(DOB.getDate()));
 		student.setCurrentSummary(currentSummary.getValue());
-		student.setEDate(df.format(eDate.getValue()).toString());
 		student.setHomeLang(homeLang.getValue());
 		student.setEldLevel(eldLevel.getValue());
 		student.setReadingLevel(readingLevel.getValue());
@@ -282,7 +274,6 @@ public class CreateStudentForm extends Composite{
 		this.student = stud;
 		//redraw the fields
 		//profilePage
-		schoolEmail.setValue(student.getAcct());
 		firstName.setValue(student.getFirstName());
 		lastName.setValue(student.getLastName());
 		String url = student.getThumbnails().get(student.getThumbnails().length() -1).getUrl();
@@ -291,7 +282,6 @@ public class CreateStudentForm extends Composite{
 		//Summary
 		currentSummary.setValue(student.getCurrentSummary());
 		//Detail
-		eDate.setValue(df.parse(student.getEDate()));
 		glasses.setValue(student.getGlasses());
 		eldLevel.setValue(student.getEldLevel());
 		readingLevel.setValue(student.getReadingLevel());
@@ -330,7 +320,6 @@ public class CreateStudentForm extends Composite{
 	}
 	
 	private void initForm(){
-			schoolEmail.setValue("");
 			firstName.setValue("");
 			lastName.setValue("");
 			studentImg.setUrl("");
@@ -338,7 +327,6 @@ public class CreateStudentForm extends Composite{
 			//Summary
 			currentSummary.setValue("");
 			//Detail
-			eDate.setValue(new Date());
 			glasses.setValue(false);
 			eldLevel.setValue("");
 			readingLevel.setValue("");

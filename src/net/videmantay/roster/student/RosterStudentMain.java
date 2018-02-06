@@ -15,6 +15,9 @@ import com.google.gwt.user.client.ui.Widget;
 
 import static com.google.gwt.query.client.GQuery.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import com.google.gwt.query.client.Function;
 import gwt.material.design.client.ui.MaterialButton;
 import gwt.material.design.client.ui.MaterialCollection;
@@ -91,11 +94,15 @@ public class RosterStudentMain extends Composite{
 		console.log(this.students);
 		/*if(firstNameSort){students = NameOrder.byFirstName(students);}
 		else{students = NameOrder.byLastName(students);}*/
+		ArrayList<RosterStudentJson> studentList = new ArrayList<RosterStudentJson>();
 		
-		
-		for(int i= 0; i < students.length(); i++){
+		for(int i = 0; i <students.length(); i++) {
+			studentList.add(students.get(i));
+		}
+		Collections.sort(studentList, new FistNameComparator());
+		for(RosterStudentJson rsj: studentList){
 			MaterialRow row = new MaterialRow();
-			row.add(new StudentLink(students.get(i)));
+			row.add(new StudentLink(rsj));
 		studentCollection.add(row);
 		}
 	}

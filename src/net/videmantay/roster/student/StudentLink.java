@@ -25,7 +25,11 @@ public class StudentLink extends MaterialImage {
 		super();
 		student = stu;
 		this.setType(ImageType.CIRCLE);
+		if(student.getUseThumbs()) {
 		this.setUrl(student.getThumbnails() == null || student.getThumbnails().length() < 1? "/../img/user.svg":student.getThumbnails().get(2).getUrl());
+		}else {
+			this.setUrl(student.getPicUrl());
+		}
 		this.setHoverable(true);
 		this.setTooltip(student.getFirstName()+" "+ student.getLastName());
 		this.setTooltipPosition(Position.RIGHT);
