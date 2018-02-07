@@ -261,6 +261,10 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	public void drawGrid(){
 		floorPlan.removeAllChildren();
 		studentList.clear();
+		if(studentList.isAttached()) {
+		studentList.removeFromParent();
+		$("#studentListWrapper").append(studentList.getElement());
+		}
 		
 		
 		//make a copy of the student list then pop as they are put in place
@@ -518,9 +522,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	public void confirmEdit(){
 		
 		doneEditing();
-		//persist the data 
-		
-		//oldData = data persist
+		drawGrid();
 		
 	}
 

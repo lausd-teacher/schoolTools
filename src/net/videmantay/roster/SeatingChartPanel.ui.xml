@@ -103,8 +103,10 @@
 				<g:HTMLPanel addStyleNames="{style.scStudentTools}">
 					<div ui:field="homeTools">
 						<m:MaterialLabel text="Students" textColor="RED_DARKEN_2" />
+						<div id="studentListWrapper">
 						<m:MaterialCollection ui:field="studentList"
 							addStyleNames="scStudentList" />
+							</div>
 					</div>
 					<div ui:field="editTools" class="{style.editTools}">
 						<m:MaterialCollapsible ui:field="editCollapsible" active="1">
