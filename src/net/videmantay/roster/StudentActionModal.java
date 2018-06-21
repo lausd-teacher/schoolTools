@@ -34,11 +34,7 @@ import gwt.material.design.client.ui.MaterialLabel;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialRow;
 import gwt.material.design.client.ui.MaterialToast;
-import net.videmantay.roster.incident.IncidentValueCompare;
-import net.videmantay.roster.json.RosterJson;
-import net.videmantay.student.json.IncidentJson;
-import net.videmantay.student.json.RosterStudentJson;
-import net.videmantay.student.json.StudentIncidentJson;
+import net.videmantay.roster.json.Student;
 
 public class StudentActionModal extends Composite {
 
@@ -47,8 +43,7 @@ public class StudentActionModal extends Composite {
 	interface StudentActionModalUiBinder extends UiBinder<Widget, StudentActionModal> {
 	}
 	
-	private final RosterJson roster ;
-	private RosterStudentJson student;
+	private Student student;
 	@UiField
 	MaterialLabel studentName;
 	
@@ -98,7 +93,6 @@ public class StudentActionModal extends Composite {
 	
 	
 	public StudentActionModal() {
-		roster = window.getPropertyJSO("currentClassroom").cast();
 		initWidget(uiBinder.createAndBindUi(this));
 		
 		//add close handler to modal to clean up overlays
@@ -117,25 +111,25 @@ public class StudentActionModal extends Composite {
 				modal.close();
 			}});
 		
-		drawIncidentGrid(roster.getIncidents());
+		//drawIncidentGrid(roster.getIncidents());
 	}
 	
-	public void setData(RosterStudentJson student){
+	public void setData(Student student){
 		studentName.setFontSize("1.5em");
 		this.student = student;
-		if(student.getFirstName()== null || student.getFirstName().isEmpty()){
+		if(student.getName_first()== null || student.getName_first().isEmpty()){
 			studentName.setText(student.getId());
 		}else{
-		studentName.setText(student.getFirstName() + " " + student.getLastName());
+		studentName.setText(student.getName_first() + " " + student.getName_last());
 		}
 		
-		String url= student.getThumbnails() == null || student.getThumbnails().length() < 1 ? "../img/user.svg":student.getThumbnails().get(1).getUrl();
+		String url= student.getPicture_url();
 		studentActionImage.setUrl(url);
 		
 		
 	}
 	
-	public void drawIncidentGrid(JsArray<IncidentJson> incidents){
+/*	public void drawIncidentGrid(JsArray<IncidentJson> incidents){
 		ArrayList<IncidentJson> incidentList = new ArrayList<>();
 		for(int i = 0; i < incidents.length(); i++){
 			incidentList.add(incidents.get(i));
@@ -181,7 +175,7 @@ public class StudentActionModal extends Composite {
 				posIncidents.add(col);
 			}
 		}
-	}
+	}*/
 	
 
 }

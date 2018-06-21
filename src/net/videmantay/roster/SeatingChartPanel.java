@@ -12,7 +12,6 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.query.client.Function;
 import com.google.gwt.query.client.GQuery;
-import com.google.gwt.query.client.plugins.ajax.Ajax;
 import com.google.gwt.query.client.plugins.effects.PropertiesAnimation.EasingCurve;
 
 import static com.google.gwt.query.client.GQuery.*;
@@ -49,15 +48,13 @@ import gwtquery.plugins.ui.interactions.Rotatable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import net.videmantay.roster.json.RosterJson;
+import net.videmantay.roster.json.Student;
 import net.videmantay.roster.seatingchart.FurnitureUtils;
 import net.videmantay.roster.seatingchart.json.FurnitureJson;
 import net.videmantay.roster.seatingchart.json.SeatingChartJson;
 import net.videmantay.roster.seatingchart.json.StudentSeatJson;
-import net.videmantay.roster.student.FistNameComparator;
-import net.videmantay.student.json.RosterStudentJson;
 
-public class SeatingChartPanel extends Composite implements HasRosterDashboardView {
+public class SeatingChartPanel extends Composite{
 
 	
 
@@ -75,7 +72,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	//save draggableParent for reference
 	private GQuery $dragParent;
 	private enum State{DASHBOARD, STUDENT_EDIT,FURNITURE_EDIT,STATION_EDIT,GROUP_EDIT};
-	
+	private JsArray<Student> students = window.getPropertyJSO("students").cast();
 	State state = State.DASHBOARD;
 	
 	@UiField
@@ -132,7 +129,6 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	@UiField
 	MaterialCollapsibleItem stationCollapseItem;
 	
-	private final RosterJson roster;
 
 	SelectionHandler<Widget> handler = new SelectionHandler<Widget>(){
 
@@ -212,24 +208,8 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		};
 		
 		//constructor////
-	public SeatingChartPanel(RosterJson ros) {
-		this.roster = ros;
-		console.log("on seating chart const roster is");
-		
-		Ajax.get("/roster/"+ roster.getId()+"/routine/"+ roster.getRoutineConfig().getId()+ "/seatingchart/" )
-		.done(new Function(){
-			@Override
-			public void f(){
-				data = JsonUtils.safeEval((String)this.arguments(0)).cast();
-				oldData.setDescript(data.getDescript());
-				oldData.setFurniture(data.getFurniture());
-				oldData.setId(data.getId());
-				oldData.setTitle(data.getTitle());
-				drawGrid();	
-			}
-		});
-		
-		
+	public SeatingChartPanel( ) {
+
 		initWidget(uiBinder.createAndBindUi(this));
 	}
 	
@@ -269,12 +249,12 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		
 		//make a copy of the student list then pop as they are put in place
 		ArrayList<RosterStudentPanel> stuPanels = new ArrayList<RosterStudentPanel>();
-		ArrayList<RosterStudentJson>rosterStudentList = new ArrayList<>();
-		for(int i = 0 ; i< roster.getStudents().length();i++) {
-			rosterStudentList.add(roster.getStudents().get(i));
+		ArrayList<Student>rosterStudentList = new ArrayList<>();
+		for(int i =0; i < students.length(); i++) {
+			rosterStudentList.add(students.get(i));
 		}
-		Collections.sort(rosterStudentList, new FistNameComparator());
-		for(RosterStudentJson rsj: rosterStudentList){
+		Collections.sort(rosterStudentList, new NameOrder());
+		for(Student rsj: rosterStudentList){
 			//might as well setup the studentList here too
 			RosterStudentPanel sp =new RosterStudentPanel();
 			sp.setData(rsj);
@@ -362,14 +342,14 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		}
 	}
 
-	@Override
+	
 	public void checkHW() {
 		
 		
 	}
 
 	//this is to show groups not manage them
-	@Override
+	
 	public void groups() {
 		// TODO Auto-generated method stub
 		
@@ -385,10 +365,10 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 			
 		}
 
-	@Override
+	
 	public void takeRoll() {
 		$(".rosterStudent").click(new Function(){
-			@Override 
+			 
 			public void f(){
 				//show student behavior form for
 				// specific student
@@ -399,7 +379,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		
 	}
 
-	@Override
+	
 	public void home() {
 		//right now home is for clicking on students
 		//and generating a dialog for behavior management or
@@ -418,57 +398,57 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		$(studentList).hide();
 	}
 
-	@Override
+	
 	public void pickRandom() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void selectAll() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void doneCheckHW() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void doneGroups() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void doneTakeRoll() {
 		// TODO Auto-generated method stub
 		
 	}
 	
-	@Override
+	
 	public void donePickRandom() {
 		// TODO Auto-generated method stub
 		
 	}
 	
-	@Override
+	
 	public void multipleSelect(){
 		
 	}
-	@Override
+	
 	public void doneMultipleSelect(){
 		
 	}
-	@Override
+	
 	public void doneSelectAll() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void deselectAll() {
 		// TODO Auto-generated method stub
 		
@@ -476,7 +456,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 	
 
 
-	@Override
+	
 	public void undo() {
 		// TODO Auto-generated method stub
 		
@@ -526,7 +506,7 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		
 	}
 
-	@Override
+	
 	public void cancel(String state) {
 		//set data to old data.
 		//then finish editing.
@@ -969,13 +949,13 @@ public class SeatingChartPanel extends Composite implements HasRosterDashboardVi
 		this.state = state;
 	}
 
-	@Override
+	
 	public void doneProcedures() {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	
 	public void doneStations() {
 		// TODO Auto-generated method stub
 		
