@@ -94,16 +94,16 @@
 			</m:MaterialColumn>
 		</m:MaterialRow>
 		<m:MaterialRow>
-			<m:MaterialColumn grid="l10">
+			<m:MaterialColumn grid="l11">
 				<g:HTMLPanel ui:field="floorPlanWrapper">
 					<div ui:field="stationLayer" class="{style.stationLayer}"></div>
 					<div ui:field="floorPlan" class="{style.floorPlan}"></div>
 				</g:HTMLPanel>
 			</m:MaterialColumn>
-			<m:MaterialColumn grid="l2">
+			<m:MaterialColumn grid="l1">
 				<g:HTMLPanel addStyleNames="{style.scStudentTools}">
 					<div ui:field="homeTools">
-						<m:MaterialLabel text="Students" textColor="RED_DARKEN_2" />
+						<m:MaterialLabel text="Students" textColor="GREY_DARKEN_1" fontSize="1.25em" />
 						<div id="studentListWrapper">
 						<m:MaterialCollection ui:field="studentList"
 							addStyleNames="scStudentList" />

@@ -34,6 +34,8 @@ public class DashboardPanel extends Composite {
 	interface DashboardPanelUiBinder extends UiBinder<Widget, DashboardPanel> {
 	}
 
+	@UiField
+	MaterialIcon editBtn;
 	
 	@UiField
 	MaterialIcon hwIcon;
@@ -61,43 +63,28 @@ public class DashboardPanel extends Composite {
 	
 	@UiField
 	MaterialAnchorButton routineBtn;
-	
-	@UiField
-	MaterialAnchorButton routineBar;
-	
+		
 	@UiField
 	MaterialDropDown routineDrop;
 	
 	@UiField
-	MaterialDropDown routineDrop2;
-	
-	@UiField
 	MaterialAnchorButton doneBtn;
 	
-	@UiField
-	MaterialButton smDoneBtn;
+
 	
 	@UiField
 	MaterialAnchorButton doneBarCancelBtn;
 	
-	@UiField
-	MaterialButton smDoneBarCancelBtn;
+	
 	
 	@UiField
-	MaterialButton undoBtn;
-	
-	@UiField
-	MaterialButton smUndoBtn;
+	MaterialAnchorButton clearAllBtn;
 	
 
-	
-	private View view = View.GRID;
 	private State state = State.DASHBOARD;
 	
 	private SeatingChartPanel display = new SeatingChartPanel();
 
-	//enum for state
-	public enum View{GRID,CHART};
 	public enum State{DASHBOARD,ROLL, HW,GROUP, MULTIPLE_SELECT,RANDOM, FURNITURE_EDIT, STUDENT_EDIT, STATIONS_EDIT}
 	
 	
@@ -185,26 +172,9 @@ public class DashboardPanel extends Composite {
 				display.home();
 				showToolBar();
 			}});
-		smDoneBtn.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				switch(state){
-				case FURNITURE_EDIT:display.doneArrangeFurniture(); break;
-				case STUDENT_EDIT: display.doneArrangeStudents(); break;
-				case STATIONS_EDIT: display.doneManageStations();break;
-				case HW: display.doneCheckHW();break;
-				case ROLL: display.doneTakeRoll();break;
-				case GROUP: display.doneGroups();break;
-				case RANDOM: display.donePickRandom(); break;
-				case MULTIPLE_SELECT: display.doneMultipleSelect(); break;
-				default: display.home();
-				}
-				display.home();
-				showToolBar();
-			}});
+	
 		
-		undoBtn.addClickHandler(new ClickHandler(){
+		clearAllBtn.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
@@ -212,13 +182,7 @@ public class DashboardPanel extends Composite {
 				
 			}});
 		
-		smUndoBtn.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				display.undo();
-				
-			}});
+	
 		doneBarCancelBtn.addClickHandler(new ClickHandler(){
 
 			@Override
@@ -228,14 +192,6 @@ public class DashboardPanel extends Composite {
 				showToolBar();
 			}});
 		
-		smDoneBarCancelBtn.addClickHandler(new ClickHandler(){
-
-			@Override
-			public void onClick(ClickEvent event) {
-				display.cancel(state.name());
-				display.home();
-				showToolBar();
-			}});
 		
 	}
 	

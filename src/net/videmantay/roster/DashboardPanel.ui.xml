@@ -3,18 +3,18 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:m="urn:import:gwt.material.design.client.ui"
 	xmlns:h="urn:import:gwt.material.design.client.ui.html">
-	<ui:style>
-	
-	</ui:style>
 	<g:HTMLPanel height="100%" width="100%">
-		<div id="roster-dashboard-tab">
-			<m:MaterialRow ui:field="toolbar" height="3em"
-				padding="5" marginBottom="0" centerOn="CENTER_ON_SMALL"
-				backgroundColor="AMBER_DARKEN_2">
-				<m:MaterialIcon iconType="SETTINGS" float="RIGHT" />
+		<div id="roster-dashboard">
+		<div class="amber darken-1" style="height: 2em;">
+		<img class="scTeacherImg left circle responsive-img" src="https://cdn3-7.cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-5eb006aea3cf8fc893caf08282c4fa70_5919ebb9ba1d1.png" 
+		style="width: 65px; height: 65px;margin-left: 20px; margin-top:5px; border:1px solid brown; border-radius:100%" /><span class="sectionTitle center-align white-text material-label" style="font-size: 1em; font-weight: bold; margin-left:30% ;">2307 Elementary Gradebook Training Section 1</span><button type="button" class="helpBtn amber accent-1 center-align btn-floating" style="cursor: pointer; font-weight: bold; margin-left: 5px; height: 2.5em;"><i class="left white-text large material-icons" style="cursor: pointer;">help_outline</i></button></div>
+		<m:MaterialRow ui:field="toolbar" height="3em"
+				padding="2.5" backgroundColor="AMBER_DARKEN_2">
+				<m:MaterialColumn grid="s3" float="RIGHT">
+				<m:MaterialIcon ui:field="editBtn" iconType="SETTINGS" float="RIGHT" />
 				<m:MaterialAnchorButton ui:field="routineBtn"
-					addStyleNames="classTimeBtn" float="RIGHT" text="Class Time"
-					fontSize="1.10em" marginRight="5.0" textAlign="CENTER"
+					addStyleNames="classTimeBtn truncate"  text="Your Seats"
+					  textAlign="CENTER"
 					iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT"
 					activates="routinelist" />
 				<m:MaterialDropDown activator="routinelist"
@@ -22,8 +22,9 @@
 					<m:MaterialLink addStyleNames="manageClassTimeLink"
 						text="Manage..." />
 				</m:MaterialDropDown>
-				<m:MaterialColumn grid="s12 m8 l6">
-					<m:MaterialColumn grid="s1">
+				</m:MaterialColumn>
+				<m:MaterialColumn grid="s7">
+					<m:MaterialColumn grid="s1" marginLeft="15">
 						<m:MaterialLabel text="Check:"></m:MaterialLabel>
 					</m:MaterialColumn>
 					<m:MaterialColumn grid="s1">
@@ -46,28 +47,9 @@
 							</g:HTMLPanel>
 						</m:MaterialPanel>
 					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1">
-						<m:MaterialPanel padding="2"><!-- -->
-							<g:HTMLPanel>
-								<m:MaterialTooltip text="Groups">
-									<m:MaterialIcon ui:field="groupsIcon"
-										iconType="GROUP_WORK" iconSize="SMALL" />
-								</m:MaterialTooltip>
-							</g:HTMLPanel>
-						</m:MaterialPanel>
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1">
-						<m:MaterialPanel padding="2"><!-- -->
-							<g:HTMLPanel>
-								<m:MaterialTooltip text="Stations">
-									<m:MaterialIcon ui:field="stationsIcon"
-										iconType="WIDGETS" iconSize="SMALL" />
-								</m:MaterialTooltip>
-							</g:HTMLPanel>
-						</m:MaterialPanel>
-					</m:MaterialColumn>
+					
 					<!-- This starts selects tools -->
-					<m:MaterialColumn grid="s1" offset="s2">
+					<m:MaterialColumn grid="s1" marginLeft="15">
 						<m:MaterialLabel text="Select:"></m:MaterialLabel>
 					</m:MaterialColumn>
 					<m:MaterialColumn grid="s1">
@@ -100,59 +82,56 @@
 							</g:HTMLPanel>
 						</m:MaterialPanel>
 					</m:MaterialColumn>
-				</m:MaterialColumn>
+					<!-- this start the view tools -->
+					<m:MaterialColumn grid="s1" marginLeft="15">
+						<m:MaterialLabel text="View:"></m:MaterialLabel>
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="s1">
+						<m:MaterialPanel padding="2"><!-- -->
+							<g:HTMLPanel>
+								<m:MaterialTooltip text="Home">
+									<m:MaterialIcon ui:field="homeIcon"
+										iconType="HOME" iconSize="SMALL" />
+								</m:MaterialTooltip>
+							</g:HTMLPanel>
+						</m:MaterialPanel>
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="s1">
+						<m:MaterialPanel padding="2"><!-- -->
+							<g:HTMLPanel>
+								<m:MaterialTooltip text="Groups">
+									<m:MaterialIcon ui:field="groupsIcon"
+										iconType="GROUP_WORK" iconSize="SMALL" />
+								</m:MaterialTooltip>
+							</g:HTMLPanel>
+						</m:MaterialPanel>
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="s1">
+						<m:MaterialPanel padding="2"><!-- -->
+							<g:HTMLPanel>
+								<m:MaterialTooltip text="Stations">
+									<m:MaterialIcon ui:field="stationsIcon"
+										iconType="WIDGETS" iconSize="SMALL" />
+								</m:MaterialTooltip>
+							</g:HTMLPanel>
+						</m:MaterialPanel>
+					</m:MaterialColumn>
+					</m:MaterialColumn>
 			</m:MaterialRow>
-			<m:MaterialRow ui:field="doneToolbar">
-				<m:MaterialColumn hideOn="HIDE_ON_SMALL"
-					ui:field="fullDoneToolbar" grid="s12 m12 l12">
-					<m:MaterialColumn grid="m3">
-						<m:MaterialAnchorButton ui:field="doneBtn"
-							text="DONE" iconType="DONE"></m:MaterialAnchorButton>
+			<m:MaterialRow ui:field="doneToolbar" backgroundColor="RED_DARKEN_1">
+					<m:MaterialColumn grid="m3" marginLeft="25">
+						<m:MaterialAnchorButton ui:field="clearAllBtn"
+							text="Clear All" iconType="DELETE"></m:MaterialAnchorButton>
 					</m:MaterialColumn>
 					<m:MaterialColumn grid="m3">
-						<m:MaterialButton ui:field="undoBtn" text="Undo"
-							iconType="UNDO" />
+						<m:MaterialAnchorButton ui:field="doneBtn" text="Done"
+							iconType="DONE" backgroundColor="GREEN"/>
 					</m:MaterialColumn>
 					<m:MaterialColumn grid="m3">
 						<m:MaterialAnchorButton
-							ui:field="doneBarCancelBtn" text="CANCEL" iconType="CLEAR"></m:MaterialAnchorButton>
+							ui:field="doneBarCancelBtn" text="CANCEL" iconType="CLEAR" backgroundColor="RED"></m:MaterialAnchorButton>
 					</m:MaterialColumn>
-					<m:MaterialColumn grid="m3">
-						<m:MaterialButton type="FLAT" text="Mangage"
-							iconType="MORE_VERT" iconPosition="RIGHT" />
-					</m:MaterialColumn>
-				</m:MaterialColumn>
-				<m:MaterialColumn ui:field="smDoneToolbar"
-					hideOn="HIDE_ON_MED_UP">
-					<m:MaterialColumn grid="s3">
-						<m:MaterialButton ui:field="smDoneBtn"
-							iconType="DONE"></m:MaterialButton>
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s3">
-						<m:MaterialButton ui:field="smUndoBtn"
-							iconType="UNDO" />
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s3">
-						<m:MaterialButton ui:field="smDoneBarCancelBtn"
-							iconType="CLEAR"></m:MaterialButton>
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s3">
-						<m:MaterialButton type="FLAT"
-							iconType="MORE_VERT" />
-					</m:MaterialColumn>
-				</m:MaterialColumn>
 			</m:MaterialRow>
-			<m:MaterialAnchorButton ui:field="routineBar"
-				centerOn="CENTER_ON_SMALL" grid="s12" width="100%"
-				hideOn="HIDE_ON_MED_UP" addStyleNames="classTimeBar"
-				text="Class Time" fontSize="1.10em" textAlign="CENTER"
-				iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT"
-				activates="routinedrop"></m:MaterialAnchorButton>
-			<m:MaterialDropDown activator="routinedrop"
-				ui:field="routineDrop2">
-				<m:MaterialLink addStyleNames="manageClassTimeLink"
-					text="Manage..." />
-			</m:MaterialDropDown>
 			<g:HTMLPanel ui:field="mainPanel" />
 		</div>
 	</g:HTMLPanel>
