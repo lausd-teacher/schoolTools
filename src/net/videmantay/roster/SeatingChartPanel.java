@@ -11,6 +11,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.GQ;
 import com.google.gwt.query.client.GQuery;
 import com.google.gwt.query.client.plugins.effects.PropertiesAnimation.EasingCurve;
 
@@ -49,6 +50,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import net.videmantay.roster.json.Student;
+import net.videmantay.roster.json.StudentList;
 import net.videmantay.roster.seatingchart.FurnitureUtils;
 import net.videmantay.roster.seatingchart.json.FurnitureJson;
 import net.videmantay.roster.seatingchart.json.SeatingChartJson;
@@ -72,7 +74,8 @@ public class SeatingChartPanel extends Composite{
 	//save draggableParent for reference
 	private GQuery $dragParent;
 	private enum State{DASHBOARD, STUDENT_EDIT,FURNITURE_EDIT,STATION_EDIT,GROUP_EDIT};
-	private JsArray<Student> students = window.getPropertyJSO("students").cast();
+	private StudentList sl;
+	  
 	State state = State.DASHBOARD;
 	
 	@UiField
@@ -211,6 +214,7 @@ public class SeatingChartPanel extends Composite{
 	public SeatingChartPanel( ) {
 
 		initWidget(uiBinder.createAndBindUi(this));
+		
 	}
 	
 	@Override
@@ -249,9 +253,13 @@ public class SeatingChartPanel extends Composite{
 		
 		//make a copy of the student list then pop as they are put in place
 		ArrayList<RosterStudentPanel> stuPanels = new ArrayList<RosterStudentPanel>();
+		
+		
+		sl = window.getPropertyJSO("students").cast();
+		console.log(sl);
 		ArrayList<Student>rosterStudentList = new ArrayList<>();
-		for(int i =0; i < students.length(); i++) {
-			rosterStudentList.add(students.get(i));
+		for(int i =0; i < sl.getEnrollment().length; i++) {
+			rosterStudentList.add(sl.getEnrollment()[i]);
 		}
 		Collections.sort(rosterStudentList, new NameOrder());
 		for(Student rsj: rosterStudentList){

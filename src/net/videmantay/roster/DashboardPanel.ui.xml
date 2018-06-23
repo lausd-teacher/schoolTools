@@ -7,142 +7,153 @@
 	
 	</ui:style>
 	<g:HTMLPanel height="100%" width="100%">
-		<m:MaterialTab ui:field="tab"  height="2.5em" >
-			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#dashboard" text="Dashboard" waves="ORANGE"/></m:MaterialTabItem>
-			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#roster-cal-tab" text="Calendar" waves="ORANGE"/></m:MaterialTabItem>
-			<m:MaterialTabItem addStyleNames="myTab"><m:MaterialAnchorButton type="FLAT" href="#roster-report-tab" text="Reports" waves="ORANGE"/></m:MaterialTabItem>
-		</m:MaterialTab>
-		<div  id="dashboard" >
-			<m:MaterialRow ui:field="toolbar" height="3em" padding="5" marginBottom="0" centerOn="CENTER_ON_SMALL" backgroundColor="AMBER_DARKEN_2">
-				<m:MaterialAnchorButton ui:field="routineBtn" hideOn="HIDE_ON_SMALL" addStyleNames="classTimeBtn" float="RIGHT" text="Class Time" fontSize="1.10em"  marginRight="5.0" textAlign="CENTER" iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT" activates="routinelist"/>
-				<m:MaterialDropDown activator="routinelist" ui:field="routineDrop">
-					<m:MaterialLink addStyleNames="manageClassTimeLink" text="Manage..." />
+		<div id="roster-dashboard-tab">
+			<m:MaterialRow ui:field="toolbar" height="3em"
+				padding="5" marginBottom="0" centerOn="CENTER_ON_SMALL"
+				backgroundColor="AMBER_DARKEN_2">
+				<m:MaterialIcon iconType="SETTINGS" float="RIGHT" />
+				<m:MaterialAnchorButton ui:field="routineBtn"
+					addStyleNames="classTimeBtn" float="RIGHT" text="Class Time"
+					fontSize="1.10em" marginRight="5.0" textAlign="CENTER"
+					iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT"
+					activates="routinelist" />
+				<m:MaterialDropDown activator="routinelist"
+					ui:field="routineDrop">
+					<m:MaterialLink addStyleNames="manageClassTimeLink"
+						text="Manage..." />
 				</m:MaterialDropDown>
-			<m:MaterialColumn   height="2.5em" grid="l3" hideOn="HIDE_ON_MED_DOWN" float="LEFT" centerOn="CENTER_ON_SMALL">
-				<m:MaterialRow>
-					<m:MaterialColumn grid="l1">
-					<m:MaterialIcon iconType="APPS" iconSize="SMALL" paddingRight="3.0"/>
+				<m:MaterialColumn grid="s12 m8 l6">
+					<m:MaterialColumn grid="s1">
+						<m:MaterialLabel text="Check:"></m:MaterialLabel>
 					</m:MaterialColumn>
-					<m:MaterialColumn grid="l3">
-					<m:MaterialSwitch ui:field="gridSwitch"></m:MaterialSwitch>
+					<m:MaterialColumn grid="s1">
+						<m:MaterialPanel padding="2">
+							<g:HTMLPanel>
+								<m:MaterialTooltip text="Roll">
+									<m:MaterialIcon ui:field="rollIcon"
+										iconType="ASSIGNMENT_IND" iconSize="SMALL" />
+								</m:MaterialTooltip>
+							</g:HTMLPanel>
+						</m:MaterialPanel>
 					</m:MaterialColumn>
-					<m:MaterialColumn grid="l3">
-					<m:MaterialIcon iconType="EVENT_SEAT" iconSize="SMALL" paddingLeft="5.0" />
+					<m:MaterialColumn grid="s1">
+						<m:MaterialPanel padding="2">
+							<g:HTMLPanel>
+								<m:MaterialTooltip text="Homework">
+									<m:MaterialIcon ui:field="hwIcon"
+										iconType="ASSIGNMENT" iconSize="SMALL" />
+								</m:MaterialTooltip>
+							</g:HTMLPanel>
+						</m:MaterialPanel>
 					</m:MaterialColumn>
-					<m:MaterialColumn>
-						<m:MaterialIcon ui:field="seatingChartEditIcon" iconType="EDIT"  marginLeft="5.5"/>
+					<m:MaterialColumn grid="s1">
+						<m:MaterialPanel padding="2"><!-- -->
+							<g:HTMLPanel>
+								<m:MaterialTooltip text="Groups">
+									<m:MaterialIcon ui:field="groupsIcon"
+										iconType="GROUP_WORK" iconSize="SMALL" />
+								</m:MaterialTooltip>
+							</g:HTMLPanel>
+						</m:MaterialPanel>
 					</m:MaterialColumn>
-				</m:MaterialRow><!--  -->
-				</m:MaterialColumn>
-			<m:MaterialColumn grid="s12 m8 l6">
-			<m:MaterialColumn grid="s1">
-				<m:MaterialLabel text="Check:"></m:MaterialLabel>
-			</m:MaterialColumn>
-				<m:MaterialColumn grid="s1">
-					<m:MaterialPanel  padding="2">
-							<m:MaterialTooltip  text="Roll">
-							<m:MaterialIcon  ui:field="rollIcon" iconType="ASSIGNMENT_IND" iconSize="SMALL"/>
-							</m:MaterialTooltip>
-					</m:MaterialPanel>
-				</m:MaterialColumn>
-				<m:MaterialColumn grid="s1">
-				<m:MaterialPanel  padding="2"> 
-						<g:HTMLPanel> 
-						<m:MaterialTooltip text="Procedures">
-							<m:MaterialIcon ui:field="procIcon" iconType="LIST" iconSize="SMALL"/>
-							</m:MaterialTooltip>
-						</g:HTMLPanel>
-				</m:MaterialPanel>
-				</m:MaterialColumn >
-				<m:MaterialColumn grid="s1">
-					<m:MaterialPanel  padding="2"><!--  -->
-						<m:MaterialTooltip text="Groups">
-							<m:MaterialIcon  ui:field="groupsIcon" iconType="GROUP_WORK" iconSize="SMALL"/>
-						</m:MaterialTooltip>
-					</m:MaterialPanel>
-				</m:MaterialColumn>
-				<m:MaterialColumn grid="s1">
-					<m:MaterialPanel  padding="2"><!--  -->
-						<g:HTMLPanel> 
-						<m:MaterialTooltip text="Stations">
-							<m:MaterialIcon  ui:field="stationsIcon" iconType="WIDGETS" iconSize="SMALL"/>
-						</m:MaterialTooltip>	
-						</g:HTMLPanel>
-					</m:MaterialPanel>
-				</m:MaterialColumn>
-				<!-- This starts selects tools -->
-				<m:MaterialColumn grid="s1"><m:MaterialLabel text="Select:"></m:MaterialLabel></m:MaterialColumn>
-				 <m:MaterialColumn grid="s1">
-					<m:MaterialPanel marginLeft="10" padding="2" >
-						<g:HTMLPanel>
-						<m:MaterialTooltip text="Multiple">
-							<m:MaterialIcon ui:field="multipleIcon" iconType="GROUP_ADD" iconSize="SMALL"/>
-							</m:MaterialTooltip>
-						</g:HTMLPanel>
-					</m:MaterialPanel>
-				</m:MaterialColumn>
-				<m:MaterialColumn grid="s1">
-					<m:MaterialPanel padding="2" ><!--  -->
-						<g:HTMLPanel> 
-						<m:MaterialTooltip text="Random">
-							<m:MaterialIcon ui:field="randomIcon" iconType="SHUFFLE" iconSize="SMALL"/>
-						</m:MaterialTooltip>
-						</g:HTMLPanel>
-					</m:MaterialPanel>
-			</m:MaterialColumn>
-				<!-- <m:MaterialColumn grid="s1">
-					<m:MaterialPanel padding="2" >
-						<g:HTMLPanel>
-						<m:MaterialTooltip text="All">
-							<m:MaterialIcon ui:field="selectAllIcon" iconType="SELECT_ALL" iconSize="SMALL"/>
-							</m:MaterialTooltip>
-						</g:HTMLPanel>
-					</m:MaterialPanel>
-				</m:MaterialColumn> -->
+					<m:MaterialColumn grid="s1">
+						<m:MaterialPanel padding="2"><!-- -->
+							<g:HTMLPanel>
+								<m:MaterialTooltip text="Stations">
+									<m:MaterialIcon ui:field="stationsIcon"
+										iconType="WIDGETS" iconSize="SMALL" />
+								</m:MaterialTooltip>
+							</g:HTMLPanel>
+						</m:MaterialPanel>
+					</m:MaterialColumn>
+					<!-- This starts selects tools -->
+					<m:MaterialColumn grid="s1" offset="s2">
+						<m:MaterialLabel text="Select:"></m:MaterialLabel>
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="s1">
+						<m:MaterialPanel marginLeft="10" padding="2"><!-- -->
+							<g:HTMLPanel>
+								<m:MaterialTooltip text="Multiple">
+									<m:MaterialIcon ui:field="multipleIcon"
+										iconType="GROUP_ADD" iconSize="SMALL" />
+								</m:MaterialTooltip>
+							</g:HTMLPanel>
+						</m:MaterialPanel>
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="s1">
+						<m:MaterialPanel padding="2"><!-- -->
+							<g:HTMLPanel>
+								<m:MaterialTooltip text="Random">
+									<m:MaterialIcon ui:field="randomIcon"
+										iconType="SHUFFLE" iconSize="SMALL" />
+								</m:MaterialTooltip>
+							</g:HTMLPanel>
+						</m:MaterialPanel>
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="s1">
+						<m:MaterialPanel padding="2"><!-- -->
+							<g:HTMLPanel>
+								<m:MaterialTooltip text="All">
+									<m:MaterialIcon ui:field="selectAllIcon"
+										iconType="SELECT_ALL" iconSize="SMALL" />
+								</m:MaterialTooltip>
+							</g:HTMLPanel>
+						</m:MaterialPanel>
+					</m:MaterialColumn>
 				</m:MaterialColumn>
 			</m:MaterialRow>
-			<m:MaterialRow ui:field="doneToolbar" > 
-			<m:MaterialColumn hideOn="HIDE_ON_SMALL" ui:field="fullDoneToolbar" grid="s12 m12 l12">
-				<m:MaterialColumn grid="m3">
-					<m:MaterialAnchorButton  ui:field="doneBtn" text="DONE" iconType="DONE"></m:MaterialAnchorButton>
+			<m:MaterialRow ui:field="doneToolbar">
+				<m:MaterialColumn hideOn="HIDE_ON_SMALL"
+					ui:field="fullDoneToolbar" grid="s12 m12 l12">
+					<m:MaterialColumn grid="m3">
+						<m:MaterialAnchorButton ui:field="doneBtn"
+							text="DONE" iconType="DONE"></m:MaterialAnchorButton>
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="m3">
+						<m:MaterialButton ui:field="undoBtn" text="Undo"
+							iconType="UNDO" />
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="m3">
+						<m:MaterialAnchorButton
+							ui:field="doneBarCancelBtn" text="CANCEL" iconType="CLEAR"></m:MaterialAnchorButton>
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="m3">
+						<m:MaterialButton type="FLAT" text="Mangage"
+							iconType="MORE_VERT" iconPosition="RIGHT" />
+					</m:MaterialColumn>
 				</m:MaterialColumn>
-				<m:MaterialColumn grid="m3">
-					<m:MaterialButton  ui:field="undoBtn" text="Undo" iconType="UNDO"  />
+				<m:MaterialColumn ui:field="smDoneToolbar"
+					hideOn="HIDE_ON_MED_UP">
+					<m:MaterialColumn grid="s3">
+						<m:MaterialButton ui:field="smDoneBtn"
+							iconType="DONE"></m:MaterialButton>
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="s3">
+						<m:MaterialButton ui:field="smUndoBtn"
+							iconType="UNDO" />
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="s3">
+						<m:MaterialButton ui:field="smDoneBarCancelBtn"
+							iconType="CLEAR"></m:MaterialButton>
+					</m:MaterialColumn>
+					<m:MaterialColumn grid="s3">
+						<m:MaterialButton type="FLAT"
+							iconType="MORE_VERT" />
+					</m:MaterialColumn>
 				</m:MaterialColumn>
-				<m:MaterialColumn grid="m3">
-					<m:MaterialAnchorButton ui:field="doneBarCancelBtn" text="CANCEL" iconType="CLEAR"></m:MaterialAnchorButton>
-				</m:MaterialColumn>
-				<m:MaterialColumn grid="m3">
-					<m:MaterialButton  type="FLAT" text="Mangage" iconType="MORE_VERT" iconPosition="RIGHT"/>
-				</m:MaterialColumn>
-			</m:MaterialColumn>
-			<m:MaterialColumn ui:field="smDoneToolbar" hideOn="HIDE_ON_MED_UP">
-				<m:MaterialColumn grid="s3">
-					<m:MaterialButton ui:field="smDoneBtn"  iconType="DONE" ></m:MaterialButton>
-				</m:MaterialColumn>
-				<m:MaterialColumn grid="s3">
-					<m:MaterialButton ui:field="smUndoBtn" iconType="UNDO"/>
-				</m:MaterialColumn>
-				<m:MaterialColumn grid="s3">
-					<m:MaterialButton ui:field="smDoneBarCancelBtn" iconType="CLEAR"></m:MaterialButton>
-				</m:MaterialColumn>
-				<m:MaterialColumn grid="s3">
-					<m:MaterialButton type="FLAT"  iconType="MORE_VERT" />
-				</m:MaterialColumn>
-			</m:MaterialColumn>
 			</m:MaterialRow>
-			<m:MaterialAnchorButton ui:field="routineBar" centerOn="CENTER_ON_SMALL" grid="s12" width="100%" hideOn="HIDE_ON_MED_UP" addStyleNames="classTimeBar" text="Class Time" fontSize="1.10em" textAlign="CENTER" iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT" activates="routinedrop"></m:MaterialAnchorButton>
-			<m:MaterialDropDown activator="routinedrop" ui:field="routineDrop2">
-					<m:MaterialLink  addStyleNames="manageClassTimeLink" text="Manage..." />
-				</m:MaterialDropDown>
-	<m:MaterialContainer ui:field="tab1Main">
-	</m:MaterialContainer>
-		</div>
-		<div id="roster-cal-tab" style="width:100%;min-height:600px;max-height:1000px;height:100%">
-			<g:Frame url="../cal.html" width="100%" height="100%"></g:Frame>
-		</div>
-		<div  id="roster-report-tab">
-			<h2>Reports</h2>
+			<m:MaterialAnchorButton ui:field="routineBar"
+				centerOn="CENTER_ON_SMALL" grid="s12" width="100%"
+				hideOn="HIDE_ON_MED_UP" addStyleNames="classTimeBar"
+				text="Class Time" fontSize="1.10em" textAlign="CENTER"
+				iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT"
+				activates="routinedrop"></m:MaterialAnchorButton>
+			<m:MaterialDropDown activator="routinedrop"
+				ui:field="routineDrop2">
+				<m:MaterialLink addStyleNames="manageClassTimeLink"
+					text="Manage..." />
+			</m:MaterialDropDown>
+			<g:HTMLPanel ui:field="mainPanel" />
 		</div>
 	</g:HTMLPanel>
 </ui:UiBinder> 

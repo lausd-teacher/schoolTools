@@ -58,6 +58,7 @@
 		position: relative;
 		}
 	</ui:style>
+	<ui:with field='res' type="net.videmantay.roster.seatingchart.Resource" />
 	<g:HTMLPanel ui:field="seatingChart" styleName="{style.seatingChart}">
 		<m:MaterialRow ui:field="seatingChartToolbar"
 			backgroundColor="RED_LIGHTEN_1" addStyleNames="{style.seatingChartToolbar}">
@@ -118,11 +119,11 @@
 								<m:MaterialCollapsibleBody>
 									<m:MaterialCollection>
 										<m:MaterialCollectionItem>
-											<m:MaterialImage url="../img/doubleDesk.png"
+											<m:MaterialImage url="{res.doubleDesk.getURL}"
 												addStyleNames="furnitureIcon" m:id="doubleDeskIcon" />
 										</m:MaterialCollectionItem>
 										<m:MaterialCollectionItem>
-											<m:MaterialImage url="../img/singleDesk.png"
+											<m:MaterialImage url="{res.singleDesk.getURL}"
 												addStyleNames="furnitureIcon" m:id="singleDeskIcon" />
 										</m:MaterialCollectionItem>
 									</m:MaterialCollection>

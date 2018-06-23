@@ -1,351 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <title>roster</title>
-    <link href="js/jquery/css/ui-darkness/jquery-ui.css" rel="stylesheet" type="text/css" />
-    <link href="js/jquery-ui-rotatable/jquery.ui.rotatable.css" rel="stylesheet" type="text/css" />
-	<link href="css/bootstrap.css" rel="stylesheet" type="text/css" />
-	<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-	 <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-    <!-- Ionicons -->
-    <link href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" type="text/css" />
-	<link href="Kimchi.css" rel="stylesheet" type="text/css" />
-	<link href="css/skin-green.css" rel="stylesheet" type="text/css" />
-  </head>
-
-  <body class="skin-green sidebar-mini">
-    <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
-	    <div class="wrapper">
-
-      <!-- Main Header -->
-      <header class="main-header">
-
-        <!-- Logo -->
-        <a href="index2.html" class="logo">
-          <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b>A</b>LT</span>
-          <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>Admin</b>LTE</span>
-        </a>
-
-        <!-- Header Navbar -->
-        <nav class="navbar navbar-static-top" role="navigation">
-          <!-- Sidebar toggle button-->
-          <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
-            <span class="sr-only">Toggle navigation</span>
-          </a>
-          <!-- Navbar Right Menu -->
-          <div class="navbar-custom-menu">
-            <ul class="nav navbar-nav">
-              <!-- Messages: style can be found in dropdown.less-->
-              <li class="dropdown messages-menu">
-                <!-- Menu toggle button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-envelope-o"></i>
-                  <span class="label label-success">4</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="header">You have 4 messages</li>
-                  <li>
-                    <!-- inner menu: contains the messages -->
-                    <ul class="menu">
-                      <li><!-- start message -->
-                        <a href="#">
-                          <div class="pull-left">
-                            <!-- User Image -->
-                            <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
-                          </div>
-                          <!-- Message title and timestamp -->
-                          <h4>
-                            Support Team
-                            <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                          </h4>
-                          <!-- The message -->
-                          <p>Why not buy a new awesome theme?</p>
-                        </a>
-                      </li><!-- end message -->
-                    </ul><!-- /.menu -->
-                  </li>
-                  <li class="footer"><a href="#">See All Messages</a></li>
-                </ul>
-              </li><!-- /.messages-menu -->
-
-              <!-- Notifications Menu -->
-              <li class="dropdown notifications-menu">
-                <!-- Menu toggle button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-bell-o"></i>
-                  <span class="label label-warning">10</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="header">You have 10 notifications</li>
-                  <li>
-                    <!-- Inner Menu: contains the notifications -->
-                    <ul class="menu">
-                      <li><!-- start notification -->
-                        <a href="#">
-                          <i class="fa fa-users text-aqua"></i> 5 new members joined today
-                        </a>
-                      </li><!-- end notification -->
-                    </ul>
-                  </li>
-                  <li class="footer"><a href="#">View all</a></li>
-                </ul>
-              </li>
-              <!-- Tasks Menu -->
-              <li class="dropdown tasks-menu">
-                <!-- Menu Toggle Button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <i class="fa fa-flag-o"></i>
-                  <span class="label label-danger">9</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li class="header">You have 9 tasks</li>
-                  <li>
-                    <!-- Inner menu: contains the tasks -->
-                    <ul class="menu">
-                      <li><!-- Task item -->
-                        <a href="#">
-                          <!-- Task title and progress text -->
-                          <h3>
-                            Design some buttons
-                            <small class="pull-right">20%</small>
-                          </h3>
-                          <!-- The progress bar -->
-                          <div class="progress xs">
-                            <!-- Change the css width attribute to simulate progress -->
-                            <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                              <span class="sr-only">20% Complete</span>
-                            </div>
-                          </div>
-                        </a>
-                      </li><!-- end task item -->
-                    </ul>
-                  </li>
-                  <li class="footer">
-                    <a href="#">View all tasks</a>
-                  </li>
-                </ul>
-              </li>
-              <!-- User Account Menu -->
-              <li class="dropdown user user-menu">
-                <!-- Menu Toggle Button -->
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <!-- The user image in the navbar-->
-                  <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
-                  <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                  <span class="hidden-xs">Alexander Pierce</span>
-                </a>
-                <ul class="dropdown-menu">
-                  <!-- The user image in the menu -->
-                  <li class="user-header">
-                    <img id="dumbImg" src="img/dadFaceSmall.png" class="img-circle" alt="User Image" />
-                    <p>
-                      Alexander Pierce - Web Developer
-                      <small>Member since Nov. 2012</small>
-                    </p>
-                  </li>
-                  <!-- Menu Body -->
-                  <li class="user-body">
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Followers</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Sales</a>
-                    </div>
-                    <div class="col-xs-4 text-center">
-                      <a href="#">Friends</a>
-                    </div>
-                  </li>
-                  <!-- Menu Footer-->
-                  <li class="user-footer">
-                    <div class="pull-left">
-                      <a href="#" class="btn btn-default btn-flat">Profile</a>
-                    </div>
-                    <div class="pull-right">
-                      <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                    </div>
-                  </li>
-                </ul>
-              </li>
-              <!-- Control Sidebar Toggle Button -->
-              <li>
-                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </header>
-      
-      
-      
-      
-      
-      
-      <!-- Left side column. contains the logo and sidebar -->
-      <aside class="main-sidebar">
-
-        <!-- sidebar: style can be found in sidebar.less -->
-        <section class="sidebar">
-
-          <!-- Sidebar user panel (optional) -->
-          <div class="user-panel">
-            <div class="pull-left image">
-              <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image" />
-            </div>
-            <div class="pull-left info">
-              <p>Alexander Pierce</p>
-              <!-- Status -->
-              <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-            </div>
-          </div>
-
-          <!-- search form (Optional) -->
-          <form action="#" method="get" class="sidebar-form">
-            <div class="input-group">
-              <input type="text" name="q" class="form-control" placeholder="Search..."/>
-              <span class="input-group-btn">
-                <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
-              </span>
-            </div>
-          </form>
-          <!-- /.search form -->
-
-          <!-- Sidebar Menu -->
-          <ul class="sidebar-menu">
-            <li class="header">HEADER</li>
-            <!-- Optionally, you can add icons to the links -->
-            <li class="active"><a href="#"><i class='fa fa-link'></i> <span>Link</span></a></li>
-            <li><a href="#"><i class='fa fa-link'></i> <span>Another Link</span></a></li>
-            <li class="treeview">
-              <a href="#"><i class='fa fa-link'></i> <span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
-              <ul class="treeview-menu">
-                <li><a href="#">Link in level 2</a></li>
-                <li><a href="#">Link in level 2</a></li>
-              </ul>
-            </li>
-          </ul><!-- /.sidebar-menu -->
-        </section>
-        <!-- /.sidebar -->
-      </aside>
-
-
-
-
-      <!-- Content Wrapper. Contains page content -->
-      <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-          <h1>
-            Page Header
-            <small>Optional description</small>
-          </h1>
-          <ol class="breadcrumb">
-            <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-            <li class="active">Here</li>
-          </ol>
-        </section>
-
-
-
-
-        <!-- Main content -->
-        <section class="content">
-          <h1>Main content!</h1>
-        </section><!-- /.content -->
-      </div><!-- /.content-wrapper -->
-
-
-
-
-      <!-- Main Footer -->
-      <footer class="main-footer">
-        <!-- To the right -->
-        <div class="pull-right hidden-xs">
-          Anything you want
-        </div>
-        <!-- Default to the left -->
-        <strong>Copyright &copy; 2015 <a href="#">Company</a>.</strong> All rights reserved.
-      </footer>
-      
-      
-      
-      
-      
-      
-      <!-- Control Sidebar -->      
-      <aside class="control-sidebar control-sidebar-dark">                
-        <!-- Create the tabs -->
-        <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-          <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-          <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content">
-          <!-- Home tab content -->
-          <div class="tab-pane active" id="control-sidebar-home-tab">
-            <h3 class="control-sidebar-heading">Recent Activity</h3>
-            <ul class='control-sidebar-menu'>
-              <li>
-                <a href='javascript::;'>
-                  <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-                  <div class="menu-info">
-                    <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-                    <p>Will be 23 on April 24th</p>
-                  </div>
-                </a>
-              </li>              
-            </ul><!-- /.control-sidebar-menu -->
-
-            <h3 class="control-sidebar-heading">Tasks Progress</h3> 
-            <ul class='control-sidebar-menu'>
-              <li>
-                <a href='javascript::;'>               
-                  <h4 class="control-sidebar-subheading">
-                    Custom Template Design
-                    <span class="label label-danger pull-right">70%</span>
-                  </h4>
-                  <div class="progress progress-xxs">
-                    <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-                  </div>                                    
-                </a>
-              </li> 
-              
-              
-              
-                                      
-            </ul><!-- /.control-sidebar-menu -->         
-          </div><!-- /.tab-pane -->
-          <!-- Stats tab content -->
-          <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div><!-- /.tab-pane -->
-          <!-- Settings tab content -->
-          <div class="tab-pane" id="control-sidebar-settings-tab">            
-            <form method="post">
-              <h3 class="control-sidebar-heading">General Settings</h3>
-              <div class="form-group">
-                <label class="control-sidebar-subheading">
-                  Report panel usage
-                  <input type="checkbox" class="pull-right" checked />
-                </label>
-                <p>
-                  Some information about this general settings option
-                </p>
-              </div><!-- /.form-group -->
-            </form>
-          </div><!-- /.tab-pane -->
-        </div>
-      </aside><!-- /.control-sidebar -->
-      <!-- Add the sidebar's background. This div must be placed
-           immediately after the control sidebar -->
-      <div class='control-sidebar-bg'></div>
-    </div><!-- ./wrapper -->
-  </body>
- 	 <script src="js/jquery/js/jquery.js" ></script>
- 	 <script src="js/jquery/js/jquery-ui.js"></script>
- 	 <script src="js/jquery-ui-rotatable/jquery.ui.rotatable.js"></script>
-	<script src="js/jquery/js/bootstrap.js"></script>
-	<script src="js/app.min.js" ></script>
-    <script type="text/javascript"  src="teacher/teacher.nocache.js"></script>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+     //user info
+     var teacher = {"uid":"20013688","id":20013688,"school_id":228550800,"synced":0,"school_uid":"","additional_buildings":"","name_title":"Mr.","name_title_show":1,"name_first":"Lee","name_first_preferred":"","use_preferred_first_name":"1","name_middle":"","name_middle_show":0,"name_last":"ViDemantay","name_display":"Mr. ViDemantay","username":"","primary_email":"lee@videmantay.net","picture_url":"https:\/\/cdn3-4.cdn.schoology.com\/system\/files\/imagecache\/profile_reg\/pictures\/picture-f32980e8160b94a6d66e296dd64448fe_5ab1475f7c66d.png","gender":null,"position":null,"grad_year":"","password":"","role_id":5,"tz_offset":-7,"tz_name":"America\/Los_Angeles","parents":null,"child_uids":null,"send_message":1,"language":"","permissions":{"is_directory_public":1,"allow_connections":1}};
+     var course = {"section":[{"id":"1624225987","course_title":"MadeIt Up","course_code":"","course_id":"1624225985","school_id":"228550800","building_id":"228550800","access_code":"TB658-KHXRR","section_title":"Section 1","section_code":"","section_school_code":"","synced":"0","active":1,"description":"","subject_area":"0","grade_level_range_start":"0","grade_level_range_end":"0","parent_id":null,"grading_periods":[0],"profile_url":"https:\/\/api.schoology.com\/sites\/all\/themes\/schoology_theme\/images\/course-default.svg","location":"","meeting_days":[""],"start_time":"","end_time":"","weight":"0","options":{"weighted_grading_categories":"0","upload_documents":"0","create_discussion":"0","member_post":"1","member_post_comment":"1","default_grading_scale_id":0,"content_index_visibility":{"topics":0,"assignments":0,"assessments":0,"new_test_quiz":0,"common_assessments":0,"documents":0,"discussion":0,"album":0,"pages":0},"hide_overall_grade":0,"hide_grading_period_grade":0,"allow_custom_overall_grade":0,"allow_custom_overall_grade_text":0},"admin":1,"links":{"self":"https:\/\/api.schoology.com\/v1\/sections\/1624225987"}},{"id":"675750671","course_title":"ViDemantay Test 1","course_code":"","course_id":"675750669","school_id":"228550800","building_id":"228550800","access_code":"5Z6FZ-26SH6","section_title":"Section 1","section_code":"","section_school_code":"","synced":"0","active":1,"description":"","subject_area":"8","grade_level_range_start":"7","grade_level_range_end":"0","parent_id":null,"grading_periods":[0],"profile_url":"https:\/\/api.schoology.com\/sites\/all\/themes\/schoology_theme\/images\/course-default.svg","location":"","meeting_days":[""],"start_time":"","end_time":"","weight":"0","options":{"weighted_grading_categories":"0","upload_documents":"0","create_discussion":"0","member_post":"1","member_post_comment":"1","default_grading_scale_id":0,"content_index_visibility":{"topics":0,"assignments":0,"assessments":0,"new_test_quiz":0,"common_assessments":0,"documents":0,"discussion":0,"album":0,"pages":0},"hide_overall_grade":0,"hide_grading_period_grade":0,"allow_custom_overall_grade":0,"allow_custom_overall_grade_text":0},"admin":1,"links":{"self":"https:\/\/api.schoology.com\/v1\/sections\/675750671"}},{"id":"1524952133","course_title":"ViDemantay Test 1","course_code":"","course_id":"675750669","school_id":"228550800","building_id":"228550800","access_code":"N77GP-Q4CJ5","section_title":"Section 2","section_code":"","section_school_code":"","synced":"0","active":1,"description":"","subject_area":"8","grade_level_range_start":"7","grade_level_range_end":"0","parent_id":null,"grading_periods":[0],"profile_url":"https:\/\/api.schoology.com\/sites\/all\/themes\/schoology_theme\/images\/course-default.svg","location":"","meeting_days":[""],"start_time":"","end_time":"","weight":"0","options":{"weighted_grading_categories":"0","upload_documents":"0","create_discussion":"0","member_post":"1","member_post_comment":"1","default_grading_scale_id":0,"content_index_visibility":{"topics":0,"assignments":0,"assessments":0,"new_test_quiz":0,"common_assessments":0,"documents":0,"discussion":0,"album":0,"pages":0},"hide_overall_grade":0,"hide_grading_period_grade":0,"allow_custom_overall_grade":0,"allow_custom_overall_grade_text":0},"admin":1,"links":{"self":"https:\/\/api.schoology.com\/v1\/sections\/1524952133"}}],"links":{"self":"https:\/\/api.schoology.com\/v1\/users\/20013688\/sections"}};
+     var students = {"enrollment":[{"id":"1453234329","uid":"20013688","school_uid":"","name_title":"Mr.","name_title_show":"1","name_first":"Lee","name_first_preferred":"","use_preferred_first_name":"1","name_middle":"","name_middle_show":"0","name_last":"ViDemantay","name_display":"Mr. ViDemantay","admin":1,"status":"1","picture_url":"https:\/\/cdn3-4.cdn.schoology.com\/system\/files\/imagecache\/profile_reg\/pictures\/picture-f32980e8160b94a6d66e296dd64448fe_5ab1475f7c66d.png","links":{"self":"https:\/\/api.schoology.com\/v1\/sections\/675750671\/enrollments\/1453234329"}},{"id":"1767944793","uid":"69690077","school_uid":"","name_title":"","name_title_show":"0","name_first":"Ainsley","name_first_preferred":"","use_preferred_first_name":"1","name_middle":"","name_middle_show":"0","name_last":"Boomer","name_display":"Ainsley Boomer","admin":0,"status":"1","picture_url":"https:\/\/cdn3-4.cdn.schoology.com\/system\/files\/imagecache\/profile_reg\/pictures\/picture-f8e72f42f0e598f30f114be8f706b942_5b10a109d3e3e.png","links":{"self":"https:\/\/api.schoology.com\/v1\/sections\/675750671\/enrollments\/1767944793"}},{"id":"1585434038","uid":"53909154","school_uid":"","name_title":"","name_title_show":"0","name_first":"Darwin","name_first_preferred":"","use_preferred_first_name":"1","name_middle":"","name_middle_show":"0","name_last":"Goober","name_display":"Darwin Goober","admin":0,"status":"1","picture_url":"https:\/\/cdn3-7.cdn.schoology.com\/system\/files\/imagecache\/profile_reg\/pictures\/picture-4f0d01b827928ef9f1dc8cc3a30e4313_5b10a2b1cf680.png","links":{"self":"https:\/\/api.schoology.com\/v1\/sections\/675750671\/enrollments\/1585434038"}},{"id":"1767944723","uid":"69690049","school_uid":"","name_title":"","name_title_show":"0","name_first":"Melanie","name_first_preferred":"","use_preferred_first_name":"1","name_middle":"","name_middle_show":"0","name_last":"Gowor","name_display":"Melanie Gowor","admin":0,"status":"1","picture_url":"https:\/\/cdn3-3.cdn.schoology.com\/system\/files\/imagecache\/profile_reg\/pictures\/picture-6954c8e80211908c6bc457b73350add3_5b10a19e3433e.png","links":{"self":"https:\/\/api.schoology.com\/v1\/sections\/675750671\/enrollments\/1767944723"}},{"id":"1585433778","uid":"53909040","school_uid":"","name_title":"","name_title_show":"0","name_first":"Angel","name_first_preferred":"","use_preferred_first_name":"1","name_middle":"","name_middle_show":"0","name_last":"Guy","name_display":"Angel Guy","admin":0,"status":"1","picture_url":"https:\/\/cdn3-7.cdn.schoology.com\/system\/files\/imagecache\/profile_reg\/pictures\/picture-6ccdb4dccbd6397d951d84ec5a98613f_5b10a35880377.png","links":{"self":"https:\/\/api.schoology.com\/v1\/sections\/675750671\/enrollments\/1585433778"}}],"total":"5","links":{"self":"https:\/\/api.schoology.com\/v1\/sections\/675750671\/enrollments?start=0&limit=50"}};
+     var seatingCharts = {"sectionId":"675750671","defaultId":5732568548769792,"list":[]}; 
+     var curChart = {"id":5732568548769792,"uid":"20013688","sectionId":"675750671","furniture":[],"isDefault":false,"readOnly":false,"shared":false,"allowedUids":[],"isActive":false,"isArchived":false,"isVolume":false,"domainAssociations":[]};
+</script>
+<link rel="stylesheet" href="css/app.css" />
+<title>Havaseet</title>
+<style>
+#loader {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	visibility: hidden;
+	background: url('img/Preloader_3.gif') 50% 50% no-repeat
+		rgb(249, 249, 249);
+}
+</style>
+</head>
+<body>
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+		integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+		crossorigin="anonymous"
+	></script>
+	<script src="scripts/loader.js"></script>
+	<script src="seatingchart/seatingchart.nocache.js"></script>
+</body>
 </html>
-	
