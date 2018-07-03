@@ -88,21 +88,6 @@ public class SeatingChartPanel extends Composite{
 	HTMLPanel seatingChart;
 	
 	@UiField
-	MaterialRow seatingChartToolbar;
-	
-	@UiField
-	MaterialButton stateSelectBtn;
-	
-	@UiField
-	MaterialDropDown scDropDown;
-	
-	@UiField
-	MaterialAnchorButton doneBtn;
-	
-	@UiField
-	MaterialAnchorButton cancelBtn;
-	
-	@UiField
 	DivElement homeTools;
 	
 	@UiField
@@ -131,24 +116,7 @@ public class SeatingChartPanel extends Composite{
 	
 	@UiField
 	MaterialCollapsibleItem stationCollapseItem;
-	
 
-	SelectionHandler<Widget> handler = new SelectionHandler<Widget>(){
-
-		@Override
-		public void onSelection(SelectionEvent<Widget> event) {
-			String text = ((MaterialLink)event.getSelectedItem()).getText();
-			stateSelectBtn.setText(text);
-			stateSelectBtn.setIconType(((MaterialLink)event.getSelectedItem()).getIcon().getIconType());
-			stateChange();
-			switch(text){
-			case "Students": arrangeStudents(); editCollapsible.setActive(2);break;
-			case "Groups": groups();editCollapsible.setActive(3);break;
-			case "Stations": manageStations();editCollapsible.setActive(4);break;
-			default:arrangeFurniture() ;editCollapsible.setActive(1);
-			}
-			
-		}};
 		
 	ClickHandler clickHandler = new ClickHandler(){
 		@Override
@@ -166,17 +134,13 @@ public class SeatingChartPanel extends Composite{
 				stateChange();
 				
 				switch(id){
-				case"studentCollapseItem": stateSelectBtn.setText("Students");
-				stateSelectBtn.setIconType(IconType.SCHOOL);arrangeStudents();break;
-				case"groupCollapseItem":stateSelectBtn.setText("Groups");
-				stateSelectBtn.setIconType(IconType.GROUP_WORK);groups();break;
-				case"stationCollapseItem":stateSelectBtn.setText("Stations");
-				stateSelectBtn.setIconType(IconType.WIDGETS);manageStations();break;
-				default: stateSelectBtn.setText("Furniture"); 
-				stateSelectBtn.setIconType(IconType.EVENT_SEAT); arrangeFurniture();break;
+				case"studentCollapseItem": arrangeStudents();break;
+				case"groupCollapseItem":groups();break;
+				case"stationCollapseItem":manageStations();break;
+				default:arrangeFurniture();break;
 				}
 			}
-		}.schedule(300);
+		}.schedule(200);
 		
 		}};	
 		
@@ -219,10 +183,7 @@ public class SeatingChartPanel extends Composite{
 	
 	@Override
 	public void onLoad(){
-		scDropDown.addSelectionHandler(handler);
 		editCollapsible.addDomHandler(clickHandler, ClickEvent.getType());
-		doneBtn.addClickHandler(doneHandler);
-		cancelBtn.addClickHandler(cancelHandler);
 		home();
 		
 	}//end onLoad
@@ -255,7 +216,7 @@ public class SeatingChartPanel extends Composite{
 		ArrayList<RosterStudentPanel> stuPanels = new ArrayList<RosterStudentPanel>();
 		
 		
-		sl = window.getPropertyJSO("students").cast();
+		sl = CONST.students();
 		console.log(sl);
 		ArrayList<Student>rosterStudentList = new ArrayList<>();
 		for(int i =0; i < sl.getEnrollment().length; i++) {
@@ -330,6 +291,7 @@ public class SeatingChartPanel extends Composite{
 			
 				mci.add(rsp);
 				mci.setPadding(5);
+				mci.setSeparator(true);
 				studentList.add(mci);
 				}//end for
 				console.log("Here is the student collection ");
@@ -480,7 +442,6 @@ public class SeatingChartPanel extends Composite{
 	public void edit(){
 		unHome();
 		homeTools.getStyle().setDisplay(Style.Display.NONE);
-		seatingChartToolbar.getElement().getStyle().setDisplay(Display.BLOCK);
 		editTools.getStyle().setDisplay(Display.BLOCK);
 		this.setIsEditing(true);
 		if(studentList.getWidgetCount() >= 1){
@@ -501,7 +462,6 @@ public class SeatingChartPanel extends Composite{
 		stateChange();
 		setIsEditing(false);
 		//hide the edit -tools
-		seatingChartToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
 		editTools.getStyle().setDisplay(Style.Display.NONE);
 		homeTools.getStyle().setDisplay(Style.Display.BLOCK);
 		$("#dashboard").trigger("doneEdit");

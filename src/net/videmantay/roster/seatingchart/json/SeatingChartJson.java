@@ -3,6 +3,11 @@ package net.videmantay.roster.seatingchart.json;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.core.client.JsArray;
 
+import net.videmantay.roster.json.GroupJson;
+import net.videmantay.roster.json.ProcedureJson;
+import net.videmantay.roster.json.RoutineConfigJson;
+import net.videmantay.roster.json.StationsJson;
+
 
 public class SeatingChartJson extends JavaScriptObject {
 
@@ -38,5 +43,17 @@ public class SeatingChartJson extends JavaScriptObject {
 	public final native void setFurniture(JsArray<FurnitureJson> furniture)/*-{
 			this.furniture = furniture;
 	}-*/;
+	
+	public final native RoutineConfigJson getRoutine()/*-{
+			return this.routine;
+	}-*/;
+	
+	public final native void getRoutine(RoutineConfigJson routine)/*-{
+	 		this.routine = routine;
+}-*/;
+	
+	
+	
+
 	
 }

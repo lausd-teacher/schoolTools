@@ -7,10 +7,7 @@ import com.google.gwt.core.client.JsArray;
 public class RoutineConfigJson extends JavaScriptObject {
 	protected RoutineConfigJson(){}
 	
-	public final native Long getId()/*-{
-		return this.id
-	}-*/;
-
+	
 	public final native JsArray<GroupJson> getGroups()/*-{
 		return this.groups;
 	}-*/;
@@ -26,9 +23,6 @@ public class RoutineConfigJson extends JavaScriptObject {
 	}-*/;
 	
 
-	public final native  RoutineJson getRoutine()/*-{
-		return this.routine;
-	}-*/;
 	//setters 
 	
 public final native void setGroups(JsArray<GroupJson> groups)/*-{
@@ -45,10 +39,6 @@ public final native void setGroups(JsArray<GroupJson> groups)/*-{
 		this.stations = sta;
 	}-*/;
 	
-
-	public final native  void setRoutine(RoutineJson rot)/*-{
-		this.routine = rot;
-	}-*/;
 	
 	public final native void removeProcedure(int index)/*-{
 		this.procedures.splice(index,1);

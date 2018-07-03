@@ -184,11 +184,13 @@ div.rosterStudent>div.studentHead {
 
 div.studentHead>div.counterRotate {
 	height: 3.5em;
-	widht: 3.5em;
+	width: 3.5em;
 	background-size: contain;
 	background-repeat: no-repeat;
 	background-position: center;
 	position: absolute;
+	border:1px solid DarkGoldenRod;
+	border-radius:100%;
 }
 
 div.rosterStudent>div.studentBody {
@@ -271,6 +273,29 @@ div.rosterStudent>div.studentBody>.counterRotate {
 ul.scStudentList.collection {
 	overflow-y: scroll;
 	height: 600px;
+}
+
+div.collapsible-body>ul.scStudentList.collection {
+	height: 420px;
+}
+
+div.create-option{
+	text-align:center;
+	border:1px solid DimGray;
+	border-radius:15px;
+	box-shadow:2px 2px 2px darkgray;
+	cursor:pointer;
+	padding:1em;
+	margin:1em;
+	
+}
+div.create-option >i.material-icons{
+	font-size:55px;
+	color:DarkGray;
+}
+div.create-option >label{
+	font-size:45px;
+	cursor:inherit;
 }
 
 /* end seating chart style *************************/

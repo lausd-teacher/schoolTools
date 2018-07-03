@@ -1,14 +1,13 @@
 package net.videmantay.roster;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.core.client.RunAsyncCallback;
+import com.google.gwt.dom.client.ImageElement;
+import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -18,13 +17,12 @@ import static com.google.gwt.query.client.GQuery.*;
 
 
 import gwt.material.design.client.ui.MaterialAnchorButton;
-import gwt.material.design.client.ui.MaterialButton;
-import gwt.material.design.client.ui.MaterialContainer;
 import gwt.material.design.client.ui.MaterialDropDown;
 import gwt.material.design.client.ui.MaterialIcon;
 import gwt.material.design.client.ui.MaterialLink;
+import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialRow;
-import gwt.material.design.client.ui.MaterialSwitch;
+import net.videmantay.roster.json.Course;
 import net.videmantay.roster.seatingchart.json.SeatingChartJson;
 
 public class DashboardPanel extends Composite {
@@ -35,7 +33,19 @@ public class DashboardPanel extends Composite {
 	}
 
 	@UiField
-	MaterialIcon editBtn;
+	MaterialAnchorButton editBtn;
+	
+	@UiField
+	MaterialLink editLink;
+	
+	@UiField
+	MaterialLink newLink;
+	
+	@UiField
+	MaterialLink deleteLink;
+	
+	@UiField
+	MaterialLink printLink;
 	
 	@UiField
 	MaterialIcon hwIcon;
@@ -47,10 +57,7 @@ public class DashboardPanel extends Composite {
 	MaterialIcon rollIcon;
 	
 	@UiField
-	MaterialIcon multipleIcon;
-	
-	@UiField
-	MaterialIcon randomIcon;
+	MaterialIcon procIcon;
 		
 	@UiField
 	HTMLPanel mainPanel;
@@ -80,12 +87,24 @@ public class DashboardPanel extends Composite {
 	@UiField
 	MaterialAnchorButton clearAllBtn;
 	
+	@UiField
+	ImageElement sectionProfIcon;
+	
+	@UiField
+	SpanElement sectionTitleSpan;
+	
+	@UiField
+	MaterialModal createSeatingChartModal;
+	
+	@UiField
+	MaterialModal deleteSeatingChartModal;
+	
 
 	private State state = State.DASHBOARD;
 	
 	private SeatingChartPanel display = new SeatingChartPanel();
 
-	public enum State{DASHBOARD,ROLL, HW,GROUP, MULTIPLE_SELECT,RANDOM, FURNITURE_EDIT, STUDENT_EDIT, STATIONS_EDIT}
+	public enum State{DASHBOARD,GROUPS,PROCEEDURES,STATIONS}
 	
 	
 	
@@ -93,21 +112,16 @@ public class DashboardPanel extends Composite {
 	public DashboardPanel() {
 		console.log("roster passed to dashboard is :  ");
 		initWidget(uiBinder.createAndBindUi(this));
-		
 		doneToolbar.getElement().getStyle().setDisplay(Style.Display.NONE);
-			
+		
+		//ajax call to other seating chart and assign to window.curChart
 		routineDrop.addSelectionHandler(new SelectionHandler<Widget>(){
 
 			@Override
 			public void onSelection(SelectionEvent<Widget> event) {
 				MaterialLink link = (MaterialLink)event.getSelectedItem();
-				if(link.getText().equalsIgnoreCase("Manage...")){
-					//goto classtime management page
-				}else{
 					int index =Integer.parseInt(link.getDataAttribute("data-index"));
-					
-
-				}	
+				
 			}});
 		/////////////////seatingChartEditLinks events
 	
@@ -118,7 +132,6 @@ public class DashboardPanel extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				display.checkHW();
-				state = State.HW;
 				showDoneBar();
 			}});
 		rollIcon.addClickHandler(new ClickHandler(){
@@ -126,49 +139,41 @@ public class DashboardPanel extends Composite {
 			@Override
 			public void onClick(ClickEvent event) {
 				display.takeRoll();
-				state = State.ROLL;
 				showDoneBar();
 			}});
-		groupsIcon.addClickHandler(new ClickHandler(){
+		
+		editLink.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				display.groups();
-				state = State.GROUP;
+				display.edit();
 				showDoneBar();
+				
 			}});
-		randomIcon.addClickHandler(new ClickHandler(){
+		newLink.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				display.pickRandom();
-				state = State.RANDOM;
-				showDoneBar();
+				event.stopPropagation();
+				event.preventDefault();
+				createSeatingChartModal.open();
 			}});
-		multipleIcon.addClickHandler(new ClickHandler(){
+		deleteLink.addClickHandler(new ClickHandler() {
 
 			@Override
 			public void onClick(ClickEvent event) {
-				display.multipleSelect();
-				state = State.MULTIPLE_SELECT;
-				showDoneBar();
+				event.stopPropagation();
+				event.preventDefault();
+				deleteSeatingChartModal.open();
 			}});
+	
+	
 		////////////
 		doneBtn.addClickHandler(new ClickHandler(){
 
 			@Override
 			public void onClick(ClickEvent event) {
-				switch(state){
-				case FURNITURE_EDIT:display.doneArrangeFurniture(); break;
-				case STUDENT_EDIT: display.doneArrangeStudents(); break;
-				case STATIONS_EDIT: display.doneManageStations();break;
-				case HW: display.doneCheckHW();break;
-				case ROLL: display.doneTakeRoll();break;
-				case GROUP: display.doneGroups();break;
-				case RANDOM: display.donePickRandom(); break;
-				case MULTIPLE_SELECT: display.doneMultipleSelect(); break;
-				default: display.home();
-				}
+				
 				display.home();
 				showToolBar();
 			}});
@@ -209,10 +214,12 @@ public class DashboardPanel extends Composite {
 	@Override
 	public void onLoad(){
 		//load the classTimedrop
+		Course course = CONST.course();
+		sectionProfIcon.setSrc(course.section().get(0).getProfileURL());
+		sectionTitleSpan.setInnerText(course.section().get(0).getCourse_title());
 		console.log("dashboard loaded");
 		SeatingChartJson scj = window.getPropertyJSO("curChart").cast();
 		mainPanel.add(display);
-		console.log(scj);
 		display.setSeatingChart(scj);
 		
 		

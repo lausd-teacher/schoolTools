@@ -84,15 +84,15 @@ public class RoutineItem extends Composite {
 		initWidget(uiBinder.createAndBindUi(this));
 		
 		//fix tabs and content to not conflict
-		procTabBtn.setHref(procTabBtn.getHref()+ config.getId());
-		groupTabBtn.setHref(groupTabBtn.getHref()+ config.getId());
-		stationTabBtn.setHref(stationTabBtn.getHref()+ config.getId());
-		layoutTabBtn.setHref(layoutTabBtn.getHref()+ config.getId());
+		procTabBtn.setHref(procTabBtn.getHref());
+		groupTabBtn.setHref(groupTabBtn.getHref());
+		stationTabBtn.setHref(stationTabBtn.getHref());
+		layoutTabBtn.setHref(layoutTabBtn.getHref());
 		
-		procContent.setId("procContent"+ config.getId());
-		groupContent.setId("groupContent"+ config.getId());
-		stationContent.setId("stationContent"+ config.getId());
-		layoutContent.setId("layoutContent"+ config.getId());
+		procContent.setId("procContent");
+		groupContent.setId("groupContent");
+		stationContent.setId("stationContent");
+		layoutContent.setId("layoutContent");
 	}
 	
 	@Override

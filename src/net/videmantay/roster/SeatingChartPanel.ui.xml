@@ -57,45 +57,15 @@
 		display: none;
 		position: relative;
 		}
+		
 	</ui:style>
-	<ui:with field='res' type="net.videmantay.roster.seatingchart.Resource" />
 	<g:HTMLPanel ui:field="seatingChart" styleName="{style.seatingChart}">
-		<m:MaterialRow ui:field="seatingChartToolbar"
-			backgroundColor="RED_LIGHTEN_1" addStyleNames="{style.seatingChartToolbar}">
-			<m:MaterialColumn grid="s2">
-				<m:MaterialButton text="Furniture" ui:field="stateSelectBtn" fontSize="1em"
-					activates="scStateSelect" iconType="EVENT_SEAT" iconPosition="RIGHT"
-					width="180px" />
-				<m:MaterialDropDown ui:field="scDropDown"
-					activator="scStateSelect">
-					<m:MaterialLink text="Furniture" iconType="EVENT_SEAT"
-						iconPosition="RIGHT" />
-					<m:MaterialLink text="Students" iconType="SCHOOL"
-						iconPosition="RIGHT" />
-					<m:MaterialLink text="Groups" iconType="GROUP_WORK"
-						iconPosition="RIGHT" />
-					<m:MaterialLink text="Stations" iconType="WIDGETS"
-						iconPosition="RIGHT" />
-				</m:MaterialDropDown>
-			</m:MaterialColumn>
-			<m:MaterialColumn grid="s1">
-				<m:MaterialAnchorButton ui:field="undoBtn"
-					iconType="REPLY" />
-			</m:MaterialColumn>
-			<!-- This cancel button must be accessible to classroomdashboard -->
-			<m:MaterialColumn grid="s1">
-				<m:MaterialAnchorButton ui:field="cancelBtn"
-					iconType="CLOSE" />
-			</m:MaterialColumn>
-			<m:MaterialColumn grid="s1">
-				<!-- This done button must be accessible to classroomdashboard -->
-				<m:MaterialAnchorButton ui:field="doneBtn"
-					iconType="DONE" />
-			</m:MaterialColumn>
-		</m:MaterialRow>
 		<m:MaterialRow>
 			<m:MaterialColumn grid="l11">
 				<g:HTMLPanel ui:field="floorPlanWrapper">
+					<div ui:field="procEditLayer"></div>
+					<div ui:field="infoEditLayouer"></div>
+					<div ui:field="proceedureLayer"></div>
 					<div ui:field="stationLayer" class="{style.stationLayer}"></div>
 					<div ui:field="floorPlan" class="{style.floorPlan}"></div>
 				</g:HTMLPanel>
@@ -103,11 +73,13 @@
 			<m:MaterialColumn grid="l1">
 				<g:HTMLPanel addStyleNames="{style.scStudentTools}">
 					<div ui:field="homeTools">
-						<m:MaterialLabel text="Students" textColor="GREY_DARKEN_1" fontSize="1.25em" />
+						<m:MaterialLabel ui:field="toolLabel" text="Students" textColor="GREY_DARKEN_1" fontSize="1.25em" />
 						<div id="studentListWrapper">
 						<m:MaterialCollection ui:field="studentList"
 							addStyleNames="scStudentList" />
 							</div>
+						<div id="groupToolPanel"></div>
+						<div id="stationToolPanel"></div>
 					</div>
 					<div ui:field="editTools" class="{style.editTools}">
 						<m:MaterialCollapsible ui:field="editCollapsible" active="1">
@@ -119,11 +91,11 @@
 								<m:MaterialCollapsibleBody>
 									<m:MaterialCollection>
 										<m:MaterialCollectionItem>
-											<m:MaterialImage url="{res.doubleDesk.getURL}"
+											<m:MaterialImage url="../img/doubleDesk.png"
 												addStyleNames="furnitureIcon" m:id="doubleDeskIcon" />
 										</m:MaterialCollectionItem>
 										<m:MaterialCollectionItem>
-											<m:MaterialImage url="{res.singleDesk.getURL}"
+											<m:MaterialImage url="../img/singleDesk.png"
 												addStyleNames="furnitureIcon" m:id="singleDeskIcon" />
 										</m:MaterialCollectionItem>
 									</m:MaterialCollection>
@@ -159,6 +131,30 @@
 								<m:MaterialCollapsibleBody>
 									<g:HTMLPanel>
 										<h5>No stations created</h5>
+									</g:HTMLPanel>
+									<m:MaterialCollection></m:MaterialCollection>
+								</m:MaterialCollapsibleBody>
+							</m:MaterialCollapsibleItem>
+							<m:MaterialCollapsibleItem m:id="procCollapseItem"
+								addStyleNames="editCollapseItem" ui:field="procCollapseItem">
+								<m:MaterialCollapsibleHeader>
+									<m:MaterialLink iconType="LIST" />
+								</m:MaterialCollapsibleHeader>
+								<m:MaterialCollapsibleBody>
+									<g:HTMLPanel>
+										<h6>Edit the proceedure</h6>
+									</g:HTMLPanel>
+									<m:MaterialCollection></m:MaterialCollection>
+								</m:MaterialCollapsibleBody>
+							</m:MaterialCollapsibleItem>
+							<m:MaterialCollapsibleItem m:id="detailCollapseItem"
+								addStyleNames="editCollapseItem" ui:field="detailCollapseItem">
+								<m:MaterialCollapsibleHeader>
+									<m:MaterialLink iconType="INFO" />
+								</m:MaterialCollapsibleHeader>
+								<m:MaterialCollapsibleBody>
+									<g:HTMLPanel>
+										<h6>Edit the details of your seating chart</h6>
 									</g:HTMLPanel>
 									<m:MaterialCollection></m:MaterialCollection>
 								</m:MaterialCollapsibleBody>

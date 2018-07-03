@@ -6,13 +6,22 @@
 	<g:HTMLPanel height="100%" width="100%">
 		<div id="roster-dashboard">
 		<div class="amber darken-1" style="height: 2em;">
-		<img class="scTeacherImg left circle responsive-img" src="https://cdn3-7.cdn.schoology.com/system/files/imagecache/profile_reg/pictures/picture-5eb006aea3cf8fc893caf08282c4fa70_5919ebb9ba1d1.png" 
-		style="width: 65px; height: 65px;margin-left: 20px; margin-top:5px; border:1px solid brown; border-radius:100%" /><span class="sectionTitle center-align white-text material-label" style="font-size: 1em; font-weight: bold; margin-left:30% ;">2307 Elementary Gradebook Training Section 1</span><button type="button" class="helpBtn amber accent-1 center-align btn-floating" style="cursor: pointer; font-weight: bold; margin-left: 5px; height: 2.5em;"><i class="left white-text large material-icons" style="cursor: pointer;">help_outline</i></button></div>
+		<img ui:field="sectionProfIcon" class="scTeacherImg left responsive-img"  
+		style="height: 65px;margin-left: 20px; margin-top:5px;" />
+		<span ui:field='sectionTitleSpan' class="sectionTitle center-align white-text material-label" style="font-size: 1em; font-weight: bold; margin-left:30% ;"/>
+		</div><!--  -->
 		<m:MaterialRow ui:field="toolbar" height="3em"
 				padding="2.5" backgroundColor="AMBER_DARKEN_2">
-				<m:MaterialColumn grid="s3" float="RIGHT">
-				<m:MaterialIcon ui:field="editBtn" iconType="SETTINGS" float="RIGHT" />
-				<m:MaterialAnchorButton ui:field="routineBtn"
+				<m:MaterialColumn grid="s4" float="RIGHT">
+				<m:MaterialAnchorButton type="FLAT" ui:field="editBtn" activates="settings" 
+			  iconType="SETTINGS"  float="RIGHT" />
+				<m:MaterialDropDown activator="settings" ui:field="editDropDown" >
+					<m:MaterialLink ui:field="editLink" text="Edit" iconType="EDIT" iconPosition="RIGHT" separator="true" />
+					<m:MaterialLink ui:field="deleteLink" text="Delete" iconType="DELETE" iconPosition="RIGHT" separator="true" />
+					<m:MaterialLink ui:field="newLink" text="New" iconType="EVENT_SEAT" iconPosition="RIGHT" separator="true"/>
+					<m:MaterialLink ui:field="printLink" text="Print" iconType="PRINT" iconPosition="RIGHT" separator="true"/>
+				</m:MaterialDropDown>
+				<m:MaterialAnchorButton ui:field="routineBtn" float="RIGHT"
 					addStyleNames="classTimeBtn truncate"  text="Your Seats"
 					  textAlign="CENTER"
 					iconType="ARROW_DROP_DOWN" iconSize="MEDIUM" iconPosition="RIGHT"
@@ -23,9 +32,9 @@
 						text="Manage..." />
 				</m:MaterialDropDown>
 				</m:MaterialColumn>
-				<m:MaterialColumn grid="s7">
+				<m:MaterialColumn grid="s6">
 					<m:MaterialColumn grid="s1" marginLeft="15">
-						<m:MaterialLabel text="Check:"></m:MaterialLabel>
+						<m:MaterialLabel text="Check: "></m:MaterialLabel>
 					</m:MaterialColumn>
 					<m:MaterialColumn grid="s1">
 						<m:MaterialPanel padding="2">
@@ -47,41 +56,6 @@
 							</g:HTMLPanel>
 						</m:MaterialPanel>
 					</m:MaterialColumn>
-					
-					<!-- This starts selects tools -->
-					<m:MaterialColumn grid="s1" marginLeft="15">
-						<m:MaterialLabel text="Select:"></m:MaterialLabel>
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1">
-						<m:MaterialPanel marginLeft="10" padding="2"><!-- -->
-							<g:HTMLPanel>
-								<m:MaterialTooltip text="Multiple">
-									<m:MaterialIcon ui:field="multipleIcon"
-										iconType="GROUP_ADD" iconSize="SMALL" />
-								</m:MaterialTooltip>
-							</g:HTMLPanel>
-						</m:MaterialPanel>
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1">
-						<m:MaterialPanel padding="2"><!-- -->
-							<g:HTMLPanel>
-								<m:MaterialTooltip text="Random">
-									<m:MaterialIcon ui:field="randomIcon"
-										iconType="SHUFFLE" iconSize="SMALL" />
-								</m:MaterialTooltip>
-							</g:HTMLPanel>
-						</m:MaterialPanel>
-					</m:MaterialColumn>
-					<m:MaterialColumn grid="s1">
-						<m:MaterialPanel padding="2"><!-- -->
-							<g:HTMLPanel>
-								<m:MaterialTooltip text="All">
-									<m:MaterialIcon ui:field="selectAllIcon"
-										iconType="SELECT_ALL" iconSize="SMALL" />
-								</m:MaterialTooltip>
-							</g:HTMLPanel>
-						</m:MaterialPanel>
-					</m:MaterialColumn>
 					<!-- this start the view tools -->
 					<m:MaterialColumn grid="s1" marginLeft="15">
 						<m:MaterialLabel text="View:"></m:MaterialLabel>
@@ -89,9 +63,9 @@
 					<m:MaterialColumn grid="s1">
 						<m:MaterialPanel padding="2"><!-- -->
 							<g:HTMLPanel>
-								<m:MaterialTooltip text="Home">
+								<m:MaterialTooltip text="Students">
 									<m:MaterialIcon ui:field="homeIcon"
-										iconType="HOME" iconSize="SMALL" />
+										iconType="SCHOOL" iconSize="SMALL" />
 								</m:MaterialTooltip>
 							</g:HTMLPanel>
 						</m:MaterialPanel>
@@ -116,6 +90,26 @@
 							</g:HTMLPanel>
 						</m:MaterialPanel>
 					</m:MaterialColumn>
+					<m:MaterialColumn grid="s1">
+						<m:MaterialPanel padding="2"><!-- -->
+							<g:HTMLPanel>
+								<m:MaterialTooltip text="Proceedures">
+									<m:MaterialIcon ui:field="procIcon"
+										iconType="LIST" iconSize="SMALL" />
+								</m:MaterialTooltip>
+							</g:HTMLPanel>
+						</m:MaterialPanel>
+					</m:MaterialColumn>	
+					<m:MaterialColumn grid="s1">
+						<m:MaterialPanel padding="2"><!-- -->
+							<g:HTMLPanel>
+								<m:MaterialTooltip text="Help">
+									<m:MaterialIcon ui:field="helpIcon"
+										iconType="HELP_OUTLINE" iconSize="SMALL" />
+								</m:MaterialTooltip>
+							</g:HTMLPanel>
+						</m:MaterialPanel>
+					</m:MaterialColumn>
 					</m:MaterialColumn>
 			</m:MaterialRow>
 			<m:MaterialRow ui:field="doneToolbar" backgroundColor="RED_DARKEN_1">
@@ -132,6 +126,62 @@
 							ui:field="doneBarCancelBtn" text="CANCEL" iconType="CLEAR" backgroundColor="RED"></m:MaterialAnchorButton>
 					</m:MaterialColumn>
 			</m:MaterialRow>
+			<m:MaterialModal ui:field="createSeatingChartModal">
+				<m:MaterialModalContent>
+				<g:HTMLPanel>
+					<div id="mainCreatePanel">
+					<h4> New Seating Chart</h4>
+					<hr/>
+						<div class="create-option-panel row">
+							<div class="col sm12 m6 l6">
+								<div class="create-option" id="blank-create-option">
+									<i class="material-icons">crop_square</i>
+									<br/>
+									<label>Blank</label>
+								</div>
+							</div>
+							<div class="col sm12 m6 l6">
+								<div class="create-option" id="copy-create-option">
+									<i class="material-icons">filter_none</i>
+									<br/>
+									<label>Duplicate</label>
+								</div>
+							</div>
+						</div>
+						<div class="create-option-panel row">
+						<div class="col sm12 m6 l6">
+								<div class="create-option" id="row-create-option">
+									<i class="material-icons">view_headline</i>
+									<br/>
+									<label>Rows</label>
+								</div>
+							</div>
+							<div class="col sm12 m6 l6">
+								<div class="create-option" id="group-create-option">
+									<i class="material-icons">view_module</i>
+									<br/>
+									<label>Groups</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					</g:HTMLPanel>
+				</m:MaterialModalContent>
+			</m:MaterialModal>
+			<m:MaterialModal ui:field="deleteSeatingChartModal"> 
+				<m:MaterialModalContent>
+					<g:HTMLPanel>
+						<h5>Are you sure you want to delete?</h5>
+						<p>Deleting this seating chart is permenant and cannot be reversed.</p>
+						<hr/>
+						<table style="position:relative; float:right">
+							<tr><td><button id="deleteModalBtn" class="btn">Delete <i class="material-icons">delete</i></button></td>
+							<td><button id="cancelDelteModalBtn" class="btn">Cancel</button></td></tr>
+						</table>
+					</g:HTMLPanel>
+				</m:MaterialModalContent>
+				<m:MaterialModalFooter></m:MaterialModalFooter>
+			</m:MaterialModal>
 			<g:HTMLPanel ui:field="mainPanel" />
 		</div>
 	</g:HTMLPanel>
