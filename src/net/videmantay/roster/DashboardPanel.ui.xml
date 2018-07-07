@@ -8,7 +8,8 @@
 		<div class="amber darken-1" style="height: 2em;">
 		<img ui:field="sectionProfIcon" class="scTeacherImg left responsive-img"  
 		style="height: 65px;margin-left: 20px; margin-top:5px;" />
-		<span ui:field='sectionTitleSpan' class="sectionTitle center-align white-text material-label" style="font-size: 1em; font-weight: bold; margin-left:30% ;"/>
+		<span ui:field='sectionTitleSpan' class="sectionTitle center-align white-text material-label" style="font-size: 1.5em; font-weight: bold; margin-left:30% ;"/>
+		<section style="float:right;margin-right:30px;font-size:1em"><span style="color:white;text-shadow:1px 2px 2px black">Havaseet</span>&nbsp;&nbsp;<span style="color:red;text-shadow:1px 2px 2px black">Beta</span></section>
 		</div><!--  -->
 		<m:MaterialRow ui:field="toolbar" height="3em"
 				padding="2.5" backgroundColor="AMBER_DARKEN_2">
@@ -132,6 +133,7 @@
 					<div id="mainCreatePanel">
 					<h4> New Seating Chart</h4>
 					<hr/>
+					<div class="create-option-form" id="chartOption">
 						<div class="create-option-panel row">
 							<div class="col sm12 m6 l6">
 								<div class="create-option" id="blank-create-option">
@@ -141,7 +143,7 @@
 								</div>
 							</div>
 							<div class="col sm12 m6 l6">
-								<div class="create-option" id="copy-create-option">
+								<div class="create-option" id="duplicate-create-option">
 									<i class="material-icons">filter_none</i>
 									<br/>
 									<label>Duplicate</label>
@@ -164,6 +166,39 @@
 								</div>
 							</div>
 						</div>
+					</div>
+					</div>
+					<!-- choose seat type panel -->
+					<div class="create-option-form" id="deskOptions" style="display:none">
+					    <table><tbody><tr><th><h6>Which Desk Type?</h6></th></tr>
+					                  <tr>
+					                  <td style="padding:3em">
+					                  	<img src="../img/singleDesk.png" id="singleDeskImgChoice"/>
+					                  	<br/>
+					                  	<label>Single Desks</label>
+					                  </td>
+					                  <td style="padding:3em">
+					                  	<img src="../img/doubleDesk.png" id="doubleDeskImgChoice"/>
+					                  	<br/><label>Double Desks</label>
+					                  </td>
+					                  </tr>
+					                  </tbody></table>
+					</div>
+					<div class="create-option-form" id="infoOption" style="display:none"> 
+						<form> 
+							<m:MaterialTextBox ui:field="titleInput" label="Name" placeholder="Name" />
+							<br/>
+							<m:MaterialTextArea ui:field="descriptInput" label="Description" placeholder="Description" />
+							<br/>
+							<m:MaterialCheckBox ui:field="defaultInput" 
+												type="FILLED" text="Default" value="false"/>
+							<hr style="margin-bottom:1em;" />
+							<div style="margin-bottom:1em;"><button ui:field="canelCreateBtn" class="btn left red" >Cancel</button>
+							<button ui:field="submitCreateBtn"  class="btn right green">Submit</button>
+							<br/>
+							<br/> 
+							</div>
+						</form>
 					</div>
 					</g:HTMLPanel>
 				</m:MaterialModalContent>

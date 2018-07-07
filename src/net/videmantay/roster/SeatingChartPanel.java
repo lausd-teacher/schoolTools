@@ -3,6 +3,7 @@ package net.videmantay.roster;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsonUtils;
+import com.google.gwt.dev.codeserver.Options;
 import com.google.gwt.dom.client.DivElement;
 import com.google.gwt.dom.client.Style;
 import com.google.gwt.dom.client.Style.Display;
@@ -48,6 +49,7 @@ import gwtquery.plugins.ui.interactions.Droppable;
 import gwtquery.plugins.ui.interactions.Rotatable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Properties;
 
 import net.videmantay.roster.json.Student;
 import net.videmantay.roster.json.StudentList;
@@ -174,6 +176,8 @@ public class SeatingChartPanel extends Composite{
 			}
 		};
 		
+	
+		
 		//constructor////
 	public SeatingChartPanel( ) {
 
@@ -202,7 +206,7 @@ public class SeatingChartPanel extends Composite{
 		drawGrid();
 	}
 	
-
+	
 	public void drawGrid(){
 		floorPlan.removeAllChildren();
 		studentList.clear();
@@ -229,11 +233,7 @@ public class SeatingChartPanel extends Composite{
 			sp.setData(rsj);
 			stuPanels.add(sp);
 		}
-		console.log("We've cycled through students here is array of panels ");
-		console.log(stuPanels);
-		// go through list of furniture and place them on floorPlan
-		console.log("Here is the furniture json ");
-		console.log(data.getFurniture());
+		
 		if(data.getFurniture() == null || data.getFurniture().length() <= 0){
 		for(int i =0; i< data.getFurniture().length(); i++){
 			console.log("draw(): furniture kind is ");
@@ -301,6 +301,82 @@ public class SeatingChartPanel extends Composite{
 		//everything should be in place now add home state
 		home();
 	}	
+	
+	
+	
+	private ArrayList<RosterStudentPanel> prepChart() {
+		floorPlan.removeAllChildren();
+		studentList.clear();
+		if(studentList.isAttached()) {
+		studentList.removeFromParent();
+		$("#studentListWrapper").append(studentList.getElement());
+		}
+		
+		
+		//make a copy of the student list then pop as they are put in place
+		ArrayList<RosterStudentPanel> stuPanels = new ArrayList<RosterStudentPanel>();
+		
+		
+		sl = CONST.students();
+		console.log(sl);
+		ArrayList<Student>rosterStudentList = new ArrayList<>();
+		for(int i =0; i < sl.getEnrollment().length; i++) {
+			rosterStudentList.add(sl.getEnrollment()[i]);
+		}
+		Collections.sort(rosterStudentList, new NameOrder());
+		for(Student rsj: rosterStudentList){
+			//might as well setup the studentList here too
+			RosterStudentPanel sp =new RosterStudentPanel();
+			sp.setData(rsj);
+			stuPanels.add(sp);
+		}
+		return stuPanels;
+	}
+	
+	public void manageNewChart(SeatingChartOptions options) {
+		switch(options.title) {
+		case "duplicate": break;
+		case "row": break;
+		case "group":break;
+		default: break;
+		}
+	}
+	
+	private void newChartRows(String deskType) {
+		ArrayList<RosterStudentPanel> stuPanel =	prepChart();
+		if(deskType.equalsIgnoreCase("singleDesk")) {
+			singleDeskRows(stuPanel);
+		}
+			doubleDeskRows(stuPanel);
+		
+	}
+	
+	private void singleDeskRows(ArrayList<RosterStudentPanel> stuPanel) {
+		
+	}
+	
+private void doubleDeskRows(ArrayList<RosterStudentPanel> stuPanel) {
+		
+	}
+
+private void newChartGroups(String deskType) {
+	ArrayList<RosterStudentPanel> stuPanel = prepChart();
+	if(deskType.equalsIgnoreCase("singleDesk")) {
+		singleDeskGroups(stuPanel);
+	}else {
+		doubleDeskGroups(stuPanel);
+	}
+}
+
+private void singleDeskGroups(ArrayList<RosterStudentPanel> stuPanel) {
+
+
+}
+
+private void doubleDeskGroups(ArrayList<RosterStudentPanel> stuPanel) {
+
+
+}
 	
 	public void stateChange(){
 		switch(state){

@@ -8,8 +8,12 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.query.client.Function;
+import com.google.gwt.query.client.GQuery;
+import com.google.gwt.query.client.Properties;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -17,11 +21,14 @@ import static com.google.gwt.query.client.GQuery.*;
 
 
 import gwt.material.design.client.ui.MaterialAnchorButton;
+import gwt.material.design.client.ui.MaterialCheckBox;
 import gwt.material.design.client.ui.MaterialDropDown;
 import gwt.material.design.client.ui.MaterialIcon;
 import gwt.material.design.client.ui.MaterialLink;
 import gwt.material.design.client.ui.MaterialModal;
 import gwt.material.design.client.ui.MaterialRow;
+import gwt.material.design.client.ui.MaterialTextArea;
+import gwt.material.design.client.ui.MaterialTextBox;
 import net.videmantay.roster.json.Course;
 import net.videmantay.roster.seatingchart.json.SeatingChartJson;
 
@@ -99,6 +106,15 @@ public class DashboardPanel extends Composite {
 	@UiField
 	MaterialModal deleteSeatingChartModal;
 	
+	@UiField
+	MaterialTextBox titleInput;
+	
+	@UiField
+	MaterialTextArea descriptInput;
+	
+	@UiField
+	MaterialCheckBox defaultInput;
+	
 
 	private State state = State.DASHBOARD;
 	
@@ -106,7 +122,7 @@ public class DashboardPanel extends Composite {
 
 	public enum State{DASHBOARD,GROUPS,PROCEEDURES,STATIONS}
 	
-	
+	private SeatingChartOptions options = new SeatingChartOptions();
 	
 	//constructor
 	public DashboardPanel() {
@@ -197,6 +213,51 @@ public class DashboardPanel extends Composite {
 				showToolBar();
 			}});
 		
+			
+	}//end constructor
+	
+	private void showCreateChartForm() {
+		console.log("show create form called");
+		$("div.create-option-form").each(new Function() {
+			@Override
+			public void f() {
+				GQuery $this = $(this);
+				if($this.id().equalsIgnoreCase("infoOption")) {
+					$this.show();
+				}else {
+					$this.hide();
+				}
+			}
+		});
+	}
+	
+	
+	private void chooseDeskType() {
+		
+	}
+	
+private void submitCreateForm() {
+		options.title = titleInput.getValue();
+		options.descript = descriptInput.getValue();
+		options.isDefault = defaultInput.getValue();
+		
+		$("div.create-option-form").each(new Function() {
+			@Override
+			public void f() {
+				GQuery $this = $(this);
+				if($this.id().equalsIgnoreCase("chartOption")) {
+					$this.show();
+				}else {
+					$this.hide();
+				}
+			}
+		});
+		
+		createSeatingChartModal.close();
+		display.manageNewChart(options);
+	}
+	
+	private void cancelCreateForm() {
 		
 	}
 	
@@ -221,6 +282,31 @@ public class DashboardPanel extends Composite {
 		SeatingChartJson scj = window.getPropertyJSO("curChart").cast();
 		mainPanel.add(display);
 		display.setSeatingChart(scj);
+		
+		Function createOptFunc = new Function(){
+			@Override
+			public boolean f(Event e) {
+				e.stopPropagation();
+				e.preventDefault();
+				String id = $(e.getEventTarget()).id();
+				console.log(id);
+				switch(id) {
+				case"dublicate-create-option":options.chartType = "duplicate";
+											  showCreateChartForm();
+				                               break;
+				/*case"row-create-option": createOption[0] = "row";
+				                          chooseDeskType();break;
+				case"group-create-option":createOption[0] = "group";
+										chooseDeskType();break;*/
+				default: options.chartType = "blank";
+						showCreateChartForm();
+				}//end switch
+				
+				return true;
+			}
+		};
+		
+		$("div.create-option").click(createOptFunc);
 		
 		
 	}
